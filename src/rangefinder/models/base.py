@@ -42,10 +42,15 @@ def uuid_pk() -> Mapped[str]:
     )
 
 
-def uuid_fk(target: str, nullable: bool = False) -> Mapped[str | None]:
-    """UUID foreign key column."""
+def uuid_fk(target: str) -> Mapped[str]:
+    """Required UUID foreign key column."""
     from sqlalchemy import ForeignKey
 
-    if nullable:
-        return mapped_column(String(36), ForeignKey(target), nullable=True)
     return mapped_column(String(36), ForeignKey(target), nullable=False)
+
+
+def uuid_fk_nullable(target: str) -> Mapped[str | None]:
+    """Optional UUID foreign key column."""
+    from sqlalchemy import ForeignKey
+
+    return mapped_column(String(36), ForeignKey(target), nullable=True)

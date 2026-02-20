@@ -25,7 +25,9 @@
       "Bash(isort:*)",
       "Bash(black:*)",
       "Bash(flake8:*)",
-      "Bash(pytest:*)"
+      "Bash(pytest:*)",
+      "Bash(make test:*)",
+      "Bash(make lint:*)"
     ]
   }
 }

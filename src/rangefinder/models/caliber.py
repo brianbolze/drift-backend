@@ -5,7 +5,7 @@ from typing import TYPE_CHECKING
 from sqlalchemy import JSON, Boolean, Float, Integer, String, Text
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from rangefinder.models.base import Base, TimestampMixin, uuid_fk, uuid_pk
+from rangefinder.models.base import Base, TimestampMixin, uuid_fk_nullable, uuid_pk
 
 if TYPE_CHECKING:
     from rangefinder.models import Bullet, Cartridge, ChamberAcceptsCaliber
@@ -29,7 +29,7 @@ class Caliber(TimestampMixin, Base):
     max_pressure_psi: Mapped[int | None] = mapped_column(Integer, nullable=True)
     rim_type: Mapped[str | None] = mapped_column(String(50), nullable=True)
     action_length: Mapped[str | None] = mapped_column(String(50), nullable=True)
-    parent_caliber_id: Mapped[str | None] = uuid_fk("caliber.id", nullable=True)
+    parent_caliber_id: Mapped[str | None] = uuid_fk_nullable("caliber.id")
     year_introduced: Mapped[int | None] = mapped_column(Integer, nullable=True)
     is_common_lr: Mapped[bool] = mapped_column(Boolean, default=False, server_default="0")
     description: Mapped[str | None] = mapped_column(Text, nullable=True)
