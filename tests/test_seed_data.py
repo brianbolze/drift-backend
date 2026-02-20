@@ -13,11 +13,17 @@ from sqlalchemy.orm import Session  # noqa: E402
 
 from rangefinder.models import (  # noqa: E402
     Base,
+    Bullet,
+    BulletBCSource,
     Caliber,
+    Cartridge,
     Chamber,
     ChamberAcceptsCaliber,
     EntityAlias,
     Manufacturer,
+    Optic,
+    Reticle,
+    RifleModel,
 )
 
 
@@ -31,8 +37,13 @@ def seeded_db():
         yield session
 
 
+# ---------------------------------------------------------------------------
+# Count tests — verify expected row counts for every table
+# ---------------------------------------------------------------------------
+
+
 def test_manufacturer_count(seeded_db):
-    assert seeded_db.query(Manufacturer).count() == 32
+    assert seeded_db.query(Manufacturer).count() == 38  # 32 original + 6 optic makers
 
 
 def test_caliber_count(seeded_db):
@@ -49,8 +60,37 @@ def test_chamber_accepts_caliber_count(seeded_db):
     assert seeded_db.query(ChamberAcceptsCaliber).count() == 30
 
 
+def test_bullet_count(seeded_db):
+    assert seeded_db.query(Bullet).count() == 15
+
+
+def test_bullet_bc_source_count(seeded_db):
+    assert seeded_db.query(BulletBCSource).count() == 7
+
+
+def test_cartridge_count(seeded_db):
+    assert seeded_db.query(Cartridge).count() == 15
+
+
+def test_rifle_model_count(seeded_db):
+    assert seeded_db.query(RifleModel).count() == 15
+
+
+def test_reticle_count(seeded_db):
+    assert seeded_db.query(Reticle).count() == 13
+
+
+def test_optic_count(seeded_db):
+    assert seeded_db.query(Optic).count() == 16
+
+
 def test_entity_alias_count(seeded_db):
-    assert seeded_db.query(EntityAlias).count() == 83
+    assert seeded_db.query(EntityAlias).count() == 115
+
+
+# ---------------------------------------------------------------------------
+# Chamber relationship tests (unchanged from original)
+# ---------------------------------------------------------------------------
 
 
 def test_wylde_chamber_accepts_both(seeded_db):
@@ -119,6 +159,11 @@ def test_auto_chambers_have_one_primary_link(seeded_db):
         assert cal.name == name, f"{name} chamber should link to {name} caliber"
 
 
+# ---------------------------------------------------------------------------
+# Caliber-level tests
+# ---------------------------------------------------------------------------
+
+
 def test_caliber_popularity_ranks_unique(seeded_db):
     """All popularity ranks should be unique (no ties)."""
     ranks = [c.popularity_rank for c in seeded_db.query(Caliber).filter(Caliber.popularity_rank.isnot(None)).all()]
@@ -160,6 +205,123 @@ def test_308_762_bidirectional(seeded_db):
     assert links_762 == {"7.62x51mm NATO": True, ".308 Winchester": False}
 
 
+# ---------------------------------------------------------------------------
+# Bullet and Cartridge relationship tests
+# ---------------------------------------------------------------------------
+
+
+def test_hornady_140_eld_match_exists(seeded_db):
+    """The flagship 6.5 CM bullet must exist with correct BC values."""
+    bullet = seeded_db.query(Bullet).filter_by(sku="26331").first()
+    assert bullet is not None
+    assert bullet.weight_grains == 140.0
+    assert bullet.bc_g7_published == 0.326
+    assert bullet.bc_g7_estimated == 0.321
+
+
+def test_cartridge_links_to_bullet(seeded_db):
+    """Hornady 81500 cartridge should link to 26331 bullet."""
+    cart = seeded_db.query(Cartridge).filter_by(sku="81500").one()
+    bullet = seeded_db.query(Bullet).filter_by(sku="26331").first()
+    assert cart.bullet_id == bullet.id
+    assert cart.muzzle_velocity_fps == 2710
+    assert cart.bullet_match_confidence == 1.0
+
+
+def test_bullet_has_bc_sources(seeded_db):
+    """The 140 ELD Match should have multiple BC source rows."""
+    bullet = seeded_db.query(Bullet).filter_by(sku="26331").first()
+    sources = seeded_db.query(BulletBCSource).filter_by(bullet_id=bullet.id).all()
+    assert len(sources) >= 2
+    source_names = {s.source for s in sources}
+    assert "manufacturer" in source_names
+    assert "applied_ballistics" in source_names
+
+
+def test_bullets_span_both_calibers(seeded_db):
+    """Bullets should cover both 6.5 CM and .308 Win."""
+    cal_65 = seeded_db.query(Caliber).filter_by(name="6.5 Creedmoor").one()
+    cal_308 = seeded_db.query(Caliber).filter_by(name=".308 Winchester").one()
+    count_65 = seeded_db.query(Bullet).filter_by(caliber_id=cal_65.id).count()
+    count_308 = seeded_db.query(Bullet).filter_by(caliber_id=cal_308.id).count()
+    assert count_65 >= 5, f"Expected >= 5 6.5 CM bullets, got {count_65}"
+    assert count_308 >= 5, f"Expected >= 5 .308 Win bullets, got {count_308}"
+
+
+# ---------------------------------------------------------------------------
+# Rifle model tests
+# ---------------------------------------------------------------------------
+
+
+def test_rifle_model_has_model_family(seeded_db):
+    """Rifle models should have model_family for grouping."""
+    bergara_65 = seeded_db.query(RifleModel).filter(RifleModel.model.contains("B-14 HMR 6.5")).first()
+    bergara_308 = seeded_db.query(RifleModel).filter(RifleModel.model.contains("B-14 HMR .308")).first()
+    assert bergara_65 is not None
+    assert bergara_308 is not None
+    assert bergara_65.model_family == "Bergara B-14 HMR"
+    assert bergara_308.model_family == "Bergara B-14 HMR"
+    assert bergara_65.id != bergara_308.id
+
+
+# ---------------------------------------------------------------------------
+# Optic and Reticle tests
+# ---------------------------------------------------------------------------
+
+
+def test_optic_links_to_reticle(seeded_db):
+    """Viper PST Mil variant should link to EBR-7C MRAD reticle."""
+    optic = seeded_db.query(Optic).filter_by(sku="PST-5258").one()
+    reticle = seeded_db.query(Reticle).filter_by(name="EBR-7C MRAD").one()
+    assert optic.reticle_id == reticle.id
+    assert optic.click_unit == "mil"
+    assert optic.click_value == 0.1
+
+
+def test_optic_model_family_groups_variants(seeded_db):
+    """Mil and MOA variants of Viper PST should share model_family."""
+    mil = seeded_db.query(Optic).filter_by(sku="PST-5258").one()
+    moa = seeded_db.query(Optic).filter_by(sku="PST-5259").one()
+    assert mil.model_family == moa.model_family
+    assert mil.click_unit == "mil"
+    assert moa.click_unit == "moa"
+
+
+def test_optic_manufacturers_have_optic_maker_tag(seeded_db):
+    """All 6 optic manufacturers should have the optic_maker type_tag."""
+    optic_makers = (
+        seeded_db.query(Manufacturer)
+        .filter(
+            Manufacturer.name.in_(
+                [
+                    "Vortex Optics",
+                    "Nightforce Optics",
+                    "Leupold",
+                    "Kahles",
+                    "Sig Sauer",
+                    "Zero Compromise Optics",
+                ]
+            )
+        )
+        .all()
+    )
+    assert len(optic_makers) == 6
+    for m in optic_makers:
+        assert "optic_maker" in m.type_tags, f"{m.name} missing optic_maker tag"
+
+
+def test_reticle_links_to_manufacturer(seeded_db):
+    """Reticles should have valid manufacturer FKs."""
+    for reticle in seeded_db.query(Reticle).all():
+        mfr = seeded_db.get(Manufacturer, reticle.manufacturer_id)
+        assert mfr is not None, f"Reticle {reticle.name} has invalid manufacturer_id"
+
+
+# ---------------------------------------------------------------------------
+# Entity alias validation tests
+# ---------------------------------------------------------------------------
+
+
 def test_alias_types_are_valid(seeded_db):
     valid_types = {
         "abbreviation",
@@ -176,9 +338,14 @@ def test_alias_types_are_valid(seeded_db):
 
 def test_all_aliases_reference_existing_entities(seeded_db):
     """Every alias should point to an entity that exists in the DB."""
-    mfr_ids = {m.id for m in seeded_db.query(Manufacturer).all()}
-    cal_ids = {c.id for c in seeded_db.query(Caliber).all()}
-    entity_ids = {"manufacturer": mfr_ids, "caliber": cal_ids}
+    entity_ids: dict[str, set[str]] = {
+        "manufacturer": {m.id for m in seeded_db.query(Manufacturer).all()},
+        "caliber": {c.id for c in seeded_db.query(Caliber).all()},
+        "bullet": {b.id for b in seeded_db.query(Bullet).all()},
+        "cartridge": {c.id for c in seeded_db.query(Cartridge).all()},
+        "reticle": {r.id for r in seeded_db.query(Reticle).all()},
+        "optic": {o.id for o in seeded_db.query(Optic).all()},
+    }
 
     for alias in seeded_db.query(EntityAlias).all():
         ids = entity_ids.get(alias.entity_type, set())

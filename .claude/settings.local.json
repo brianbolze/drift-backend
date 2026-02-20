@@ -36,7 +36,9 @@
       "Bash(.venv/bin/flake8:*)",
       "Bash(ls:*)",
       "Bash(.venv/bin/alembic revision:*)",
-      "Bash(.venv/bin/alembic upgrade head:*)"
+      "Bash(.venv/bin/alembic upgrade head:*)",
+      "Bash(python scripts/seed_data.py:*)",
+      "Bash(/Users/brianbolze/Development/software/shooting/.venv/bin/python:*)"
     ]
   }
 }

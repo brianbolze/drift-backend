@@ -24,11 +24,17 @@ from sqlalchemy.orm import Session  # noqa: E402
 from rangefinder.database import get_engine, get_session_factory  # noqa: E402
 from rangefinder.models import (  # noqa: E402
     Base,
+    Bullet,
+    BulletBCSource,
     Caliber,
+    Cartridge,
     Chamber,
     ChamberAcceptsCaliber,
     EntityAlias,
     Manufacturer,
+    Optic,
+    Reticle,
+    RifleModel,
 )
 
 # ---------------------------------------------------------------------------
@@ -323,6 +329,55 @@ MANUFACTURERS = [
         "type_tags": ["rifle_maker"],
         "country": "USA",
         "notes": "Short-stroke piston ARs. REPR in .308 is a legitimate precision platform. Niche but respected.",
+    },
+    # --- Optic Manufacturers ---
+    {
+        "name": "Vortex Optics",
+        "alt_names": ["Vortex"],
+        "website_url": "https://www.vortexoptics.com",
+        "type_tags": ["optic_maker"],
+        "country": "USA",
+        "notes": "Dominant precision optics brand. Viper PST Gen II and Razor HD Gen III are PRS staples.",
+    },
+    {
+        "name": "Nightforce Optics",
+        "alt_names": ["Nightforce", "NF"],
+        "website_url": "https://www.nightforceoptics.com",
+        "type_tags": ["optic_maker"],
+        "country": "USA",
+        "notes": "Premium precision optics. ATACR and NX8 lines dominate competitive and military use.",
+    },
+    {
+        "name": "Leupold",
+        "alt_names": ["Leupold & Stevens"],
+        "website_url": "https://www.leupold.com",
+        "type_tags": ["optic_maker"],
+        "country": "USA",
+        "notes": "Mark 5HD is the precision line. Long heritage in American optics.",
+    },
+    {
+        "name": "Kahles",
+        "alt_names": [],
+        "website_url": "https://www.kahles.at",
+        "type_tags": ["optic_maker"],
+        "country": "Austria",
+        "notes": "Oldest riflescope manufacturer (est. 1898). K525i is highly regarded in PRS.",
+    },
+    {
+        "name": "Sig Sauer",
+        "alt_names": ["Sig", "SIG SAUER"],
+        "website_url": "https://www.sigsauer.com",
+        "type_tags": ["optic_maker", "rifle_maker"],
+        "country": "USA",
+        "notes": "Tango6T adopted by US Army (SDMR). Also makes Cross bolt-action rifle.",
+    },
+    {
+        "name": "Zero Compromise Optics",
+        "alt_names": ["ZCO"],
+        "website_url": "https://www.zerocompromiseoptics.com",
+        "type_tags": ["optic_maker"],
+        "country": "Austria",
+        "notes": "Ultra-premium optics. ZC527 is considered the best precision scope available. Small batch.",
     },
 ]
 
@@ -1131,6 +1186,1341 @@ ENTITY_ALIASES: list[dict] = [
 
 
 # ---------------------------------------------------------------------------
+# Bullet seed data
+# Source: manufacturer product pages, Applied Ballistics data
+# Focus: 6.5 Creedmoor and .308 Winchester — the two priority calibers
+# ---------------------------------------------------------------------------
+
+BULLETS: list[dict] = [
+    # --- 6.5 Creedmoor Bullets (0.264" diameter) ---
+    {
+        "manufacturer_name": "Hornady",
+        "name": "ELD Match",
+        "alt_names": ["ELDM", "ELD-M"],
+        "sku": "26331",
+        "caliber_name": "6.5 Creedmoor",
+        "weight_grains": 140.0,
+        "bc_g1_published": 0.646,
+        "bc_g7_published": 0.326,
+        "bc_g7_estimated": 0.321,
+        "bc_source_notes": "G7 estimated from Applied Ballistics, 2023 edition",
+        "length_inches": 1.376,
+        "sectional_density": 0.287,
+        "type_tags": ["boat-tail", "polymer-tip", "cup-and-core"],
+        "used_for": ["match"],
+        "base_type": "boat-tail",
+        "tip_type": "polymer-tip",
+        "construction": "cup-and-core",
+        "source_url": "https://www.hornady.com/bullets/eld-match/6.5mm-264-140-gr-eld-match",
+    },
+    {
+        "manufacturer_name": "Hornady",
+        "name": "ELD Match",
+        "alt_names": ["ELDM 147", "ELD-M 147"],
+        "sku": "26333",
+        "caliber_name": "6.5 Creedmoor",
+        "weight_grains": 147.0,
+        "bc_g1_published": 0.697,
+        "bc_g7_published": 0.351,
+        "bc_source_notes": "Hornady published values",
+        "length_inches": 1.445,
+        "sectional_density": 0.301,
+        "type_tags": ["boat-tail", "polymer-tip", "cup-and-core"],
+        "used_for": ["match"],
+        "base_type": "boat-tail",
+        "tip_type": "polymer-tip",
+        "construction": "cup-and-core",
+        "source_url": "https://www.hornady.com/bullets/eld-match/6.5mm-264-147-gr-eld-match",
+    },
+    {
+        "manufacturer_name": "Hornady",
+        "name": "ELD-X",
+        "alt_names": ["ELDX"],
+        "sku": "2635",
+        "caliber_name": "6.5 Creedmoor",
+        "weight_grains": 143.0,
+        "bc_g1_published": 0.625,
+        "bc_g7_published": 0.315,
+        "bc_source_notes": "Hornady published values",
+        "sectional_density": 0.293,
+        "type_tags": ["boat-tail", "polymer-tip", "cup-and-core"],
+        "used_for": ["hunting-big-game"],
+        "base_type": "boat-tail",
+        "tip_type": "polymer-tip",
+        "construction": "cup-and-core",
+        "source_url": "https://www.hornady.com/bullets/eld-x/6.5mm-264-143-gr-eld-x",
+    },
+    {
+        "manufacturer_name": "Sierra Bullets",
+        "name": "MatchKing HPBT",
+        "alt_names": ["SMK 140", "MatchKing 140"],
+        "sku": "1740",
+        "caliber_name": "6.5 Creedmoor",
+        "weight_grains": 140.0,
+        "bc_g1_published": 0.535,
+        "bc_g7_published": 0.273,
+        "bc_g7_estimated": 0.264,
+        "bc_source_notes": "G1 is Sierra's stepped average. G7 estimated from Applied Ballistics.",
+        "sectional_density": 0.287,
+        "type_tags": ["boat-tail", "open-tip", "cup-and-core"],
+        "used_for": ["match"],
+        "base_type": "boat-tail",
+        "tip_type": "open-tip",
+        "construction": "cup-and-core",
+        "source_url": "https://www.sierrabullets.com/product/6-5mm-140-gr-matchking/",
+    },
+    {
+        "manufacturer_name": "Berger Bullets",
+        "name": "Hybrid Target",
+        "alt_names": ["Hybrid 140"],
+        "sku": "26414",
+        "caliber_name": "6.5 Creedmoor",
+        "weight_grains": 140.0,
+        "bc_g1_published": 0.607,
+        "bc_g7_published": 0.311,
+        "bc_g7_estimated": 0.307,
+        "bc_source_notes": "G7 estimated from Applied Ballistics, 2023 edition",
+        "sectional_density": 0.287,
+        "type_tags": ["boat-tail", "open-tip", "cup-and-core"],
+        "used_for": ["match"],
+        "base_type": "boat-tail",
+        "tip_type": "open-tip",
+        "construction": "cup-and-core",
+        "source_url": "https://www.bergerbullets.com/products/6-5mm-140-gr-hybrid-target/",
+    },
+    {
+        "manufacturer_name": "Nosler",
+        "name": "RDF",
+        "alt_names": ["RDF 140"],
+        "sku": "49823",
+        "caliber_name": "6.5 Creedmoor",
+        "weight_grains": 140.0,
+        "bc_g1_published": 0.658,
+        "bc_g7_published": 0.334,
+        "bc_source_notes": "Nosler published values",
+        "sectional_density": 0.287,
+        "type_tags": ["boat-tail", "open-tip", "cup-and-core"],
+        "used_for": ["match"],
+        "base_type": "boat-tail",
+        "tip_type": "open-tip",
+        "construction": "cup-and-core",
+        "source_url": "https://www.nosler.com/rdf-bullets",
+    },
+    {
+        "manufacturer_name": "Lapua",
+        "name": "Scenar-L",
+        "alt_names": ["Scenar-L 140"],
+        "sku": "4PL6050",
+        "caliber_name": "6.5 Creedmoor",
+        "weight_grains": 140.0,
+        "bc_g1_published": 0.607,
+        "bc_g7_published": 0.312,
+        "bc_source_notes": "Lapua published values",
+        "sectional_density": 0.287,
+        "type_tags": ["boat-tail", "open-tip", "cup-and-core"],
+        "used_for": ["match"],
+        "base_type": "boat-tail",
+        "tip_type": "open-tip",
+        "construction": "cup-and-core",
+        "source_url": "https://www.lapua.com/product/6-5mm-scenar-l-gb546-8-10g-140gr/",
+    },
+    {
+        "manufacturer_name": "Barnes Bullets",
+        "name": "LRX",
+        "alt_names": ["LRX 127"],
+        "sku": "30228",
+        "caliber_name": "6.5 Creedmoor",
+        "weight_grains": 127.0,
+        "bc_g1_published": 0.530,
+        "bc_g7_published": 0.271,
+        "bc_source_notes": "Barnes published values",
+        "sectional_density": 0.260,
+        "type_tags": ["boat-tail", "polymer-tip", "monolithic", "lead-free"],
+        "used_for": ["hunting-big-game"],
+        "base_type": "boat-tail",
+        "tip_type": "polymer-tip",
+        "construction": "monolithic",
+        "is_lead_free": True,
+        "source_url": "https://www.barnesbullets.com/product/lrx-long-range-x/",
+    },
+    # --- .308 Winchester Bullets (0.308" diameter) ---
+    {
+        "manufacturer_name": "Sierra Bullets",
+        "name": "MatchKing HPBT",
+        "alt_names": ["SMK 175", "MatchKing 175"],
+        "sku": "2275",
+        "caliber_name": ".308 Winchester",
+        "weight_grains": 175.0,
+        "bc_g1_published": 0.505,
+        "bc_g7_published": 0.259,
+        "bc_g7_estimated": 0.253,
+        "bc_source_notes": "G7 estimated from Applied Ballistics. The M118LR bullet.",
+        "sectional_density": 0.264,
+        "type_tags": ["boat-tail", "open-tip", "cup-and-core"],
+        "used_for": ["match", "tactical"],
+        "base_type": "boat-tail",
+        "tip_type": "open-tip",
+        "construction": "cup-and-core",
+        "source_url": "https://www.sierrabullets.com/product/30-cal-175-gr-matchking/",
+    },
+    {
+        "manufacturer_name": "Sierra Bullets",
+        "name": "MatchKing HPBT",
+        "alt_names": ["SMK 168", "MatchKing 168"],
+        "sku": "2200",
+        "caliber_name": ".308 Winchester",
+        "weight_grains": 168.0,
+        "bc_g1_published": 0.462,
+        "bc_g7_published": 0.236,
+        "bc_g7_estimated": 0.230,
+        "bc_source_notes": "The classic M852 bullet. G7 estimated from Applied Ballistics.",
+        "sectional_density": 0.253,
+        "type_tags": ["boat-tail", "open-tip", "cup-and-core"],
+        "used_for": ["match"],
+        "base_type": "boat-tail",
+        "tip_type": "open-tip",
+        "construction": "cup-and-core",
+        "source_url": "https://www.sierrabullets.com/product/30-cal-168-gr-matchking/",
+    },
+    {
+        "manufacturer_name": "Hornady",
+        "name": "ELD Match",
+        "alt_names": ["ELDM 178", "ELD-M 178"],
+        "sku": "30713",
+        "caliber_name": ".308 Winchester",
+        "weight_grains": 178.0,
+        "bc_g1_published": 0.547,
+        "bc_g7_published": 0.275,
+        "bc_source_notes": "Hornady published values",
+        "sectional_density": 0.268,
+        "type_tags": ["boat-tail", "polymer-tip", "cup-and-core"],
+        "used_for": ["match"],
+        "base_type": "boat-tail",
+        "tip_type": "polymer-tip",
+        "construction": "cup-and-core",
+        "source_url": "https://www.hornady.com/bullets/eld-match/30-cal-308-178-gr-eld-match",
+    },
+    {
+        "manufacturer_name": "Hornady",
+        "name": "ELD Match",
+        "alt_names": ["ELDM 168 .308"],
+        "sku": "30506",
+        "caliber_name": ".308 Winchester",
+        "weight_grains": 168.0,
+        "bc_g1_published": 0.523,
+        "bc_g7_published": 0.266,
+        "bc_source_notes": "Hornady published values",
+        "sectional_density": 0.253,
+        "type_tags": ["boat-tail", "polymer-tip", "cup-and-core"],
+        "used_for": ["match"],
+        "base_type": "boat-tail",
+        "tip_type": "polymer-tip",
+        "construction": "cup-and-core",
+        "source_url": "https://www.hornady.com/bullets/eld-match/30-cal-308-168-gr-eld-match",
+    },
+    {
+        "manufacturer_name": "Berger Bullets",
+        "name": "Hybrid Target",
+        "alt_names": ["Hybrid 185"],
+        "sku": "30428",
+        "caliber_name": ".308 Winchester",
+        "weight_grains": 185.0,
+        "bc_g1_published": 0.569,
+        "bc_g7_published": 0.292,
+        "bc_g7_estimated": 0.283,
+        "bc_source_notes": "G7 estimated from Applied Ballistics, 2023 edition",
+        "sectional_density": 0.279,
+        "type_tags": ["boat-tail", "open-tip", "cup-and-core"],
+        "used_for": ["match"],
+        "base_type": "boat-tail",
+        "tip_type": "open-tip",
+        "construction": "cup-and-core",
+        "source_url": "https://www.bergerbullets.com/products/30-cal-185-gr-hybrid-target/",
+    },
+    {
+        "manufacturer_name": "Nosler",
+        "name": "Custom Competition",
+        "alt_names": ["CC 168"],
+        "sku": "49824",
+        "caliber_name": ".308 Winchester",
+        "weight_grains": 168.0,
+        "bc_g1_published": 0.462,
+        "bc_g7_published": 0.236,
+        "bc_source_notes": "Nosler published values",
+        "sectional_density": 0.253,
+        "type_tags": ["boat-tail", "open-tip", "cup-and-core"],
+        "used_for": ["match"],
+        "base_type": "boat-tail",
+        "tip_type": "open-tip",
+        "construction": "cup-and-core",
+        "source_url": "https://www.nosler.com/custom-competition-bullets",
+    },
+    {
+        "manufacturer_name": "Hornady",
+        "name": "A-Tip Match",
+        "alt_names": ["A-Tip 230"],
+        "sku": "3091",
+        "caliber_name": ".308 Winchester",
+        "weight_grains": 230.0,
+        "bc_g1_published": 0.823,
+        "bc_g7_published": 0.414,
+        "bc_source_notes": "Hornady published values. Extremely high BC heavy subsonic/ELR bullet.",
+        "sectional_density": 0.346,
+        "type_tags": ["boat-tail", "aluminum-tip", "cup-and-core"],
+        "used_for": ["match"],
+        "base_type": "boat-tail",
+        "tip_type": "aluminum-tip",
+        "construction": "cup-and-core",
+        "source_url": "https://www.hornady.com/bullets/a-tip/30-cal-308-230-gr-a-tip-match",
+    },
+]
+
+
+# ---------------------------------------------------------------------------
+# BulletBCSource seed data — proves the multi-source pattern
+# Source: manufacturer published vs Applied Ballistics measured
+# ---------------------------------------------------------------------------
+
+BULLET_BC_SOURCES: list[dict] = [
+    # Hornady 140 ELD Match — manufacturer published G7
+    {
+        "bullet_sku": "26331",
+        "bc_type": "g7",
+        "bc_value": 0.326,
+        "source": "manufacturer",
+        "source_url": "https://www.hornady.com/bullets/eld-match/6.5mm-264-140-gr-eld-match",
+        "notes": "Hornady published G7 BC",
+    },
+    # Hornady 140 ELD Match — Applied Ballistics measured G7
+    {
+        "bullet_sku": "26331",
+        "bc_type": "g7",
+        "bc_value": 0.321,
+        "source": "applied_ballistics",
+        "source_url": "https://www.appliedballisticsllc.com",
+        "source_quality": 0.95,
+        "notes": "Applied Ballistics Doppler-measured G7 BC, 2023 edition",
+    },
+    # Hornady 140 ELD Match — manufacturer published G1
+    {
+        "bullet_sku": "26331",
+        "bc_type": "g1",
+        "bc_value": 0.646,
+        "source": "manufacturer",
+        "source_url": "https://www.hornady.com/bullets/eld-match/6.5mm-264-140-gr-eld-match",
+        "notes": "Hornady published G1 BC",
+    },
+    # Sierra 175 SMK — manufacturer published G7
+    {
+        "bullet_sku": "2275",
+        "bc_type": "g7",
+        "bc_value": 0.259,
+        "source": "manufacturer",
+        "source_url": "https://www.sierrabullets.com/product/30-cal-175-gr-matchking/",
+        "notes": "Sierra published G7 BC (from stepped velocity average)",
+    },
+    # Sierra 175 SMK — Applied Ballistics measured G7
+    {
+        "bullet_sku": "2275",
+        "bc_type": "g7",
+        "bc_value": 0.253,
+        "source": "applied_ballistics",
+        "source_url": "https://www.appliedballisticsllc.com",
+        "source_quality": 0.95,
+        "notes": "Applied Ballistics Doppler-measured G7 BC",
+    },
+    # Berger 140 Hybrid Target — manufacturer published G7
+    {
+        "bullet_sku": "26414",
+        "bc_type": "g7",
+        "bc_value": 0.311,
+        "source": "manufacturer",
+        "source_url": "https://www.bergerbullets.com/products/6-5mm-140-gr-hybrid-target/",
+        "notes": "Berger published G7 BC",
+    },
+    # Berger 140 Hybrid Target — Applied Ballistics measured G7
+    {
+        "bullet_sku": "26414",
+        "bc_type": "g7",
+        "bc_value": 0.307,
+        "source": "applied_ballistics",
+        "source_url": "https://www.appliedballisticsllc.com",
+        "source_quality": 0.95,
+        "notes": "Applied Ballistics Doppler-measured G7 BC, 2023 edition",
+    },
+]
+
+
+# ---------------------------------------------------------------------------
+# Cartridge seed data — factory loads referencing the bullets above
+# Source: manufacturer product pages
+# ---------------------------------------------------------------------------
+
+CARTRIDGES: list[dict] = [
+    # --- 6.5 Creedmoor Cartridges ---
+    {
+        "manufacturer_name": "Hornady",
+        "product_line": "Match",
+        "name": "Hornady 6.5 Creedmoor 140 gr ELD Match",
+        "alt_names": ["Hornady Match 6.5 CM 140 ELDM"],
+        "sku": "81500",
+        "caliber_name": "6.5 Creedmoor",
+        "bullet_sku": "26331",
+        "bullet_weight_grains": 140.0,
+        "muzzle_velocity_fps": 2710,
+        "test_barrel_length_inches": 24.0,
+        "round_count": 20,
+        "bullet_match_method": "manual",
+        "bullet_match_confidence": 1.0,
+        "popularity_rank": 1,
+        "source_url": "https://www.hornady.com/ammunition/rifle/6.5-creedmoor-140-gr-eld-match",
+    },
+    {
+        "manufacturer_name": "Hornady",
+        "product_line": "Match",
+        "name": "Hornady 6.5 Creedmoor 147 gr ELD Match",
+        "alt_names": ["Hornady Match 6.5 CM 147 ELDM"],
+        "sku": "81501",
+        "caliber_name": "6.5 Creedmoor",
+        "bullet_sku": "26333",
+        "bullet_weight_grains": 147.0,
+        "muzzle_velocity_fps": 2695,
+        "test_barrel_length_inches": 24.0,
+        "round_count": 20,
+        "bullet_match_method": "manual",
+        "bullet_match_confidence": 1.0,
+        "popularity_rank": 2,
+        "source_url": "https://www.hornady.com/ammunition/rifle/6.5-creedmoor-147-gr-eld-match",
+    },
+    {
+        "manufacturer_name": "Hornady",
+        "product_line": "Precision Hunter",
+        "name": "Hornady 6.5 Creedmoor 143 gr ELD-X",
+        "alt_names": ["Hornady PH 6.5 CM 143 ELDX"],
+        "sku": "81499",
+        "caliber_name": "6.5 Creedmoor",
+        "bullet_sku": "2635",
+        "bullet_weight_grains": 143.0,
+        "muzzle_velocity_fps": 2700,
+        "test_barrel_length_inches": 24.0,
+        "round_count": 20,
+        "bullet_match_method": "manual",
+        "bullet_match_confidence": 1.0,
+        "popularity_rank": 3,
+        "source_url": "https://www.hornady.com/ammunition/rifle/6.5-creedmoor-143-gr-eld-x",
+    },
+    {
+        "manufacturer_name": "Federal Premium",
+        "product_line": "Gold Medal",
+        "name": "Federal Gold Medal 6.5 Creedmoor 140 gr SMK",
+        "alt_names": ["Federal GMM 6.5 CM 140", "GM65CRD1"],
+        "sku": "GM65CRD1",
+        "caliber_name": "6.5 Creedmoor",
+        "bullet_sku": "1740",
+        "bullet_weight_grains": 140.0,
+        "muzzle_velocity_fps": 2700,
+        "test_barrel_length_inches": 24.0,
+        "round_count": 20,
+        "bullet_match_method": "manual",
+        "bullet_match_confidence": 1.0,
+        "popularity_rank": 4,
+        "source_url": "https://www.federalpremium.com/rifle/gold-medal/gold-medal-sierra-matchking/11-GM65CRD1.html",
+    },
+    {
+        "manufacturer_name": "Federal Premium",
+        "product_line": "Gold Medal",
+        "name": "Federal Gold Medal 6.5 Creedmoor 130 gr Berger Hybrid",
+        "alt_names": ["Federal GMM 6.5 CM 130 Berger"],
+        "sku": "GM65CRDBH130",
+        "caliber_name": "6.5 Creedmoor",
+        "bullet_sku": "26414",
+        "bullet_weight_grains": 130.0,
+        "muzzle_velocity_fps": 2875,
+        "test_barrel_length_inches": 24.0,
+        "round_count": 20,
+        "bullet_match_method": "manual",
+        "bullet_match_confidence": 0.8,
+        "popularity_rank": 5,
+        "source_url": "https://www.federalpremium.com/rifle/gold-medal/gold-medal-berger-hybrid/",
+        "notes": "Uses 130gr Berger Hybrid OTM, not the 140gr Hybrid Target in our bullet table.",
+    },
+    {
+        "manufacturer_name": "Nosler",
+        "product_line": "Match Grade",
+        "name": "Nosler Match Grade 6.5 Creedmoor 140 gr RDF",
+        "alt_names": ["Nosler MG 6.5 CM 140 RDF"],
+        "sku": "43455",
+        "caliber_name": "6.5 Creedmoor",
+        "bullet_sku": "49823",
+        "bullet_weight_grains": 140.0,
+        "muzzle_velocity_fps": 2650,
+        "test_barrel_length_inches": 24.0,
+        "round_count": 20,
+        "bullet_match_method": "manual",
+        "bullet_match_confidence": 1.0,
+        "source_url": "https://www.nosler.com/match-grade-ammunition",
+    },
+    # --- .308 Winchester Cartridges ---
+    {
+        "manufacturer_name": "Federal Premium",
+        "product_line": "Gold Medal",
+        "name": "Federal Gold Medal .308 Win 175 gr SMK",
+        "alt_names": ["Federal GMM 308 175", "GM308M2"],
+        "sku": "GM308M2",
+        "caliber_name": ".308 Winchester",
+        "bullet_sku": "2275",
+        "bullet_weight_grains": 175.0,
+        "muzzle_velocity_fps": 2600,
+        "test_barrel_length_inches": 24.0,
+        "round_count": 20,
+        "bullet_match_method": "manual",
+        "bullet_match_confidence": 1.0,
+        "popularity_rank": 1,
+        "source_url": "https://www.federalpremium.com/rifle/gold-medal/gold-medal-sierra-matchking/11-GM308M2.html",
+    },
+    {
+        "manufacturer_name": "Federal Premium",
+        "product_line": "Gold Medal",
+        "name": "Federal Gold Medal .308 Win 168 gr SMK",
+        "alt_names": ["Federal GMM 308 168", "GM308M"],
+        "sku": "GM308M",
+        "caliber_name": ".308 Winchester",
+        "bullet_sku": "2200",
+        "bullet_weight_grains": 168.0,
+        "muzzle_velocity_fps": 2650,
+        "test_barrel_length_inches": 24.0,
+        "round_count": 20,
+        "bullet_match_method": "manual",
+        "bullet_match_confidence": 1.0,
+        "popularity_rank": 2,
+        "source_url": "https://www.federalpremium.com/rifle/gold-medal/gold-medal-sierra-matchking/11-GM308M.html",
+    },
+    {
+        "manufacturer_name": "Hornady",
+        "product_line": "Match",
+        "name": "Hornady .308 Win 178 gr ELD Match",
+        "alt_names": ["Hornady Match 308 178 ELDM"],
+        "sku": "8105",
+        "caliber_name": ".308 Winchester",
+        "bullet_sku": "30713",
+        "bullet_weight_grains": 178.0,
+        "muzzle_velocity_fps": 2600,
+        "test_barrel_length_inches": 24.0,
+        "round_count": 20,
+        "bullet_match_method": "manual",
+        "bullet_match_confidence": 1.0,
+        "popularity_rank": 3,
+        "source_url": "https://www.hornady.com/ammunition/rifle/308-win-178-gr-eld-match",
+    },
+    {
+        "manufacturer_name": "Hornady",
+        "product_line": "Match",
+        "name": "Hornady .308 Win 168 gr ELD Match",
+        "alt_names": ["Hornady Match 308 168 ELDM"],
+        "sku": "80966",
+        "caliber_name": ".308 Winchester",
+        "bullet_sku": "30506",
+        "bullet_weight_grains": 168.0,
+        "muzzle_velocity_fps": 2700,
+        "test_barrel_length_inches": 24.0,
+        "round_count": 20,
+        "bullet_match_method": "manual",
+        "bullet_match_confidence": 1.0,
+        "popularity_rank": 4,
+        "source_url": "https://www.hornady.com/ammunition/rifle/308-win-168-gr-eld-match",
+    },
+    {
+        "manufacturer_name": "Hornady",
+        "product_line": "Precision Hunter",
+        "name": "Hornady .308 Win 178 gr ELD-X",
+        "alt_names": ["Hornady PH 308 178 ELDX"],
+        "sku": "80994",
+        "caliber_name": ".308 Winchester",
+        "bullet_sku": "30713",
+        "bullet_weight_grains": 178.0,
+        "muzzle_velocity_fps": 2600,
+        "test_barrel_length_inches": 24.0,
+        "round_count": 20,
+        "bullet_match_method": "manual",
+        "bullet_match_confidence": 0.9,
+        "source_url": "https://www.hornady.com/ammunition/rifle/308-win-178-gr-eld-x",
+        "notes": "Uses ELD-X hunting bullet, not ELD Match. Bullet FK points to 178gr ELD Match as closest match.",
+    },
+    {
+        "manufacturer_name": "Black Hills Ammunition",
+        "product_line": "Match",
+        "name": "Black Hills .308 Win 175 gr SMK",
+        "alt_names": ["BH 308 175 SMK"],
+        "sku": "D308N12",
+        "caliber_name": ".308 Winchester",
+        "bullet_sku": "2275",
+        "bullet_weight_grains": 175.0,
+        "muzzle_velocity_fps": 2600,
+        "test_barrel_length_inches": 24.0,
+        "round_count": 20,
+        "bullet_match_method": "manual",
+        "bullet_match_confidence": 1.0,
+        "source_url": "https://www.black-hills.com/product/5-56mm-nato-77-grain-otm/",
+    },
+    {
+        "manufacturer_name": "Berger Bullets",
+        "product_line": "Match Grade",
+        "name": "Berger .308 Win 185 gr Juggernaut OTM Tactical",
+        "alt_names": ["Berger 308 185 Juggernaut"],
+        "sku": "60010",
+        "caliber_name": ".308 Winchester",
+        "bullet_sku": "30428",
+        "bullet_weight_grains": 185.0,
+        "muzzle_velocity_fps": 2560,
+        "test_barrel_length_inches": 24.0,
+        "round_count": 20,
+        "bullet_match_method": "manual",
+        "bullet_match_confidence": 0.9,
+        "source_url": "https://www.bergerbullets.com/products/308-win-185gr-juggernaut-otm-tactical/",
+        "notes": "Uses 185gr Juggernaut OTM, mapped to closest bullet (185 Hybrid Target).",
+    },
+    {
+        "manufacturer_name": "Lapua",
+        "product_line": "Scenar",
+        "name": "Lapua .308 Win 167 gr Scenar",
+        "alt_names": ["Lapua 308 167 Scenar"],
+        "sku": "4317523",
+        "caliber_name": ".308 Winchester",
+        "bullet_sku": "2200",
+        "bullet_weight_grains": 167.0,
+        "muzzle_velocity_fps": 2625,
+        "test_barrel_length_inches": 24.0,
+        "round_count": 50,
+        "bullet_match_method": "manual",
+        "bullet_match_confidence": 0.8,
+        "source_url": "https://www.lapua.com/product/308-win-scenar-gb432-10-85g-167gr/",
+        "notes": "Uses Lapua's own 167gr Scenar. Mapped to Sierra 168 SMK as closest equivalent.",
+    },
+    {
+        "manufacturer_name": "Winchester",
+        "product_line": "Match",
+        "name": "Winchester Match .308 Win 168 gr HPBT",
+        "alt_names": ["Winchester Match 308 168"],
+        "sku": "S308M",
+        "caliber_name": ".308 Winchester",
+        "bullet_sku": "2200",
+        "bullet_weight_grains": 168.0,
+        "muzzle_velocity_fps": 2680,
+        "test_barrel_length_inches": 24.0,
+        "round_count": 20,
+        "bullet_match_method": "manual",
+        "bullet_match_confidence": 0.9,
+        "source_url": "https://www.winchester.com/Products/Ammunition/Rifle/Match",
+        "notes": "Uses Sierra 168 MatchKing per Winchester spec sheet.",
+    },
+]
+
+
+# ---------------------------------------------------------------------------
+# RifleModel seed data — one row per chambering
+# Source: manufacturer websites
+# ---------------------------------------------------------------------------
+
+RIFLE_MODELS: list[dict] = [
+    # --- 6.5 Creedmoor Rifles ---
+    {
+        "manufacturer_name": "Bergara",
+        "model": "B-14 HMR 6.5 Creedmoor",
+        "model_family": "Bergara B-14 HMR",
+        "chamber_name": "6.5 Creedmoor",
+        "barrel_length_inches": 22.0,
+        "twist_rate": "1:8",
+        "weight_lbs": 9.7,
+        "source_url": "https://www.bergara.online/us/rifles/b14/b-14-hmr/",
+    },
+    {
+        "manufacturer_name": "Tikka",
+        "model": "T3x TAC A1 6.5 Creedmoor",
+        "model_family": "Tikka T3x TAC A1",
+        "chamber_name": "6.5 Creedmoor",
+        "barrel_length_inches": 24.0,
+        "twist_rate": "1:8",
+        "weight_lbs": 10.36,
+        "source_url": "https://www.tikka.fi/rifles/tikka-t3x/t3x-tac-a1",
+    },
+    {
+        "manufacturer_name": "Ruger",
+        "model": "Precision Rifle 6.5 Creedmoor",
+        "model_family": "Ruger Precision Rifle",
+        "chamber_name": "6.5 Creedmoor",
+        "barrel_length_inches": 24.0,
+        "twist_rate": "1:8",
+        "weight_lbs": 10.7,
+        "source_url": "https://www.ruger.com/products/precisionRifle/overview.html",
+    },
+    {
+        "manufacturer_name": "Howa",
+        "model": "1500 HCR 6.5 Creedmoor",
+        "model_family": "Howa 1500 HCR",
+        "chamber_name": "6.5 Creedmoor",
+        "barrel_length_inches": 24.0,
+        "twist_rate": "1:8",
+        "weight_lbs": 10.0,
+        "source_url": "https://www.howamachinery.com",
+    },
+    {
+        "manufacturer_name": "Savage Arms",
+        "model": "110 Tactical 6.5 Creedmoor",
+        "model_family": "Savage 110 Tactical",
+        "chamber_name": "6.5 Creedmoor",
+        "barrel_length_inches": 24.0,
+        "twist_rate": "1:8",
+        "weight_lbs": 8.9,
+        "source_url": "https://www.savagearms.com/content?p=firearms&a=product_summary&s=57232",
+    },
+    {
+        "manufacturer_name": "Masterpiece Arms",
+        "model": "BA Comp 6.5 Creedmoor",
+        "model_family": "MPA BA Comp",
+        "chamber_name": "6.5 Creedmoor",
+        "barrel_length_inches": 26.0,
+        "twist_rate": "1:8",
+        "weight_lbs": 12.5,
+        "description": "Dominant PRS competition rifle. ~29% of PRS competitors.",
+        "source_url": "https://www.masterpiecearms.com/shop/mpa-ba-competition-rifle/",
+    },
+    {
+        "manufacturer_name": "Bergara",
+        "model": "B-14 HMR PRO 6.5 Creedmoor",
+        "model_family": "Bergara B-14 HMR PRO",
+        "chamber_name": "6.5 Creedmoor",
+        "barrel_length_inches": 24.0,
+        "twist_rate": "1:8",
+        "weight_lbs": 9.2,
+        "source_url": "https://www.bergara.online/us/rifles/b14/b-14-hmr-pro/",
+    },
+    # --- .308 Winchester Rifles ---
+    {
+        "manufacturer_name": "Bergara",
+        "model": "B-14 HMR .308 Win",
+        "model_family": "Bergara B-14 HMR",
+        "chamber_name": ".308 Winchester",
+        "barrel_length_inches": 20.0,
+        "twist_rate": "1:10",
+        "weight_lbs": 9.7,
+        "source_url": "https://www.bergara.online/us/rifles/b14/b-14-hmr/",
+    },
+    {
+        "manufacturer_name": "Tikka",
+        "model": "T3x TAC A1 .308 Win",
+        "model_family": "Tikka T3x TAC A1",
+        "chamber_name": ".308 Winchester",
+        "barrel_length_inches": 24.0,
+        "twist_rate": "1:11",
+        "weight_lbs": 10.36,
+        "source_url": "https://www.tikka.fi/rifles/tikka-t3x/t3x-tac-a1",
+    },
+    {
+        "manufacturer_name": "Ruger",
+        "model": "Precision Rifle .308 Win",
+        "model_family": "Ruger Precision Rifle",
+        "chamber_name": ".308 Winchester",
+        "barrel_length_inches": 20.0,
+        "twist_rate": "1:10",
+        "weight_lbs": 10.7,
+        "source_url": "https://www.ruger.com/products/precisionRifle/overview.html",
+    },
+    {
+        "manufacturer_name": "Savage Arms",
+        "model": "110 Tactical .308 Win",
+        "model_family": "Savage 110 Tactical",
+        "chamber_name": ".308 Winchester",
+        "barrel_length_inches": 24.0,
+        "twist_rate": "1:10",
+        "weight_lbs": 8.9,
+        "source_url": "https://www.savagearms.com/content?p=firearms&a=product_summary&s=57232",
+    },
+    {
+        "manufacturer_name": "Remington",
+        "model": "700 SPS Tactical .308 Win",
+        "model_family": "Remington 700 SPS Tactical",
+        "chamber_name": ".308 Winchester",
+        "barrel_length_inches": 20.0,
+        "twist_rate": "1:10",
+        "weight_lbs": 7.5,
+        "source_url": "https://www.remington.com/rifles/bolt-action/model-700",
+    },
+    # --- 6.5 PRC ---
+    {
+        "manufacturer_name": "Bergara",
+        "model": "B-14 HMR 6.5 PRC",
+        "model_family": "Bergara B-14 HMR",
+        "chamber_name": "6.5 PRC",
+        "barrel_length_inches": 24.0,
+        "twist_rate": "1:8",
+        "weight_lbs": 9.7,
+        "source_url": "https://www.bergara.online/us/rifles/b14/b-14-hmr/",
+    },
+    # --- .300 Win Mag ---
+    {
+        "manufacturer_name": "Tikka",
+        "model": "T3x TAC A1 .300 Win Mag",
+        "model_family": "Tikka T3x TAC A1",
+        "chamber_name": ".300 Winchester Magnum",
+        "barrel_length_inches": 24.0,
+        "twist_rate": "1:10",
+        "weight_lbs": 10.36,
+        "source_url": "https://www.tikka.fi/rifles/tikka-t3x/t3x-tac-a1",
+    },
+    # --- .300 PRC ---
+    {
+        "manufacturer_name": "Ruger",
+        "model": "Precision Rifle .300 PRC",
+        "model_family": "Ruger Precision Rifle",
+        "chamber_name": ".300 PRC",
+        "barrel_length_inches": 26.0,
+        "twist_rate": "1:9",
+        "weight_lbs": 12.0,
+        "source_url": "https://www.ruger.com/products/precisionRifle/overview.html",
+    },
+]
+
+
+# ---------------------------------------------------------------------------
+# Reticle seed data
+# Source: manufacturer spec sheets and product pages
+# ---------------------------------------------------------------------------
+
+RETICLES: list[dict] = [
+    # --- Vortex reticles ---
+    {
+        "name": "EBR-7C MRAD",
+        "alt_names": ["EBR-7C", "7C MRAD"],
+        "unit": "mil",
+        "manufacturer_name": "Vortex Optics",
+        "description": "Christmas-tree style mil reticle. Standard on Viper PST Gen II and Razor HD Gen III.",
+        "source_url": "https://www.vortexoptics.com",
+    },
+    {
+        "name": "EBR-7C MOA",
+        "alt_names": ["7C MOA"],
+        "unit": "moa",
+        "manufacturer_name": "Vortex Optics",
+        "description": "MOA variant of the EBR-7C christmas-tree reticle.",
+        "source_url": "https://www.vortexoptics.com",
+    },
+    {
+        "name": "EBR-2C MRAD",
+        "alt_names": ["EBR-2C"],
+        "unit": "mil",
+        "manufacturer_name": "Vortex Optics",
+        "description": "Simpler mil reticle. Common on mid-range Vortex models.",
+    },
+    # --- Nightforce reticles ---
+    {
+        "name": "Mil-XT",
+        "alt_names": ["MIL-XT", "MILXT"],
+        "unit": "mil",
+        "manufacturer_name": "Nightforce Optics",
+        "description": "Nightforce proprietary tree reticle. Standard on ATACR 5-25x56 Mil.",
+        "source_url": "https://www.nightforceoptics.com",
+    },
+    {
+        "name": "MOAR-20",
+        "alt_names": ["MOAR20"],
+        "unit": "moa",
+        "manufacturer_name": "Nightforce Optics",
+        "description": "Nightforce MOA reticle with 0.5 MOA grid. ATACR and NXS models.",
+        "source_url": "https://www.nightforceoptics.com",
+    },
+    {
+        "name": "Mil-C",
+        "alt_names": ["MIL-C", "MILC"],
+        "unit": "mil",
+        "manufacturer_name": "Nightforce Optics",
+        "description": "Mil-based reticle for NX8 and ATACR. Clean center crosshair with floating dot.",
+    },
+    # --- Leupold reticles ---
+    {
+        "name": "Tremor3",
+        "alt_names": ["T3", "Horus Tremor3", "Horus T3"],
+        "unit": "mil",
+        "manufacturer_name": "Leupold",
+        "description": "Horus-designed tree reticle. Complex wind/elevation holds. Licensed to Leupold for Mark 5HD.",
+        "source_url": "https://www.leupold.com",
+    },
+    {
+        "name": "H59",
+        "alt_names": ["Horus H59"],
+        "unit": "mil",
+        "manufacturer_name": "Leupold",
+        "description": "Horus-designed grid reticle. Dense hashmarks for hold-over shooting. Mark 5HD option.",
+    },
+    {
+        "name": "PR2-MIL",
+        "alt_names": ["PR2 MIL"],
+        "unit": "mil",
+        "manufacturer_name": "Leupold",
+        "description": "Leupold's own precision mil reticle for Mark 5HD.",
+    },
+    {
+        "name": "PR2-MOA",
+        "alt_names": ["PR2 MOA"],
+        "unit": "moa",
+        "manufacturer_name": "Leupold",
+        "description": "Leupold's own precision MOA reticle for Mark 5HD.",
+    },
+    # --- Kahles reticles ---
+    {
+        "name": "SKMR4",
+        "alt_names": ["SKMR 4"],
+        "unit": "mil",
+        "manufacturer_name": "Kahles",
+        "description": "Kahles precision mil reticle. Standard on K525i.",
+        "source_url": "https://www.kahles.at",
+    },
+    # --- Sig Sauer reticles ---
+    {
+        "name": "DEV-L",
+        "alt_names": ["DEVL"],
+        "unit": "mil",
+        "manufacturer_name": "Sig Sauer",
+        "description": "Sig's proprietary precision mil reticle for Tango6T.",
+        "source_url": "https://www.sigsauer.com",
+    },
+    # --- ZCO reticles ---
+    {
+        "name": "MPCT3",
+        "alt_names": ["MPCT-3"],
+        "unit": "mil",
+        "manufacturer_name": "Zero Compromise Optics",
+        "description": "ZCO's proprietary christmas-tree mil reticle for the ZC527.",
+        "source_url": "https://www.zerocompromiseoptics.com",
+    },
+]
+
+
+# ---------------------------------------------------------------------------
+# Optic seed data — one row per buyable SKU
+# Source: manufacturer spec sheets
+# ---------------------------------------------------------------------------
+
+OPTICS: list[dict] = [
+    # --- Vortex Viper PST Gen II 5-25x50 ---
+    {
+        "manufacturer_name": "Vortex Optics",
+        "name": "Vortex Viper PST Gen II 5-25x50 EBR-7C MRAD",
+        "model_family": "Vortex Viper PST Gen II 5-25x50",
+        "product_line": "Viper PST Gen II",
+        "sku": "PST-5258",
+        "reticle_name": "EBR-7C MRAD",
+        "click_unit": "mil",
+        "click_value": 0.1,
+        "magnification_min": 5.0,
+        "magnification_max": 25.0,
+        "objective_diameter_mm": 50.0,
+        "tube_diameter_mm": 30.0,
+        "focal_plane": "ffp",
+        "elevation_travel_mils": 29.1,
+        "windage_travel_mils": 20.0,
+        "weight_oz": 30.2,
+        "length_inches": 15.15,
+        "source_url": "https://www.vortexoptics.com/vortex-viper-pst-gen-2-5-25x50-riflescope.html",
+    },
+    {
+        "manufacturer_name": "Vortex Optics",
+        "name": "Vortex Viper PST Gen II 5-25x50 EBR-7C MOA",
+        "model_family": "Vortex Viper PST Gen II 5-25x50",
+        "product_line": "Viper PST Gen II",
+        "sku": "PST-5259",
+        "reticle_name": "EBR-7C MOA",
+        "click_unit": "moa",
+        "click_value": 0.25,
+        "magnification_min": 5.0,
+        "magnification_max": 25.0,
+        "objective_diameter_mm": 50.0,
+        "tube_diameter_mm": 30.0,
+        "focal_plane": "ffp",
+        "elevation_travel_mils": 29.1,
+        "windage_travel_mils": 20.0,
+        "weight_oz": 30.2,
+        "length_inches": 15.15,
+        "source_url": "https://www.vortexoptics.com/vortex-viper-pst-gen-2-5-25x50-riflescope.html",
+    },
+    # --- Vortex Razor HD Gen III 6-36x56 ---
+    {
+        "manufacturer_name": "Vortex Optics",
+        "name": "Vortex Razor HD Gen III 6-36x56 EBR-7C MRAD",
+        "model_family": "Vortex Razor HD Gen III 6-36x56",
+        "product_line": "Razor HD Gen III",
+        "sku": "RZR-63601",
+        "reticle_name": "EBR-7C MRAD",
+        "click_unit": "mil",
+        "click_value": 0.1,
+        "magnification_min": 6.0,
+        "magnification_max": 36.0,
+        "objective_diameter_mm": 56.0,
+        "tube_diameter_mm": 34.0,
+        "focal_plane": "ffp",
+        "elevation_travel_mils": 37.5,
+        "windage_travel_mils": 20.0,
+        "weight_oz": 46.5,
+        "length_inches": 14.37,
+        "source_url": "https://www.vortexoptics.com/vortex-razor-hd-gen-3-6-36x56-riflescope.html",
+    },
+    # --- Vortex Viper PST Gen II 3-15x44 ---
+    {
+        "manufacturer_name": "Vortex Optics",
+        "name": "Vortex Viper PST Gen II 3-15x44 EBR-2C MRAD",
+        "model_family": "Vortex Viper PST Gen II 3-15x44",
+        "product_line": "Viper PST Gen II",
+        "sku": "PST-3155",
+        "reticle_name": "EBR-2C MRAD",
+        "click_unit": "mil",
+        "click_value": 0.1,
+        "magnification_min": 3.0,
+        "magnification_max": 15.0,
+        "objective_diameter_mm": 44.0,
+        "tube_diameter_mm": 30.0,
+        "focal_plane": "ffp",
+        "elevation_travel_mils": 23.3,
+        "windage_travel_mils": 23.3,
+        "weight_oz": 23.8,
+        "length_inches": 12.63,
+        "source_url": "https://www.vortexoptics.com/vortex-viper-pst-gen-2-3-15x44-riflescope.html",
+    },
+    # --- Nightforce ATACR 5-25x56 ---
+    {
+        "manufacturer_name": "Nightforce Optics",
+        "name": "Nightforce ATACR 5-25x56 F1 Mil-XT",
+        "model_family": "Nightforce ATACR 5-25x56",
+        "product_line": "ATACR",
+        "sku": "C555",
+        "reticle_name": "Mil-XT",
+        "click_unit": "mil",
+        "click_value": 0.1,
+        "magnification_min": 5.0,
+        "magnification_max": 25.0,
+        "objective_diameter_mm": 56.0,
+        "tube_diameter_mm": 34.0,
+        "focal_plane": "ffp",
+        "elevation_travel_mils": 30.0,
+        "windage_travel_mils": 17.5,
+        "weight_oz": 38.0,
+        "length_inches": 14.8,
+        "source_url": "https://www.nightforceoptics.com/atacr-5-25x56-f1",
+    },
+    {
+        "manufacturer_name": "Nightforce Optics",
+        "name": "Nightforce ATACR 5-25x56 F1 MOAR-20",
+        "model_family": "Nightforce ATACR 5-25x56",
+        "product_line": "ATACR",
+        "sku": "C556",
+        "reticle_name": "MOAR-20",
+        "click_unit": "moa",
+        "click_value": 0.25,
+        "magnification_min": 5.0,
+        "magnification_max": 25.0,
+        "objective_diameter_mm": 56.0,
+        "tube_diameter_mm": 34.0,
+        "focal_plane": "ffp",
+        "elevation_travel_mils": 30.0,
+        "windage_travel_mils": 17.5,
+        "weight_oz": 38.0,
+        "length_inches": 14.8,
+        "source_url": "https://www.nightforceoptics.com/atacr-5-25x56-f1",
+    },
+    # --- Nightforce ATACR 7-35x56 ---
+    {
+        "manufacturer_name": "Nightforce Optics",
+        "name": "Nightforce ATACR 7-35x56 F1 Mil-XT",
+        "model_family": "Nightforce ATACR 7-35x56",
+        "product_line": "ATACR",
+        "sku": "C634",
+        "reticle_name": "Mil-XT",
+        "click_unit": "mil",
+        "click_value": 0.1,
+        "magnification_min": 7.0,
+        "magnification_max": 35.0,
+        "objective_diameter_mm": 56.0,
+        "tube_diameter_mm": 34.0,
+        "focal_plane": "ffp",
+        "elevation_travel_mils": 30.0,
+        "windage_travel_mils": 17.5,
+        "weight_oz": 38.0,
+        "length_inches": 15.1,
+        "source_url": "https://www.nightforceoptics.com/atacr-7-35x56-f1",
+    },
+    # --- Nightforce NX8 2.5-20x50 ---
+    {
+        "manufacturer_name": "Nightforce Optics",
+        "name": "Nightforce NX8 2.5-20x50 F1 Mil-C",
+        "model_family": "Nightforce NX8 2.5-20x50",
+        "product_line": "NX8",
+        "sku": "C624",
+        "reticle_name": "Mil-C",
+        "click_unit": "mil",
+        "click_value": 0.1,
+        "magnification_min": 2.5,
+        "magnification_max": 20.0,
+        "objective_diameter_mm": 50.0,
+        "tube_diameter_mm": 30.0,
+        "focal_plane": "ffp",
+        "elevation_travel_mils": 25.0,
+        "windage_travel_mils": 20.0,
+        "weight_oz": 26.0,
+        "length_inches": 13.54,
+        "source_url": "https://www.nightforceoptics.com/nx8-2-5-20x50-f1",
+    },
+    # --- Leupold Mark 5HD 5-25x56 ---
+    {
+        "manufacturer_name": "Leupold",
+        "name": "Leupold Mark 5HD 5-25x56 FFP Tremor3",
+        "model_family": "Leupold Mark 5HD 5-25x56 FFP",
+        "product_line": "Mark 5HD",
+        "sku": "171772",
+        "reticle_name": "Tremor3",
+        "click_unit": "mil",
+        "click_value": 0.1,
+        "magnification_min": 5.0,
+        "magnification_max": 25.0,
+        "objective_diameter_mm": 56.0,
+        "tube_diameter_mm": 35.0,
+        "focal_plane": "ffp",
+        "elevation_travel_mils": 29.1,
+        "windage_travel_mils": 14.5,
+        "weight_oz": 30.0,
+        "length_inches": 15.67,
+        "source_url": "https://www.leupold.com/scopes/rifle-scopes/mark-5hd-5-25x56",
+    },
+    {
+        "manufacturer_name": "Leupold",
+        "name": "Leupold Mark 5HD 5-25x56 FFP H59",
+        "model_family": "Leupold Mark 5HD 5-25x56 FFP",
+        "product_line": "Mark 5HD",
+        "sku": "176450",
+        "reticle_name": "H59",
+        "click_unit": "mil",
+        "click_value": 0.1,
+        "magnification_min": 5.0,
+        "magnification_max": 25.0,
+        "objective_diameter_mm": 56.0,
+        "tube_diameter_mm": 35.0,
+        "focal_plane": "ffp",
+        "elevation_travel_mils": 29.1,
+        "windage_travel_mils": 14.5,
+        "weight_oz": 30.0,
+        "length_inches": 15.67,
+        "source_url": "https://www.leupold.com/scopes/rifle-scopes/mark-5hd-5-25x56",
+    },
+    {
+        "manufacturer_name": "Leupold",
+        "name": "Leupold Mark 5HD 5-25x56 FFP PR2-MIL",
+        "model_family": "Leupold Mark 5HD 5-25x56 FFP",
+        "product_line": "Mark 5HD",
+        "sku": "180616",
+        "reticle_name": "PR2-MIL",
+        "click_unit": "mil",
+        "click_value": 0.1,
+        "magnification_min": 5.0,
+        "magnification_max": 25.0,
+        "objective_diameter_mm": 56.0,
+        "tube_diameter_mm": 35.0,
+        "focal_plane": "ffp",
+        "elevation_travel_mils": 29.1,
+        "windage_travel_mils": 14.5,
+        "weight_oz": 30.0,
+        "length_inches": 15.67,
+        "source_url": "https://www.leupold.com/scopes/rifle-scopes/mark-5hd-5-25x56",
+    },
+    {
+        "manufacturer_name": "Leupold",
+        "name": "Leupold Mark 5HD 5-25x56 FFP PR2-MOA",
+        "model_family": "Leupold Mark 5HD 5-25x56 FFP",
+        "product_line": "Mark 5HD",
+        "sku": "180617",
+        "reticle_name": "PR2-MOA",
+        "click_unit": "moa",
+        "click_value": 0.25,
+        "magnification_min": 5.0,
+        "magnification_max": 25.0,
+        "objective_diameter_mm": 56.0,
+        "tube_diameter_mm": 35.0,
+        "focal_plane": "ffp",
+        "elevation_travel_mils": 29.1,
+        "windage_travel_mils": 14.5,
+        "weight_oz": 30.0,
+        "length_inches": 15.67,
+        "source_url": "https://www.leupold.com/scopes/rifle-scopes/mark-5hd-5-25x56",
+    },
+    # --- Leupold Mark 5HD 3.6-18x44 ---
+    {
+        "manufacturer_name": "Leupold",
+        "name": "Leupold Mark 5HD 3.6-18x44 FFP Tremor3",
+        "model_family": "Leupold Mark 5HD 3.6-18x44 FFP",
+        "product_line": "Mark 5HD",
+        "sku": "174184",
+        "reticle_name": "Tremor3",
+        "click_unit": "mil",
+        "click_value": 0.1,
+        "magnification_min": 3.6,
+        "magnification_max": 18.0,
+        "objective_diameter_mm": 44.0,
+        "tube_diameter_mm": 35.0,
+        "focal_plane": "ffp",
+        "elevation_travel_mils": 29.1,
+        "windage_travel_mils": 14.5,
+        "weight_oz": 26.0,
+        "length_inches": 12.09,
+        "source_url": "https://www.leupold.com/scopes/rifle-scopes/mark-5hd-3-6-18x44",
+    },
+    # --- Kahles K525i ---
+    {
+        "manufacturer_name": "Kahles",
+        "name": "Kahles K525i 5-25x56 SKMR4",
+        "model_family": "Kahles K525i 5-25x56",
+        "product_line": "K525i",
+        "sku": "10645",
+        "reticle_name": "SKMR4",
+        "click_unit": "mil",
+        "click_value": 0.1,
+        "magnification_min": 5.0,
+        "magnification_max": 25.0,
+        "objective_diameter_mm": 56.0,
+        "tube_diameter_mm": 34.0,
+        "focal_plane": "ffp",
+        "elevation_travel_mils": 26.2,
+        "windage_travel_mils": 13.1,
+        "weight_oz": 32.3,
+        "length_inches": 15.3,
+        "source_url": "https://www.kahles.at/com/k525i-5-25x56",
+    },
+    # --- Sig Sauer Tango6T ---
+    {
+        "manufacturer_name": "Sig Sauer",
+        "name": "Sig Sauer Tango6T 1-6x24 DWLR-556",
+        "model_family": "Sig Sauer Tango6T 1-6x24",
+        "product_line": "Tango6T",
+        "sku": "SOT61134",
+        "reticle_name": "DEV-L",
+        "click_unit": "mil",
+        "click_value": 0.1,
+        "magnification_min": 1.0,
+        "magnification_max": 6.0,
+        "objective_diameter_mm": 24.0,
+        "tube_diameter_mm": 30.0,
+        "focal_plane": "ffp",
+        "elevation_travel_mils": 30.0,
+        "windage_travel_mils": 20.0,
+        "weight_oz": 22.9,
+        "length_inches": 10.6,
+        "source_url": "https://www.sigsauer.com/tango6t-1-6x24-mm.html",
+    },
+    # --- ZCO ZC527 ---
+    {
+        "manufacturer_name": "Zero Compromise Optics",
+        "name": "ZCO ZC527 5-27x56 MPCT3",
+        "model_family": "ZCO ZC527 5-27x56",
+        "product_line": "ZC527",
+        "sku": "ZC527-MPCT3",
+        "reticle_name": "MPCT3",
+        "click_unit": "mil",
+        "click_value": 0.1,
+        "magnification_min": 5.0,
+        "magnification_max": 27.0,
+        "objective_diameter_mm": 56.0,
+        "tube_diameter_mm": 36.0,
+        "focal_plane": "ffp",
+        "elevation_travel_mils": 32.5,
+        "windage_travel_mils": 19.0,
+        "weight_oz": 43.0,
+        "length_inches": 15.3,
+        "source_url": "https://www.zerocompromiseoptics.com/product/zc527",
+    },
+]
+
+
+# ---------------------------------------------------------------------------
+# Extended EntityAlias seed data — aliases for new entities
+# ---------------------------------------------------------------------------
+
+EXTENDED_ENTITY_ALIASES: list[dict] = [
+    # --- Bullet aliases ---
+    {"entity_type": "bullet", "entity_name": "26331", "alias": "ELDM 140", "alias_type": "abbreviation"},
+    {"entity_type": "bullet", "entity_name": "26331", "alias": "140 ELD Match", "alias_type": "alternate_name"},
+    {"entity_type": "bullet", "entity_name": "26333", "alias": "ELDM 147", "alias_type": "abbreviation"},
+    {"entity_type": "bullet", "entity_name": "26333", "alias": "147 ELD Match", "alias_type": "alternate_name"},
+    {"entity_type": "bullet", "entity_name": "2275", "alias": "SMK 175", "alias_type": "abbreviation"},
+    {"entity_type": "bullet", "entity_name": "2275", "alias": "175 MatchKing", "alias_type": "alternate_name"},
+    {"entity_type": "bullet", "entity_name": "2275", "alias": "M118LR bullet", "alias_type": "nickname"},
+    {"entity_type": "bullet", "entity_name": "2200", "alias": "SMK 168", "alias_type": "abbreviation"},
+    {"entity_type": "bullet", "entity_name": "2200", "alias": "168 MatchKing", "alias_type": "alternate_name"},
+    {"entity_type": "bullet", "entity_name": "26414", "alias": "Hybrid 140", "alias_type": "abbreviation"},
+    # --- Cartridge aliases ---
+    {"entity_type": "cartridge", "entity_name": "81500", "alias": "81500", "alias_type": "sku"},
+    {"entity_type": "cartridge", "entity_name": "81500", "alias": "Hornady Match 6.5 CM", "alias_type": "abbreviation"},
+    {"entity_type": "cartridge", "entity_name": "GM308M2", "alias": "GM308M2", "alias_type": "sku"},
+    {"entity_type": "cartridge", "entity_name": "GM308M2", "alias": "GMM 308 175", "alias_type": "abbreviation"},
+    {"entity_type": "cartridge", "entity_name": "GM308M", "alias": "GM308M", "alias_type": "sku"},
+    {"entity_type": "cartridge", "entity_name": "GM308M", "alias": "GMM 308 168", "alias_type": "abbreviation"},
+    # --- Optic manufacturer aliases ---
+    {
+        "entity_type": "manufacturer",
+        "entity_name": "Vortex Optics",
+        "alias": "Vortex",
+        "alias_type": "abbreviation",
+    },
+    {
+        "entity_type": "manufacturer",
+        "entity_name": "Nightforce Optics",
+        "alias": "Nightforce",
+        "alias_type": "abbreviation",
+    },
+    {
+        "entity_type": "manufacturer",
+        "entity_name": "Nightforce Optics",
+        "alias": "NF",
+        "alias_type": "abbreviation",
+    },
+    {
+        "entity_type": "manufacturer",
+        "entity_name": "Leupold",
+        "alias": "Leupold & Stevens",
+        "alias_type": "alternate_name",
+    },
+    {
+        "entity_type": "manufacturer",
+        "entity_name": "Sig Sauer",
+        "alias": "Sig",
+        "alias_type": "abbreviation",
+    },
+    {
+        "entity_type": "manufacturer",
+        "entity_name": "Sig Sauer",
+        "alias": "SIG SAUER",
+        "alias_type": "alternate_name",
+    },
+    {
+        "entity_type": "manufacturer",
+        "entity_name": "Zero Compromise Optics",
+        "alias": "ZCO",
+        "alias_type": "abbreviation",
+    },
+    # --- Reticle aliases ---
+    {"entity_type": "reticle", "entity_name": "EBR-7C MRAD", "alias": "EBR-7C", "alias_type": "abbreviation"},
+    {"entity_type": "reticle", "entity_name": "EBR-7C MRAD", "alias": "7C MRAD", "alias_type": "abbreviation"},
+    {"entity_type": "reticle", "entity_name": "Mil-XT", "alias": "MIL-XT", "alias_type": "alternate_name"},
+    {"entity_type": "reticle", "entity_name": "Tremor3", "alias": "T3", "alias_type": "abbreviation"},
+    {"entity_type": "reticle", "entity_name": "Tremor3", "alias": "Horus Tremor3", "alias_type": "alternate_name"},
+    # --- Optic aliases ---
+    {"entity_type": "optic", "entity_name": "PST-5258", "alias": "Viper PST II 5-25 Mil", "alias_type": "abbreviation"},
+    {"entity_type": "optic", "entity_name": "PST-5259", "alias": "Viper PST II 5-25 MOA", "alias_type": "abbreviation"},
+    {"entity_type": "optic", "entity_name": "C555", "alias": "ATACR 5-25 Mil-XT", "alias_type": "abbreviation"},
+    {
+        "entity_type": "optic",
+        "entity_name": "ZC527-MPCT3",
+        "alias": "ZC527",
+        "alias_type": "abbreviation",
+    },
+]
+
+
+# ---------------------------------------------------------------------------
 # Seeding logic
 # ---------------------------------------------------------------------------
 
@@ -1140,13 +2530,46 @@ def _build_caliber_lookup(session: Session) -> dict[str, str]:
     return {c.name: c.id for c in session.query(Caliber).all()}
 
 
+def _build_manufacturer_lookup(session: Session) -> dict[str, str]:
+    """Return {manufacturer.name: manufacturer.id} for all manufacturers in the DB."""
+    return {m.name: m.id for m in session.query(Manufacturer).all()}
+
+
+def _build_chamber_lookup(session: Session) -> dict[str, str]:
+    """Return {chamber.name: chamber.id} for all chambers in the DB."""
+    return {c.name: c.id for c in session.query(Chamber).all()}
+
+
+def _build_bullet_sku_lookup(session: Session) -> dict[str, str]:
+    """Return {bullet.sku: bullet.id} for all bullets with a SKU."""
+    return {b.sku: b.id for b in session.query(Bullet).filter(Bullet.sku.isnot(None)).all()}
+
+
+def _build_reticle_lookup(session: Session) -> dict[str, str]:
+    """Return {reticle.name: reticle.id} for all reticles in the DB."""
+    return {r.name: r.id for r in session.query(Reticle).all()}
+
+
 def _build_entity_lookup(session: Session) -> dict[tuple[str, str], str]:
-    """Return {(entity_type, name): id} for manufacturers and calibers."""
+    """Return {(entity_type, name_or_sku): id} for all entity types.
+
+    For bullets, cartridges, optics: keyed by SKU (since names aren't unique).
+    For reticles: keyed by name.
+    For manufacturers, calibers: keyed by name.
+    """
     lookup: dict[tuple[str, str], str] = {}
     for m in session.query(Manufacturer).all():
         lookup[("manufacturer", m.name)] = m.id
     for c in session.query(Caliber).all():
         lookup[("caliber", c.name)] = c.id
+    for b in session.query(Bullet).filter(Bullet.sku.isnot(None)).all():
+        lookup[("bullet", b.sku)] = b.id
+    for c in session.query(Cartridge).filter(Cartridge.sku.isnot(None)).all():
+        lookup[("cartridge", c.sku)] = c.id
+    for r in session.query(Reticle).all():
+        lookup[("reticle", r.name)] = r.id
+    for o in session.query(Optic).filter(Optic.sku.isnot(None)).all():
+        lookup[("optic", o.sku)] = o.id
     return lookup
 
 
@@ -1209,10 +2632,93 @@ def seed_chambers(session: Session) -> None:
     print(f"  Seeded {auto_count} auto-generated + {manual_count} manually curated chambers")
 
 
+def seed_bullets(session: Session) -> None:
+    mfr_lookup = _build_manufacturer_lookup(session)
+    cal_lookup = _build_caliber_lookup(session)
+    count = 0
+    for data in BULLETS:
+        row = {k: v for k, v in data.items() if k not in ("manufacturer_name", "caliber_name")}
+        row["manufacturer_id"] = mfr_lookup[data["manufacturer_name"]]
+        row["caliber_id"] = cal_lookup[data["caliber_name"]]
+        session.add(Bullet(**row))
+        count += 1
+    session.flush()
+    print(f"  Seeded {count} bullets")
+
+
+def seed_bullet_bc_sources(session: Session) -> None:
+    bullet_lookup = _build_bullet_sku_lookup(session)
+    count = 0
+    for data in BULLET_BC_SOURCES:
+        row = {k: v for k, v in data.items() if k != "bullet_sku"}
+        row["bullet_id"] = bullet_lookup[data["bullet_sku"]]
+        session.add(BulletBCSource(**row))
+        count += 1
+    session.flush()
+    print(f"  Seeded {count} bullet BC sources")
+
+
+def seed_cartridges(session: Session) -> None:
+    mfr_lookup = _build_manufacturer_lookup(session)
+    cal_lookup = _build_caliber_lookup(session)
+    bullet_lookup = _build_bullet_sku_lookup(session)
+    count = 0
+    for data in CARTRIDGES:
+        row = {k: v for k, v in data.items() if k not in ("manufacturer_name", "caliber_name", "bullet_sku", "notes")}
+        row["manufacturer_id"] = mfr_lookup[data["manufacturer_name"]]
+        row["caliber_id"] = cal_lookup[data["caliber_name"]]
+        row["bullet_id"] = bullet_lookup[data["bullet_sku"]]
+        session.add(Cartridge(**row))
+        count += 1
+    session.flush()
+    print(f"  Seeded {count} cartridges")
+
+
+def seed_rifle_models(session: Session) -> None:
+    mfr_lookup = _build_manufacturer_lookup(session)
+    chamber_lookup = _build_chamber_lookup(session)
+    count = 0
+    for data in RIFLE_MODELS:
+        row = {k: v for k, v in data.items() if k not in ("manufacturer_name", "chamber_name")}
+        row["manufacturer_id"] = mfr_lookup[data["manufacturer_name"]]
+        row["chamber_id"] = chamber_lookup[data["chamber_name"]]
+        session.add(RifleModel(**row))
+        count += 1
+    session.flush()
+    print(f"  Seeded {count} rifle models")
+
+
+def seed_reticles(session: Session) -> None:
+    mfr_lookup = _build_manufacturer_lookup(session)
+    count = 0
+    for data in RETICLES:
+        row = {k: v for k, v in data.items() if k != "manufacturer_name"}
+        row["manufacturer_id"] = mfr_lookup[data["manufacturer_name"]]
+        session.add(Reticle(**row))
+        count += 1
+    session.flush()
+    print(f"  Seeded {count} reticles")
+
+
+def seed_optics(session: Session) -> None:
+    mfr_lookup = _build_manufacturer_lookup(session)
+    reticle_lookup = _build_reticle_lookup(session)
+    count = 0
+    for data in OPTICS:
+        row = {k: v for k, v in data.items() if k not in ("manufacturer_name", "reticle_name")}
+        row["manufacturer_id"] = mfr_lookup[data["manufacturer_name"]]
+        row["reticle_id"] = reticle_lookup[data["reticle_name"]]
+        session.add(Optic(**row))
+        count += 1
+    session.flush()
+    print(f"  Seeded {count} optics")
+
+
 def seed_entity_aliases(session: Session) -> None:
     entity_lookup = _build_entity_lookup(session)
+    all_aliases = ENTITY_ALIASES + EXTENDED_ENTITY_ALIASES
     count = 0
-    for data in ENTITY_ALIASES:
+    for data in all_aliases:
         key = (data["entity_type"], data["entity_name"])
         entity_id = entity_lookup.get(key)
         if not entity_id:
@@ -1235,6 +2741,12 @@ def seed_all(session: Session) -> None:
     seed_manufacturers(session)
     seed_calibers(session)
     seed_chambers(session)
+    seed_bullets(session)
+    seed_bullet_bc_sources(session)
+    seed_cartridges(session)
+    seed_rifle_models(session)
+    seed_reticles(session)
+    seed_optics(session)
     seed_entity_aliases(session)
     session.commit()
     print("Done.")
@@ -1243,7 +2755,14 @@ def seed_all(session: Session) -> None:
 def reset_seeded_tables(session: Session) -> None:
     """Delete all rows from seed-data tables (preserves schema)."""
     print("Resetting seed data tables...")
+    # Delete in FK-safe order: children before parents
     session.query(EntityAlias).delete()
+    session.query(Optic).delete()
+    session.query(Reticle).delete()
+    session.query(RifleModel).delete()
+    session.query(BulletBCSource).delete()
+    session.query(Cartridge).delete()
+    session.query(Bullet).delete()
     session.query(ChamberAcceptsCaliber).delete()
     session.query(Chamber).delete()
     session.query(Caliber).delete()
