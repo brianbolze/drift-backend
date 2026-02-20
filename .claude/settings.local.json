@@ -1,0 +1,31 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:releases.7.62x51mm.sh)",
+      "WebFetch(domain:docs.gehtsoftusa.com)",
+      "WebFetch(domain:forum.cartridgecollectors.org)",
+      "WebFetch(domain:ballistics101.com)",
+      "WebFetch(domain:www.shootersreference.com)",
+      "WebFetch(domain:appliedballisticsllc.com)",
+      "WebFetch(domain:kestrelinstruments.com)",
+      "WebFetch(domain:jbmballistics.com)",
+      "WebFetch(domain:www.strelokpro.online)",
+      "WebFetch(domain:ballisticapp.com)",
+      "WebFetch(domain:strelokpro.online)",
+      "WebFetch(domain:www.theballisticassistant.com)",
+      "WebFetch(domain:bobp.cip-bobp.org)",
+      "mcp__filesystem__list_directory_with_sizes",
+      "Bash(python3:*)",
+      "Bash(source:*)",
+      "Bash(pip install:*)",
+      "Bash(alembic init:*)",
+      "Bash(alembic revision:*)",
+      "Bash(alembic upgrade:*)",
+      "Bash(isort:*)",
+      "Bash(black:*)",
+      "Bash(flake8:*)",
+      "Bash(pytest:*)"
+    ]
+  }
+}
