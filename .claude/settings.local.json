@@ -33,7 +33,8 @@
       "Bash(.venv/bin/pytest:*)",
       "Bash(.venv/bin/black:*)",
       "Bash(.venv/bin/isort:*)",
-      "Bash(.venv/bin/flake8:*)"
+      "Bash(.venv/bin/flake8:*)",
+      "Bash(ls:*)"
     ]
   }
 }

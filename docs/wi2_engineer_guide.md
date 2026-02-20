@@ -40,4 +40,68 @@ The design proposal's "Next Steps" section is your task list. Here's the short v
 
 ---
 
+## Where We Are (as of 2026-02-20)
+
+**Steps 1 and 2 are done.**
+
+- SQLAlchemy models for all 8 entities (Manufacturer, Caliber, Chamber, ChamberAcceptsCaliber, Bullet, BulletBCSource, Cartridge, RifleModel, EntityAlias) are implemented under `src/rangefinder/models/`.
+- Initial Alembic migration exists.
+- `scripts/seed_data.py` seeds 32 manufacturers, 25 calibers, 26 chambers, 30 chamber-caliber links, and 83 entity aliases. Two rounds of domain expert review incorporated. Idempotent via `--reset`. 20 tests, lint clean.
+- The Bullet, BulletBCSource, Cartridge, and RifleModel tables exist in the schema but are empty. These are pipeline-populated, not hand-curated.
+
+**What's next: Step 3 — the pipeline.** Everything below is sequenced by "what unblocks the most with the least ceremony."
+
+### 3a. Prove you can scrape one product page end-to-end
+
+Pick a single, concrete target: **Hornady 140gr ELD Match in 6.5 Creedmoor** (bullet page + cartridge page). Build the thinnest possible vertical slice:
+
+1. **Fetch** a cached copy of the product page (Firecrawl or plain httpx — doesn't matter yet, the abstraction can come later).
+2. **Extract** structured fields into a Pydantic schema using an LLM call. The schema should match the Bullet and Cartridge models exactly — `weight_grains`, `bc_g7_published`, `caliber_id`, `sku`, etc.
+3. **Resolve** the extracted data against existing seed data. The caliber name from extraction needs to map to a Caliber row. The manufacturer name needs to map to a Manufacturer row. This is where the EntityAlias table earns its keep.
+4. **Store** the resolved Bullet and Cartridge rows in the database.
+
+The goal is a script you can run that takes a URL and produces a database row. No batching, no scheduling, no retry logic. Just: URL in, validated record out. This forces you to confront every hard problem (HTML structure, LLM prompt design, entity resolution, data validation) on a single example before building infrastructure around it.
+
+Deliverable: `scripts/ingest_one.py` (or similar) that you can run against a Hornady product URL and get a Bullet + Cartridge record in the DB.
+
+### 3b. Pydantic extraction schemas
+
+Define the Pydantic models that the LLM extraction step targets. These are separate from the SQLAlchemy models — they represent what the LLM returns, before entity resolution and normalization. They should enforce constraints the LLM is likely to violate (e.g., `bc_g7` must be between 0.05 and 1.0, `weight_grains` must be positive, caliber name must be a string not a number).
+
+These schemas live in `src/rangefinder/schemas/` (already stubbed). They'll be reused by both the single-page ingest script and the eventual batch pipeline.
+
+### 3c. Entity resolution layer
+
+The bridge between "the LLM said the manufacturer is 'Hornady Manufacturing'" and "that's Manufacturer row X in our database." This is where the alias table, alt_names, and fuzzy matching come together.
+
+Start simple: exact match on `name`, then exact match on `alt_names` JSON array, then exact match on `EntityAlias.alias`. That covers >90% of cases for the seed data we have. Fuzzy/trigram matching is a later refinement — don't build it until you have real extraction failures that need it.
+
+### 3d. Human review tooling (Step 4, but build it early)
+
+The design proposal says to build this before scaling ingestion. Agreed. After 3a proves the extraction works, build a minimal CLI review tool before ingesting more pages. It doesn't need to be fancy:
+
+- Show the extracted record (all fields, formatted).
+- Show the source URL (clickable in the terminal).
+- Show confidence scores and match methods.
+- Accept approve / edit / reject.
+- Write the decision back to the DB (a `review_status` field, or a separate review log).
+
+This is Step 4 in the original plan, but it's tightly coupled with Step 3 in practice. You'll want it as soon as you start ingesting real data.
+
+### 3e. Scale to Hornady's full 6.5 CM lineup
+
+Once 3a–3d work for one page, run the pipeline across all Hornady 6.5 Creedmoor bullets and cartridges. This is maybe 8–12 products. It will surface:
+
+- Pages with different HTML structures than your first example.
+- Extraction edge cases (missing fields, multiple BC values, bullet/cartridge disambiguation).
+- Entity resolution ambiguities that need the review tool.
+
+Fix what breaks. Then expand to a second manufacturer (Sierra or Berger — both are bullet-only, which simplifies things since there's no cartridge entity to resolve).
+
+### After that
+
+The path from "Hornady 6.5 CM works" to "200–300 factory loads across priority calibers" is iteration, not architecture. Expand by manufacturer, then by caliber. The hard problems are all in 3a–3c. Steps 5–7 (FTS5 search, abbreviation expansion, bundled SQLite export) are well-understood and can be built in parallel once the pipeline is producing data.
+
+---
+
 *Last updated: February 2026*

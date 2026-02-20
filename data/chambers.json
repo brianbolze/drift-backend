@@ -1,0 +1,236 @@
+[
+  {
+    "id": "077bc8c5-79de-4800-998c-f49b3915f925",
+    "name": ".300 PRC",
+    "alt_names": null,
+    "notes": null,
+    "source": null,
+    "created_at": "2026-02-20 16:38:43.065966",
+    "updated_at": "2026-02-20 16:38:43.065967"
+  },
+  {
+    "id": "0a19704a-47ae-4458-a094-7dee8df46bec",
+    "name": ".30-06 Springfield",
+    "alt_names": null,
+    "notes": null,
+    "source": null,
+    "created_at": "2026-02-20 16:38:43.067116",
+    "updated_at": "2026-02-20 16:38:43.067117"
+  },
+  {
+    "id": "16f735e4-0b65-434d-8cc2-9862560d3273",
+    "name": ".270 Winchester",
+    "alt_names": null,
+    "notes": null,
+    "source": null,
+    "created_at": "2026-02-20 16:38:43.066904",
+    "updated_at": "2026-02-20 16:38:43.066904"
+  },
+  {
+    "id": "252837df-85dc-4522-828a-fe4caef64984",
+    "name": "6.5-284 Norma",
+    "alt_names": null,
+    "notes": null,
+    "source": null,
+    "created_at": "2026-02-20 16:38:43.069191",
+    "updated_at": "2026-02-20 16:38:43.069191"
+  },
+  {
+    "id": "278d6850-7ded-486d-9df7-e7d14f57d8da",
+    "name": "6.5x55mm Swedish",
+    "alt_names": null,
+    "notes": null,
+    "source": null,
+    "created_at": "2026-02-20 16:38:43.067951",
+    "updated_at": "2026-02-20 16:38:43.067952"
+  },
+  {
+    "id": "3112a004-cb56-467f-9add-7c27fd8850e8",
+    "name": ".300 Winchester Short Magnum",
+    "alt_names": null,
+    "notes": null,
+    "source": null,
+    "created_at": "2026-02-20 16:38:43.068157",
+    "updated_at": "2026-02-20 16:38:43.068158"
+  },
+  {
+    "id": "516792a6-e18d-49eb-a868-a8c82320c11e",
+    "name": "7mm Remington Magnum",
+    "alt_names": null,
+    "notes": null,
+    "source": null,
+    "created_at": "2026-02-20 16:38:43.067325",
+    "updated_at": "2026-02-20 16:38:43.067325"
+  },
+  {
+    "id": "51a9b787-bb93-4c61-b9e2-5b8f0aab33fa",
+    "name": ".243 Winchester",
+    "alt_names": null,
+    "notes": null,
+    "source": null,
+    "created_at": "2026-02-20 16:38:43.067746",
+    "updated_at": "2026-02-20 16:38:43.067746"
+  },
+  {
+    "id": "56ecab24-00a0-453e-899d-47a618f48cf2",
+    "name": "7.62x51mm NATO",
+    "alt_names": "[\"7.62 NATO\"]",
+    "notes": "Military 7.62 chamber. Accepts both 7.62x51 and .308 Win in modern rifles.",
+    "source": "NATO STANAG",
+    "created_at": "2026-02-20 16:38:43.070667",
+    "updated_at": "2026-02-20 16:38:43.070667"
+  },
+  {
+    "id": "7029cd24-a8dd-4ae6-8ac2-cf76583f120d",
+    "name": ".300 AAC Blackout",
+    "alt_names": null,
+    "notes": null,
+    "source": null,
+    "created_at": "2026-02-20 16:38:43.068364",
+    "updated_at": "2026-02-20 16:38:43.068364"
+  },
+  {
+    "id": "791bed97-ca44-4bc7-95fa-7501dec09052",
+    "name": "6mm GT",
+    "alt_names": null,
+    "notes": null,
+    "source": null,
+    "created_at": "2026-02-20 16:38:43.064882",
+    "updated_at": "2026-02-20 16:38:43.064882"
+  },
+  {
+    "id": "7c7bfdae-cc9b-4b24-919e-fb8af0603d8c",
+    "name": "7mm PRC",
+    "alt_names": null,
+    "notes": null,
+    "source": null,
+    "created_at": "2026-02-20 16:38:43.066468",
+    "updated_at": "2026-02-20 16:38:43.066468"
+  },
+  {
+    "id": "85c58dfc-a16b-4934-8bee-aebe3f8cee7f",
+    "name": ".223 Wylde",
+    "alt_names": "null",
+    "notes": "Hybrid chamber designed to safely fire both .223 Rem and 5.56 NATO while maintaining .223 Rem accuracy. No corresponding cartridge exists — this is a chamber-only specification. The most popular AR-15 chamber for precision use.",
+    "source": "Industry standard (Bill Wylde design)",
+    "created_at": "2026-02-20 16:38:43.070085",
+    "updated_at": "2026-02-20 16:38:43.070085"
+  },
+  {
+    "id": "85fe9ec3-bd7c-4d65-9f73-939f9794fa95",
+    "name": "5.56 NATO",
+    "alt_names": "[\"5.56x45mm NATO\"]",
+    "notes": "Military 5.56 chamber with longer throat / leade. Safe to fire both 5.56 and .223 Rem.",
+    "source": "NATO STANAG",
+    "created_at": "2026-02-20 16:38:43.069826",
+    "updated_at": "2026-02-20 16:38:43.069827"
+  },
+  {
+    "id": "86b8acf1-1d90-4392-a8da-5b81113f53fc",
+    "name": "7mm-08 Remington",
+    "alt_names": null,
+    "notes": null,
+    "source": null,
+    "created_at": "2026-02-20 16:38:43.068771",
+    "updated_at": "2026-02-20 16:38:43.068772"
+  },
+  {
+    "id": "88598fb7-8351-4273-be05-3e8666488ef8",
+    "name": "6mm Dasher",
+    "alt_names": null,
+    "notes": null,
+    "source": null,
+    "created_at": "2026-02-20 16:38:43.064373",
+    "updated_at": "2026-02-20 16:38:43.064374"
+  },
+  {
+    "id": "91b88485-8eb2-4741-acce-3720ca1fd7ee",
+    "name": "6.5 Creedmoor",
+    "alt_names": null,
+    "notes": null,
+    "source": null,
+    "created_at": "2026-02-20 16:38:43.064037",
+    "updated_at": "2026-02-20 16:38:43.064039"
+  },
+  {
+    "id": "9ebb2a28-e70d-4b98-930e-b32a447d3dee",
+    "name": ".300 Winchester Magnum",
+    "alt_names": null,
+    "notes": null,
+    "source": null,
+    "created_at": "2026-02-20 16:38:43.065644",
+    "updated_at": "2026-02-20 16:38:43.065646"
+  },
+  {
+    "id": "a8fe310e-80aa-4114-9e18-414ffa41dfe0",
+    "name": "6mm Creedmoor",
+    "alt_names": null,
+    "notes": null,
+    "source": null,
+    "created_at": "2026-02-20 16:38:43.065219",
+    "updated_at": "2026-02-20 16:38:43.065220"
+  },
+  {
+    "id": "b6fa506e-9bcf-4c73-8772-d435b6add4b5",
+    "name": ".223 Remington",
+    "alt_names": "null",
+    "notes": "Commercial .223 chamber. Accepts .223 Rem ONLY — do not fire 5.56 NATO.",
+    "source": "SAAMI spec",
+    "created_at": "2026-02-20 16:38:43.069524",
+    "updated_at": "2026-02-20 16:38:43.069524"
+  },
+  {
+    "id": "c6a9a85d-53c3-4ba8-b368-e48c33efc47e",
+    "name": ".260 Remington",
+    "alt_names": null,
+    "notes": null,
+    "source": null,
+    "created_at": "2026-02-20 16:38:43.067538",
+    "updated_at": "2026-02-20 16:38:43.067538"
+  },
+  {
+    "id": "c76ac9ed-a5d1-400e-b599-57f4c85ff165",
+    "name": "6mm ARC",
+    "alt_names": null,
+    "notes": null,
+    "source": null,
+    "created_at": "2026-02-20 16:38:43.068978",
+    "updated_at": "2026-02-20 16:38:43.068979"
+  },
+  {
+    "id": "dc60efc4-c8ab-4ed4-bd4a-f4c767043e69",
+    "name": "6.5 PRC",
+    "alt_names": null,
+    "notes": null,
+    "source": null,
+    "created_at": "2026-02-20 16:38:43.066227",
+    "updated_at": "2026-02-20 16:38:43.066228"
+  },
+  {
+    "id": "f1ff30c8-cd4a-4563-9422-0736f0ba6a15",
+    "name": ".338 Lapua Magnum",
+    "alt_names": null,
+    "notes": null,
+    "source": null,
+    "created_at": "2026-02-20 16:38:43.066690",
+    "updated_at": "2026-02-20 16:38:43.066690"
+  },
+  {
+    "id": "f50fe25a-e184-4acc-992d-f75ea36b6253",
+    "name": ".308 Winchester",
+    "alt_names": "null",
+    "notes": "Commercial .308 Win chamber. Universally considered safe to fire 7.62x51 NATO (lower pressure) in modern rifles. Every major firearms reference treats these as interchangeable.",
+    "source": "SAAMI spec",
+    "created_at": "2026-02-20 16:38:43.070419",
+    "updated_at": "2026-02-20 16:38:43.070419"
+  },
+  {
+    "id": "ffe3cf49-22b1-4645-a607-e3ec2d405a52",
+    "name": ".338 Winchester Magnum",
+    "alt_names": null,
+    "notes": null,
+    "source": null,
+    "created_at": "2026-02-20 16:38:43.068567",
+    "updated_at": "2026-02-20 16:38:43.068568"
+  }
+]
