@@ -1,7 +1,7 @@
 """initial schema
 
 Revision ID: 9fb22e6478ee
-Revises: 
+Revises:
 Create Date: 2026-02-20 10:39:52.227728
 
 """
@@ -106,17 +106,11 @@ def upgrade() -> None:
             nullable=False,
         ),
         sa.PrimaryKeyConstraint("id"),
-        sa.UniqueConstraint(
-            "entity_type", "entity_id", "alias", name="uq_entity_alias"
-        ),
+        sa.UniqueConstraint("entity_type", "entity_id", "alias", name="uq_entity_alias"),
     )
     with op.batch_alter_table("entity_alias", schema=None) as batch_op:
-        batch_op.create_index(
-            batch_op.f("ix_entity_alias_entity_id"), ["entity_id"], unique=False
-        )
-        batch_op.create_index(
-            batch_op.f("ix_entity_alias_entity_type"), ["entity_type"], unique=False
-        )
+        batch_op.create_index(batch_op.f("ix_entity_alias_entity_id"), ["entity_id"], unique=False)
+        batch_op.create_index(batch_op.f("ix_entity_alias_entity_type"), ["entity_type"], unique=False)
 
     op.create_table(
         "manufacturer",
@@ -250,9 +244,7 @@ def upgrade() -> None:
         sa.PrimaryKeyConstraint("id"),
     )
     with op.batch_alter_table("rifle_model", schema=None) as batch_op:
-        batch_op.create_index(
-            batch_op.f("ix_rifle_model_model"), ["model"], unique=False
-        )
+        batch_op.create_index(batch_op.f("ix_rifle_model_model"), ["model"], unique=False)
 
     op.create_table(
         "bullet_bc_source",

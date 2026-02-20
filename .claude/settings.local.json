@@ -27,7 +27,13 @@
       "Bash(flake8:*)",
       "Bash(pytest:*)",
       "Bash(make test:*)",
-      "Bash(make lint:*)"
+      "Bash(make lint:*)",
+      "Bash(/Users/brianbolze/Development/software/shooting/.venv/bin/pip list:*)",
+      "Bash(.venv/bin/python:*)",
+      "Bash(.venv/bin/pytest:*)",
+      "Bash(.venv/bin/black:*)",
+      "Bash(.venv/bin/isort:*)",
+      "Bash(.venv/bin/flake8:*)"
     ]
   }
 }
