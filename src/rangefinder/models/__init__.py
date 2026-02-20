@@ -5,6 +5,7 @@ from rangefinder.models.cartridge import Cartridge
 from rangefinder.models.chamber import Chamber, ChamberAcceptsCaliber
 from rangefinder.models.entity_alias import EntityAlias
 from rangefinder.models.manufacturer import Manufacturer
+from rangefinder.models.optic import Optic, Reticle
 from rangefinder.models.rifle_model import RifleModel
 
 __all__ = [
@@ -17,5 +18,7 @@ __all__ = [
     "BulletBCSource",
     "Cartridge",
     "RifleModel",
+    "Reticle",
+    "Optic",
     "EntityAlias",
 ]

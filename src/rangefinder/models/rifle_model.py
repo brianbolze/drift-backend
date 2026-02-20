@@ -26,6 +26,7 @@ class RifleModel(TimestampMixin, Base):
     description: Mapped[str | None] = mapped_column(Text, nullable=True)
     barrel_material: Mapped[str | None] = mapped_column(String(100), nullable=True)
     barrel_finish: Mapped[str | None] = mapped_column(String(100), nullable=True)
+    model_family: Mapped[str | None] = mapped_column(String(255), nullable=True)
     source_url: Mapped[str | None] = mapped_column(String(500), nullable=True)
 
     # Relationships

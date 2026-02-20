@@ -9,6 +9,7 @@ from rangefinder.models.base import Base, TimestampMixin, uuid_pk
 
 if TYPE_CHECKING:
     from rangefinder.models import Bullet, Cartridge, RifleModel
+    from rangefinder.models.optic import Optic, Reticle
 
 
 class Manufacturer(TimestampMixin, Base):
@@ -27,3 +28,5 @@ class Manufacturer(TimestampMixin, Base):
     bullets: Mapped[list["Bullet"]] = relationship(back_populates="manufacturer")  # noqa: F821
     cartridges: Mapped[list["Cartridge"]] = relationship(back_populates="manufacturer")  # noqa: F821
     rifle_models: Mapped[list["RifleModel"]] = relationship(back_populates="manufacturer")  # noqa: F821
+    optics: Mapped[list["Optic"]] = relationship(back_populates="manufacturer")  # noqa: F821
+    reticles: Mapped[list["Reticle"]] = relationship(back_populates="manufacturer")  # noqa: F821

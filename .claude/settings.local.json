@@ -34,7 +34,9 @@
       "Bash(.venv/bin/black:*)",
       "Bash(.venv/bin/isort:*)",
       "Bash(.venv/bin/flake8:*)",
-      "Bash(ls:*)"
+      "Bash(ls:*)",
+      "Bash(.venv/bin/alembic revision:*)",
+      "Bash(.venv/bin/alembic upgrade head:*)"
     ]
   }
 }
