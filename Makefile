@@ -1,4 +1,4 @@
-.PHONY: install test lint format migrate new-migration
+.PHONY: install test lint format migrate new-migration seed reset-seed
 
 VENV := .venv/bin
 
@@ -25,3 +25,9 @@ migrate:
 new-migration:
 	@read -p "Migration message: " msg; \
 	$(VENV)/alembic revision --autogenerate -m "$$msg"
+
+seed:
+	$(VENV)/python scripts/seed_db.py
+
+reset-seed:
+	$(VENV)/python scripts/seed_db.py --reset
