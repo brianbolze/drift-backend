@@ -23,7 +23,7 @@ def _seed(db):
         name="6.5 Creedmoor",
         alt_names=["6.5 CM", "6.5 Creed"],
         bullet_diameter_inches=0.264,
-        popularity_rank=1,
+        lr_popularity_rank=1,
         is_common_lr=True,
     )
     db.add(cal)

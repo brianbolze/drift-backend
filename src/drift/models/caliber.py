@@ -24,7 +24,8 @@ class Caliber(TimestampMixin, Base):
     source_url: Mapped[str | None] = mapped_column(String(500), nullable=True)
 
     # Addendum fields
-    popularity_rank: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    overall_popularity_rank: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    lr_popularity_rank: Mapped[int | None] = mapped_column(Integer, nullable=True)
     coal_inches: Mapped[float | None] = mapped_column(Float, nullable=True)
     max_pressure_psi: Mapped[int | None] = mapped_column(Integer, nullable=True)
     rim_type: Mapped[str | None] = mapped_column(String(50), nullable=True)

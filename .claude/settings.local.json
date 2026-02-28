@@ -50,7 +50,10 @@
       "Bash(alembic current)",
       "Bash(awk 'NR>=50 && NR<=100')",
       "Bash(python -m alembic revision --autogenerate -m \"Add platform and caliber_platform tables\")",
-      "Bash(python -m alembic upgrade head)"
+      "Bash(python -m alembic upgrade head)",
+      "Bash(python scripts/import_calibers.py)",
+      "Bash(python scripts/import_calibers.py --apply)",
+      "Bash(python -m pytest tests/ -v)"
     ]
   }
 }

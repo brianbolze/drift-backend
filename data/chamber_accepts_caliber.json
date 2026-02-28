@@ -1,0 +1,462 @@
+[
+  {
+    "chamber_name": ".22 Long Rifle",
+    "caliber_name": ".22 Long Rifle",
+    "is_primary": true
+  },
+  {
+    "chamber_name": ".22 WMR",
+    "caliber_name": ".22 WMR",
+    "is_primary": true
+  },
+  {
+    "chamber_name": ".17 HMR",
+    "caliber_name": ".17 HMR",
+    "is_primary": true
+  },
+  {
+    "chamber_name": ".17 WSM",
+    "caliber_name": ".17 WSM",
+    "is_primary": true
+  },
+  {
+    "chamber_name": ".204 Ruger",
+    "caliber_name": ".204 Ruger",
+    "is_primary": true
+  },
+  {
+    "chamber_name": ".220 Swift",
+    "caliber_name": ".220 Swift",
+    "is_primary": true
+  },
+  {
+    "chamber_name": ".22-250 Remington",
+    "caliber_name": ".22-250 Remington",
+    "is_primary": true
+  },
+  {
+    "chamber_name": ".224 Valkyrie",
+    "caliber_name": ".224 Valkyrie",
+    "is_primary": true
+  },
+  {
+    "chamber_name": ".25 Creedmoor",
+    "caliber_name": ".25 Creedmoor",
+    "is_primary": true
+  },
+  {
+    "chamber_name": ".257 Roberts",
+    "caliber_name": ".257 Roberts",
+    "is_primary": true
+  },
+  {
+    "chamber_name": ".257 Weatherby Magnum",
+    "caliber_name": ".257 Weatherby Magnum",
+    "is_primary": true
+  },
+  {
+    "chamber_name": ".25-06 Remington",
+    "caliber_name": ".25-06 Remington",
+    "is_primary": true
+  },
+  {
+    "chamber_name": "6mm BR Remington",
+    "caliber_name": "6mm BR Remington",
+    "is_primary": true
+  },
+  {
+    "chamber_name": "6mm BRA",
+    "caliber_name": "6mm BRA",
+    "is_primary": true
+  },
+  {
+    "chamber_name": "6mm XC",
+    "caliber_name": "6mm XC",
+    "is_primary": true
+  },
+  {
+    "chamber_name": "6mm Remington",
+    "caliber_name": "6mm Remington",
+    "is_primary": true
+  },
+  {
+    "chamber_name": "6x45mm",
+    "caliber_name": "6x45mm",
+    "is_primary": true
+  },
+  {
+    "chamber_name": ".264 Winchester Magnum",
+    "caliber_name": ".264 Winchester Magnum",
+    "is_primary": true
+  },
+  {
+    "chamber_name": "6.5 Grendel",
+    "caliber_name": "6.5 Grendel",
+    "is_primary": true
+  },
+  {
+    "chamber_name": "6.5 Weatherby RPM",
+    "caliber_name": "6.5 Weatherby RPM",
+    "is_primary": true
+  },
+  {
+    "chamber_name": ".26 Nosler",
+    "caliber_name": ".26 Nosler",
+    "is_primary": true
+  },
+  {
+    "chamber_name": "6.8 SPC",
+    "caliber_name": "6.8 SPC",
+    "is_primary": true
+  },
+  {
+    "chamber_name": "6.8 Western",
+    "caliber_name": "6.8 Western",
+    "is_primary": true
+  },
+  {
+    "chamber_name": ".270 WSM",
+    "caliber_name": ".270 WSM",
+    "is_primary": true
+  },
+  {
+    "chamber_name": ".270 Weatherby Magnum",
+    "caliber_name": ".270 Weatherby Magnum",
+    "is_primary": true
+  },
+  {
+    "chamber_name": ".277 Fury",
+    "caliber_name": ".277 Fury",
+    "is_primary": true
+  },
+  {
+    "chamber_name": "7x57mm Mauser",
+    "caliber_name": "7x57mm Mauser",
+    "is_primary": true
+  },
+  {
+    "chamber_name": ".280 Remington",
+    "caliber_name": ".280 Remington",
+    "is_primary": true
+  },
+  {
+    "chamber_name": ".280 Ackley Improved",
+    "caliber_name": ".280 Ackley Improved",
+    "is_primary": true
+  },
+  {
+    "chamber_name": ".284 Winchester",
+    "caliber_name": ".284 Winchester",
+    "is_primary": true
+  },
+  {
+    "chamber_name": ".28 Nosler",
+    "caliber_name": ".28 Nosler",
+    "is_primary": true
+  },
+  {
+    "chamber_name": "7mm WSM",
+    "caliber_name": "7mm WSM",
+    "is_primary": true
+  },
+  {
+    "chamber_name": "7mm Backcountry",
+    "caliber_name": "7mm Backcountry",
+    "is_primary": true
+  },
+  {
+    "chamber_name": "7mm SAUM",
+    "caliber_name": "7mm SAUM",
+    "is_primary": true
+  },
+  {
+    "chamber_name": ".30-30 Winchester",
+    "caliber_name": ".30-30 Winchester",
+    "is_primary": true
+  },
+  {
+    "chamber_name": ".300 Savage",
+    "caliber_name": ".300 Savage",
+    "is_primary": true
+  },
+  {
+    "chamber_name": ".300 HAM'R",
+    "caliber_name": ".300 HAM'R",
+    "is_primary": true
+  },
+  {
+    "chamber_name": ".300 RUM",
+    "caliber_name": ".300 RUM",
+    "is_primary": true
+  },
+  {
+    "chamber_name": ".300 Norma Magnum",
+    "caliber_name": ".300 Norma Magnum",
+    "is_primary": true
+  },
+  {
+    "chamber_name": ".30 Nosler",
+    "caliber_name": ".30 Nosler",
+    "is_primary": true
+  },
+  {
+    "chamber_name": ".308 Marlin Express",
+    "caliber_name": ".308 Marlin Express",
+    "is_primary": true
+  },
+  {
+    "chamber_name": ".300 Weatherby Magnum",
+    "caliber_name": ".300 Weatherby Magnum",
+    "is_primary": true
+  },
+  {
+    "chamber_name": ".338 Federal",
+    "caliber_name": ".338 Federal",
+    "is_primary": true
+  },
+  {
+    "chamber_name": ".338 Norma Magnum",
+    "caliber_name": ".338 Norma Magnum",
+    "is_primary": true
+  },
+  {
+    "chamber_name": ".338 RUM",
+    "caliber_name": ".338 RUM",
+    "is_primary": true
+  },
+  {
+    "chamber_name": ".340 Weatherby Magnum",
+    "caliber_name": ".340 Weatherby Magnum",
+    "is_primary": true
+  },
+  {
+    "chamber_name": ".338-378 Weatherby Magnum",
+    "caliber_name": ".338-378 Weatherby Magnum",
+    "is_primary": true
+  },
+  {
+    "chamber_name": ".350 Legend",
+    "caliber_name": ".350 Legend",
+    "is_primary": true
+  },
+  {
+    "chamber_name": ".35 Whelen",
+    "caliber_name": ".35 Whelen",
+    "is_primary": true
+  },
+  {
+    "chamber_name": ".375 H&H Magnum",
+    "caliber_name": ".375 H&H Magnum",
+    "is_primary": true
+  },
+  {
+    "chamber_name": ".375 Ruger",
+    "caliber_name": ".375 Ruger",
+    "is_primary": true
+  },
+  {
+    "chamber_name": ".375 CheyTac",
+    "caliber_name": ".375 CheyTac",
+    "is_primary": true
+  },
+  {
+    "chamber_name": ".408 CheyTac",
+    "caliber_name": ".408 CheyTac",
+    "is_primary": true
+  },
+  {
+    "chamber_name": ".416 Rigby",
+    "caliber_name": ".416 Rigby",
+    "is_primary": true
+  },
+  {
+    "chamber_name": ".416 Remington Magnum",
+    "caliber_name": ".416 Remington Magnum",
+    "is_primary": true
+  },
+  {
+    "chamber_name": ".416 Barrett",
+    "caliber_name": ".416 Barrett",
+    "is_primary": true
+  },
+  {
+    "chamber_name": ".45-70 Government",
+    "caliber_name": ".45-70 Government",
+    "is_primary": true
+  },
+  {
+    "chamber_name": ".450 Bushmaster",
+    "caliber_name": ".450 Bushmaster",
+    "is_primary": true
+  },
+  {
+    "chamber_name": ".458 SOCOM",
+    "caliber_name": ".458 SOCOM",
+    "is_primary": true
+  },
+  {
+    "chamber_name": ".458 Winchester Magnum",
+    "caliber_name": ".458 Winchester Magnum",
+    "is_primary": true
+  },
+  {
+    "chamber_name": ".458 Lott",
+    "caliber_name": ".458 Lott",
+    "is_primary": true
+  },
+  {
+    "chamber_name": ".50 BMG",
+    "caliber_name": ".50 BMG",
+    "is_primary": true
+  },
+  {
+    "chamber_name": ".50 Beowulf",
+    "caliber_name": ".50 Beowulf",
+    "is_primary": true
+  },
+  {
+    "chamber_name": "7.62x39mm",
+    "caliber_name": "7.62x39mm",
+    "is_primary": true
+  },
+  {
+    "chamber_name": "5.45x39mm",
+    "caliber_name": "5.45x39mm",
+    "is_primary": true
+  },
+  {
+    "chamber_name": "7.62x54mmR",
+    "caliber_name": "7.62x54mmR",
+    "is_primary": true
+  },
+  {
+    "chamber_name": "8x57mm Mauser",
+    "caliber_name": "8x57mm Mauser",
+    "is_primary": true
+  },
+  {
+    "chamber_name": "9.3x62mm Mauser",
+    "caliber_name": "9.3x62mm Mauser",
+    "is_primary": true
+  },
+  {
+    "chamber_name": "9.3x74mmR",
+    "caliber_name": "9.3x74mmR",
+    "is_primary": true
+  },
+  {
+    "chamber_name": ".25 Weatherby RPM",
+    "caliber_name": ".25 Weatherby RPM",
+    "is_primary": true
+  },
+  {
+    "chamber_name": ".22 Nosler",
+    "caliber_name": ".22 Nosler",
+    "is_primary": true
+  },
+  {
+    "chamber_name": ".300 RSAUM",
+    "caliber_name": ".300 RSAUM",
+    "is_primary": true
+  },
+  {
+    "chamber_name": "6.5 SAUM",
+    "caliber_name": "6.5 SAUM",
+    "is_primary": true
+  },
+  {
+    "chamber_name": ".22 Creedmoor",
+    "caliber_name": ".22 Creedmoor",
+    "is_primary": true
+  },
+  {
+    "chamber_name": ".300 Ruger Compact Magnum",
+    "caliber_name": ".300 Ruger Compact Magnum",
+    "is_primary": true
+  },
+  {
+    "chamber_name": ".325 WSM",
+    "caliber_name": ".325 WSM",
+    "is_primary": true
+  },
+  {
+    "chamber_name": ".240 Weatherby Magnum",
+    "caliber_name": ".240 Weatherby Magnum",
+    "is_primary": true
+  },
+  {
+    "chamber_name": ".17 Hornet",
+    "caliber_name": ".17 Hornet",
+    "is_primary": true
+  },
+  {
+    "chamber_name": ".22 Hornet",
+    "caliber_name": ".22 Hornet",
+    "is_primary": true
+  },
+  {
+    "chamber_name": ".222 Remington",
+    "caliber_name": ".222 Remington",
+    "is_primary": true
+  },
+  {
+    "chamber_name": ".222 Remington Magnum",
+    "caliber_name": ".222 Remington Magnum",
+    "is_primary": true
+  },
+  {
+    "chamber_name": ".223 WSSM",
+    "caliber_name": ".223 WSSM",
+    "is_primary": true
+  },
+  {
+    "chamber_name": ".243 WSSM",
+    "caliber_name": ".243 WSSM",
+    "is_primary": true
+  },
+  {
+    "chamber_name": "7.62x40mm WT",
+    "caliber_name": "7.62x40mm WT",
+    "is_primary": true
+  },
+  {
+    "chamber_name": ".260 Ackley Improved",
+    "caliber_name": ".260 Ackley Improved",
+    "is_primary": true
+  },
+  {
+    "chamber_name": "6mm-284",
+    "caliber_name": "6mm-284",
+    "is_primary": true
+  },
+  {
+    "chamber_name": ".30 Remington AR",
+    "caliber_name": ".30 Remington AR",
+    "is_primary": true
+  },
+  {
+    "chamber_name": ".375 EnABELR",
+    "caliber_name": ".375 EnABELR",
+    "is_primary": true
+  },
+  {
+    "chamber_name": ".338 EnABELR",
+    "caliber_name": ".338 EnABELR",
+    "is_primary": true
+  },
+  {
+    "chamber_name": ".458 Lott",
+    "caliber_name": ".458 Winchester Magnum",
+    "is_primary": false
+  },
+  {
+    "chamber_name": ".280 Ackley Improved",
+    "caliber_name": ".280 Remington",
+    "is_primary": false
+  },
+  {
+    "chamber_name": ".260 Ackley Improved",
+    "caliber_name": ".260 Remington",
+    "is_primary": false
+  }
+]

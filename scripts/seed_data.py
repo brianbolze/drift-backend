@@ -404,7 +404,7 @@ CALIBERS = [
         "action_length": "short",
         "year_introduced": 2007,
         "is_common_lr": True,
-        "popularity_rank": 1,
+        "lr_popularity_rank": 1,
         "description": (
             "The dominant precision rifle cartridge. Excellent ballistics in a short-action package with mild recoil."
         ),
@@ -421,7 +421,7 @@ CALIBERS = [
         "action_length": "short",
         "year_introduced": 1952,
         "is_common_lr": True,
-        "popularity_rank": 2,
+        "lr_popularity_rank": 2,
         "description": "The benchmark short-action cartridge. Universal availability, wide bullet selection.",
     },
     # --- Rank 3: 6mm Dasher (NEW — ~46% of top PRS shooters) ---
@@ -435,7 +435,7 @@ CALIBERS = [
         "action_length": "short",
         "year_introduced": 2000,
         "is_common_lr": True,
-        "popularity_rank": 3,
+        "lr_popularity_rank": 3,
         "description": "The dominant PRS competition cartridge (~46% of top shooters). Semi-wildcat turned mainstream.",
         "notes": (
             "No official SAAMI spec. Pressure ~58,000 PSI estimated from community load data. "
@@ -453,7 +453,7 @@ CALIBERS = [
         "action_length": "short",
         "year_introduced": 2019,
         "is_common_lr": True,
-        "popularity_rank": 4,
+        "lr_popularity_rank": 4,
         "description": (
             "PRS competition cartridge designed by George Gardner (GA Precision) and Tom Jacobs. "
             "Small primer, 35-degree shoulder. Optimized for gas and bolt gun competition."
@@ -472,7 +472,7 @@ CALIBERS = [
         "action_length": "short",
         "year_introduced": 2017,
         "is_common_lr": True,
-        "popularity_rank": 5,
+        "lr_popularity_rank": 5,
         "description": "6.5 CM necked down to 6mm. Popular in PRS competition for lower recoil.",
     },
     # --- Rank 6: .223 Remington ---
@@ -487,7 +487,7 @@ CALIBERS = [
         "action_length": "mini",
         "year_introduced": 1964,
         "is_common_lr": False,
-        "popularity_rank": 6,
+        "lr_popularity_rank": 6,
         "description": "The commercial counterpart to 5.56 NATO. Lower pressure spec than 5.56.",
     },
     # --- Rank 7: 5.56x45mm NATO ---
@@ -501,7 +501,7 @@ CALIBERS = [
         "rim_type": "rimless",
         "action_length": "mini",
         "is_common_lr": False,
-        "popularity_rank": 7,
+        "lr_popularity_rank": 7,
         "description": "Military specification. Higher pressure and longer throat than .223 Rem.",
         "notes": (
             "MAP measured via NATO EPVAT (conformal transducer, case mouth) — not directly comparable "
@@ -520,7 +520,7 @@ CALIBERS = [
         "action_length": "long",
         "year_introduced": 1963,
         "is_common_lr": True,
-        "popularity_rank": 8,
+        "lr_popularity_rank": 8,
         "description": "Classic long-range magnum. Widely used in military sniper and competitive ELR.",
     },
     # --- Rank 9: .300 PRC ---
@@ -535,7 +535,7 @@ CALIBERS = [
         "action_length": "magnum",
         "year_introduced": 2018,
         "is_common_lr": True,
-        "popularity_rank": 9,
+        "lr_popularity_rank": 9,
         "description": "Modern magnum designed around long, high-BC .30-cal bullets. USSOCOM adoption. Hornady design.",
     },
     # --- Rank 10: 6.5 PRC ---
@@ -550,7 +550,7 @@ CALIBERS = [
         "action_length": "short",
         "year_introduced": 2018,
         "is_common_lr": True,
-        "popularity_rank": 10,
+        "lr_popularity_rank": 10,
         "description": (
             "Short-magnum performance for 6.5mm bullets. ~200 fps faster than 6.5 CM. Popular for NRL Hunter."
         ),
@@ -567,7 +567,7 @@ CALIBERS = [
         "action_length": "short",
         "year_introduced": 2022,
         "is_common_lr": True,
-        "popularity_rank": 11,
+        "lr_popularity_rank": 11,
         "description": "Modern short-action 7mm designed for long, high-BC bullets. Hornady design. Growing fast.",
     },
     # --- Rank 12: .338 Lapua Magnum ---
@@ -582,7 +582,7 @@ CALIBERS = [
         "action_length": "magnum",
         "year_introduced": 1989,
         "is_common_lr": True,
-        "popularity_rank": 12,
+        "lr_popularity_rank": 12,
         "description": "The ELR standard. Military and competition use at 1500+ yards.",
         "notes": "MAP of 60,916 PSI is CIP conversion from 4,200 bar (4200 x 14.5038).",
     },
@@ -598,7 +598,7 @@ CALIBERS = [
         "action_length": "long",
         "year_introduced": 1925,
         "is_common_lr": False,
-        "popularity_rank": 13,
+        "lr_popularity_rank": 13,
         "description": "Classic hunting cartridge. One of the most popular deer cartridges in North America.",
     },
     # --- Rank 14: .30-06 Springfield ---
@@ -613,7 +613,7 @@ CALIBERS = [
         "action_length": "long",
         "year_introduced": 1906,
         "is_common_lr": False,
-        "popularity_rank": 14,
+        "lr_popularity_rank": 14,
         "description": "The original American long-action cartridge. Parent case for many modern cartridges.",
     },
     # --- Rank 15: 7mm Remington Magnum ---
@@ -628,7 +628,7 @@ CALIBERS = [
         "action_length": "long",
         "year_introduced": 1962,
         "is_common_lr": True,
-        "popularity_rank": 15,
+        "lr_popularity_rank": 15,
         "description": "Classic long-range hunting magnum. Being displaced by 7mm PRC.",
     },
     # --- Rank 16: .260 Remington ---
@@ -643,7 +643,7 @@ CALIBERS = [
         "action_length": "short",
         "year_introduced": 1997,
         "is_common_lr": False,
-        "popularity_rank": 16,
+        "lr_popularity_rank": 16,
         "description": "The 6.5mm short-action predecessor to 6.5 Creedmoor. Largely displaced by 6.5 CM.",
     },
     # --- Rank 17: 7.62x51mm NATO ---
@@ -657,7 +657,7 @@ CALIBERS = [
         "rim_type": "rimless",
         "action_length": "short",
         "is_common_lr": False,
-        "popularity_rank": 17,
+        "lr_popularity_rank": 17,
         "description": "Military counterpart to .308 Win. Thicker brass, slightly lower pressure.",
         "notes": "Practically interchangeable with .308 Win in modern rifles, but technically distinct.",
     },
@@ -673,7 +673,7 @@ CALIBERS = [
         "action_length": "short",
         "year_introduced": 1955,
         "is_common_lr": False,
-        "popularity_rank": 18,
+        "lr_popularity_rank": 18,
         "description": "Versatile short-action cartridge. Popular for deer and varmint.",
     },
     # --- Rank 19: .300 Winchester Short Magnum ---
@@ -688,7 +688,7 @@ CALIBERS = [
         "action_length": "short",
         "year_introduced": 2001,
         "is_common_lr": True,
-        "popularity_rank": 19,
+        "lr_popularity_rank": 19,
         "description": "Near-.300 Win Mag performance in a short-action package.",
     },
     # --- Rank 20: 7mm-08 Remington ---
@@ -703,7 +703,7 @@ CALIBERS = [
         "action_length": "short",
         "year_introduced": 1980,
         "is_common_lr": False,
-        "popularity_rank": 20,
+        "lr_popularity_rank": 20,
         "description": "Mild-recoiling short-action 7mm. Good hunting cartridge for recoil-sensitive shooters.",
     },
     # --- Rank 21: 6.5x55mm Swedish ---
@@ -718,7 +718,7 @@ CALIBERS = [
         "action_length": "long",
         "year_introduced": 1894,
         "is_common_lr": False,
-        "popularity_rank": 21,
+        "lr_popularity_rank": 21,
         "description": "Venerable Scandinavian cartridge. Low SAAMI pressure due to older rifles in service.",
     },
     # --- Rank 22: .300 AAC Blackout ---
@@ -733,7 +733,7 @@ CALIBERS = [
         "action_length": "mini",
         "year_introduced": 2011,
         "is_common_lr": False,
-        "popularity_rank": 22,
+        "lr_popularity_rank": 22,
         "description": "Designed for suppressed AR-15s. Subsonic and supersonic loads. Zero LR relevance.",
     },
     # --- Rank 23: .338 Winchester Magnum ---
@@ -748,7 +748,7 @@ CALIBERS = [
         "action_length": "long",
         "year_introduced": 1958,
         "is_common_lr": False,
-        "popularity_rank": 23,
+        "lr_popularity_rank": 23,
         "description": "Versatile medium-bore magnum. Popular for large game. Being displaced by .338 Lapua.",
     },
     # --- Rank 24: 6mm ARC (NEW — AR-15 precision) ---
@@ -763,7 +763,7 @@ CALIBERS = [
         "action_length": "mini",
         "year_introduced": 2020,
         "is_common_lr": True,
-        "popularity_rank": 24,
+        "lr_popularity_rank": 24,
         "description": "Hornady's AR-15 precision cartridge. Growing in NRL22/mid-range competition.",
     },
     # --- Rank 25: 6.5-284 Norma ---
@@ -778,7 +778,7 @@ CALIBERS = [
         "action_length": "long",
         "year_introduced": 1999,
         "is_common_lr": True,
-        "popularity_rank": 25,
+        "lr_popularity_rank": 25,
         "description": (
             "Legacy precision cartridge still used in F-Class competition. Known for barrel-burning velocities."
         ),

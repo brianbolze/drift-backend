@@ -164,20 +164,20 @@ def test_auto_chambers_have_one_primary_link(seeded_db):
 # ---------------------------------------------------------------------------
 
 
-def test_caliber_popularity_ranks_unique(seeded_db):
-    """All popularity ranks should be unique (no ties)."""
-    ranks = [c.popularity_rank for c in seeded_db.query(Caliber).filter(Caliber.popularity_rank.isnot(None)).all()]
+def test_caliber_lr_popularity_ranks_unique(seeded_db):
+    """All LR popularity ranks should be unique (no ties)."""
+    ranks = [c.lr_popularity_rank for c in seeded_db.query(Caliber).filter(Caliber.lr_popularity_rank.isnot(None)).all()]
     assert len(ranks) == len(set(ranks)), f"Duplicate ranks: {ranks}"
 
 
 def test_new_prs_calibers_exist(seeded_db):
     """6mm Dasher and 6mm GT must exist — they're the #1 and #2 PRS cartridges."""
     dasher = seeded_db.query(Caliber).filter_by(name="6mm Dasher").one()
-    assert dasher.popularity_rank == 3
+    assert dasher.lr_popularity_rank == 3
     assert dasher.is_common_lr is True
 
     gt = seeded_db.query(Caliber).filter_by(name="6mm GT").one()
-    assert gt.popularity_rank == 4
+    assert gt.lr_popularity_rank == 4
     assert gt.is_common_lr is True
 
 

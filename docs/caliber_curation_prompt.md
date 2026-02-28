@@ -2,7 +2,7 @@
 
 ## Context
 
-We're building a precision ballistics app called **Drift**. The backend maintains a curated reference database of calibers, chambers, and their relationships. This data is **editorially curated** (not scraped) and serves as the backbone for profile creation, search, and contextual ranking in the app.
+We're building a precision ballistics app called **Drift**. The backend maintains a curated reference database of calibers, chambers, and their relationships. This data is **editorially curated** (not scraped in a scheduled / automated way) and serves as the backbone for profile creation, search, and contextual ranking in the app.
 
 We currently have **25 calibers** and **26 chambers** covering the most popular long-range and tactical cartridges. We need to expand this to a **comprehensive list** — covering hunting, competition, tactical, classic/legacy, magnum, and modern niche cartridges that a user of a ballistics calculator might reasonably own or encounter.
 

@@ -1,0 +1,590 @@
+[
+  {
+    "caliber_name": ".22 Long Rifle",
+    "platform": "bolt",
+    "rank": null,
+    "notes": null
+  },
+  {
+    "caliber_name": ".22 WMR",
+    "platform": "bolt",
+    "rank": null,
+    "notes": null
+  },
+  {
+    "caliber_name": ".17 HMR",
+    "platform": "bolt",
+    "rank": null,
+    "notes": null
+  },
+  {
+    "caliber_name": ".17 WSM",
+    "platform": "bolt",
+    "rank": null,
+    "notes": null
+  },
+  {
+    "caliber_name": ".204 Ruger",
+    "platform": "bolt",
+    "rank": null,
+    "notes": null
+  },
+  {
+    "caliber_name": ".204 Ruger",
+    "platform": "ar15",
+    "rank": null,
+    "notes": null
+  },
+  {
+    "caliber_name": ".220 Swift",
+    "platform": "bolt",
+    "rank": null,
+    "notes": null
+  },
+  {
+    "caliber_name": ".22-250 Remington",
+    "platform": "bolt",
+    "rank": null,
+    "notes": null
+  },
+  {
+    "caliber_name": ".22-250 Remington",
+    "platform": "ar15",
+    "rank": null,
+    "notes": null
+  },
+  {
+    "caliber_name": ".224 Valkyrie",
+    "platform": "bolt",
+    "rank": null,
+    "notes": null
+  },
+  {
+    "caliber_name": ".224 Valkyrie",
+    "platform": "ar15",
+    "rank": null,
+    "notes": null
+  },
+  {
+    "caliber_name": ".22 Nosler",
+    "platform": "ar15",
+    "rank": null,
+    "notes": null
+  },
+  {
+    "caliber_name": ".22 Hornet",
+    "platform": "bolt",
+    "rank": null,
+    "notes": null
+  },
+  {
+    "caliber_name": ".17 Hornet",
+    "platform": "bolt",
+    "rank": null,
+    "notes": null
+  },
+  {
+    "caliber_name": ".222 Remington",
+    "platform": "bolt",
+    "rank": null,
+    "notes": null
+  },
+  {
+    "caliber_name": ".222 Remington Magnum",
+    "platform": "bolt",
+    "rank": null,
+    "notes": null
+  },
+  {
+    "caliber_name": ".223 WSSM",
+    "platform": "bolt",
+    "rank": null,
+    "notes": null
+  },
+  {
+    "caliber_name": ".243 WSSM",
+    "platform": "bolt",
+    "rank": null,
+    "notes": null
+  },
+  {
+    "caliber_name": ".22 Creedmoor",
+    "platform": "bolt",
+    "rank": null,
+    "notes": null
+  },
+  {
+    "caliber_name": ".25 Creedmoor",
+    "platform": "bolt",
+    "rank": null,
+    "notes": null
+  },
+  {
+    "caliber_name": ".257 Roberts",
+    "platform": "bolt",
+    "rank": null,
+    "notes": null
+  },
+  {
+    "caliber_name": ".257 Weatherby Magnum",
+    "platform": "bolt",
+    "rank": null,
+    "notes": null
+  },
+  {
+    "caliber_name": ".25-06 Remington",
+    "platform": "bolt",
+    "rank": null,
+    "notes": null
+  },
+  {
+    "caliber_name": ".25 Weatherby RPM",
+    "platform": "bolt",
+    "rank": null,
+    "notes": null
+  },
+  {
+    "caliber_name": "6mm BR Remington",
+    "platform": "bolt",
+    "rank": null,
+    "notes": null
+  },
+  {
+    "caliber_name": "6mm BRA",
+    "platform": "bolt",
+    "rank": null,
+    "notes": null
+  },
+  {
+    "caliber_name": "6mm XC",
+    "platform": "bolt",
+    "rank": null,
+    "notes": null
+  },
+  {
+    "caliber_name": "6mm Remington",
+    "platform": "bolt",
+    "rank": null,
+    "notes": null
+  },
+  {
+    "caliber_name": "6x45mm",
+    "platform": "ar15",
+    "rank": null,
+    "notes": null
+  },
+  {
+    "caliber_name": "6mm-284",
+    "platform": "bolt",
+    "rank": null,
+    "notes": null
+  },
+  {
+    "caliber_name": ".240 Weatherby Magnum",
+    "platform": "bolt",
+    "rank": null,
+    "notes": null
+  },
+  {
+    "caliber_name": ".264 Winchester Magnum",
+    "platform": "bolt",
+    "rank": null,
+    "notes": null
+  },
+  {
+    "caliber_name": "6.5 Grendel",
+    "platform": "bolt",
+    "rank": null,
+    "notes": null
+  },
+  {
+    "caliber_name": "6.5 Grendel",
+    "platform": "ar15",
+    "rank": null,
+    "notes": null
+  },
+  {
+    "caliber_name": "6.5 Weatherby RPM",
+    "platform": "bolt",
+    "rank": null,
+    "notes": null
+  },
+  {
+    "caliber_name": ".26 Nosler",
+    "platform": "bolt",
+    "rank": null,
+    "notes": null
+  },
+  {
+    "caliber_name": "6.5 SAUM",
+    "platform": "bolt",
+    "rank": null,
+    "notes": null
+  },
+  {
+    "caliber_name": ".260 Ackley Improved",
+    "platform": "bolt",
+    "rank": null,
+    "notes": null
+  },
+  {
+    "caliber_name": "6.8 SPC",
+    "platform": "ar15",
+    "rank": null,
+    "notes": null
+  },
+  {
+    "caliber_name": "6.8 Western",
+    "platform": "bolt",
+    "rank": null,
+    "notes": null
+  },
+  {
+    "caliber_name": ".270 WSM",
+    "platform": "bolt",
+    "rank": null,
+    "notes": null
+  },
+  {
+    "caliber_name": ".270 Weatherby Magnum",
+    "platform": "bolt",
+    "rank": null,
+    "notes": null
+  },
+  {
+    "caliber_name": ".277 Fury",
+    "platform": "bolt",
+    "rank": null,
+    "notes": null
+  },
+  {
+    "caliber_name": ".277 Fury",
+    "platform": "ar10",
+    "rank": null,
+    "notes": null
+  },
+  {
+    "caliber_name": "7x57mm Mauser",
+    "platform": "bolt",
+    "rank": null,
+    "notes": null
+  },
+  {
+    "caliber_name": ".280 Remington",
+    "platform": "bolt",
+    "rank": null,
+    "notes": null
+  },
+  {
+    "caliber_name": ".280 Ackley Improved",
+    "platform": "bolt",
+    "rank": null,
+    "notes": null
+  },
+  {
+    "caliber_name": ".284 Winchester",
+    "platform": "bolt",
+    "rank": null,
+    "notes": null
+  },
+  {
+    "caliber_name": ".28 Nosler",
+    "platform": "bolt",
+    "rank": null,
+    "notes": null
+  },
+  {
+    "caliber_name": "7mm WSM",
+    "platform": "bolt",
+    "rank": null,
+    "notes": null
+  },
+  {
+    "caliber_name": "7mm Backcountry",
+    "platform": "bolt",
+    "rank": null,
+    "notes": null
+  },
+  {
+    "caliber_name": "7mm SAUM",
+    "platform": "bolt",
+    "rank": null,
+    "notes": null
+  },
+  {
+    "caliber_name": ".30-30 Winchester",
+    "platform": "bolt",
+    "rank": null,
+    "notes": null
+  },
+  {
+    "caliber_name": ".300 Savage",
+    "platform": "bolt",
+    "rank": null,
+    "notes": null
+  },
+  {
+    "caliber_name": ".300 HAM'R",
+    "platform": "ar15",
+    "rank": null,
+    "notes": null
+  },
+  {
+    "caliber_name": ".300 RUM",
+    "platform": "bolt",
+    "rank": null,
+    "notes": null
+  },
+  {
+    "caliber_name": ".300 Norma Magnum",
+    "platform": "bolt",
+    "rank": null,
+    "notes": null
+  },
+  {
+    "caliber_name": ".30 Nosler",
+    "platform": "bolt",
+    "rank": null,
+    "notes": null
+  },
+  {
+    "caliber_name": ".308 Marlin Express",
+    "platform": "bolt",
+    "rank": null,
+    "notes": null
+  },
+  {
+    "caliber_name": ".300 Weatherby Magnum",
+    "platform": "bolt",
+    "rank": null,
+    "notes": null
+  },
+  {
+    "caliber_name": ".300 RSAUM",
+    "platform": "bolt",
+    "rank": null,
+    "notes": null
+  },
+  {
+    "caliber_name": ".300 Ruger Compact Magnum",
+    "platform": "bolt",
+    "rank": null,
+    "notes": null
+  },
+  {
+    "caliber_name": ".325 WSM",
+    "platform": "bolt",
+    "rank": null,
+    "notes": null
+  },
+  {
+    "caliber_name": "7.62x39mm",
+    "platform": "bolt",
+    "rank": null,
+    "notes": null
+  },
+  {
+    "caliber_name": "7.62x39mm",
+    "platform": "ar15",
+    "rank": null,
+    "notes": null
+  },
+  {
+    "caliber_name": "5.45x39mm",
+    "platform": "bolt",
+    "rank": null,
+    "notes": null
+  },
+  {
+    "caliber_name": "5.45x39mm",
+    "platform": "ar15",
+    "rank": null,
+    "notes": null
+  },
+  {
+    "caliber_name": "7.62x54mmR",
+    "platform": "bolt",
+    "rank": null,
+    "notes": null
+  },
+  {
+    "caliber_name": "8x57mm Mauser",
+    "platform": "bolt",
+    "rank": null,
+    "notes": null
+  },
+  {
+    "caliber_name": ".30 Remington AR",
+    "platform": "ar15",
+    "rank": null,
+    "notes": null
+  },
+  {
+    "caliber_name": "7.62x40mm WT",
+    "platform": "ar15",
+    "rank": null,
+    "notes": null
+  },
+  {
+    "caliber_name": ".338 Federal",
+    "platform": "bolt",
+    "rank": null,
+    "notes": null
+  },
+  {
+    "caliber_name": ".338 Federal",
+    "platform": "ar10",
+    "rank": null,
+    "notes": null
+  },
+  {
+    "caliber_name": ".338 Norma Magnum",
+    "platform": "bolt",
+    "rank": null,
+    "notes": null
+  },
+  {
+    "caliber_name": ".338 RUM",
+    "platform": "bolt",
+    "rank": null,
+    "notes": null
+  },
+  {
+    "caliber_name": ".340 Weatherby Magnum",
+    "platform": "bolt",
+    "rank": null,
+    "notes": null
+  },
+  {
+    "caliber_name": ".338-378 Weatherby Magnum",
+    "platform": "bolt",
+    "rank": null,
+    "notes": null
+  },
+  {
+    "caliber_name": ".338 EnABELR",
+    "platform": "bolt",
+    "rank": null,
+    "notes": null
+  },
+  {
+    "caliber_name": ".350 Legend",
+    "platform": "bolt",
+    "rank": null,
+    "notes": null
+  },
+  {
+    "caliber_name": ".350 Legend",
+    "platform": "ar15",
+    "rank": null,
+    "notes": null
+  },
+  {
+    "caliber_name": ".450 Bushmaster",
+    "platform": "bolt",
+    "rank": null,
+    "notes": null
+  },
+  {
+    "caliber_name": ".450 Bushmaster",
+    "platform": "ar15",
+    "rank": null,
+    "notes": null
+  },
+  {
+    "caliber_name": ".458 SOCOM",
+    "platform": "ar15",
+    "rank": null,
+    "notes": null
+  },
+  {
+    "caliber_name": ".50 Beowulf",
+    "platform": "ar15",
+    "rank": null,
+    "notes": null
+  },
+  {
+    "caliber_name": ".35 Whelen",
+    "platform": "bolt",
+    "rank": null,
+    "notes": null
+  },
+  {
+    "caliber_name": "9.3x62mm Mauser",
+    "platform": "bolt",
+    "rank": null,
+    "notes": null
+  },
+  {
+    "caliber_name": "9.3x74mmR",
+    "platform": "bolt",
+    "rank": null,
+    "notes": null
+  },
+  {
+    "caliber_name": ".375 H&H Magnum",
+    "platform": "bolt",
+    "rank": null,
+    "notes": null
+  },
+  {
+    "caliber_name": ".375 Ruger",
+    "platform": "bolt",
+    "rank": null,
+    "notes": null
+  },
+  {
+    "caliber_name": ".416 Rigby",
+    "platform": "bolt",
+    "rank": null,
+    "notes": null
+  },
+  {
+    "caliber_name": ".416 Remington Magnum",
+    "platform": "bolt",
+    "rank": null,
+    "notes": null
+  },
+  {
+    "caliber_name": ".458 Winchester Magnum",
+    "platform": "bolt",
+    "rank": null,
+    "notes": null
+  },
+  {
+    "caliber_name": ".458 Lott",
+    "platform": "bolt",
+    "rank": null,
+    "notes": null
+  },
+  {
+    "caliber_name": ".375 CheyTac",
+    "platform": "bolt",
+    "rank": null,
+    "notes": null
+  },
+  {
+    "caliber_name": ".408 CheyTac",
+    "platform": "bolt",
+    "rank": null,
+    "notes": null
+  },
+  {
+    "caliber_name": ".416 Barrett",
+    "platform": "bolt",
+    "rank": null,
+    "notes": null
+  },
+  {
+    "caliber_name": ".50 BMG",
+    "platform": "bolt",
+    "rank": null,
+    "notes": null
+  },
+  {
+    "caliber_name": ".375 EnABELR",
+    "platform": "bolt",
+    "rank": null,
+    "notes": null
+  }
+]
