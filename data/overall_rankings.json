@@ -1,0 +1,462 @@
+[
+  {
+    "name": ".22 Long Rifle",
+    "overall_popularity_rank": 1
+  },
+  {
+    "name": ".223 Remington",
+    "overall_popularity_rank": 2
+  },
+  {
+    "name": "5.56x45mm NATO",
+    "overall_popularity_rank": 3
+  },
+  {
+    "name": "6.5 Creedmoor",
+    "overall_popularity_rank": 4
+  },
+  {
+    "name": ".308 Winchester",
+    "overall_popularity_rank": 5
+  },
+  {
+    "name": "7.62x39mm",
+    "overall_popularity_rank": 6
+  },
+  {
+    "name": ".30-06 Springfield",
+    "overall_popularity_rank": 7
+  },
+  {
+    "name": ".270 Winchester",
+    "overall_popularity_rank": 8
+  },
+  {
+    "name": ".300 Winchester Magnum",
+    "overall_popularity_rank": 9
+  },
+  {
+    "name": ".30-30 Winchester",
+    "overall_popularity_rank": 10
+  },
+  {
+    "name": ".300 AAC Blackout",
+    "overall_popularity_rank": 11
+  },
+  {
+    "name": ".243 Winchester",
+    "overall_popularity_rank": 12
+  },
+  {
+    "name": "7mm PRC",
+    "overall_popularity_rank": 13
+  },
+  {
+    "name": "6.5 PRC",
+    "overall_popularity_rank": 14
+  },
+  {
+    "name": "7mm Remington Magnum",
+    "overall_popularity_rank": 15
+  },
+  {
+    "name": "7mm-08 Remington",
+    "overall_popularity_rank": 16
+  },
+  {
+    "name": ".300 PRC",
+    "overall_popularity_rank": 17
+  },
+  {
+    "name": ".22 WMR",
+    "overall_popularity_rank": 18
+  },
+  {
+    "name": ".17 HMR",
+    "overall_popularity_rank": 19
+  },
+  {
+    "name": ".22-250 Remington",
+    "overall_popularity_rank": 20
+  },
+  {
+    "name": "7.62x51mm NATO",
+    "overall_popularity_rank": 21
+  },
+  {
+    "name": ".350 Legend",
+    "overall_popularity_rank": 22
+  },
+  {
+    "name": ".450 Bushmaster",
+    "overall_popularity_rank": 23
+  },
+  {
+    "name": "6mm Creedmoor",
+    "overall_popularity_rank": 24
+  },
+  {
+    "name": ".338 Lapua Magnum",
+    "overall_popularity_rank": 25
+  },
+  {
+    "name": ".25-06 Remington",
+    "overall_popularity_rank": 26
+  },
+  {
+    "name": ".338 Winchester Magnum",
+    "overall_popularity_rank": 27
+  },
+  {
+    "name": ".375 H&H Magnum",
+    "overall_popularity_rank": 28
+  },
+  {
+    "name": ".260 Remington",
+    "overall_popularity_rank": 29
+  },
+  {
+    "name": ".300 Winchester Short Magnum",
+    "overall_popularity_rank": 30
+  },
+  {
+    "name": "6.5 Grendel",
+    "overall_popularity_rank": 31
+  },
+  {
+    "name": ".204 Ruger",
+    "overall_popularity_rank": 32
+  },
+  {
+    "name": ".280 Ackley Improved",
+    "overall_popularity_rank": 33
+  },
+  {
+    "name": "6mm ARC",
+    "overall_popularity_rank": 34
+  },
+  {
+    "name": ".35 Whelen",
+    "overall_popularity_rank": 35
+  },
+  {
+    "name": "6.5x55mm Swedish",
+    "overall_popularity_rank": 36
+  },
+  {
+    "name": ".270 WSM",
+    "overall_popularity_rank": 37
+  },
+  {
+    "name": ".257 Weatherby Magnum",
+    "overall_popularity_rank": 38
+  },
+  {
+    "name": "7.62x54mmR",
+    "overall_popularity_rank": 39
+  },
+  {
+    "name": ".458 SOCOM",
+    "overall_popularity_rank": 40
+  },
+  {
+    "name": ".50 Beowulf",
+    "overall_popularity_rank": 41
+  },
+  {
+    "name": "6.8 SPC",
+    "overall_popularity_rank": 42
+  },
+  {
+    "name": "5.45x39mm",
+    "overall_popularity_rank": 43
+  },
+  {
+    "name": ".300 Weatherby Magnum",
+    "overall_popularity_rank": 44
+  },
+  {
+    "name": ".50 BMG",
+    "overall_popularity_rank": 45
+  },
+  {
+    "name": ".280 Remington",
+    "overall_popularity_rank": 46
+  },
+  {
+    "name": "7x57mm Mauser",
+    "overall_popularity_rank": 47
+  },
+  {
+    "name": ".458 Winchester Magnum",
+    "overall_popularity_rank": 48
+  },
+  {
+    "name": ".222 Remington",
+    "overall_popularity_rank": 49
+  },
+  {
+    "name": ".257 Roberts",
+    "overall_popularity_rank": 50
+  },
+  {
+    "name": "8x57mm Mauser",
+    "overall_popularity_rank": 51
+  },
+  {
+    "name": ".22 Hornet",
+    "overall_popularity_rank": 52
+  },
+  {
+    "name": "6mm Dasher",
+    "overall_popularity_rank": 53
+  },
+  {
+    "name": ".300 RUM",
+    "overall_popularity_rank": 54
+  },
+  {
+    "name": ".277 Fury",
+    "overall_popularity_rank": 55
+  },
+  {
+    "name": ".416 Rigby",
+    "overall_popularity_rank": 56
+  },
+  {
+    "name": "9.3x62mm Mauser",
+    "overall_popularity_rank": 57
+  },
+  {
+    "name": ".458 Lott",
+    "overall_popularity_rank": 58
+  },
+  {
+    "name": ".375 Ruger",
+    "overall_popularity_rank": 59
+  },
+  {
+    "name": "6mm GT",
+    "overall_popularity_rank": 60
+  },
+  {
+    "name": "7mm WSM",
+    "overall_popularity_rank": 61
+  },
+  {
+    "name": ".224 Valkyrie",
+    "overall_popularity_rank": 62
+  },
+  {
+    "name": ".28 Nosler",
+    "overall_popularity_rank": 63
+  },
+  {
+    "name": ".270 Weatherby Magnum",
+    "overall_popularity_rank": 64
+  },
+  {
+    "name": "6.8 Western",
+    "overall_popularity_rank": 65
+  },
+  {
+    "name": ".220 Swift",
+    "overall_popularity_rank": 66
+  },
+  {
+    "name": ".30 Nosler",
+    "overall_popularity_rank": 67
+  },
+  {
+    "name": "6mm Remington",
+    "overall_popularity_rank": 68
+  },
+  {
+    "name": ".264 Winchester Magnum",
+    "overall_popularity_rank": 69
+  },
+  {
+    "name": ".338 Federal",
+    "overall_popularity_rank": 70
+  },
+  {
+    "name": ".325 WSM",
+    "overall_popularity_rank": 71
+  },
+  {
+    "name": ".26 Nosler",
+    "overall_popularity_rank": 72
+  },
+  {
+    "name": ".416 Remington Magnum",
+    "overall_popularity_rank": 73
+  },
+  {
+    "name": ".17 WSM",
+    "overall_popularity_rank": 74
+  },
+  {
+    "name": ".22 Nosler",
+    "overall_popularity_rank": 75
+  },
+  {
+    "name": ".300 Savage",
+    "overall_popularity_rank": 76
+  },
+  {
+    "name": ".340 Weatherby Magnum",
+    "overall_popularity_rank": 77
+  },
+  {
+    "name": "6.5-284 Norma",
+    "overall_popularity_rank": 78
+  },
+  {
+    "name": ".338 RUM",
+    "overall_popularity_rank": 79
+  },
+  {
+    "name": ".17 Hornet",
+    "overall_popularity_rank": 80
+  },
+  {
+    "name": ".300 Norma Magnum",
+    "overall_popularity_rank": 81
+  },
+  {
+    "name": "9.3x74mmR",
+    "overall_popularity_rank": 82
+  },
+  {
+    "name": ".338 Norma Magnum",
+    "overall_popularity_rank": 83
+  },
+  {
+    "name": ".375 CheyTac",
+    "overall_popularity_rank": 84
+  },
+  {
+    "name": "7mm SAUM",
+    "overall_popularity_rank": 85
+  },
+  {
+    "name": ".284 Winchester",
+    "overall_popularity_rank": 86
+  },
+  {
+    "name": ".25 Creedmoor",
+    "overall_popularity_rank": 87
+  },
+  {
+    "name": ".25x47 Lapua",
+    "overall_popularity_rank": 88
+  },
+  {
+    "name": "6.5 SAUM",
+    "overall_popularity_rank": 89
+  },
+  {
+    "name": "6mm BR Remington",
+    "overall_popularity_rank": 90
+  },
+  {
+    "name": ".338-378 Weatherby Magnum",
+    "overall_popularity_rank": 91
+  },
+  {
+    "name": ".408 CheyTac",
+    "overall_popularity_rank": 92
+  },
+  {
+    "name": ".22 Creedmoor",
+    "overall_popularity_rank": 93
+  },
+  {
+    "name": ".240 Weatherby Magnum",
+    "overall_popularity_rank": 94
+  },
+  {
+    "name": ".416 Barrett",
+    "overall_popularity_rank": 95
+  },
+  {
+    "name": ".300 RSAUM",
+    "overall_popularity_rank": 96
+  },
+  {
+    "name": ".300 Ruger Compact Magnum",
+    "overall_popularity_rank": 97
+  },
+  {
+    "name": "6mm BRA",
+    "overall_popularity_rank": 98
+  },
+  {
+    "name": ".260 Ackley Improved",
+    "overall_popularity_rank": 99
+  },
+  {
+    "name": ".300 HAM'R",
+    "overall_popularity_rank": 100
+  },
+  {
+    "name": "6mm XC",
+    "overall_popularity_rank": 101
+  },
+  {
+    "name": "6x45mm",
+    "overall_popularity_rank": 102
+  },
+  {
+    "name": ".222 Remington Magnum",
+    "overall_popularity_rank": 103
+  },
+  {
+    "name": ".30 Remington AR",
+    "overall_popularity_rank": 104
+  },
+  {
+    "name": ".223 WSSM",
+    "overall_popularity_rank": 105
+  },
+  {
+    "name": ".243 WSSM",
+    "overall_popularity_rank": 106
+  },
+  {
+    "name": "6.5 Weatherby RPM",
+    "overall_popularity_rank": 107
+  },
+  {
+    "name": ".25 Weatherby RPM",
+    "overall_popularity_rank": 108
+  },
+  {
+    "name": "6mm-284",
+    "overall_popularity_rank": 109
+  },
+  {
+    "name": ".308 Marlin Express",
+    "overall_popularity_rank": 110
+  },
+  {
+    "name": "7.62x40mm WT",
+    "overall_popularity_rank": 111
+  },
+  {
+    "name": "7mm Backcountry",
+    "overall_popularity_rank": 112
+  },
+  {
+    "name": ".338 EnABELR",
+    "overall_popularity_rank": 113
+  },
+  {
+    "name": ".375 EnABELR",
+    "overall_popularity_rank": 114
+  },
+  {
+    "name": ".45-70 Government",
+    "overall_popularity_rank": 115
+  }
+]

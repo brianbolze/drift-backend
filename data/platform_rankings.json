@@ -1,0 +1,662 @@
+[
+  {
+    "caliber_name": "6.5 Creedmoor",
+    "platform": "bolt",
+    "rank": 1
+  },
+  {
+    "caliber_name": ".308 Winchester",
+    "platform": "bolt",
+    "rank": 2
+  },
+  {
+    "caliber_name": ".30-06 Springfield",
+    "platform": "bolt",
+    "rank": 3
+  },
+  {
+    "caliber_name": ".270 Winchester",
+    "platform": "bolt",
+    "rank": 4
+  },
+  {
+    "caliber_name": ".300 Winchester Magnum",
+    "platform": "bolt",
+    "rank": 5
+  },
+  {
+    "caliber_name": "7mm Remington Magnum",
+    "platform": "bolt",
+    "rank": 6
+  },
+  {
+    "caliber_name": ".243 Winchester",
+    "platform": "bolt",
+    "rank": 7
+  },
+  {
+    "caliber_name": "6mm Creedmoor",
+    "platform": "bolt",
+    "rank": 8
+  },
+  {
+    "caliber_name": "6mm Dasher",
+    "platform": "bolt",
+    "rank": 9
+  },
+  {
+    "caliber_name": "6mm GT",
+    "platform": "bolt",
+    "rank": 10
+  },
+  {
+    "caliber_name": "6.5 PRC",
+    "platform": "bolt",
+    "rank": 11
+  },
+  {
+    "caliber_name": "7mm PRC",
+    "platform": "bolt",
+    "rank": 12
+  },
+  {
+    "caliber_name": ".223 Remington",
+    "platform": "bolt",
+    "rank": 13
+  },
+  {
+    "caliber_name": ".300 PRC",
+    "platform": "bolt",
+    "rank": 14
+  },
+  {
+    "caliber_name": "7mm-08 Remington",
+    "platform": "bolt",
+    "rank": 15
+  },
+  {
+    "caliber_name": ".338 Lapua Magnum",
+    "platform": "bolt",
+    "rank": 16
+  },
+  {
+    "caliber_name": ".22-250 Remington",
+    "platform": "bolt",
+    "rank": 17
+  },
+  {
+    "caliber_name": ".280 Ackley Improved",
+    "platform": "bolt",
+    "rank": 18
+  },
+  {
+    "caliber_name": ".260 Remington",
+    "platform": "bolt",
+    "rank": 19
+  },
+  {
+    "caliber_name": ".300 Winchester Short Magnum",
+    "platform": "bolt",
+    "rank": 20
+  },
+  {
+    "caliber_name": "6.5x55mm Swedish",
+    "platform": "bolt",
+    "rank": 21
+  },
+  {
+    "caliber_name": ".338 Winchester Magnum",
+    "platform": "bolt",
+    "rank": 22
+  },
+  {
+    "caliber_name": ".25-06 Remington",
+    "platform": "bolt",
+    "rank": 23
+  },
+  {
+    "caliber_name": "5.56x45mm NATO",
+    "platform": "bolt",
+    "rank": 24
+  },
+  {
+    "caliber_name": "6.5-284 Norma",
+    "platform": "bolt",
+    "rank": 25
+  },
+  {
+    "caliber_name": ".257 Weatherby Magnum",
+    "platform": "bolt",
+    "rank": 26
+  },
+  {
+    "caliber_name": ".270 WSM",
+    "platform": "bolt",
+    "rank": 27
+  },
+  {
+    "caliber_name": ".300 Weatherby Magnum",
+    "platform": "bolt",
+    "rank": 28
+  },
+  {
+    "caliber_name": ".375 H&H Magnum",
+    "platform": "bolt",
+    "rank": 29
+  },
+  {
+    "caliber_name": "7.62x51mm NATO",
+    "platform": "bolt",
+    "rank": 30
+  },
+  {
+    "caliber_name": ".204 Ruger",
+    "platform": "bolt",
+    "rank": 31
+  },
+  {
+    "caliber_name": ".30-30 Winchester",
+    "platform": "bolt",
+    "rank": 32
+  },
+  {
+    "caliber_name": ".257 Roberts",
+    "platform": "bolt",
+    "rank": 33
+  },
+  {
+    "caliber_name": ".35 Whelen",
+    "platform": "bolt",
+    "rank": 34
+  },
+  {
+    "caliber_name": ".300 RUM",
+    "platform": "bolt",
+    "rank": 35
+  },
+  {
+    "caliber_name": "7x57mm Mauser",
+    "platform": "bolt",
+    "rank": 36
+  },
+  {
+    "caliber_name": ".222 Remington",
+    "platform": "bolt",
+    "rank": 37
+  },
+  {
+    "caliber_name": ".280 Remington",
+    "platform": "bolt",
+    "rank": 38
+  },
+  {
+    "caliber_name": "8x57mm Mauser",
+    "platform": "bolt",
+    "rank": 39
+  },
+  {
+    "caliber_name": ".220 Swift",
+    "platform": "bolt",
+    "rank": 40
+  },
+  {
+    "caliber_name": ".264 Winchester Magnum",
+    "platform": "bolt",
+    "rank": 41
+  },
+  {
+    "caliber_name": ".270 Weatherby Magnum",
+    "platform": "bolt",
+    "rank": 42
+  },
+  {
+    "caliber_name": "6mm Remington",
+    "platform": "bolt",
+    "rank": 43
+  },
+  {
+    "caliber_name": "9.3x62mm Mauser",
+    "platform": "bolt",
+    "rank": 44
+  },
+  {
+    "caliber_name": ".300 Savage",
+    "platform": "bolt",
+    "rank": 45
+  },
+  {
+    "caliber_name": ".458 Winchester Magnum",
+    "platform": "bolt",
+    "rank": 46
+  },
+  {
+    "caliber_name": ".416 Rigby",
+    "platform": "bolt",
+    "rank": 47
+  },
+  {
+    "caliber_name": ".375 Ruger",
+    "platform": "bolt",
+    "rank": 48
+  },
+  {
+    "caliber_name": ".458 Lott",
+    "platform": "bolt",
+    "rank": 49
+  },
+  {
+    "caliber_name": ".416 Remington Magnum",
+    "platform": "bolt",
+    "rank": 50
+  },
+  {
+    "caliber_name": ".340 Weatherby Magnum",
+    "platform": "bolt",
+    "rank": 51
+  },
+  {
+    "caliber_name": ".338 RUM",
+    "platform": "bolt",
+    "rank": 52
+  },
+  {
+    "caliber_name": ".300 Norma Magnum",
+    "platform": "bolt",
+    "rank": 53
+  },
+  {
+    "caliber_name": ".338 Norma Magnum",
+    "platform": "bolt",
+    "rank": 54
+  },
+  {
+    "caliber_name": "7mm WSM",
+    "platform": "bolt",
+    "rank": 55
+  },
+  {
+    "caliber_name": ".28 Nosler",
+    "platform": "bolt",
+    "rank": 56
+  },
+  {
+    "caliber_name": ".30 Nosler",
+    "platform": "bolt",
+    "rank": 57
+  },
+  {
+    "caliber_name": ".26 Nosler",
+    "platform": "bolt",
+    "rank": 58
+  },
+  {
+    "caliber_name": "6.8 Western",
+    "platform": "bolt",
+    "rank": 59
+  },
+  {
+    "caliber_name": "6mm BR Remington",
+    "platform": "bolt",
+    "rank": 60
+  },
+  {
+    "caliber_name": "6mm BRA",
+    "platform": "bolt",
+    "rank": 61
+  },
+  {
+    "caliber_name": "7mm SAUM",
+    "platform": "bolt",
+    "rank": 62
+  },
+  {
+    "caliber_name": "6.5 SAUM",
+    "platform": "bolt",
+    "rank": 63
+  },
+  {
+    "caliber_name": ".284 Winchester",
+    "platform": "bolt",
+    "rank": 64
+  },
+  {
+    "caliber_name": ".325 WSM",
+    "platform": "bolt",
+    "rank": 65
+  },
+  {
+    "caliber_name": ".338 Federal",
+    "platform": "bolt",
+    "rank": 66
+  },
+  {
+    "caliber_name": ".22 Long Rifle",
+    "platform": "bolt",
+    "rank": 67
+  },
+  {
+    "caliber_name": ".17 HMR",
+    "platform": "bolt",
+    "rank": 68
+  },
+  {
+    "caliber_name": ".22 WMR",
+    "platform": "bolt",
+    "rank": 69
+  },
+  {
+    "caliber_name": ".22 Hornet",
+    "platform": "bolt",
+    "rank": 70
+  },
+  {
+    "caliber_name": ".17 Hornet",
+    "platform": "bolt",
+    "rank": 71
+  },
+  {
+    "caliber_name": "7.62x54mmR",
+    "platform": "bolt",
+    "rank": 72
+  },
+  {
+    "caliber_name": ".338-378 Weatherby Magnum",
+    "platform": "bolt",
+    "rank": 73
+  },
+  {
+    "caliber_name": ".240 Weatherby Magnum",
+    "platform": "bolt",
+    "rank": 74
+  },
+  {
+    "caliber_name": ".50 BMG",
+    "platform": "bolt",
+    "rank": 75
+  },
+  {
+    "caliber_name": ".375 CheyTac",
+    "platform": "bolt",
+    "rank": 76
+  },
+  {
+    "caliber_name": ".408 CheyTac",
+    "platform": "bolt",
+    "rank": 77
+  },
+  {
+    "caliber_name": ".416 Barrett",
+    "platform": "bolt",
+    "rank": 78
+  },
+  {
+    "caliber_name": "9.3x74mmR",
+    "platform": "bolt",
+    "rank": 79
+  },
+  {
+    "caliber_name": ".25 Creedmoor",
+    "platform": "bolt",
+    "rank": 80
+  },
+  {
+    "caliber_name": ".22 Creedmoor",
+    "platform": "bolt",
+    "rank": 81
+  },
+  {
+    "caliber_name": ".277 Fury",
+    "platform": "bolt",
+    "rank": 82
+  },
+  {
+    "caliber_name": "6mm XC",
+    "platform": "bolt",
+    "rank": 83
+  },
+  {
+    "caliber_name": "6mm-284",
+    "platform": "bolt",
+    "rank": 84
+  },
+  {
+    "caliber_name": ".260 Ackley Improved",
+    "platform": "bolt",
+    "rank": 85
+  },
+  {
+    "caliber_name": ".300 RSAUM",
+    "platform": "bolt",
+    "rank": 86
+  },
+  {
+    "caliber_name": ".25 Weatherby RPM",
+    "platform": "bolt",
+    "rank": 87
+  },
+  {
+    "caliber_name": "6.5 Weatherby RPM",
+    "platform": "bolt",
+    "rank": 88
+  },
+  {
+    "caliber_name": ".300 Ruger Compact Magnum",
+    "platform": "bolt",
+    "rank": 89
+  },
+  {
+    "caliber_name": "6.5 Grendel",
+    "platform": "bolt",
+    "rank": 90
+  },
+  {
+    "caliber_name": ".222 Remington Magnum",
+    "platform": "bolt",
+    "rank": 91
+  },
+  {
+    "caliber_name": ".350 Legend",
+    "platform": "bolt",
+    "rank": 92
+  },
+  {
+    "caliber_name": "6mm ARC",
+    "platform": "bolt",
+    "rank": 93
+  },
+  {
+    "caliber_name": ".224 Valkyrie",
+    "platform": "bolt",
+    "rank": 94
+  },
+  {
+    "caliber_name": ".308 Marlin Express",
+    "platform": "bolt",
+    "rank": 95
+  },
+  {
+    "caliber_name": "5.45x39mm",
+    "platform": "bolt",
+    "rank": 96
+  },
+  {
+    "caliber_name": "7.62x39mm",
+    "platform": "bolt",
+    "rank": 97
+  },
+  {
+    "caliber_name": "7mm Backcountry",
+    "platform": "bolt",
+    "rank": 98
+  },
+  {
+    "caliber_name": ".223 WSSM",
+    "platform": "bolt",
+    "rank": 99
+  },
+  {
+    "caliber_name": ".243 WSSM",
+    "platform": "bolt",
+    "rank": 100
+  },
+  {
+    "caliber_name": ".338 EnABELR",
+    "platform": "bolt",
+    "rank": 101
+  },
+  {
+    "caliber_name": ".375 EnABELR",
+    "platform": "bolt",
+    "rank": 102
+  },
+  {
+    "caliber_name": ".17 WSM",
+    "platform": "bolt",
+    "rank": 103
+  },
+  {
+    "caliber_name": ".223 Remington",
+    "platform": "ar15",
+    "rank": 1
+  },
+  {
+    "caliber_name": "5.56x45mm NATO",
+    "platform": "ar15",
+    "rank": 2
+  },
+  {
+    "caliber_name": ".300 AAC Blackout",
+    "platform": "ar15",
+    "rank": 3
+  },
+  {
+    "caliber_name": "6.5 Grendel",
+    "platform": "ar15",
+    "rank": 4
+  },
+  {
+    "caliber_name": "6mm ARC",
+    "platform": "ar15",
+    "rank": 5
+  },
+  {
+    "caliber_name": "7.62x39mm",
+    "platform": "ar15",
+    "rank": 6
+  },
+  {
+    "caliber_name": "6.8 SPC",
+    "platform": "ar15",
+    "rank": 7
+  },
+  {
+    "caliber_name": ".224 Valkyrie",
+    "platform": "ar15",
+    "rank": 8
+  },
+  {
+    "caliber_name": ".350 Legend",
+    "platform": "ar15",
+    "rank": 9
+  },
+  {
+    "caliber_name": ".450 Bushmaster",
+    "platform": "ar15",
+    "rank": 10
+  },
+  {
+    "caliber_name": ".458 SOCOM",
+    "platform": "ar15",
+    "rank": 11
+  },
+  {
+    "caliber_name": ".50 Beowulf",
+    "platform": "ar15",
+    "rank": 12
+  },
+  {
+    "caliber_name": ".204 Ruger",
+    "platform": "ar15",
+    "rank": 13
+  },
+  {
+    "caliber_name": ".22 Nosler",
+    "platform": "ar15",
+    "rank": 14
+  },
+  {
+    "caliber_name": "5.45x39mm",
+    "platform": "ar15",
+    "rank": 15
+  },
+  {
+    "caliber_name": ".22-250 Remington",
+    "platform": "ar15",
+    "rank": 16
+  },
+  {
+    "caliber_name": "6x45mm",
+    "platform": "ar15",
+    "rank": 17
+  },
+  {
+    "caliber_name": ".300 HAM'R",
+    "platform": "ar15",
+    "rank": 18
+  },
+  {
+    "caliber_name": ".30 Remington AR",
+    "platform": "ar15",
+    "rank": 19
+  },
+  {
+    "caliber_name": "7.62x40mm WT",
+    "platform": "ar15",
+    "rank": 20
+  },
+  {
+    "caliber_name": ".308 Winchester",
+    "platform": "ar10",
+    "rank": 1
+  },
+  {
+    "caliber_name": "6.5 Creedmoor",
+    "platform": "ar10",
+    "rank": 2
+  },
+  {
+    "caliber_name": "7.62x51mm NATO",
+    "platform": "ar10",
+    "rank": 3
+  },
+  {
+    "caliber_name": "6.5 PRC",
+    "platform": "ar10",
+    "rank": 4
+  },
+  {
+    "caliber_name": "6mm Creedmoor",
+    "platform": "ar10",
+    "rank": 5
+  },
+  {
+    "caliber_name": ".260 Remington",
+    "platform": "ar10",
+    "rank": 6
+  },
+  {
+    "caliber_name": ".243 Winchester",
+    "platform": "ar10",
+    "rank": 7
+  },
+  {
+    "caliber_name": ".277 Fury",
+    "platform": "ar10",
+    "rank": 8
+  },
+  {
+    "caliber_name": ".338 Federal",
+    "platform": "ar10",
+    "rank": 9
+  }
+]

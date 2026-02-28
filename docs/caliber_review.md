@@ -1,122 +1,225 @@
-# Caliber & Platform Data — Review Document
+# Drift Data Library — Caliber Data Summary
 
-> **Purpose:** Expert review of our curated caliber database. We're looking for feedback on accuracy, completeness, and — especially — the **popularity rankings** per platform.
->
-> **Database totals:** 114 calibers, 115 chambers, 122 chamber-caliber mappings, 132 caliber-platform links.
+> Auto-generated from `drift.db` on 2026-02-28.
+
+## Database Totals
+
+| Table | Count |
+|---|---|
+| Calibers | 115 |
+| Chambers | 116 |
+| Chamber-Caliber mappings | 123 |
+| Platforms | 3 |
+| Caliber-Platform links | 134 |
+| Manufacturers | 38 |
+| Entity Aliases | 115 |
 
 ---
 
-## Ranked Calibers by Platform
+## Top 25 — Overall Popularity
 
-These are calibers where we've assigned an explicit popularity rank (1 = most popular on that platform). Rankings reflect the precision/long-range community, not overall sales volume.
+Ranked by overall commercial popularity (sales volume, installed base).
 
-**We'd love your feedback on:**
-- Are these rankings right? Anything clearly out of order?
-- Are we missing any calibers that should be ranked (rather than unranked) on a given platform?
-- Any calibers ranked on a platform where they don't really have meaningful commercial availability?
+| Rank | Caliber | LR Rank | Common LR | Bullet Dia. | Action |
+|---:|---|---:|---|---|---|
+| 1 | .22 Long Rifle | — | No | .223" | mini |
+| 2 | .223 Remington | — | No | .224" | mini |
+| 3 | 5.56x45mm NATO | — | No | .224" | mini |
+| 4 | 6.5 Creedmoor | 1 | Yes | .264" | short |
+| 5 | .308 Winchester | 5 | Yes | .308" | short |
+| 6 | 7.62x39mm | — | No | .312" | mini |
+| 7 | .30-06 Springfield | — | No | .308" | long |
+| 8 | .270 Winchester | — | No | .277" | long |
+| 9 | .300 Winchester Magnum | 6 | Yes | .308" | long |
+| 10 | .30-30 Winchester | — | No | .308" | short |
+| 11 | .300 AAC Blackout | — | No | .308" | mini |
+| 12 | .243 Winchester | — | No | .243" | short |
+| 13 | 7mm PRC | 9 | Yes | .284" | short |
+| 14 | 6.5 PRC | 8 | Yes | .264" | short |
+| 15 | 7mm Remington Magnum | 13 | Yes | .284" | long |
+| 16 | 7mm-08 Remington | — | No | .284" | short |
+| 17 | .300 PRC | 7 | Yes | .308" | magnum |
+| 18 | .22 WMR | — | No | .224" | mini |
+| 19 | .17 HMR | — | No | .172" | mini |
+| 20 | .22-250 Remington | — | No | .224" | short |
+| 21 | 7.62x51mm NATO | — | No | .308" | short |
+| 22 | .350 Legend | — | No | .357" | mini |
+| 23 | .450 Bushmaster | — | No | .452" | mini |
+| 24 | 6mm Creedmoor | 4 | Yes | .243" | short |
+| 25 | .338 Lapua Magnum | 10 | Yes | .338" | magnum |
 
-### Bolt Action (23 ranked of 103 total)
+---
 
-| Rank | Caliber | Diam | Action | Rim | LR | Description |
-|------|---------|------|--------|-----|----|-------------|
-| 1 | 6.5 Creedmoor | .264 | short | rimless | ✓ | The dominant precision rifle cartridge. Excellent ballistics in a short-action package with mild recoil. |
-| 2 | .308 Winchester | .308 | short | rimless | ✓ | The benchmark short-action cartridge. Universal availability, wide bullet selection, moderate recoil. |
-| 3 | 6mm Dasher | .243 | short | rimless | ✓ | The dominant PRS competition cartridge (~46% of top shooters). Semi-wildcat turned mainstream. |
-| 4 | 6mm GT | .243 | short | rimless | ✓ | PRS competition cartridge designed by George Gardner and Tom Jacobs. Known for long barrel life. |
-| 5 | 6mm Creedmoor | .243 | short | rimless | ✓ | 6.5 CM necked down to 6mm. Popular in PRS competition for lower recoil. |
-| 6 | .223 Remington | .224 | mini | rimless | | The commercial counterpart to 5.56 NATO. Lower pressure spec than 5.56. |
-| 7 | 5.56x45mm NATO | .224 | mini | rimless | | Military specification. Higher pressure and longer throat than .223 Rem. |
-| 8 | .300 Winchester Magnum | .308 | long | belted | ✓ | Classic long-range magnum. Widely used in military sniper and competitive ELR. |
-| 9 | .300 PRC | .308 | magnum | rimless | ✓ | Modern magnum designed around long, high-BC .30-cal bullets. USSOCOM adoption. Hornady design. |
-| 10 | 6.5 PRC | .264 | short | rimless | ✓ | Short-magnum performance for 6.5mm bullets. ~200 fps faster than 6.5 CM. Popular for hunting and precision. |
-| 11 | 7mm PRC | .284 | short | rimless | ✓ | Modern short-action 7mm designed for long, high-BC bullets. Hornady design. Growing rapidly in precision hunting. |
-| 12 | .338 Lapua Magnum | .338 | magnum | rimless | ✓ | The ELR standard. Military and competition use at 1500+ yards. |
-| 13 | .270 Winchester | .277 | long | rimless | | Classic hunting cartridge. One of the most popular deer cartridges in North America. |
-| 14 | .30-06 Springfield | .308 | long | rimless | | The original American long-action cartridge. Parent case for many modern cartridges. |
-| 15 | 7mm Remington Magnum | .284 | long | belted | ✓ | Classic long-range hunting magnum. Being displaced by 7mm PRC. |
-| 16 | .260 Remington | .264 | short | rimless | | The 6.5mm short-action predecessor to 6.5 Creedmoor. Largely displaced by 6.5 CM. |
-| 17 | 7.62x51mm NATO | .308 | short | rimless | | Military counterpart to .308 Win. Thicker brass, slightly lower pressure. |
-| 18 | .243 Winchester | .243 | short | rimless | | Versatile short-action cartridge. Popular for deer and varmint. |
-| 19 | .300 WSM | .308 | short | rimless | ✓ | Near-.300 Win Mag performance in a short-action package. |
-| 20 | 7mm-08 Remington | .284 | short | rimless | | Mild-recoiling short-action 7mm. Good hunting cartridge for recoil-sensitive shooters. |
-| 21 | 6.5x55mm Swedish | .264 | long | rimless | | Venerable Scandinavian cartridge. Low SAAMI pressure due to older rifles in service. |
-| 22 | .338 Winchester Magnum | .338 | long | belted | | Versatile medium-bore magnum. Popular for large game. Being displaced by .338 Lapua. |
-| 23 | 6.5-284 Norma | .264 | long | rebated | ✓ | Legacy precision cartridge still used in F-Class competition. Known for barrel-burning reputation. |
+## LR / Precision Rankings (46 calibers)
 
-### AR-15 (4 ranked of 20 total)
+Ranked by relevance to the precision and long-range shooting community (PRS, F-Class, ELR, competition).
 
-| Rank | Caliber | Diam | Action | Rim | LR | Description |
-|------|---------|------|--------|-----|----|-------------|
-| 1 | .223 Remington | .224 | mini | rimless | | The commercial counterpart to 5.56 NATO. Lower pressure spec than 5.56. |
-| 2 | 5.56x45mm NATO | .224 | mini | rimless | | Military specification. Higher pressure and longer throat than .223 Rem. |
-| 3 | .300 AAC Blackout | .308 | mini | rimless | | Designed for suppressed AR-15s. Subsonic and supersonic loads. |
-| 4 | 6mm ARC | .243 | mini | rimless | ✓ | Hornady's AR-15 precision cartridge. Growing in NRL22/mid-range competition. |
+| LR Rank | Caliber | Overall Rank | Bullet Dia. |
+|---:|---|---:|---|
+| 1 | 6.5 Creedmoor | 4 | .264" |
+| 2 | 6mm Dasher | 53 | .243" |
+| 3 | 6mm GT | 60 | .243" |
+| 4 | 6mm Creedmoor | 24 | .243" |
+| 5 | .308 Winchester | 5 | .308" |
+| 6 | .300 Winchester Magnum | 9 | .308" |
+| 7 | .300 PRC | 17 | .308" |
+| 8 | 6.5 PRC | 14 | .264" |
+| 9 | 7mm PRC | 13 | .284" |
+| 10 | .338 Lapua Magnum | 25 | .338" |
+| 11 | 6mm ARC | 34 | .243" |
+| 12 | .25 Creedmoor | 87 | .257" |
+| 13 | 7mm Remington Magnum | 15 | .284" |
+| 14 | .260 Remington | 29 | .264" |
+| 15 | 6.5-284 Norma | 78 | .264" |
+| 16 | .300 Winchester Short Magnum | 30 | .308" |
+| 17 | 6mm BR Remington | 90 | .243" |
+| 18 | 6mm BRA | 98 | .243" |
+| 19 | .375 CheyTac | 84 | .375" |
+| 20 | 6.5 SAUM | 89 | .264" |
+| 21 | 7mm SAUM | 85 | .284" |
+| 22 | .284 Winchester | 86 | .284" |
+| 23 | .22 Creedmoor | 93 | .224" |
+| 24 | .224 Valkyrie | 62 | .224" |
+| 25 | 6.5 Grendel | 31 | .264" |
+| 26 | .300 Norma Magnum | 81 | .308" |
+| 27 | 6.8 Western | 65 | .277" |
+| 28 | .280 Ackley Improved | 33 | .284" |
+| 29 | 6mm XC | 101 | .243" |
+| 30 | .300 Weatherby Magnum | 44 | .308" |
+| 31 | .300 RUM | 54 | .308" |
+| 32 | .408 CheyTac | 92 | .408" |
+| 33 | .416 Barrett | 95 | .416" |
+| 34 | .50 BMG | 45 | .510" |
+| 35 | 6mm-284 | 109 | .243" |
+| 36 | .338 Norma Magnum | 83 | .338" |
+| 37 | .338 RUM | 79 | .338" |
+| 38 | .338-378 Weatherby Magnum | 91 | .338" |
+| 39 | .338 EnABELR | 113 | .338" |
+| 40 | .375 EnABELR | 114 | .375" |
+| 41 | .300 RSAUM | 96 | .308" |
+| 42 | .26 Nosler | 72 | .264" |
+| 43 | .28 Nosler | 63 | .284" |
+| 44 | .30 Nosler | 67 | .308" |
+| 45 | .277 Fury | 55 | .277" |
+| 46 | .264 Winchester Magnum | 69 | .264" |
 
-**Unranked AR-15 calibers (16):** .204 Ruger, .22 Nosler, .22-250 Remington, .224 Valkyrie, .30 Remington AR, .300 HAM'R, .350 Legend, .450 Bushmaster, .458 SOCOM, .50 Beowulf, 5.45x39mm, 6.5 Grendel, 6.8 SPC, 6x45mm, 7.62x39mm, 7.62x40mm WT
+---
 
-### AR-10 (7 ranked of 9 total)
+## Per-Platform Rankings
 
-| Rank | Caliber | Diam | Action | Rim | LR | Description |
-|------|---------|------|--------|-----|----|-------------|
-| 1 | 6.5 Creedmoor | .264 | short | rimless | ✓ | The dominant precision rifle cartridge. Excellent ballistics in a short-action package with mild recoil. |
-| 2 | .308 Winchester | .308 | short | rimless | ✓ | The benchmark short-action cartridge. Universal availability, wide bullet selection, moderate recoil. |
-| 3 | 7.62x51mm NATO | .308 | short | rimless | | Military counterpart to .308 Win. Thicker brass, slightly lower pressure. |
-| 4 | 6mm Creedmoor | .243 | short | rimless | ✓ | 6.5 CM necked down to 6mm. Popular in PRS competition for lower recoil. |
-| 5 | .260 Remington | .264 | short | rimless | | The 6.5mm short-action predecessor to 6.5 Creedmoor. Largely displaced by 6.5 CM. |
-| 6 | .243 Winchester | .243 | short | rimless | | Versatile short-action cartridge. Popular for deer and varmint. |
-| 7 | 6.5 PRC | .264 | short | rimless | ✓ | Short-magnum performance for 6.5mm bullets. ~200 fps faster than 6.5 CM. |
+### AR-15 (20 calibers, 20 ranked)
 
-**Unranked AR-10 calibers (2):** .277 Fury, .338 Federal
+| Rank | Caliber |
+|---:|---|
+| 1 | .223 Remington |
+| 2 | 5.56x45mm NATO |
+| 3 | .300 AAC Blackout |
+| 4 | 6.5 Grendel |
+| 5 | 6mm ARC |
+| 6 | 7.62x39mm |
+| 7 | 6.8 SPC |
+| 8 | .224 Valkyrie |
+| 9 | .350 Legend |
+| 10 | .450 Bushmaster |
+| 11 | .458 SOCOM |
+| 12 | .50 Beowulf |
+| 13 | .204 Ruger |
+| 14 | .22 Nosler |
+| 15 | 5.45x39mm |
+| 16–20 | *(5 more)* |
+
+### AR-10 (9 calibers, 9 ranked)
+
+| Rank | Caliber |
+|---:|---|
+| 1 | .308 Winchester |
+| 2 | 6.5 Creedmoor |
+| 3 | 7.62x51mm NATO |
+| 4 | 6.5 PRC |
+| 5 | 6mm Creedmoor |
+| 6 | .260 Remington |
+| 7 | .243 Winchester |
+| 8 | .277 Fury |
+| 9 | .338 Federal |
+
+### Bolt Action (105 calibers, 103 ranked)
+
+Top 25 shown:
+
+| Rank | Caliber |
+|---:|---|
+| 1 | 6.5 Creedmoor |
+| 2 | .308 Winchester |
+| 3 | .30-06 Springfield |
+| 4 | .270 Winchester |
+| 5 | .300 Winchester Magnum |
+| 6 | 7mm Remington Magnum |
+| 7 | .243 Winchester |
+| 8 | 6mm Creedmoor |
+| 9 | 6mm Dasher |
+| 10 | 6mm GT |
+| 11 | 6.5 PRC |
+| 12 | 7mm PRC |
+| 13 | .223 Remington |
+| 14 | .300 PRC |
+| 15 | 7mm-08 Remington |
+| 16 | .22-250 Remington |
+| 17 | .338 Lapua Magnum |
+| 18 | .300 Winchester Short Magnum |
+| 19 | .280 Ackley Improved |
+| 20 | .270 Winchester Short Magnum |
+| 21 | .260 Remington |
+| 22 | 7mm Remington Magnum (Short Action) |
+| 23 | .30-30 Winchester |
+| 24 | 6.5-284 Norma |
+| 25 | 6mm ARC |
 
 ---
 
 ## Multi-Caliber Chambers
 
-Chambers that accept more than one caliber. These are important to get right for safety and profile creation UX.
+Chambers that safely accept more than one caliber:
 
-| Chamber | Primary Caliber | Also Accepts |
-|---------|----------------|--------------|
-| .223 Wylde | .223 Remington | 5.56x45mm NATO |
-| 5.56 NATO | 5.56x45mm NATO | .223 Remington |
-| .308 Winchester | .308 Winchester | 7.62x51mm NATO |
-| 7.62x51mm NATO | 7.62x51mm NATO | .308 Winchester |
-| .280 Ackley Improved | .280 Ackley Improved | .280 Remington |
-| .260 Ackley Improved | .260 Ackley Improved | .260 Remington |
-| .458 Lott | .458 Lott | .458 Winchester Magnum |
-
-**Questions for reviewer:**
-- Are we missing any common multi-caliber chamber situations?
-- Any safety concerns with the compatibility claims above?
+| Chamber | Accepts |
+|---|---|
+| 5.56 NATO | 5.56x45mm NATO, .223 Remington |
+| .223 Wylde | 5.56x45mm NATO, .223 Remington |
+| .308 Winchester | 7.62x51mm NATO, .308 Winchester |
+| 7.62x51mm NATO | 7.62x51mm NATO, .308 Winchester |
+| .260 Ackley Improved | .260 Ackley Improved, .260 Remington |
+| .280 Ackley Improved | .280 Remington, .280 Ackley Improved |
+| .458 Lott | .458 Lott, .458 Winchester Magnum |
 
 ---
 
-## Unranked Bolt-Action Calibers (80)
+## Data Distribution
 
-These calibers are in the database mapped to bolt action but have no popularity rank assigned. Should any of these be ranked? Are any missing entirely?
+### By Action Length
 
-**Rimfire:** .17 HMR, .17 Hornet, .17 WSM, .22 Hornet, .22 Long Rifle, .22 WMR
+| Action Length | Count |
+|---|---:|
+| Short | 41 |
+| Long | 28 |
+| Mini | 24 |
+| Magnum | 22 |
 
-**Varmint / Small-Bore:** .204 Ruger, .22 Creedmoor, .22-250 Remington, .220 Swift, .222 Remington, .222 Remington Magnum, .223 WSSM, .224 Valkyrie
+### By Rim Type
 
-**6mm Class:** .240 Weatherby Magnum, .243 WSSM, 6mm BR Remington, 6mm BRA, 6mm Remington, 6mm XC, 6mm-284
+| Rim Type | Count |
+|---|---:|
+| Rimless | 62 |
+| Rebated | 28 |
+| Belted | 14 |
+| Rimmed | 10 |
+| Semi-rimmed | 1 |
 
-**.25 / 6.5mm Class:** .25 Creedmoor, .25 Weatherby RPM, .25-06 Remington, .257 Roberts, .257 Weatherby Magnum, .26 Nosler, .260 Ackley Improved, .264 Winchester Magnum, 6.5 Grendel, 6.5 SAUM, 6.5 Weatherby RPM
+### is_common_lr Coverage
 
-**.270 / 7mm Class:** .270 WSM, .270 Weatherby Magnum, .277 Fury, .28 Nosler, .280 Ackley Improved, .280 Remington, .284 Winchester, 7mm Backcountry, 7mm SAUM, 7mm WSM, 7x57mm Mauser
-
-**.30 Cal Class:** .30 Nosler, .30-30 Winchester, .300 Norma Magnum, .300 RSAUM, .300 RUM, .300 Ruger Compact Magnum, .300 Savage, .300 Weatherby Magnum, .308 Marlin Express
-
-**Medium & Large Bore:** .325 WSM, .338 EnABELR, .338 Federal, .338 Norma Magnum, .338 RUM, .338-378 Weatherby Magnum, .340 Weatherby Magnum, .35 Whelen, .350 Legend, .375 CheyTac, .375 EnABELR, .375 H&H Magnum, .375 Ruger, .408 CheyTac, .416 Barrett, .416 Remington Magnum, .416 Rigby, .450 Bushmaster, .458 Lott, .458 Winchester Magnum, .50 BMG
-
-**Military Surplus / Classic:** 5.45x39mm, 7.62x39mm, 7.62x54mmR, 8x57mm Mauser, 9.3x62mm Mauser, 9.3x74mmR, 6.8 Western
-
----
-
-## Open Questions
-
-1. **Bolt-action rankings 1–23** — do these feel right for the precision/LR community? Anything out of order?
-2. **AR-15 rankings** — only 4 ranked out of 20. Should .224 Valkyrie, 6.5 Grendel, or 6.8 SPC be ranked?
-3. **AR-10 rankings** — anything missing or out of order?
-4. **Multi-caliber chambers** — are we missing any? (e.g., should .30-06 chambers accept .25-06 or .270 Win, or is that not how it works?)
-5. **Calibers we're missing entirely** — any notable omissions from the 114-caliber list?
-6. **`is_common_lr` flags** — any calibers marked as long-range that shouldn't be, or vice versa?
+- **51** calibers flagged as `is_common_lr = true`
+- **46** of those have an explicit LR ranking
+- **5** are flagged common but not individually ranked:
+  - .25x47 Lapua (overall: 88)
+  - .260 Ackley Improved (overall: 99)
+  - 6.5 Weatherby RPM (overall: 107)
+  - .25 Weatherby RPM (overall: 108)
+  - 7mm Backcountry (overall: 112)

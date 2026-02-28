@@ -1,0 +1,232 @@
+[
+  {
+    "name": "6.5 Creedmoor",
+    "lr_popularity_rank": 1,
+    "is_common_lr": true
+  },
+  {
+    "name": "6mm Dasher",
+    "lr_popularity_rank": 2,
+    "is_common_lr": true
+  },
+  {
+    "name": "6mm GT",
+    "lr_popularity_rank": 3,
+    "is_common_lr": true
+  },
+  {
+    "name": "6mm Creedmoor",
+    "lr_popularity_rank": 4,
+    "is_common_lr": true
+  },
+  {
+    "name": ".308 Winchester",
+    "lr_popularity_rank": 5,
+    "is_common_lr": true
+  },
+  {
+    "name": ".300 Winchester Magnum",
+    "lr_popularity_rank": 6,
+    "is_common_lr": true
+  },
+  {
+    "name": ".300 PRC",
+    "lr_popularity_rank": 7,
+    "is_common_lr": true
+  },
+  {
+    "name": "6.5 PRC",
+    "lr_popularity_rank": 8,
+    "is_common_lr": true
+  },
+  {
+    "name": "7mm PRC",
+    "lr_popularity_rank": 9,
+    "is_common_lr": true
+  },
+  {
+    "name": ".338 Lapua Magnum",
+    "lr_popularity_rank": 10,
+    "is_common_lr": true
+  },
+  {
+    "name": "6mm ARC",
+    "lr_popularity_rank": 11,
+    "is_common_lr": true
+  },
+  {
+    "name": ".25 Creedmoor",
+    "lr_popularity_rank": 12,
+    "is_common_lr": true
+  },
+  {
+    "name": "7mm Remington Magnum",
+    "lr_popularity_rank": 13,
+    "is_common_lr": true
+  },
+  {
+    "name": ".260 Remington",
+    "lr_popularity_rank": 14,
+    "is_common_lr": true
+  },
+  {
+    "name": "6.5-284 Norma",
+    "lr_popularity_rank": 15,
+    "is_common_lr": true
+  },
+  {
+    "name": ".300 Winchester Short Magnum",
+    "lr_popularity_rank": 16,
+    "is_common_lr": true
+  },
+  {
+    "name": "6mm BR Remington",
+    "lr_popularity_rank": 17,
+    "is_common_lr": true
+  },
+  {
+    "name": "6mm BRA",
+    "lr_popularity_rank": 18,
+    "is_common_lr": true
+  },
+  {
+    "name": ".375 CheyTac",
+    "lr_popularity_rank": 19,
+    "is_common_lr": true
+  },
+  {
+    "name": "6.5 SAUM",
+    "lr_popularity_rank": 20,
+    "is_common_lr": true
+  },
+  {
+    "name": "7mm SAUM",
+    "lr_popularity_rank": 21,
+    "is_common_lr": true
+  },
+  {
+    "name": ".284 Winchester",
+    "lr_popularity_rank": 22,
+    "is_common_lr": true
+  },
+  {
+    "name": ".22 Creedmoor",
+    "lr_popularity_rank": 23,
+    "is_common_lr": true
+  },
+  {
+    "name": ".224 Valkyrie",
+    "lr_popularity_rank": 24,
+    "is_common_lr": true
+  },
+  {
+    "name": "6.5 Grendel",
+    "lr_popularity_rank": 25,
+    "is_common_lr": true
+  },
+  {
+    "name": ".300 Norma Magnum",
+    "lr_popularity_rank": 26,
+    "is_common_lr": true
+  },
+  {
+    "name": "6.8 Western",
+    "lr_popularity_rank": 27,
+    "is_common_lr": true
+  },
+  {
+    "name": ".280 Ackley Improved",
+    "lr_popularity_rank": 28,
+    "is_common_lr": true
+  },
+  {
+    "name": "6mm XC",
+    "lr_popularity_rank": 29,
+    "is_common_lr": true
+  },
+  {
+    "name": ".300 Weatherby Magnum",
+    "lr_popularity_rank": 30,
+    "is_common_lr": true
+  },
+  {
+    "name": ".300 RUM",
+    "lr_popularity_rank": 31,
+    "is_common_lr": true
+  },
+  {
+    "name": ".408 CheyTac",
+    "lr_popularity_rank": 32,
+    "is_common_lr": true
+  },
+  {
+    "name": ".416 Barrett",
+    "lr_popularity_rank": 33,
+    "is_common_lr": true
+  },
+  {
+    "name": ".50 BMG",
+    "lr_popularity_rank": 34,
+    "is_common_lr": true
+  },
+  {
+    "name": "6mm-284",
+    "lr_popularity_rank": 35,
+    "is_common_lr": true
+  },
+  {
+    "name": ".338 Norma Magnum",
+    "lr_popularity_rank": 36,
+    "is_common_lr": true
+  },
+  {
+    "name": ".338 RUM",
+    "lr_popularity_rank": 37,
+    "is_common_lr": true
+  },
+  {
+    "name": ".338-378 Weatherby Magnum",
+    "lr_popularity_rank": 38,
+    "is_common_lr": true
+  },
+  {
+    "name": ".338 EnABELR",
+    "lr_popularity_rank": 39,
+    "is_common_lr": true
+  },
+  {
+    "name": ".375 EnABELR",
+    "lr_popularity_rank": 40,
+    "is_common_lr": true
+  },
+  {
+    "name": ".300 RSAUM",
+    "lr_popularity_rank": 41,
+    "is_common_lr": true
+  },
+  {
+    "name": ".26 Nosler",
+    "lr_popularity_rank": 42,
+    "is_common_lr": true
+  },
+  {
+    "name": ".28 Nosler",
+    "lr_popularity_rank": 43,
+    "is_common_lr": true
+  },
+  {
+    "name": ".30 Nosler",
+    "lr_popularity_rank": 44,
+    "is_common_lr": true
+  },
+  {
+    "name": ".277 Fury",
+    "lr_popularity_rank": 45,
+    "is_common_lr": true
+  },
+  {
+    "name": ".264 Winchester Magnum",
+    "lr_popularity_rank": 46,
+    "is_common_lr": true
+  }
+]
