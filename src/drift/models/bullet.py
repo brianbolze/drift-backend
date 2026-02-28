@@ -76,6 +76,7 @@ class BulletBCSource(Base):
     source_url: Mapped[str | None] = mapped_column(String(500), nullable=True)
     source_date: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
     source_quality: Mapped[float | None] = mapped_column(Float, nullable=True)
+    source_methodology: Mapped[str | None] = mapped_column(String(50), nullable=True)
     notes: Mapped[str | None] = mapped_column(Text, nullable=True)
 
     # Relationships

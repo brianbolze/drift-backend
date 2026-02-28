@@ -8,7 +8,7 @@ import os
 from pathlib import Path
 
 from dotenv import load_dotenv
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, event
 from sqlalchemy.orm import sessionmaker
 
 # Load .env from project root
@@ -25,7 +25,18 @@ def get_engine(url: str = DATABASE_URL):
         if not db_path.is_absolute():
             db_path = _PROJECT_ROOT / db_path
         db_path.parent.mkdir(parents=True, exist_ok=True)
-    return create_engine(url, echo=False)
+    engine = create_engine(url, echo=False)
+
+    # Enable foreign key enforcement for SQLite connections
+    if url.startswith("sqlite"):
+
+        @event.listens_for(engine, "connect")
+        def _set_sqlite_pragma(dbapi_connection, connection_record):
+            cursor = dbapi_connection.cursor()
+            cursor.execute("PRAGMA foreign_keys=ON")
+            cursor.close()
+
+    return engine
 
 
 def get_session_factory(url: str = DATABASE_URL):

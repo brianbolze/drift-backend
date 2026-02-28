@@ -71,7 +71,9 @@ def import_calibers(session: Session) -> int:
             continue
 
         # parent_caliber_name -> parent_caliber_id (resolve after all inserts)
-        row = {k: v for k, v in entry.items() if k != "parent_caliber_name"}
+        # popularity_rank is handled by import_rankings.py, not the Caliber model
+        skip_keys = {"parent_caliber_name", "popularity_rank"}
+        row = {k: v for k, v in entry.items() if k not in skip_keys}
         session.add(Caliber(**row))
         count += 1
 

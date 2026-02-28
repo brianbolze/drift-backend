@@ -22,6 +22,7 @@ class Manufacturer(TimestampMixin, Base):
     logo_url: Mapped[str | None] = mapped_column(String(500), nullable=True)
     type_tags: Mapped[list | None] = mapped_column(JSON, nullable=True)
     country: Mapped[str | None] = mapped_column(String(100), nullable=True)
+    parent_company: Mapped[str | None] = mapped_column(String(255), nullable=True)
     notes: Mapped[str | None] = mapped_column(Text, nullable=True)
 
     # Relationships

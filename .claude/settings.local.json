@@ -57,7 +57,9 @@
       "Bash(python scripts/import_rankings.py)",
       "Bash(python scripts/import_rankings.py --apply)",
       "Bash(python -m pytest tests/ -q)",
-      "Bash(python -c \":*)"
+      "Bash(python -c \":*)",
+      "Bash(grep -r \"priority\\\\|Priority\" /Users/brianbolze/Development/software/shooting/docs/*.md)",
+      "Bash(python -m alembic revision --autogenerate -m \"add_parent_company_to_manufacturer\")"
     ]
   }
 }

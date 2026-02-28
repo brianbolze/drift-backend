@@ -64,7 +64,7 @@ def add_missing_calibers(session: Session) -> None:
             rim_type="rimless",
             action_length="short",
             year_introduced=2018,
-            alt_names=[".25x47L", "25x47 Lapua", "25-47 Lapua", ".25-47L"],
+            alt_names=["25×47", ".25x47L", "25x47 Lapua", "25-47 Lapua", ".25-47L"],
             description=(
                 "Top-5 PRS competition cartridge as of 2025. "
                 "Necked-down .47 Lapua case with excellent barrel life "

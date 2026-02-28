@@ -22,6 +22,7 @@ class RifleModel(TimestampMixin, Base):
     chamber_id: Mapped[str] = uuid_fk("chamber.id")
     barrel_length_inches: Mapped[float | None] = mapped_column(Float, nullable=True)
     twist_rate: Mapped[str | None] = mapped_column(String(20), nullable=True)
+    twist_rate_inches: Mapped[float | None] = mapped_column(Float, nullable=True)
     weight_lbs: Mapped[float | None] = mapped_column(Float, nullable=True)
     description: Mapped[str | None] = mapped_column(Text, nullable=True)
     barrel_material: Mapped[str | None] = mapped_column(String(100), nullable=True)

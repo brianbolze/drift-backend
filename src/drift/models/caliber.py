@@ -34,6 +34,7 @@ class Caliber(TimestampMixin, Base):
     year_introduced: Mapped[int | None] = mapped_column(Integer, nullable=True)
     is_common_lr: Mapped[bool] = mapped_column(Boolean, default=False, server_default="0")
     description: Mapped[str | None] = mapped_column(Text, nullable=True)
+    saami_test_barrel_length_inches: Mapped[float | None] = mapped_column(Float, nullable=True)
 
     # Relationships
     parent_caliber: Mapped["Caliber | None"] = relationship(

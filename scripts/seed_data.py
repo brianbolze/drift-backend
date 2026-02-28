@@ -41,245 +41,298 @@ from drift.models import (  # noqa: E402
 
 # ---------------------------------------------------------------------------
 # Manufacturer seed data
-# Source: design proposal MVP scope + domain expert review (2026-02-20)
+# Source: design proposal MVP scope + domain expert curation (2026-02-28)
+# Reviewed and extended by firearms domain expert from original 38 → 86 entries.
+# Key corrections: Vista Outdoor → CSG/Kinetic Group ownership (Nov 2024),
+# Sierra/Barnes/Savage under JDH Capital, Berger remains Nammo Group.
 # ---------------------------------------------------------------------------
 
 MANUFACTURERS = [
+    # --- Bullet Makers ---
     {
-        "name": "Hornady",
-        "alt_names": ["Hornady Manufacturing", "Hornaday"],
-        "website_url": "https://www.hornady.com",
-        "type_tags": ["bullet_maker", "ammo_maker"],
+        "name": "Barnes Bullets",
+        "alt_names": ["Barnes", "Barnes Bullets LLC"],
+        "website_url": "https://www.barnesbullets.com",
+        "type_tags": ["bullet_maker"],
         "country": "USA",
+        "parent_company": "Bullseye Acquisitions / JDH Capital",
+        "notes": (
+            "Pioneer of monolithic copper bullets (TSX, TTSX, LRX). LRX line relevant for long-range hunting. "
+            "Owned by Bullseye Acquisitions/JDH Capital (same group as Sierra and Savage), NOT Remington/Vista."
+        ),
+    },
+    {
+        "name": "Berger Bullets",
+        "alt_names": ["Berger", "Burger", "Berger Bullets Nammo"],
+        "website_url": "https://www.bergerbullets.com",
+        "type_tags": ["bullet_maker"],
+        "country": "USA",
+        "parent_company": "Nammo Group (Capstone Precision Group)",
+        "notes": (
+            "76% of top-200 PRS shooters use Berger bullets. Hybrid Target and VLD designs dominate competition. "
+            "109gr LRHT is the #1 6mm bullet in PRS (39% share). Owned by Nammo Group since Oct 2016 (NOT sold to "
+            "JRS Enterprises — that claim is unverified)."
+        ),
+    },
+    {
+        "name": "Cutting Edge Bullets",
+        "alt_names": ["CEB", "Cutting Edge", "CE Bullets"],
+        "website_url": "https://www.cuttingedgebullets.com",
+        "type_tags": ["bullet_maker"],
+        "country": "USA",
+        "notes": (
+            "#1 bullet brand in ELR (Extreme Long Range) competitions. Monolithic solid copper/brass "
+            "lathe-turned. SealTite Band technology. Founded by Dan Smitchko."
+        ),
     },
     {
         "name": "Federal Premium",
-        "alt_names": ["Federal", "Federal Ammunition", "ATK Federal"],
+        "alt_names": ["Federal", "Federal Ammunition", "ATK Federal", "Kinetic Group Federal"],
         "website_url": "https://www.federalpremium.com",
         "type_tags": ["ammo_maker", "bullet_maker"],
         "country": "USA",
+        "parent_company": "Czechoslovak Group (CSG) / The Kinetic Group",
         "notes": (
-            "Parent company Vista Outdoor. Also owns CCI, Speer, Sierra. "
-            "Makes own bullets for some lines (Trophy Bonded, Fusion, Terminal Ascent)."
+            "Gold Medal Match line is the factory ammo benchmark. Federal Gold Medal Berger loads (156 EOL, "
+            '153.5 LRHT) used by PRS competitors. As of Nov 2024, owned by Czechoslovak Group (CSG) as part of '
+            '"The Kinetic Group" after Vista Outdoor split. Also owns CCI and Speer.'
+        ),
+    },
+    {
+        "name": "Hammer Bullets",
+        "alt_names": ["Hammer", "Hammer Hunting Bullets"],
+        "website_url": "https://www.hammerbullets.com",
+        "type_tags": ["bullet_maker"],
+        "country": "USA",
+        "parent_company": "H D Custom Rifles & Ammunition LLC",
+        "notes": (
+            "Patented solid copper with driving band design. Reduces barrel fouling. Popular with long-range "
+            "hunters. Controlled petal shedding for deep penetration. Validated to 900+ yds on elk."
+        ),
+    },
+    {
+        "name": "Hornady",
+        "alt_names": ["Hornady Manufacturing", "Hornaday", "Hornady Mfg"],
+        "website_url": "https://www.hornady.com",
+        "type_tags": ["bullet_maker", "ammo_maker"],
+        "country": "USA",
+        "notes": (
+            "Major bullet/ammo maker. ELD Match and A-Tip lines are precision staples. Also makes brass. "
+            "Independently family-owned, based in Grand Island, NE. Founded 1949."
+        ),
+    },
+    {
+        "name": "Lapua",
+        "alt_names": ["Nammo Lapua", "Lupua", "Lapua Oy"],
+        "website_url": "https://www.lapua.com",
+        "type_tags": ["bullet_maker", "ammo_maker"],
+        "country": "Finland",
+        "parent_company": "Nammo Group",
+        "notes": (
+            "Premium brass and Scenar/Scenar-L bullet line. Lapua brass is used by ~46% of top PRS shooters "
+            "(with Alpha Munitions, they account for 92%). Parent company Nammo (same group as Berger, "
+            "Vihtavuori, SK)."
+        ),
+    },
+    {
+        "name": "Lehigh Defense",
+        "alt_names": ["Lehigh", "Lehigh Bullets"],
+        "website_url": "https://www.lehighdefense.com",
+        "type_tags": ["bullet_maker", "ammo_maker"],
+        "country": "USA",
+        "notes": (
+            "Controlled Fracturing technology. More defense/LE focused but has rifle bullets. Match Solid line "
+            "for precision. Based in Clarksville, TX."
+        ),
+    },
+    {
+        "name": "Norma",
+        "alt_names": ["Norma Ammunition", "Norma Precision", "Norma Ammo"],
+        "website_url": "https://www.norma-ammunition.com",
+        "type_tags": ["ammo_maker", "bullet_maker"],
+        "country": "Sweden",
+        "parent_company": "Beretta Holding",
+        "notes": (
+            "Premium ammo and brass. One of the top 4 brass brands used by PRS competitors. ~240 employees, 100+ "
+            "calibers. Founded 1902. Owned by Beretta. Also makes component bullets."
+        ),
+    },
+    {
+        "name": "Nosler",
+        "alt_names": ["Nosler Inc", "Nossler"],
+        "website_url": "https://www.nosler.com",
+        "type_tags": ["bullet_maker", "ammo_maker", "rifle_maker"],
+        "country": "USA",
+        "notes": (
+            "Invented the Partition bullet. Makes loaded ammo (Trophy Grade), component bullets (AccuBond LR, "
+            "RDF, Custom Competition), brass, and the Model 21 rifle. Independent, based in Bend, OR."
         ),
     },
     {
         "name": "Sierra Bullets",
-        "alt_names": ["Sierra"],
+        "alt_names": ["Sierra", "Sierra Bullet"],
         "website_url": "https://www.sierrabullets.com",
         "type_tags": ["bullet_maker"],
         "country": "USA",
-        "notes": "Owned by Vista Outdoor / Federal. MatchKing line is the precision standard.",
-    },
-    {
-        "name": "Berger Bullets",
-        "alt_names": ["Berger", "Burger"],
-        "website_url": "https://www.bergerbullets.com",
-        "type_tags": ["bullet_maker"],
-        "country": "USA",
-        "notes": "Known for Hybrid and VLD designs. Sold to JRS Enterprises in early 2025.",
-    },
-    {
-        "name": "Nosler",
-        "alt_names": ["Nosler Inc"],
-        "website_url": "https://www.nosler.com",
-        "type_tags": ["bullet_maker", "ammo_maker"],
-        "country": "USA",
-        "notes": "Invented the Partition bullet. Also makes loaded ammo (Trophy Grade).",
-    },
-    {
-        "name": "Barnes Bullets",
-        "alt_names": ["Barnes"],
-        "website_url": "https://www.barnesbullets.com",
-        "type_tags": ["bullet_maker"],
-        "country": "USA",
-        "notes": "Pioneer of monolithic copper bullets (TSX, TTSX, LRX). Owned by Remington/Vista.",
-    },
-    {
-        "name": "Lapua",
-        "alt_names": ["Nammo Lapua"],
-        "website_url": "https://www.lapua.com",
-        "type_tags": ["bullet_maker", "ammo_maker"],
-        "country": "Finland",
-        "notes": "Premium brass and Scenar bullet line. Parent company Nammo.",
-    },
-    {
-        "name": "Applied Ballistics",
-        "alt_names": ["AB", "Applied Ballistics LLC"],
-        "website_url": "https://www.appliedballisticsllc.com",
-        "type_tags": ["data_provider"],
-        "country": "USA",
-        "notes": "Bryan Litz. Doppler-measured BC data and custom drag models. Gold standard for BC values.",
-    },
-    {
-        "name": "Winchester",
-        "alt_names": ["Olin Winchester", "Winchester Ammunition"],
-        "website_url": "https://www.winchester.com",
-        "type_tags": ["ammo_maker"],
-        "country": "USA",
-        "notes": "Ammo manufactured by Olin Corp. Brand name on many caliber designations (.308 Win, .270 Win, etc.).",
-    },
-    {
-        "name": "Bergara",
-        "alt_names": [],
-        "website_url": "https://www.bergara.online/us",
-        "type_tags": ["rifle_maker"],
-        "country": "Spain",
-        "notes": "B-14 HMR is a benchmark for precision-for-the-money.",
-    },
-    {
-        "name": "Tikka",
-        "alt_names": [],
-        "website_url": "https://www.tikka.fi",
-        "type_tags": ["rifle_maker"],
-        "country": "Finland",
-        "notes": "Made by Sako (Beretta group). T3x TAC A1 is a popular precision chassis rifle.",
-    },
-    {
-        "name": "Ruger",
-        "alt_names": ["Sturm, Ruger & Co."],
-        "website_url": "https://www.ruger.com",
-        "type_tags": ["rifle_maker"],
-        "country": "USA",
-    },
-    {
-        "name": "Howa",
-        "alt_names": ["Howa Machinery"],
-        "website_url": "https://www.howamachinery.com",
-        "type_tags": ["rifle_maker"],
-        "country": "Japan",
-        "notes": "Imported/distributed by Legacy Sports International in the US.",
-    },
-    {
-        "name": "Savage Arms",
-        "alt_names": ["Savage"],
-        "website_url": "https://www.savagearms.com",
-        "type_tags": ["rifle_maker"],
-        "country": "USA",
-    },
-    {
-        "name": "Remington",
-        "alt_names": ["Remington Arms", "Big Green"],
-        "website_url": "https://www.remington.com",
-        "type_tags": ["rifle_maker", "ammo_maker"],
-        "country": "USA",
-        "notes": "Historically makes both firearms and ammunition. Post-bankruptcy, split operations.",
-    },
-    {
-        "name": "Masterpiece Arms",
-        "alt_names": ["MPA"],
-        "website_url": "https://www.masterpiecearms.com",
-        "type_tags": ["rifle_maker", "chassis_maker"],
-        "country": "USA",
+        "parent_company": "Bullseye Acquisitions / JDH Capital",
         "notes": (
-            "Dominant PRS rifle/chassis brand. BA Comp used by ~29% of PRS competitors, " "44% of top-25 shooters."
+            "MatchKing line is the precision standard. Sierra is NOT part of the CSG/Kinetic Group — sold by "
+            "Clarus Corp to JDH Capital (Bullseye Acquisitions) in Dec 2023 for $175M. Same ownership group as "
+            "Savage Arms and Barnes."
         ),
-    },
-    {
-        "name": "Seekins Precision",
-        "alt_names": ["Seekins"],
-        "website_url": "https://www.seekinsprecision.com",
-        "type_tags": ["rifle_maker"],
-        "country": "USA",
-        "notes": "Havak line well-regarded for factory precision. SP10 is the accuracy ceiling for factory gas guns.",
     },
     {
         "name": "Speer",
-        "alt_names": [],
+        "alt_names": ["Speer Ammunition", "Speer Ammo"],
         "website_url": "https://www.speer.com",
         "type_tags": ["bullet_maker", "ammo_maker"],
         "country": "USA",
-        "notes": "Gold Dot line for duty/defense. Owned by Vista Outdoor.",
+        "parent_company": "Czechoslovak Group (CSG) / The Kinetic Group",
+        "notes": (
+            "Gold Dot line for duty/defense. Less relevant to precision/LR rifle market. Now owned by "
+            "CSG/Kinetic Group (Nov 2024) after Vista Outdoor split."
+        ),
+    },
+    # --- Ammo / Brass Makers ---
+    {
+        "name": "Alpha Munitions",
+        "alt_names": ["Alpha", "Alpha Brass", "ADG", "Alpha Dog Gear"],
+        "website_url": "https://www.alphamunitions.com",
+        "type_tags": ["ammo_maker"],
+        "country": "USA",
+        "notes": (
+            "Premium brass — with Lapua, accounts for 92% of top-200 PRS brass market. American-made in Salt "
+            "Lake City, UT. Rapidly growing among competitive shooters."
+        ),
     },
     {
         "name": "Black Hills Ammunition",
-        "alt_names": ["Black Hills", "BHA"],
+        "alt_names": ["Black Hills", "BHA", "BH Ammo", "Blackhills"],
         "website_url": "https://www.black-hills.com",
         "type_tags": ["ammo_maker"],
         "country": "USA",
-        "notes": "Premium loaded ammo favored by precision shooters. MK 262 Mod 1 military contract.",
-    },
-    {
-        "name": "Sellier & Bellot",
-        "alt_names": ["S&B"],
-        "website_url": "https://www.sellier-bellot.com",
-        "type_tags": ["ammo_maker"],
-        "country": "Czech Republic",
-        "notes": "One of the oldest ammo manufacturers (est. 1825). Owned by Colt CZ Group.",
+        "notes": (
+            "Premium loaded ammo favored by precision shooters. MK 262 Mod 1 military contract. 77gr TMK loads "
+            "popular for AR precision. Independent, family-owned."
+        ),
     },
     {
         "name": "IMI Systems",
-        "alt_names": ["IMI", "Israeli Military Industries"],
+        "alt_names": ["IMI", "IMI Ammunition", "Israeli Military Industries", "IMI Defense"],
         "website_url": "https://www.imisystems.com",
         "type_tags": ["ammo_maker"],
         "country": "Israel",
-        "notes": "Military and commercial ammo. Razorcore line for precision. Imported by various US distributors.",
+        "parent_company": "Elbit Systems",
+        "notes": (
+            "Military and commercial ammo. Razorcore line for precision. Owned by Elbit Systems since Nov 2018 "
+            "(~$495M). Imported by various US distributors."
+        ),
+    },
+    {
+        "name": "Peterson Cartridge",
+        "alt_names": ["Peterson", "Peterson Brass"],
+        "website_url": "https://www.petersoncartridge.com",
+        "type_tags": ["ammo_maker"],
+        "country": "USA",
+        "notes": (
+            "Match-grade American-made brass specifically for long-range shooters. Based in Pittsburgh, PA. "
+            "Known for extremely consistent weight/dimensions. Family-owned."
+        ),
     },
     {
         "name": "Prvi Partizan",
-        "alt_names": ["PPU", "Privi Partizan"],
+        "alt_names": ["PPU", "Privi Partizan", "Privi", "Prvi"],
         "website_url": "https://www.prvipartizan.com",
         "type_tags": ["ammo_maker"],
         "country": "Serbia",
-        "notes": "Affordable brass-cased ammo. Popular for practice/training. Good quality for the price.",
-    },
-    # --- Phase 1.5: AR Rifle Manufacturers — Tier 1 ---
-    {
-        "name": "Daniel Defense",
-        "alt_names": ["DD"],
-        "website_url": "https://www.danieldefense.com",
-        "type_tags": ["rifle_maker"],
-        "country": "USA",
         "notes": (
-            "Premium AR-15 and AR-10 maker. DDM4 series is the benchmark for hard-use precision ARs. "
-            "Cold hammer-forged barrels, most components made in-house."
+            "Affordable brass-cased ammo. Popular for practice/training. Good quality for the price. Not a "
+            "precision brand but widely used for volume shooting."
         ),
     },
     {
-        "name": "Knight's Armament",
-        "alt_names": ["KAC", "Knights Armament"],
-        "website_url": "https://www.knightarmco.com",
-        "type_tags": ["rifle_maker"],
+        "name": "Remington",
+        "alt_names": ["Remington Arms", "Big Green", "Rem", "RemArms", "Remington 700"],
+        "website_url": "https://www.remington.com",
+        "type_tags": ["rifle_maker", "ammo_maker"],
         "country": "USA",
+        "parent_company": "RemArms (rifles) / CSG (ammo)",
         "notes": (
-            "SR-25 is the US military semi-auto precision platform (M110 SASS). "
-            "SR-15 for 5.56. Extremely high-end, limited availability, cult following."
+            "Model 700 is the most common precision rifle action footprint (de facto standard). Post-2020 "
+            "bankruptcy, firearms and ammo split. Remington Ammunition now under CSG/Kinetic Group. Rifles under "
+            "RemArms (Roundhill Group)."
         ),
     },
     {
-        "name": "JP Enterprises",
-        "alt_names": ["JP", "JPE"],
-        "website_url": "https://www.jprifles.com",
-        "type_tags": ["rifle_maker"],
-        "country": "USA",
+        "name": "Sellier & Bellot",
+        "alt_names": ["S&B", "Sellier and Bellot", "Sellier Bellot"],
+        "website_url": "https://www.sellier-bellot.cz",
+        "type_tags": ["ammo_maker"],
+        "country": "Czech Republic",
+        "parent_company": "Colt CZ Group SE",
         "notes": (
-            "Purpose-built competition gas guns. LRP-07 and CTR-02 are staples in PRS Gas Gun. "
-            "Known for tuned gas systems and match barrels."
+            "One of the oldest ammo manufacturers (est. 1825). Owned by Colt CZ Group (acquired 2024 for $703M). "
+            "Budget-friendly practice ammo. Not a primary precision brand but widely used for training."
         ),
     },
     {
-        "name": "LaRue Tactical",
-        "alt_names": ["LaRue"],
-        "website_url": "https://www.larue.com",
-        "type_tags": ["rifle_maker"],
+        "name": "Starline Brass",
+        "alt_names": ["Starline", "Starline Inc"],
+        "website_url": "https://www.starlinebrass.com",
+        "type_tags": ["ammo_maker"],
         "country": "USA",
         "notes": (
-            "OBR (Optimized Battle Rifle) and PredatAR are legendary for accuracy. "
-            "Often described as the most accurate factory AR. Cult following."
+            "Nearly 50 years of brass production. Primarily handgun brass but expanding rifle offerings. Huge "
+            "volume, good quality, very affordable. Independent."
+        ),
+    },
+    {
+        "name": "Winchester",
+        "alt_names": ["Winchester Ammunition", "Win", "Olin Winchester"],
+        "website_url": "https://www.winchester.com",
+        "type_tags": ["ammo_maker"],
+        "country": "USA",
+        "parent_company": "Olin Corporation",
+        "notes": (
+            "Ammo manufactured by Olin Corporation. Brand name on many caliber designations (.308 Win, .270 Win, "
+            "etc.). Olin/Winchester acquired AMMO Inc small-cal assets in Apr 2025. Match/precision ammo not a "
+            "primary strength."
+        ),
+    },
+    # --- Rifle Makers ---
+    {
+        "name": "Accuracy International",
+        "alt_names": ["AI", "Accuracy Intl", "Accuracy Int'l"],
+        "website_url": "https://www.accuracyinternational.com",
+        "type_tags": ["rifle_maker"],
+        "country": "United Kingdom",
+        "notes": (
+            "Military precision rifles (AXSR, AT-X). Used by military/LE worldwide. Premium price point. Less "
+            "common in PRS (more tactical/military) but highly recognized. Founded 1978."
         ),
     },
     {
         "name": "Aero Precision",
-        "alt_names": ["Aero"],
+        "alt_names": ["Aero", "Aero Precision USA", "AP"],
         "website_url": "https://www.aeroprecisionusa.com",
         "type_tags": ["rifle_maker"],
         "country": "USA",
         "notes": (
-            "Major OEM supplier — makes receivers for many other brands. M5 (AR-10) and AR-15 lines "
-            "are the go-to for builders. Solus bolt-action line gaining traction in precision circles."
+            "Major OEM supplier — makes receivers for many brands. M5 (.308/AR-10) and AR-15 lines are go-to for "
+            "builders. Solus bolt-action line gaining traction in precision. Based in Tacoma, WA."
         ),
     },
-    # --- Phase 1.5: AR Rifle Manufacturers — Tier 2 ---
+    {
+        "name": "Bergara",
+        "alt_names": ["Bergara Rifles", "Bergara USA", "Bargara"],
+        "website_url": "https://www.bergara.online/us",
+        "type_tags": ["rifle_maker"],
+        "country": "Spain",
+        "notes": (
+            "B-14 HMR is a benchmark for precision-for-the-money. Premier Competition Rifle (partnered with MPA "
+            "chassis) gaining PRS traction. Known for hammer-forged barrel quality. Spanish barrel-making heritage."
+        ),
+    },
     {
         "name": "Bravo Company",
         "alt_names": ["BCM", "Bravo Company Manufacturing", "Bravo Company MFG"],
@@ -287,41 +340,143 @@ MANUFACTURERS = [
         "type_tags": ["rifle_maker"],
         "country": "USA",
         "notes": (
-            "Best value in the duty-grade AR segment. Not competition-focused, "
-            "but hugely popular among serious shooters."
+            "Best value in duty-grade AR segment. Not competition-focused but hugely popular among serious "
+            "shooters. RECCE-16 and MK2 lines."
         ),
     },
     {
-        "name": "Lewis Machine & Tool",
-        "alt_names": ["LMT", "Lewis Machine"],
-        "website_url": "https://www.lmtdefense.com",
+        "name": "Browning",
+        "alt_names": ["Browning Arms", "Browning Firearms"],
+        "website_url": "https://www.browning.com",
+        "type_tags": ["rifle_maker"],
+        "country": "USA",
+        "parent_company": "FN Herstal / Herstal Group",
+        "notes": (
+            "X-Bolt line is popular for hunting. X-Bolt Max Long Range is their precision-adjacent offering. "
+            "Brand owned by FN Herstal (Belgium). Very large user base among hunters."
+        ),
+    },
+    {
+        "name": "CZ (Česká zbrojovka)",
+        "alt_names": ["CZ", "CZ-USA", "Ceska Zbrojovka", "CZUB", "CZ Firearms"],
+        "website_url": "https://www.cz-usa.com",
+        "type_tags": ["rifle_maker"],
+        "country": "Czech Republic",
+        "parent_company": "Colt CZ Group SE",
+        "notes": (
+            "CZ 600 series with interchangeable barrels and sub-MOA guarantee. Also owns Colt. CZ 457 rimfire is "
+            "widely used for trainer rifles. Cold hammer-forged barrels."
+        ),
+    },
+    {
+        "name": "Cadex Defence",
+        "alt_names": ["Cadex", "Cadex Defense"],
+        "website_url": "https://www.cadexdefence.com",
+        "type_tags": ["rifle_maker", "chassis_maker"],
+        "country": "Canada",
+        "notes": (
+            "Precision sniper rifles and chassis systems. CDX-MC Kraken multi-caliber rifle. Field Competition "
+            "chassis used in PRS. Recoil management systems. Based in QC, Canada. Since 1994."
+        ),
+    },
+    {
+        "name": "Christensen Arms",
+        "alt_names": ["Christensen", "CA", "Christenson Arms"],
+        "website_url": "https://www.christensenarms.com",
         "type_tags": ["rifle_maker"],
         "country": "USA",
         "notes": (
-            "Monolithic upper receiver design (MRP). .308 MWS is a respected precision platform. "
-            "Quick-change barrel system. Military contracts worldwide."
+            "Pioneer of carbon fiber barrel technology. Lightweight hunting and long-range precision rifles. MPR "
+            "(Modern Precision Rifle) is their PRS-relevant model. 30th anniversary in 2025. Gunnison, UT."
         ),
     },
     {
-        "name": "Palmetto State Armory",
-        "alt_names": ["PSA"],
-        "website_url": "https://www.palmettostatearmory.com",
-        "type_tags": ["rifle_maker", "ammo_maker"],
+        "name": "Curtis Custom",
+        "alt_names": ["Curtis", "Curtis Actions"],
+        "website_url": "https://www.curtiscustom.com",
+        "type_tags": ["parts_maker", "rifle_maker"],
         "country": "USA",
         "notes": (
-            "Massive volume, aggressive pricing. Gen3 PA-10 in 6.5 CM is surprisingly capable. "
-            "Also owns DAGR Arms and other brands. Sheer volume means many users will own one."
+            "Custom actions (Valor, Axiom, Scout) and bespoke rifles. Premium quality. Texas-based. Requires FFL "
+            "for shipping."
+        ),
+    },
+    {
+        "name": "Daniel Defense",
+        "alt_names": ["DD", "Dan Def", "Daniel Defense Inc"],
+        "website_url": "https://www.danieldefense.com",
+        "type_tags": ["rifle_maker"],
+        "country": "USA",
+        "notes": (
+            "Premium AR-15 and AR-10 maker. DDM4 series is benchmark for hard-use precision ARs. Cold "
+            "hammer-forged barrels, most components in-house. Delta 5 bolt-action is their precision entry."
+        ),
+    },
+    {
+        "name": "Desert Tech",
+        "alt_names": ["DT", "DesertTech", "Desert Tech SRS"],
+        "website_url": "https://www.deserttech.com",
+        "type_tags": ["rifle_maker"],
+        "country": "USA",
+        "notes": (
+            "Bullpup precision rifles (SRS-A2, HTI). Compact form factor for precision shooting. MDR/MDRx lines "
+            "discontinued 2024. Based in West Valley City, UT."
+        ),
+    },
+    {
+        "name": "GA Precision",
+        "alt_names": ["GAP", "GA Prec", "George Gardner"],
+        "website_url": "https://www.gaprecision.net",
+        "type_tags": ["rifle_maker"],
+        "country": "USA",
+        "notes": (
+            "Custom precision rifle builds by George Gardner. Consistently top-5 in PRS since inception (2012). "
+            'FBI SWAT trusted. GAP is shorthand for "good enough for PRS." Kansas City area.'
         ),
     },
     {
         "name": "Geissele Automatics",
-        "alt_names": ["Geissele"],
+        "alt_names": ["Geissele", "Geisele", "Giesele", "Geissele Automatics LLC"],
         "website_url": "https://www.geissele.com",
         "type_tags": ["rifle_maker", "parts_maker"],
         "country": "USA",
         "notes": (
-            "Known primarily for triggers (SSA-E is the gold standard AR trigger). "
-            "Super Duty rifle is now a benchmark premium AR. Most precision AR shooters have a Geissele trigger."
+            "Known primarily for triggers (SSA-E is the gold standard AR trigger). Super Duty rifle is a "
+            "benchmark premium AR. Most precision AR shooters have a Geissele trigger."
+        ),
+    },
+    {
+        "name": "Howa",
+        "alt_names": ["Howa Machinery", "Howa 1500", "Howa USA"],
+        "website_url": "https://www.howausa.com",
+        "type_tags": ["rifle_maker"],
+        "country": "Japan",
+        "parent_company": "Howa Machinery Ltd (Japan)",
+        "notes": (
+            "Imported/distributed by Legacy Sports International in the US. Howa 1500 action is basis for many "
+            "budget precision builds. Mini action popular in 6.5 Grendel builds."
+        ),
+    },
+    {
+        "name": "JP Enterprises",
+        "alt_names": ["JP", "JPE", "JP Rifles"],
+        "website_url": "https://www.jprifles.com",
+        "type_tags": ["rifle_maker"],
+        "country": "USA",
+        "notes": (
+            "Purpose-built competition gas guns. LRP-07 and CTR-02 are staples in PRS Gas Gun division. Known "
+            "for tuned gas systems and match barrels."
+        ),
+    },
+    {
+        "name": "Knight's Armament",
+        "alt_names": ["KAC", "Knight's", "Knights Armament", "Knight's Armament Company"],
+        "website_url": "https://www.knightarmco.com",
+        "type_tags": ["rifle_maker"],
+        "country": "USA",
+        "notes": (
+            "SR-25 is the US military semi-auto precision platform (M110 SASS). SR-15 for 5.56. Extremely "
+            "high-end, limited availability, cult following. Founded by Reed Knight."
         ),
     },
     {
@@ -330,56 +485,552 @@ MANUFACTURERS = [
         "website_url": "https://www.lwrci.com",
         "type_tags": ["rifle_maker"],
         "country": "USA",
-        "notes": "Short-stroke piston ARs. REPR in .308 is a legitimate precision platform. Niche but respected.",
+        "notes": (
+            "Short-stroke piston ARs. REPR in .308 is a legitimate precision platform. Niche but respected among "
+            "AR shooters."
+        ),
     },
-    # --- Optic Manufacturers ---
     {
-        "name": "Vortex Optics",
-        "alt_names": ["Vortex"],
-        "website_url": "https://www.vortexoptics.com",
-        "type_tags": ["optic_maker"],
+        "name": "LaRue Tactical",
+        "alt_names": ["LaRue", "Larue", "La Rue"],
+        "website_url": "https://www.larue.com",
+        "type_tags": ["rifle_maker"],
         "country": "USA",
-        "notes": "Dominant precision optics brand. Viper PST Gen II and Razor HD Gen III are PRS staples.",
+        "notes": (
+            "OBR (Optimized Battle Rifle) and PredatAR are legendary for accuracy. Often described as the most "
+            "accurate factory AR. Cult following. MBT-2S trigger is a massive value play."
+        ),
     },
     {
-        "name": "Nightforce Optics",
-        "alt_names": ["Nightforce", "NF"],
-        "website_url": "https://www.nightforceoptics.com",
-        "type_tags": ["optic_maker"],
+        "name": "Lewis Machine & Tool",
+        "alt_names": ["LMT", "Lewis Machine", "LMT Defense"],
+        "website_url": "https://www.lmtdefense.com",
+        "type_tags": ["rifle_maker"],
         "country": "USA",
-        "notes": "Premium precision optics. ATACR and NX8 lines dominate competitive and military use.",
+        "notes": (
+            "Monolithic upper receiver design (MRP). .308 MWS is a respected precision platform. Quick-change "
+            "barrel system. Military contracts worldwide (NZ, Estonia, UK)."
+        ),
     },
     {
-        "name": "Leupold",
-        "alt_names": ["Leupold & Stevens"],
-        "website_url": "https://www.leupold.com",
-        "type_tags": ["optic_maker"],
+        "name": "Masterpiece Arms",
+        "alt_names": ["MPA", "Masterpiece Arms Inc", "Master Piece Arms"],
+        "website_url": "https://www.masterpiecearms.com",
+        "type_tags": ["rifle_maker", "chassis_maker"],
         "country": "USA",
-        "notes": "Mark 5HD is the precision line. Long heritage in American optics.",
+        "notes": (
+            "Dominant PRS rifle/chassis brand. BA Comp chassis used by 29% of top-200 PRS shooters and 44% of "
+            "top-25. MPA + Foundation + MDT = 79% of top PRS chassis market. Named official PRS chassis 5 "
+            "consecutive years. Based in Comer, GA."
+        ),
     },
     {
-        "name": "Kahles",
-        "alt_names": [],
-        "website_url": "https://www.kahles.at",
-        "type_tags": ["optic_maker"],
-        "country": "Austria",
-        "notes": "Oldest riflescope manufacturer (est. 1898). K525i is highly regarded in PRS.",
+        "name": "Mossberg",
+        "alt_names": ["O.F. Mossberg", "Mossberg & Sons"],
+        "website_url": "https://www.mossberg.com",
+        "type_tags": ["rifle_maker"],
+        "country": "USA",
+        "notes": (
+            "Patriot line is a budget bolt-action option. MVP platform in 5.56/.308. Very large user base due to "
+            "low pricing. Less precision-focused but many owners."
+        ),
+    },
+    {
+        "name": "Palmetto State Armory",
+        "alt_names": ["PSA", "Palmetto", "Palmetto State"],
+        "website_url": "https://www.palmettostatearmory.com",
+        "type_tags": ["rifle_maker", "ammo_maker"],
+        "country": "USA",
+        "notes": (
+            "Massive volume, aggressive pricing. Gen3 PA-10 in 6.5 CM is surprisingly capable. Also owns DAGR "
+            "Arms and other brands. Sheer volume means many users will own one."
+        ),
+    },
+    {
+        "name": "Proof Research",
+        "alt_names": ["Proof", "PROOF", "Proof Barrels"],
+        "website_url": "https://www.proofresearch.com",
+        "type_tags": ["rifle_maker", "parts_maker"],
+        "country": "USA",
+        "notes": (
+            "Carbon fiber barrel technology (aerospace-grade). 12% of top PRS shooters use Proof barrels (2nd "
+            "most popular after Bartlein). Conviction rifle system. NW Montana near Glacier."
+        ),
+    },
+    {
+        "name": "Ruger",
+        "alt_names": ["Sturm Ruger", "Sturm Ruger & Co", "Ruger Firearms", "Rugar"],
+        "website_url": "https://www.ruger.com",
+        "type_tags": ["rifle_maker"],
+        "country": "USA",
+        "notes": (
+            "Ruger Precision Rifle (RPR) was a game-changer — brought sub-$1500 chassis rifles to market. Huge "
+            "install base among newer precision shooters. Also makes American Predator and Hawkeye lines."
+        ),
+    },
+    {
+        "name": "Sako",
+        "alt_names": ["Sako Rifles", "Sako Finland", "Sakko"],
+        "website_url": "https://www.sako.global",
+        "type_tags": ["rifle_maker"],
+        "country": "Finland",
+        "parent_company": "Beretta Holding",
+        "notes": (
+            "Finnish precision bolt-action rifles. Makes Tikka rifles at their Riihimäki factory. TRG series is "
+            "their precision/tactical line. Premium price point. Owned by Beretta since 2000."
+        ),
+    },
+    {
+        "name": "Savage Arms",
+        "alt_names": ["Savage", "Savage Firearms", "Savage 110"],
+        "website_url": "https://www.savagearms.com",
+        "type_tags": ["rifle_maker"],
+        "country": "USA",
+        "parent_company": "Bullseye Acquisitions / JDH Capital",
+        "notes": (
+            "Model 110 platform is long-lived and accurate. AccuTrigger user-adjustable trigger was innovative. "
+            "Impulse straight-pull gaining interest. Owned by JDH Capital (same group as Sierra, Barnes)."
+        ),
+    },
+    {
+        "name": "Seekins Precision",
+        "alt_names": ["Seekins", "Seekins SP"],
+        "website_url": "https://www.seekinsprecision.com",
+        "type_tags": ["rifle_maker"],
+        "country": "USA",
+        "notes": (
+            "Havak line well-regarded for factory precision bolt actions. SP10 for gas guns. HIT (Havak In "
+            "Training) is an accessible entry. Based in Lewiston, ID."
+        ),
     },
     {
         "name": "Sig Sauer",
-        "alt_names": ["Sig", "SIG SAUER"],
+        "alt_names": ["Sig", "SIG SAUER", "Sig Sauer Inc", "SIG"],
         "website_url": "https://www.sigsauer.com",
         "type_tags": ["optic_maker", "rifle_maker"],
         "country": "USA",
-        "notes": "Tango6T adopted by US Army (SDMR). Also makes Cross bolt-action rifle.",
+        "notes": (
+            "Tango6T adopted by US Army (SDMR). Cross bolt-action rifle for hunting/precision. KILO rangefinders "
+            "widely used. Large defense contractor. Based in Newington, NH."
+        ),
+    },
+    {
+        "name": "Tikka",
+        "alt_names": ["Tikka Rifles", "Tikka T3x", "Tikka by Sako"],
+        "website_url": "https://www.tikka.fi",
+        "type_tags": ["rifle_maker"],
+        "country": "Finland",
+        "parent_company": "Beretta Group (via Sako)",
+        "notes": (
+            "Made by Sako (Beretta Group). T3x TAC A1 is popular precision chassis rifle. T3x CTR and Lite also "
+            "widely used. Exceptional factory trigger. One of the most recommended entry precision rifles."
+        ),
+    },
+    {
+        "name": "Weatherby",
+        "alt_names": ["Weatherby Inc", "Wby", "Weatherby Vanguard"],
+        "website_url": "https://www.weatherby.com",
+        "type_tags": ["rifle_maker", "ammo_maker"],
+        "country": "USA",
+        "notes": (
+            "Known for proprietary magnum cartridges (.300 Wby Mag, .30-378 Wby). Mark V and Vanguard rifles. "
+            "Vanguard is a rebranded Howa 1500. Recently moved HQ to Sheridan, WY."
+        ),
+    },
+    # --- Chassis / Stock Makers ---
+    {
+        "name": "Area 419",
+        "alt_names": ["Area419", "A419", "Area 419 LLC"],
+        "website_url": "https://www.area419.com",
+        "type_tags": ["parts_maker", "chassis_maker"],
+        "country": "USA",
+        "notes": (
+            "Hellfire muzzle brake is PRS standard. ARCA rails, scope mounts, and accessories. XYLO chassis "
+            "(American Rifle Co). Premium competition components. Major PRS retailer."
+        ),
+    },
+    {
+        "name": "Foundation Stocks",
+        "alt_names": ["Foundation", "Foundation Rifle Stocks"],
+        "website_url": "https://www.foundationstocks.com",
+        "type_tags": ["chassis_maker"],
+        "country": "USA",
+        "notes": (
+            "Top-3 PRS stock brand (with MPA and MDT = 79% of top chassis market). Genesis and Centurion models. "
+            "Precision composite stocks machined from solid blocks."
+        ),
+    },
+    {
+        "name": "Grayboe",
+        "alt_names": ["Grayboe Stocks"],
+        "website_url": "https://www.grayboe.com",
+        "type_tags": ["chassis_maker"],
+        "country": "USA",
+        "notes": "Fiberglass stocks (Ridgeback, Renegade). Affordable composite option. American-made.",
+    },
+    {
+        "name": "KRG (Kinetic Research Group)",
+        "alt_names": ["KRG", "Kinetic Research", "KRG Whiskey"],
+        "website_url": "https://www.kineticresearchgroup.com",
+        "type_tags": ["chassis_maker"],
+        "country": "USA",
+        "notes": (
+            "Whiskey-3 Gen 7 and Bravo chassis are PRS staples. W3 is a top-5 chassis in PRS. AICS magazine "
+            "compatible. High quality aluminum construction."
+        ),
+    },
+    {
+        "name": "MDT (Modular Driven Technologies)",
+        "alt_names": ["MDT", "Modular Driven", "MDT Chassis", "Oryx by MDT"],
+        "website_url": "https://www.mdttac.com",
+        "type_tags": ["chassis_maker"],
+        "country": "Canada",
+        "notes": (
+            "Top-3 PRS chassis brand (with MPA and Foundation = 79% of top PRS). ACC, ACC Elite, LSS-XL, and "
+            "HNT26 lines. Also makes Oryx budget chassis. Based in Chilliwack, BC."
+        ),
+    },
+    {
+        "name": "Manners Composite Stocks",
+        "alt_names": ["Manners", "Manners Stocks", "MCS"],
+        "website_url": "https://www.mannersstocks.com",
+        "type_tags": ["chassis_maker"],
+        "country": "USA",
+        "notes": (
+            "Aerospace-grade carbon fiber stocks. PRS Series 2023 official stock sponsor. EH1 and TCS models "
+            "popular in competition. Lifetime warranty."
+        ),
+    },
+    {
+        "name": "McMillan",
+        "alt_names": ["McMillan Stocks", "McMillian", "McMillon", "McMillan USA"],
+        "website_url": "https://www.mcmillanusa.com",
+        "type_tags": ["chassis_maker"],
+        "country": "USA",
+        "notes": (
+            "Iconic A5 and A4 stocks. Handcrafted fiberglass/carbon fiber since 1974. Heritage PRS brand, less "
+            "dominant now but still respected. Founded by Gale McMillan."
+        ),
+    },
+    {
+        "name": "XLR Industries",
+        "alt_names": ["XLR", "XLR Chassis"],
+        "website_url": "https://www.xlrindustries.com",
+        "type_tags": ["chassis_maker"],
+        "country": "USA",
+        "notes": (
+            "American-made 6061 billet aluminum chassis. Element 4.0 and ENVY Pro. Element 4.0 Magnesium under 2 "
+            "lbs. Established 2010."
+        ),
+    },
+    # --- Optic Makers ---
+    {
+        "name": "Arken Optics",
+        "alt_names": ["Arken", "Arken USA"],
+        "website_url": "https://www.arkenopticsusa.com",
+        "type_tags": ["optic_maker"],
+        "country": "USA",
+        "notes": (
+            "Budget FFP scopes gaining popularity. EP5 5-25x is strong PRS entry-level value. Japanese glass, "
+            "Chinese assembly. Texas-based brand."
+        ),
+    },
+    {
+        "name": "Athlon Optics",
+        "alt_names": ["Athlon", "Athlon Optics USA"],
+        "website_url": "https://www.athlonoptics.com",
+        "type_tags": ["optic_maker"],
+        "country": "USA",
+        "notes": (
+            "Cronus BTR (Japan-made) is their premium precision scope. Other lines from China. Strong value "
+            "proposition. Lifetime warranty. Founded 2014."
+        ),
+    },
+    {
+        "name": "Bushnell",
+        "alt_names": ["Bushnell Elite", "Bushnell Tactical", "Bushnell Optics"],
+        "website_url": "https://www.bushnell.com",
+        "type_tags": ["optic_maker"],
+        "country": "USA",
+        "parent_company": "Revelyst (formerly Vista Outdoor)",
+        "notes": (
+            "Elite Tactical line (XRS3, DMR3) relevant for precision. Owned by Vista Outdoor/Revelyst. Match Pro "
+            "budget FFP scope is a strong value play."
+        ),
+    },
+    {
+        "name": "Element Optics",
+        "alt_names": ["Element", "Element Optics USA"],
+        "website_url": "https://www.element-optics.com",
+        "type_tags": ["optic_maker"],
+        "country": "USA",
+        "notes": (
+            "Budget-friendly premium scopes. Helix and Titan lines. Founded by Fredrik Axelsson (FX Airguns). "
+            "Manufacturing in Sweden (Mariestad) and design in Utah. Growing fast."
+        ),
+    },
+    {
+        "name": "Kahles",
+        "alt_names": ["Kahles Optics"],
+        "website_url": "https://www.kahles.at",
+        "type_tags": ["optic_maker"],
+        "country": "Austria",
+        "parent_company": "Swarovski Optik / Swarovski Group",
+        "notes": (
+            "Oldest riflescope manufacturer (est. 1898). K525i is highly regarded in PRS. Owned by Swarovski "
+            "Optik since 1974. Austrian-made in Guntramsdorf."
+        ),
+    },
+    {
+        "name": "Leupold",
+        "alt_names": ["Leupold & Stevens", "Leopold", "Leupold Optics"],
+        "website_url": "https://www.leupold.com",
+        "type_tags": ["optic_maker"],
+        "country": "USA",
+        "notes": (
+            "Mark 5HD is the precision line. 19% of top PRS shooters (most popular brand by share, though "
+            "declining from 22%). Long heritage in American optics. Made in Beaverton, OR."
+        ),
+    },
+    {
+        "name": "March Optics",
+        "alt_names": ["March", "March Scopes", "DEON"],
+        "website_url": "https://www.marchscopes.com",
+        "type_tags": ["optic_maker"],
+        "country": "Japan",
+        "parent_company": "DEON Optical Design Corporation",
+        "notes": (
+            "Hand-built in Japan by DEON Optical Design. 30+ years optical design. 150+ parts all Japanese-made. "
+            "20 quality inspections per scope. Popular in F-class and benchrest."
+        ),
+    },
+    {
+        "name": "Maven",
+        "alt_names": ["Maven Optics", "Maven Built"],
+        "website_url": "https://www.mavenbuilt.com",
+        "type_tags": ["optic_maker"],
+        "country": "USA",
+        "notes": (
+            "Direct-to-consumer model, Japanese glass. RS.4 5-30x is their precision rifle scope. Custom builder "
+            "(color/engraving options). Based in Lander, WY."
+        ),
+    },
+    {
+        "name": "Nightforce Optics",
+        "alt_names": ["Nightforce", "NF", "Night Force"],
+        "website_url": "https://www.nightforceoptics.com",
+        "type_tags": ["optic_maker"],
+        "country": "USA",
+        "parent_company": "Lightforce Performance Lighting (Australia)",
+        "notes": (
+            "ATACR 7-35x56 F1 is the fan favorite — all top-50 PRS shooters using NF run this model. 13% of top "
+            "PRS shooters. Only brand in top-5 PRS optics for 10 consecutive years. Parent: Lightforce "
+            "(Australia)."
+        ),
+    },
+    {
+        "name": "Revic",
+        "alt_names": ["Revic Optics", "Revic PMR"],
+        "website_url": "https://www.revicoptics.com",
+        "type_tags": ["optic_maker"],
+        "country": "USA",
+        "parent_company": "Gunwerks (related)",
+        "notes": (
+            "Smart scopes with integrated ballistic engines. Acura RS25i and Radikl RS25b. Sister company to "
+            "Gunwerks. Interesting tech for app integration."
+        ),
+    },
+    {
+        "name": "Schmidt & Bender",
+        "alt_names": ["S&B Optics", "Schmidt Bender", "Schmidt and Bender", "Schmidt und Bender"],
+        "website_url": "https://www.schmidtundbender.de/en",
+        "type_tags": ["optic_maker"],
+        "country": "Germany",
+        "notes": (
+            "Ultra-premium German optics for military/LE/hunting. PM II series is military precision standard. "
+            "Family-owned since 1957. In-house production."
+        ),
+    },
+    {
+        "name": "Steiner",
+        "alt_names": ["Steiner Optics", "Steiner Germany"],
+        "website_url": "https://www.steiner-optics.com",
+        "type_tags": ["optic_maker"],
+        "country": "Germany",
+        "parent_company": "Beretta Holding",
+        "notes": (
+            "Military and hunting optics. T6Xi tactical line relevant for precision. German technology, Beretta "
+            "Group owned since 2008. M8Xi is their precision competition entry."
+        ),
+    },
+    {
+        "name": "Swarovski Optik",
+        "alt_names": ["Swarovski", "Swarovski Optics", "Swaro"],
+        "website_url": "https://www.swarovskioptik.com",
+        "type_tags": ["optic_maker"],
+        "country": "Austria",
+        "parent_company": "Swarovski Group",
+        "notes": (
+            "Ultra-premium hunting optics. dS and X5(i) lines. Less common in PRS competition but gold standard "
+            "for hunting glass. Owns Kahles brand. Made in Absam, Austria since 1949."
+        ),
+    },
+    {
+        "name": "Tangent Theta",
+        "alt_names": ["TT", "Tangent Theta Inc", "TangentTheta"],
+        "website_url": "https://www.tangenttheta.com",
+        "type_tags": ["optic_maker"],
+        "country": "Canada",
+        "notes": (
+            "17% of top PRS shooters (surging — grew from 4% to 20% in ~5 years). Tool-less Re-Zero feature. No "
+            "manufacturer sponsorships — shooters choose freely. German glass. Made in Halifax, NS."
+        ),
+    },
+    {
+        "name": "US Optics",
+        "alt_names": ["USO", "US Optics Inc"],
+        "website_url": "https://www.usoptics.com",
+        "type_tags": ["optic_maker"],
+        "country": "USA",
+        "notes": (
+            "Hand-assembled custom riflescopes. LPVO pioneers. Foundation series (Buy American Act compliant). "
+            "Since 1991, Rutherford College, NC."
+        ),
+    },
+    {
+        "name": "Vortex Optics",
+        "alt_names": ["Vortex", "Vortex Optics Inc", "Vortx"],
+        "website_url": "https://www.vortexoptics.com",
+        "type_tags": ["optic_maker"],
+        "country": "USA",
+        "notes": (
+            "Dominant precision optics brand by volume. Viper PST Gen II is PRS entry-level standard. Razor HD "
+            "Gen III is competition-grade. Unconditional lifetime VIP warranty. Based in Barneveld, WI."
+        ),
     },
     {
         "name": "Zero Compromise Optics",
-        "alt_names": ["ZCO"],
-        "website_url": "https://www.zerocompromiseoptics.com",
+        "alt_names": ["ZCO", "Zero Compromise", "ZC Optics"],
+        "website_url": "https://www.zcompoptic.com",
         "type_tags": ["optic_maker"],
         "country": "Austria",
-        "notes": "Ultra-premium optics. ZC527 is considered the best precision scope available. Small batch.",
+        "notes": (
+            "Ultra-premium optics. ZC527 is considered among the best precision scopes available. Small batch. "
+            "Design/testing in Orofino, ID; manufacturing in Austria. Founded 2018."
+        ),
+    },
+    # --- Parts / Components ---
+    {
+        "name": "Bartlein Barrels",
+        "alt_names": ["Bartlein", "Bartlien"],
+        "website_url": "https://www.bartleinbarrels.com",
+        "type_tags": ["parts_maker"],
+        "country": "USA",
+        "notes": (
+            "49% of top PRS shooters use Bartlein barrels — more than the next 10 brands combined. Cut-rifled, "
+            "single-point, 5R rifling options. The undisputed dominant PRS barrel maker."
+        ),
+    },
+    {
+        "name": "Criterion Barrels",
+        "alt_names": ["Criterion", "Criterion Arms"],
+        "website_url": "https://www.criterionbarrels.com",
+        "type_tags": ["parts_maker"],
+        "country": "USA",
+        "notes": (
+            "AR-platform and bolt-action barrels. CORE series for bolt guns. Hybrid profile is popular for "
+            "precision AR builds. Button-rifled. Good value."
+        ),
+    },
+    {
+        "name": "Defiance Machine",
+        "alt_names": ["Defiance", "Defiance Actions"],
+        "website_url": "https://www.defiancemachine.com",
+        "type_tags": ["parts_maker"],
+        "country": "USA",
+        "notes": (
+            "Custom bolt-action receivers (actions). Tenacity, Deviant, Rebel, Ruckus series. Widely used by PRS "
+            "gunsmiths for custom builds. Columbia Falls, MT."
+        ),
+    },
+    {
+        "name": "Impact Precision",
+        "alt_names": ["Impact", "Impact 737", "IP"],
+        "website_url": "https://www.impactprecision.com",
+        "type_tags": ["parts_maker"],
+        "country": "USA",
+        "notes": (
+            "737R action used by 57% of top-ranked PRS shooters — 3x more than any other brand. $1,470 MSRP "
+            "(lowest among top actions). Dominant in PRS competition."
+        ),
+    },
+    {
+        "name": "Timney Triggers",
+        "alt_names": ["Timney", "Timney Mfg"],
+        "website_url": "https://www.timneytriggers.com",
+        "type_tags": ["parts_maker"],
+        "country": "USA",
+        "notes": (
+            "Precision aftermarket triggers for 75+ years. CNC machined, hand-tested. Rem 700, Ruger, Savage, AR "
+            "platforms. Phoenix, AZ. Founded 1946."
+        ),
+    },
+    {
+        "name": "TriggerTech",
+        "alt_names": ["Trigger Tech", "TriggerTech Inc"],
+        "website_url": "https://www.triggertech.com",
+        "type_tags": ["parts_maker"],
+        "country": "Canada",
+        "notes": (
+            "Zero Creep Technology triggers. Rem 700, Tikka, and AR platforms. Acquired Hawkins Precision "
+            "(2025), expanding product portfolio. Toronto-based."
+        ),
+    },
+    {
+        "name": "Zermatt Arms",
+        "alt_names": ["Bighorn Arms", "Bighorn", "Bighorn Origin", "Zermatt"],
+        "website_url": "https://www.zermattarms.com",
+        "type_tags": ["parts_maker"],
+        "country": "USA",
+        "notes": (
+            "Bighorn Origin action — Rem 700 footprint with Savage barrel compatibility. Popular for budget "
+            "precision builds. Acquired Bighorn Arms in 2015. Bennett, NE."
+        ),
+    },
+    # --- Data / Device Providers ---
+    {
+        "name": "Applied Ballistics",
+        "alt_names": ["AB", "Applied Ballistics LLC", "AB Ballistics"],
+        "website_url": "https://www.appliedballisticsllc.com",
+        "type_tags": ["data_provider"],
+        "country": "USA",
+        "notes": (
+            "Bryan Litz. Doppler-measured BC data and custom drag models. Gold standard for BC values. "
+            "Integrated into Kestrel meters, many ballistic apps. Mobile lab with doppler radar in west-central "
+            "MI."
+        ),
+    },
+    {
+        "name": "Garmin",
+        "alt_names": ["Garmin Xero", "Garmin Ltd"],
+        "website_url": "https://www.garmin.com",
+        "type_tags": ["data_provider"],
+        "country": "USA",
+        "notes": (
+            "Xero L60i laser rangefinder (7,000m range, ±0.25m accuracy) with Applied Ballistics integration. "
+            "Xero X1i crossbow scope. Not a core precision brand but Xero is widely used."
+        ),
+    },
+    {
+        "name": "Kestrel Ballistics",
+        "alt_names": ["Kestrel", "Kestrel Meters", "Kestrel 5700"],
+        "website_url": "https://www.kestrelballistics.com",
+        "type_tags": ["data_provider"],
+        "country": "USA",
+        "notes": (
+            "Weather meters with Applied Ballistics integration. Kestrel 5700 Elite is THE standard tool for "
+            "precision shooters — measures temp, pressure, humidity, wind. MIL-STD-810G rated."
+        ),
     },
 ]
 
@@ -1077,201 +1728,89 @@ ENTITY_ALIASES: list[dict] = [
     {"entity_type": "caliber", "entity_name": "6mm ARC", "alias": "6ARC", "alias_type": "abbreviation"},
     # --- Caliber aliases: 6.5-284 Norma (new) ---
     {"entity_type": "caliber", "entity_name": "6.5-284 Norma", "alias": "6.5-284", "alias_type": "abbreviation"},
-    # --- Manufacturer aliases ---
+    # --- Manufacturer aliases (misspellings & abbreviations beyond alt_names) ---
+    # NOTE: alt_names on the Manufacturer model cover the primary aliases.
+    # EntityAlias captures additional pipeline-side aliases (misspellings, abbreviations, nicknames)
+    # that help with search/entity-resolution but don't need to be in the bundled DB.
     {"entity_type": "manufacturer", "entity_name": "Hornady", "alias": "Hornaday", "alias_type": "misspelling"},
     {"entity_type": "manufacturer", "entity_name": "Berger Bullets", "alias": "Burger", "alias_type": "misspelling"},
     {"entity_type": "manufacturer", "entity_name": "Berger Bullets", "alias": "Berger", "alias_type": "abbreviation"},
     {"entity_type": "manufacturer", "entity_name": "Federal Premium", "alias": "Federal", "alias_type": "abbreviation"},
-    {
-        "entity_type": "manufacturer",
-        "entity_name": "Federal Premium",
-        "alias": "Federal Ammunition",
-        "alias_type": "alternate_name",
-    },
     {"entity_type": "manufacturer", "entity_name": "Sierra Bullets", "alias": "Sierra", "alias_type": "abbreviation"},
     {"entity_type": "manufacturer", "entity_name": "Sierra Bullets", "alias": "Seirra", "alias_type": "misspelling"},
     {"entity_type": "manufacturer", "entity_name": "Barnes Bullets", "alias": "Barnes", "alias_type": "abbreviation"},
     {"entity_type": "manufacturer", "entity_name": "Savage Arms", "alias": "Savage", "alias_type": "abbreviation"},
-    {
-        "entity_type": "manufacturer",
-        "entity_name": "Remington",
-        "alias": "Remington Arms",
-        "alias_type": "alternate_name",
-    },
+    {"entity_type": "manufacturer", "entity_name": "Remington", "alias": "Rem", "alias_type": "abbreviation"},
     {"entity_type": "manufacturer", "entity_name": "Remington", "alias": "Big Green", "alias_type": "nickname"},
     {"entity_type": "manufacturer", "entity_name": "Lapua", "alias": "Lupua", "alias_type": "misspelling"},
     {"entity_type": "manufacturer", "entity_name": "Nosler", "alias": "Nossler", "alias_type": "misspelling"},
-    {
-        "entity_type": "manufacturer",
-        "entity_name": "Winchester",
-        "alias": "Winchester Ammunition",
-        "alias_type": "alternate_name",
-    },
-    {
-        "entity_type": "manufacturer",
-        "entity_name": "Masterpiece Arms",
-        "alias": "MPA",
-        "alias_type": "abbreviation",
-    },
-    {
-        "entity_type": "manufacturer",
-        "entity_name": "Seekins Precision",
-        "alias": "Seekins",
-        "alias_type": "abbreviation",
-    },
-    # --- Manufacturer aliases: Black Hills Ammunition ---
-    {
-        "entity_type": "manufacturer",
-        "entity_name": "Black Hills Ammunition",
-        "alias": "Black Hills",
-        "alias_type": "abbreviation",
-    },
-    {
-        "entity_type": "manufacturer",
-        "entity_name": "Black Hills Ammunition",
-        "alias": "BHA",
-        "alias_type": "abbreviation",
-    },
-    {
-        "entity_type": "manufacturer",
-        "entity_name": "Black Hills Ammunition",
-        "alias": "BH Ammo",
-        "alias_type": "abbreviation",
-    },
-    # --- Manufacturer aliases: Sellier & Bellot ---
-    {
-        "entity_type": "manufacturer",
-        "entity_name": "Sellier & Bellot",
-        "alias": "S&B",
-        "alias_type": "abbreviation",
-    },
-    {
-        "entity_type": "manufacturer",
-        "entity_name": "Sellier & Bellot",
-        "alias": "Sellier and Bellot",
-        "alias_type": "alternate_name",
-    },
-    # --- Manufacturer aliases: IMI Systems ---
-    {
-        "entity_type": "manufacturer",
-        "entity_name": "IMI Systems",
-        "alias": "IMI",
-        "alias_type": "abbreviation",
-    },
-    {
-        "entity_type": "manufacturer",
-        "entity_name": "IMI Systems",
-        "alias": "IMI Ammunition",
-        "alias_type": "alternate_name",
-    },
-    {
-        "entity_type": "manufacturer",
-        "entity_name": "IMI Systems",
-        "alias": "Israeli Military Industries",
-        "alias_type": "alternate_name",
-    },
-    # --- Manufacturer aliases: Prvi Partizan ---
-    {
-        "entity_type": "manufacturer",
-        "entity_name": "Prvi Partizan",
-        "alias": "PPU",
-        "alias_type": "abbreviation",
-    },
-    {
-        "entity_type": "manufacturer",
-        "entity_name": "Prvi Partizan",
-        "alias": "Privi Partizan",
-        "alias_type": "misspelling",
-    },
-    {
-        "entity_type": "manufacturer",
-        "entity_name": "Prvi Partizan",
-        "alias": "Privi",
-        "alias_type": "misspelling",
-    },
-    # --- Manufacturer aliases: Daniel Defense ---
+    {"entity_type": "manufacturer", "entity_name": "Masterpiece Arms", "alias": "MPA", "alias_type": "abbreviation"},
+    {"entity_type": "manufacturer", "entity_name": "Seekins Precision", "alias": "Seekins", "alias_type": "abbreviation"},
+    {"entity_type": "manufacturer", "entity_name": "Black Hills Ammunition", "alias": "Black Hills", "alias_type": "abbreviation"},
+    {"entity_type": "manufacturer", "entity_name": "Black Hills Ammunition", "alias": "BHA", "alias_type": "abbreviation"},
+    {"entity_type": "manufacturer", "entity_name": "Black Hills Ammunition", "alias": "Blackhills", "alias_type": "misspelling"},
+    {"entity_type": "manufacturer", "entity_name": "Sellier & Bellot", "alias": "S&B", "alias_type": "abbreviation"},
+    {"entity_type": "manufacturer", "entity_name": "IMI Systems", "alias": "IMI", "alias_type": "abbreviation"},
+    {"entity_type": "manufacturer", "entity_name": "Prvi Partizan", "alias": "PPU", "alias_type": "abbreviation"},
+    {"entity_type": "manufacturer", "entity_name": "Prvi Partizan", "alias": "Privi", "alias_type": "misspelling"},
     {"entity_type": "manufacturer", "entity_name": "Daniel Defense", "alias": "DD", "alias_type": "abbreviation"},
-    {"entity_type": "manufacturer", "entity_name": "Daniel Defense", "alias": "Dan Def", "alias_type": "abbreviation"},
-    # --- Manufacturer aliases: Knight's Armament ---
-    {
-        "entity_type": "manufacturer",
-        "entity_name": "Knight's Armament",
-        "alias": "KAC",
-        "alias_type": "abbreviation",
-    },
-    {
-        "entity_type": "manufacturer",
-        "entity_name": "Knight's Armament",
-        "alias": "Knight's",
-        "alias_type": "abbreviation",
-    },
-    {
-        "entity_type": "manufacturer",
-        "entity_name": "Knight's Armament",
-        "alias": "Knights Armament",
-        "alias_type": "alternate_name",
-    },
-    # --- Manufacturer aliases: JP Enterprises ---
+    {"entity_type": "manufacturer", "entity_name": "Knight's Armament", "alias": "KAC", "alias_type": "abbreviation"},
     {"entity_type": "manufacturer", "entity_name": "JP Enterprises", "alias": "JP", "alias_type": "abbreviation"},
-    {"entity_type": "manufacturer", "entity_name": "JP Enterprises", "alias": "JPE", "alias_type": "abbreviation"},
-    # --- Manufacturer aliases: LaRue Tactical ---
     {"entity_type": "manufacturer", "entity_name": "LaRue Tactical", "alias": "LaRue", "alias_type": "abbreviation"},
-    # --- Manufacturer aliases: Aero Precision ---
     {"entity_type": "manufacturer", "entity_name": "Aero Precision", "alias": "Aero", "alias_type": "abbreviation"},
-    # --- Manufacturer aliases: Bravo Company ---
     {"entity_type": "manufacturer", "entity_name": "Bravo Company", "alias": "BCM", "alias_type": "abbreviation"},
-    {
-        "entity_type": "manufacturer",
-        "entity_name": "Bravo Company",
-        "alias": "Bravo Company Manufacturing",
-        "alias_type": "alternate_name",
-    },
-    {
-        "entity_type": "manufacturer",
-        "entity_name": "Bravo Company",
-        "alias": "Bravo Company MFG",
-        "alias_type": "abbreviation",
-    },
-    # --- Manufacturer aliases: Lewis Machine & Tool ---
-    {
-        "entity_type": "manufacturer",
-        "entity_name": "Lewis Machine & Tool",
-        "alias": "LMT",
-        "alias_type": "abbreviation",
-    },
-    {
-        "entity_type": "manufacturer",
-        "entity_name": "Lewis Machine & Tool",
-        "alias": "Lewis Machine",
-        "alias_type": "abbreviation",
-    },
-    # --- Manufacturer aliases: Palmetto State Armory ---
-    {
-        "entity_type": "manufacturer",
-        "entity_name": "Palmetto State Armory",
-        "alias": "PSA",
-        "alias_type": "abbreviation",
-    },
-    # --- Manufacturer aliases: Geissele Automatics ---
-    {
-        "entity_type": "manufacturer",
-        "entity_name": "Geissele Automatics",
-        "alias": "Geissele",
-        "alias_type": "abbreviation",
-    },
-    # --- Manufacturer aliases: LWRC International ---
-    {
-        "entity_type": "manufacturer",
-        "entity_name": "LWRC International",
-        "alias": "LWRC",
-        "alias_type": "abbreviation",
-    },
-    {
-        "entity_type": "manufacturer",
-        "entity_name": "LWRC International",
-        "alias": "LWRCI",
-        "alias_type": "abbreviation",
-    },
+    {"entity_type": "manufacturer", "entity_name": "Lewis Machine & Tool", "alias": "LMT", "alias_type": "abbreviation"},
+    {"entity_type": "manufacturer", "entity_name": "Palmetto State Armory", "alias": "PSA", "alias_type": "abbreviation"},
+    {"entity_type": "manufacturer", "entity_name": "Geissele Automatics", "alias": "Geissele", "alias_type": "abbreviation"},
+    {"entity_type": "manufacturer", "entity_name": "Geissele Automatics", "alias": "Geisele", "alias_type": "misspelling"},
+    {"entity_type": "manufacturer", "entity_name": "Geissele Automatics", "alias": "Giesele", "alias_type": "misspelling"},
+    {"entity_type": "manufacturer", "entity_name": "LWRC International", "alias": "LWRC", "alias_type": "abbreviation"},
+    {"entity_type": "manufacturer", "entity_name": "Nightforce Optics", "alias": "Nightforce", "alias_type": "abbreviation"},
+    {"entity_type": "manufacturer", "entity_name": "Nightforce Optics", "alias": "NF", "alias_type": "abbreviation"},
+    {"entity_type": "manufacturer", "entity_name": "Leupold", "alias": "Leopold", "alias_type": "misspelling"},
+    {"entity_type": "manufacturer", "entity_name": "Vortex Optics", "alias": "Vortex", "alias_type": "abbreviation"},
+    {"entity_type": "manufacturer", "entity_name": "Vortex Optics", "alias": "Vortx", "alias_type": "misspelling"},
+    {"entity_type": "manufacturer", "entity_name": "Zero Compromise Optics", "alias": "ZCO", "alias_type": "abbreviation"},
+    {"entity_type": "manufacturer", "entity_name": "Sig Sauer", "alias": "Sig", "alias_type": "abbreviation"},
+    {"entity_type": "manufacturer", "entity_name": "Ruger", "alias": "Rugar", "alias_type": "misspelling"},
+    {"entity_type": "manufacturer", "entity_name": "Bergara", "alias": "Bargara", "alias_type": "misspelling"},
+    {"entity_type": "manufacturer", "entity_name": "Tikka", "alias": "Tikka by Sako", "alias_type": "alternate_name"},
+    # --- New manufacturer aliases ---
+    {"entity_type": "manufacturer", "entity_name": "Cutting Edge Bullets", "alias": "CEB", "alias_type": "abbreviation"},
+    {"entity_type": "manufacturer", "entity_name": "Alpha Munitions", "alias": "Alpha", "alias_type": "abbreviation"},
+    {"entity_type": "manufacturer", "entity_name": "Alpha Munitions", "alias": "ADG", "alias_type": "abbreviation"},
+    {"entity_type": "manufacturer", "entity_name": "Accuracy International", "alias": "AI", "alias_type": "abbreviation"},
+    {"entity_type": "manufacturer", "entity_name": "Christensen Arms", "alias": "Christensen", "alias_type": "abbreviation"},
+    {"entity_type": "manufacturer", "entity_name": "Christensen Arms", "alias": "Christenson Arms", "alias_type": "misspelling"},
+    {"entity_type": "manufacturer", "entity_name": "CZ (Česká zbrojovka)", "alias": "CZ", "alias_type": "abbreviation"},
+    {"entity_type": "manufacturer", "entity_name": "CZ (Česká zbrojovka)", "alias": "CZ-USA", "alias_type": "abbreviation"},
+    {"entity_type": "manufacturer", "entity_name": "Cadex Defence", "alias": "Cadex", "alias_type": "abbreviation"},
+    {"entity_type": "manufacturer", "entity_name": "GA Precision", "alias": "GAP", "alias_type": "abbreviation"},
+    {"entity_type": "manufacturer", "entity_name": "Desert Tech", "alias": "DT", "alias_type": "abbreviation"},
+    {"entity_type": "manufacturer", "entity_name": "Proof Research", "alias": "Proof", "alias_type": "abbreviation"},
+    {"entity_type": "manufacturer", "entity_name": "Impact Precision", "alias": "Impact", "alias_type": "abbreviation"},
+    {"entity_type": "manufacturer", "entity_name": "Defiance Machine", "alias": "Defiance", "alias_type": "abbreviation"},
+    {"entity_type": "manufacturer", "entity_name": "Zermatt Arms", "alias": "Bighorn", "alias_type": "abbreviation"},
+    {"entity_type": "manufacturer", "entity_name": "MDT (Modular Driven Technologies)", "alias": "MDT", "alias_type": "abbreviation"},
+    {"entity_type": "manufacturer", "entity_name": "KRG (Kinetic Research Group)", "alias": "KRG", "alias_type": "abbreviation"},
+    {"entity_type": "manufacturer", "entity_name": "Foundation Stocks", "alias": "Foundation", "alias_type": "abbreviation"},
+    {"entity_type": "manufacturer", "entity_name": "McMillan", "alias": "McMillian", "alias_type": "misspelling"},
+    {"entity_type": "manufacturer", "entity_name": "McMillan", "alias": "McMillon", "alias_type": "misspelling"},
+    {"entity_type": "manufacturer", "entity_name": "Manners Composite Stocks", "alias": "Manners", "alias_type": "abbreviation"},
+    {"entity_type": "manufacturer", "entity_name": "XLR Industries", "alias": "XLR", "alias_type": "abbreviation"},
+    {"entity_type": "manufacturer", "entity_name": "Area 419", "alias": "Area419", "alias_type": "abbreviation"},
+    {"entity_type": "manufacturer", "entity_name": "Area 419", "alias": "A419", "alias_type": "abbreviation"},
+    {"entity_type": "manufacturer", "entity_name": "Tangent Theta", "alias": "TT", "alias_type": "abbreviation"},
+    {"entity_type": "manufacturer", "entity_name": "Schmidt & Bender", "alias": "S&B Optics", "alias_type": "abbreviation"},
+    {"entity_type": "manufacturer", "entity_name": "Bartlein Barrels", "alias": "Bartlein", "alias_type": "abbreviation"},
+    {"entity_type": "manufacturer", "entity_name": "Bartlein Barrels", "alias": "Bartlien", "alias_type": "misspelling"},
+    {"entity_type": "manufacturer", "entity_name": "Criterion Barrels", "alias": "Criterion", "alias_type": "abbreviation"},
+    {"entity_type": "manufacturer", "entity_name": "TriggerTech", "alias": "Trigger Tech", "alias_type": "alternate_name"},
+    {"entity_type": "manufacturer", "entity_name": "Timney Triggers", "alias": "Timney", "alias_type": "abbreviation"},
+    {"entity_type": "manufacturer", "entity_name": "Kestrel Ballistics", "alias": "Kestrel", "alias_type": "abbreviation"},
+    {"entity_type": "manufacturer", "entity_name": "Applied Ballistics", "alias": "AB", "alias_type": "abbreviation"},
+    {"entity_type": "manufacturer", "entity_name": "Sako", "alias": "Sakko", "alias_type": "misspelling"},
+    {"entity_type": "manufacturer", "entity_name": "Weatherby", "alias": "Wby", "alias_type": "abbreviation"},
 ]
 
 
@@ -2548,25 +3087,7 @@ EXTENDED_ENTITY_ALIASES: list[dict] = [
     {"entity_type": "cartridge", "entity_name": "GM308M2", "alias": "GMM 308 175", "alias_type": "abbreviation"},
     {"entity_type": "cartridge", "entity_name": "GM308M", "alias": "GM308M", "alias_type": "sku"},
     {"entity_type": "cartridge", "entity_name": "GM308M", "alias": "GMM 308 168", "alias_type": "abbreviation"},
-    # --- Optic manufacturer aliases ---
-    {
-        "entity_type": "manufacturer",
-        "entity_name": "Vortex Optics",
-        "alias": "Vortex",
-        "alias_type": "abbreviation",
-    },
-    {
-        "entity_type": "manufacturer",
-        "entity_name": "Nightforce Optics",
-        "alias": "Nightforce",
-        "alias_type": "abbreviation",
-    },
-    {
-        "entity_type": "manufacturer",
-        "entity_name": "Nightforce Optics",
-        "alias": "NF",
-        "alias_type": "abbreviation",
-    },
+    # --- Optic manufacturer aliases (unique entries not in main ENTITY_ALIASES) ---
     {
         "entity_type": "manufacturer",
         "entity_name": "Leupold",
@@ -2576,20 +3097,8 @@ EXTENDED_ENTITY_ALIASES: list[dict] = [
     {
         "entity_type": "manufacturer",
         "entity_name": "Sig Sauer",
-        "alias": "Sig",
-        "alias_type": "abbreviation",
-    },
-    {
-        "entity_type": "manufacturer",
-        "entity_name": "Sig Sauer",
         "alias": "SIG SAUER",
         "alias_type": "alternate_name",
-    },
-    {
-        "entity_type": "manufacturer",
-        "entity_name": "Zero Compromise Optics",
-        "alias": "ZCO",
-        "alias_type": "abbreviation",
     },
     # --- Reticle aliases ---
     {"entity_type": "reticle", "entity_name": "EBR-7C MRAD", "alias": "EBR-7C", "alias_type": "abbreviation"},
