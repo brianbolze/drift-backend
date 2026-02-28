@@ -27,12 +27,14 @@ from drift.models import (  # noqa: E402
     Bullet,
     BulletBCSource,
     Caliber,
+    CaliberPlatform,
     Cartridge,
     Chamber,
     ChamberAcceptsCaliber,
     EntityAlias,
     Manufacturer,
     Optic,
+    Platform,
     Reticle,
     RifleModel,
 )
@@ -878,6 +880,94 @@ MANUAL_CHAMBERS = [
             {"caliber_name": ".308 Winchester", "is_primary": False},
         ],
     },
+]
+
+
+# ---------------------------------------------------------------------------
+# Platform seed data
+# Source: domain expert review (2026-02-27)
+# ---------------------------------------------------------------------------
+
+PLATFORMS = [
+    {
+        "name": "Bolt Action",
+        "short_name": "bolt",
+        "description": (
+            "Traditional bolt-action rifles. Most flexible platform — "
+            "can be chambered in virtually any cartridge. Action length "
+            "(short, long, magnum) is the main constraint."
+        ),
+    },
+    {
+        "name": "AR-15",
+        "short_name": "ar15",
+        "description": (
+            "AR-15 pattern rifles. Limited by the AR-15 magazine well "
+            "and bolt face diameter. Typically mini/short-action cartridges "
+            "with max OAL ~2.260\"."
+        ),
+    },
+    {
+        "name": "AR-10",
+        "short_name": "ar10",
+        "description": (
+            "AR-10 / SR-25 / LR-308 pattern rifles. Larger magwell than AR-15. "
+            "Handles .308-class cartridges. Also known as DPMS or ArmaLite pattern."
+        ),
+    },
+]
+
+
+# Caliber-to-platform mappings with per-platform popularity ranking.
+# A row means "this caliber is available on this platform."
+# popularity_rank is relative within each platform (1 = most popular).
+#
+# Source: domain expert review, PRS/NRL competition data, manufacturer
+#         offerings, community consensus (2026-02-27)
+
+CALIBER_PLATFORMS = [
+    # --- Bolt Action ---
+    # Bolt guns can chamber almost anything. Rankings reflect precision/LR
+    # community popularity, not overall sales volume.
+    {"caliber_name": "6.5 Creedmoor", "platform": "bolt", "rank": 1},
+    {"caliber_name": ".308 Winchester", "platform": "bolt", "rank": 2},
+    {"caliber_name": "6mm Dasher", "platform": "bolt", "rank": 3},
+    {"caliber_name": "6mm GT", "platform": "bolt", "rank": 4},
+    {"caliber_name": "6mm Creedmoor", "platform": "bolt", "rank": 5},
+    {"caliber_name": ".223 Remington", "platform": "bolt", "rank": 6},
+    {"caliber_name": "5.56x45mm NATO", "platform": "bolt", "rank": 7},
+    {"caliber_name": ".300 Winchester Magnum", "platform": "bolt", "rank": 8},
+    {"caliber_name": ".300 PRC", "platform": "bolt", "rank": 9},
+    {"caliber_name": "6.5 PRC", "platform": "bolt", "rank": 10},
+    {"caliber_name": "7mm PRC", "platform": "bolt", "rank": 11},
+    {"caliber_name": ".338 Lapua Magnum", "platform": "bolt", "rank": 12},
+    {"caliber_name": ".270 Winchester", "platform": "bolt", "rank": 13},
+    {"caliber_name": ".30-06 Springfield", "platform": "bolt", "rank": 14},
+    {"caliber_name": "7mm Remington Magnum", "platform": "bolt", "rank": 15},
+    {"caliber_name": ".260 Remington", "platform": "bolt", "rank": 16},
+    {"caliber_name": "7.62x51mm NATO", "platform": "bolt", "rank": 17},
+    {"caliber_name": ".243 Winchester", "platform": "bolt", "rank": 18},
+    {"caliber_name": ".300 Winchester Short Magnum", "platform": "bolt", "rank": 19},
+    {"caliber_name": "7mm-08 Remington", "platform": "bolt", "rank": 20},
+    {"caliber_name": "6.5x55mm Swedish", "platform": "bolt", "rank": 21},
+    {"caliber_name": ".338 Winchester Magnum", "platform": "bolt", "rank": 22},
+    {"caliber_name": "6.5-284 Norma", "platform": "bolt", "rank": 23},
+    # --- AR-15 ---
+    # AR-15 is constrained to cartridges that fit the AR-15 magwell
+    # (max OAL ~2.260") and use an AR-15-size bolt face.
+    {"caliber_name": ".223 Remington", "platform": "ar15", "rank": 1},
+    {"caliber_name": "5.56x45mm NATO", "platform": "ar15", "rank": 2},
+    {"caliber_name": ".300 AAC Blackout", "platform": "ar15", "rank": 3},
+    {"caliber_name": "6mm ARC", "platform": "ar15", "rank": 4},
+    # --- AR-10 ---
+    # AR-10 handles .308-class short-action cartridges.
+    {"caliber_name": "6.5 Creedmoor", "platform": "ar10", "rank": 1},
+    {"caliber_name": ".308 Winchester", "platform": "ar10", "rank": 2},
+    {"caliber_name": "7.62x51mm NATO", "platform": "ar10", "rank": 3},
+    {"caliber_name": "6mm Creedmoor", "platform": "ar10", "rank": 4},
+    {"caliber_name": ".260 Remington", "platform": "ar10", "rank": 5},
+    {"caliber_name": ".243 Winchester", "platform": "ar10", "rank": 6},
+    {"caliber_name": "6.5 PRC", "platform": "ar10", "rank": 7, "notes": "Requires dedicated large-bolt AR-10 upper (e.g. POF Revolution)."},
 ]
 
 
@@ -2714,6 +2804,43 @@ def seed_optics(session: Session) -> None:
     print(f"  Seeded {count} optics")
 
 
+def seed_platforms(session: Session) -> None:
+    cal_lookup = _build_caliber_lookup(session)
+    platform_lookup: dict[str, str] = {}
+
+    # Create platform rows
+    print(f"  Seeding {len(PLATFORMS)} platforms...")
+    for data in PLATFORMS:
+        platform = Platform(**data)
+        session.add(platform)
+        session.flush()
+        platform_lookup[platform.short_name] = platform.id
+
+    # Create caliber↔platform links
+    link_count = 0
+    for data in CALIBER_PLATFORMS:
+        cal_id = cal_lookup.get(data["caliber_name"])
+        plat_id = platform_lookup.get(data["platform"])
+        if not cal_id:
+            print(f"  WARNING: caliber {data['caliber_name']!r} not found — skipping platform link")
+            continue
+        if not plat_id:
+            print(f"  WARNING: platform {data['platform']!r} not found — skipping platform link")
+            continue
+        session.add(
+            CaliberPlatform(
+                caliber_id=cal_id,
+                platform_id=plat_id,
+                popularity_rank=data.get("rank"),
+                notes=data.get("notes"),
+            )
+        )
+        link_count += 1
+
+    session.flush()
+    print(f"  Seeded {link_count} caliber↔platform links")
+
+
 def seed_entity_aliases(session: Session) -> None:
     entity_lookup = _build_entity_lookup(session)
     all_aliases = ENTITY_ALIASES + EXTENDED_ENTITY_ALIASES
@@ -2741,6 +2868,7 @@ def seed_all(session: Session) -> None:
     seed_manufacturers(session)
     seed_calibers(session)
     seed_chambers(session)
+    seed_platforms(session)
     seed_bullets(session)
     seed_bullet_bc_sources(session)
     seed_cartridges(session)
@@ -2763,6 +2891,8 @@ def reset_seeded_tables(session: Session) -> None:
     session.query(BulletBCSource).delete()
     session.query(Cartridge).delete()
     session.query(Bullet).delete()
+    session.query(CaliberPlatform).delete()
+    session.query(Platform).delete()
     session.query(ChamberAcceptsCaliber).delete()
     session.query(Chamber).delete()
     session.query(Caliber).delete()

@@ -47,7 +47,10 @@
       "Bash(wc -l /Users/brianbolze/Development/software/shooting/src/drift/models/*.py)",
       "Bash(python -c \"from drift.models import Base; print\\(''Import OK''\\)\")",
       "Bash(alembic heads)",
-      "Bash(alembic current)"
+      "Bash(alembic current)",
+      "Bash(awk 'NR>=50 && NR<=100')",
+      "Bash(python -m alembic revision --autogenerate -m \"Add platform and caliber_platform tables\")",
+      "Bash(python -m alembic upgrade head)"
     ]
   }
 }

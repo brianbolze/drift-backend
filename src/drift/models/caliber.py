@@ -8,7 +8,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from drift.models.base import Base, TimestampMixin, uuid_fk_nullable, uuid_pk
 
 if TYPE_CHECKING:
-    from drift.models import Bullet, Cartridge, ChamberAcceptsCaliber
+    from drift.models import Bullet, Cartridge, CaliberPlatform, ChamberAcceptsCaliber
 
 
 class Caliber(TimestampMixin, Base):
@@ -42,5 +42,8 @@ class Caliber(TimestampMixin, Base):
     bullets: Mapped[list["Bullet"]] = relationship(back_populates="caliber")  # noqa: F821
     cartridges: Mapped[list["Cartridge"]] = relationship(back_populates="caliber")  # noqa: F821
     chamber_links: Mapped[list["ChamberAcceptsCaliber"]] = relationship(  # noqa: F821
+        back_populates="caliber",
+    )
+    platform_links: Mapped[list["CaliberPlatform"]] = relationship(  # noqa: F821
         back_populates="caliber",
     )

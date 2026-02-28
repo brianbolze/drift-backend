@@ -6,6 +6,7 @@ from drift.models.chamber import Chamber, ChamberAcceptsCaliber
 from drift.models.entity_alias import EntityAlias
 from drift.models.manufacturer import Manufacturer
 from drift.models.optic import Optic, Reticle
+from drift.models.platform import CaliberPlatform, Platform
 from drift.models.rifle_model import RifleModel
 
 __all__ = [
@@ -14,6 +15,8 @@ __all__ = [
     "Caliber",
     "Chamber",
     "ChamberAcceptsCaliber",
+    "Platform",
+    "CaliberPlatform",
     "Bullet",
     "BulletBCSource",
     "Cartridge",
