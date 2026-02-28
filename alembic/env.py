@@ -12,7 +12,7 @@ _PROJECT_ROOT = Path(__file__).resolve().parent.parent
 load_dotenv(_PROJECT_ROOT / ".env")
 
 # Import all models so metadata is populated
-from rangefinder.models import Base  # noqa: E402, F401
+from drift.models import Base  # noqa: E402, F401
 
 config = context.config
 

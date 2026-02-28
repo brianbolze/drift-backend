@@ -1,7 +1,7 @@
 [project]
-name = "rangefinder-backend"
+name = "drift-ballistics"
 version = "0.1.0"
-description = "RangeFinder ammo & firearms data pipeline and search backend"
+description = "Drift Ballistics ammo & firearms data pipeline and search backend"
 requires-python = ">=3.11"
 dependencies = [
     "sqlalchemy>=2.0,<3.0",
@@ -39,7 +39,7 @@ target-version = ["py311"]
 [tool.isort]
 profile = "black"
 line_length = 120
-known_first_party = ["rangefinder"]
+known_first_party = ["drift"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

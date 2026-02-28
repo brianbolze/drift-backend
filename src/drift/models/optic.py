@@ -5,10 +5,10 @@ from typing import TYPE_CHECKING
 from sqlalchemy import JSON, Float, String, Text
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from rangefinder.models.base import Base, TimestampMixin, uuid_fk, uuid_pk
+from drift.models.base import Base, TimestampMixin, uuid_fk, uuid_pk
 
 if TYPE_CHECKING:
-    from rangefinder.models import Manufacturer
+    from drift.models import Manufacturer
 
 
 class Reticle(TimestampMixin, Base):

@@ -38,7 +38,16 @@
       "Bash(.venv/bin/alembic revision:*)",
       "Bash(.venv/bin/alembic upgrade head:*)",
       "Bash(python scripts/seed_data.py:*)",
-      "Bash(/Users/brianbolze/Development/software/shooting/.venv/bin/python:*)"
+      "Bash(/Users/brianbolze/Development/software/shooting/.venv/bin/python:*)",
+      "Bash(sqlite3:*)",
+      "mcp__filesystem__list_directory",
+      "mcp__362bfe6f-5493-447a-8eb8-85a8dc200cf1__get_issue",
+      "mcp__filesystem__directory_tree",
+      "Bash(wc -l /Users/brianbolze/Development/software/shooting/data/*.json)",
+      "Bash(wc -l /Users/brianbolze/Development/software/shooting/src/drift/models/*.py)",
+      "Bash(python -c \"from drift.models import Base; print\\(''Import OK''\\)\")",
+      "Bash(alembic heads)",
+      "Bash(alembic current)"
     ]
   }
 }

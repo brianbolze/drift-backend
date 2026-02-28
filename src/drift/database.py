@@ -1,7 +1,7 @@
 """Database engine and session configuration.
 
 Reads DATABASE_URL from environment / .env file.
-Default: sqlite:///data/rangefinder.db (relative to project root).
+Default: sqlite:///data/drift.db (relative to project root).
 """
 
 import os
@@ -15,7 +15,7 @@ from sqlalchemy.orm import sessionmaker
 _PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 load_dotenv(_PROJECT_ROOT / ".env")
 
-DATABASE_URL = os.getenv("DATABASE_URL", f"sqlite:///{_PROJECT_ROOT / 'data' / 'rangefinder.db'}")
+DATABASE_URL = os.getenv("DATABASE_URL", f"sqlite:///{_PROJECT_ROOT / 'data' / 'drift.db'}")
 
 
 def get_engine(url: str = DATABASE_URL):

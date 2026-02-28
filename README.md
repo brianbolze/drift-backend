@@ -1,6 +1,6 @@
-# RangeFinder Backend
+# Drift Ballistics Backend
 
-Data pipeline and search backend for the RangeFinder ballistics app. Scrapes manufacturer product data, extracts structured ammo/firearms specs via LLM, and exports a bundled SQLite database for on-device search.
+Data pipeline and search backend for the Drift Ballistics app. Scrapes manufacturer product data, extracts structured ammo/firearms specs via LLM, and exports a bundled SQLite database for on-device search.
 
 ## Setup
 
@@ -35,7 +35,7 @@ VS Code: settings are in `.vscode/settings.json` — format-on-save is enabled.
 ## Project Structure
 
 ```
-src/rangefinder/
+src/drift/
 ├── models/         # SQLAlchemy models (Manufacturer, Caliber, Bullet, etc.)
 ├── schemas/        # Pydantic schemas
 ├── pipeline/       # Scraping + extraction pipeline

@@ -1,6 +1,6 @@
 **# WI-2: What We Learned at Doro (and How It Applies Here)**
 
-***\*Context:\**** This document is for the engineers working on the Ammo & Firearms Data Library. It distills lessons from the Doro codebase — a structured data pipeline we built for PE deal intelligence — into concrete suggestions for the RangeFinder data model, pipeline architecture, and search system. Doro solved a structurally similar problem (scrape messy web sources, extract structured specs, deduplicate across sources, serve fast search), and several of its patterns transfer directly.
+***\*Context:\**** This document is for the engineers working on the Ammo & Firearms Data Library. It distills lessons from the Doro codebase — a structured data pipeline we built for PE deal intelligence — into concrete suggestions for the Drift Ballistics data model, pipeline architecture, and search system. Doro solved a structurally similar problem (scrape messy web sources, extract structured specs, deduplicate across sources, serve fast search), and several of its patterns transfer directly.
 
 Read this alongside `wi2_goals_and_strategy.md`. That doc has the right product instincts. This one fills in the engineering details from having built something like it before.
 
@@ -905,7 +905,7 @@ The export pipeline should be a single command that:
 
 \```
 
-$ python export_bundled_db.py --output rangefinder_ammo_v1.2.sqlite
+$ python export_bundled_db.py --output drift_ammo_v1.2.sqlite
 
 Exporting approved records...
 
@@ -923,7 +923,7 @@ Building FTS5 index... done
 
 Building trigram index... done (187,421 trigrams)
 
-Output: rangefinder_ammo_v1.2.sqlite
+Output: drift_ammo_v1.2.sqlite
 
   Uncompressed: 1.4 MB
 

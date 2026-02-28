@@ -44,7 +44,7 @@ The design proposal's "Next Steps" section is your task list. Here's the short v
 
 **Steps 1 and 2 are done.**
 
-- SQLAlchemy models for all 8 entities (Manufacturer, Caliber, Chamber, ChamberAcceptsCaliber, Bullet, BulletBCSource, Cartridge, RifleModel, EntityAlias) are implemented under `src/rangefinder/models/`.
+- SQLAlchemy models for all 8 entities (Manufacturer, Caliber, Chamber, ChamberAcceptsCaliber, Bullet, BulletBCSource, Cartridge, RifleModel, EntityAlias) are implemented under `src/drift/models/`.
 - Initial Alembic migration exists.
 - `scripts/seed_data.py` seeds 32 manufacturers, 25 calibers, 26 chambers, 30 chamber-caliber links, and 83 entity aliases. Two rounds of domain expert review incorporated. Idempotent via `--reset`. 20 tests, lint clean.
 - The Bullet, BulletBCSource, Cartridge, and RifleModel tables exist in the schema but are empty. These are pipeline-populated, not hand-curated.
@@ -68,7 +68,7 @@ Deliverable: `scripts/ingest_one.py` (or similar) that you can run against a Hor
 
 Define the Pydantic models that the LLM extraction step targets. These are separate from the SQLAlchemy models — they represent what the LLM returns, before entity resolution and normalization. They should enforce constraints the LLM is likely to violate (e.g., `bc_g7` must be between 0.05 and 1.0, `weight_grains` must be positive, caliber name must be a string not a number).
 
-These schemas live in `src/rangefinder/schemas/` (already stubbed). They'll be reused by both the single-page ingest script and the eventual batch pipeline.
+These schemas live in `src/drift/schemas/` (already stubbed). They'll be reused by both the single-page ingest script and the eventual batch pipeline.
 
 ### 3c. Entity resolution layer
 

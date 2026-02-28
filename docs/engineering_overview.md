@@ -1,4 +1,4 @@
-# RangeFinder — Engineering Overview
+# Drift Ballistics — Engineering Overview
 
 *Everything an engineer needs to know to contribute effectively. Read this first, then the specific work item docs.*
 
@@ -8,7 +8,7 @@
 
 A precision ballistics calculator app for iOS. Shooters enter their rifle and ammunition specs, and the app computes hold values (how much to adjust their scope) at any distance given current atmospheric conditions. Think of it as a specialized scientific calculator with a database layer and rich profiles.
 
-**Internal codename**: RangeFinder **Platform**: iOS native (Swift / SwiftUI) **Architecture**: Local-first, offline-capable, no account required for core features **Backend**: Python / FastAPI for data pipeline and search infrastructure **Target**: MVP in 8-10 weeks
+**Platform**: iOS native (Swift / SwiftUI) **Architecture**: Local-first, offline-capable, no account required for core features **Backend**: Python / FastAPI for data pipeline and search infrastructure **Target**: MVP in 8-10 weeks
 
 ------
 
@@ -125,6 +125,7 @@ This is important context for the impact logging data model — we'll eventually
 ------
 
 ## Data Model (Core Entities)
+NOTE: Read through the python files in `src/drift/models` for the most up to date info on the data schema. 
 
 These are the entities we're confident about regardless of which product direction wins in prototype testing. Schema should be extensible — we'll almost certainly add confidence states, truing history, or session data later.
 

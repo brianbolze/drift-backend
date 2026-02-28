@@ -1,6 +1,6 @@
 """Smoke tests for the schema: create one of everything, verify relationships."""
 
-from rangefinder.models import (
+from drift.models import (
     Bullet,
     BulletBCSource,
     Caliber,

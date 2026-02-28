@@ -11,7 +11,7 @@ from seed_data import seed_all  # noqa: E402
 from sqlalchemy import create_engine  # noqa: E402
 from sqlalchemy.orm import Session  # noqa: E402
 
-from rangefinder.models import (  # noqa: E402
+from drift.models import (  # noqa: E402
     Base,
     Bullet,
     BulletBCSource,

@@ -206,7 +206,7 @@ This is hand-curation territory, same as what we just did for manufacturers and 
 
 ## Recommended Implementation Sequence
 
-1. **Add Reticle and Optic models** to `src/rangefinder/models/`. Add `model_family` column to `RifleModel`. Create migration.
+1. **Add Reticle and Optic models** to `src/drift/models/`. Add `model_family` column to `RifleModel`. Create migration.
 2. **Add `optic_maker` to the manufacturer `type_tags` vocabulary.** Add the ~6 key optics manufacturers to the seed data (Vortex, Nightforce, Leupold, Kahles, Sig Sauer, ZCO). Some may already be familiar names — Sig Sauer could share a manufacturer row if we add `optic_maker` to their tags.
 3. **Hand-curate reticle seed data** (~15–20 rows). The domain expert can identify the reticles that matter: EBR-7C, Tremor3, ATACR Mil-XT, H59, MSR2, etc.
 4. **Hand-curate optic seed data** (~30–50 rows). One row per SKU. The wizard-critical fields first (click unit, click value, reticle FK), then fill in the rest from spec sheets.

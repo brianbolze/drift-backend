@@ -1,4 +1,4 @@
-# RangeFinder — Ammo & Firearms Database: Research Notes
+# Drift Ballistics — Ammo & Firearms Database: Research Notes
 
 *Reference findings from research into ballistics domain modeling, industry data standards, and prior art. Compiled to inform the data pipeline and schema design.*
 

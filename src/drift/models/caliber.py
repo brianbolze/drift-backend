@@ -5,10 +5,10 @@ from typing import TYPE_CHECKING
 from sqlalchemy import JSON, Boolean, Float, Integer, String, Text
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from rangefinder.models.base import Base, TimestampMixin, uuid_fk_nullable, uuid_pk
+from drift.models.base import Base, TimestampMixin, uuid_fk_nullable, uuid_pk
 
 if TYPE_CHECKING:
-    from rangefinder.models import Bullet, Cartridge, ChamberAcceptsCaliber
+    from drift.models import Bullet, Cartridge, ChamberAcceptsCaliber
 
 
 class Caliber(TimestampMixin, Base):

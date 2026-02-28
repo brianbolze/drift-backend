@@ -21,8 +21,8 @@ sys.path.insert(0, str(_ROOT / "src"))
 
 from sqlalchemy.orm import Session  # noqa: E402
 
-from rangefinder.database import get_engine, get_session_factory  # noqa: E402
-from rangefinder.models import (  # noqa: E402
+from drift.database import get_engine, get_session_factory  # noqa: E402
+from drift.models import (  # noqa: E402
     Base,
     Bullet,
     BulletBCSource,
@@ -2776,7 +2776,7 @@ def reset_seeded_tables(session: Session) -> None:
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Seed the RangeFinder backend database.")
+    parser = argparse.ArgumentParser(description="Seed the Drift Ballistics backend database.")
     parser.add_argument("--reset", action="store_true", help="Delete existing seed data before re-seeding")
     args = parser.parse_args()
 

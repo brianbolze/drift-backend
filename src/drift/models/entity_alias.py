@@ -7,7 +7,7 @@ This table preserves alias_type metadata for curation and debugging.
 from sqlalchemy import String, UniqueConstraint
 from sqlalchemy.orm import Mapped, mapped_column
 
-from rangefinder.models.base import Base, TimestampMixin, uuid_pk
+from drift.models.base import Base, TimestampMixin, uuid_pk
 
 
 class EntityAlias(TimestampMixin, Base):
