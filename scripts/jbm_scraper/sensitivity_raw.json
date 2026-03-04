@@ -1,0 +1,2882 @@
+{
+  "baseline": {
+    "300": {
+      "drop_mil": -1.2,
+      "drop_in": -13.4,
+      "windage_mil": 0.5,
+      "windage_in": 5.5,
+      "velocity_fps": 2305.5,
+      "energy_ftlbs": 1652.0,
+      "tof_s": 0.36
+    },
+    "600": {
+      "drop_mil": -3.9,
+      "drop_in": -84.7,
+      "windage_mil": 1.1,
+      "windage_in": 24.0,
+      "velocity_fps": 1934.2,
+      "energy_ftlbs": 1162.7,
+      "tof_s": 0.786
+    },
+    "1000": {
+      "drop_mil": -8.8,
+      "drop_in": -318.1,
+      "windage_mil": 2.1,
+      "windage_in": 75.8,
+      "velocity_fps": 1488.6,
+      "energy_ftlbs": 688.7,
+      "tof_s": 1.493
+    },
+    "1500": {
+      "drop_mil": -18.5,
+      "drop_in": -996.5,
+      "windage_mil": 3.8,
+      "windage_in": 207.7,
+      "velocity_fps": 1052.2,
+      "energy_ftlbs": 344.1,
+      "tof_s": 2.711
+    }
+  },
+  "_baseline_station_prs": {
+    "300": {
+      "drop_mil": -1.2,
+      "drop_in": -13.4,
+      "windage_mil": 0.5,
+      "windage_in": 5.5,
+      "velocity_fps": 2305.5,
+      "energy_ftlbs": 1652.0,
+      "tof_s": 0.36
+    },
+    "600": {
+      "drop_mil": -3.9,
+      "drop_in": -84.7,
+      "windage_mil": 1.1,
+      "windage_in": 24.0,
+      "velocity_fps": 1934.2,
+      "energy_ftlbs": 1162.7,
+      "tof_s": 0.786
+    },
+    "1000": {
+      "drop_mil": -8.8,
+      "drop_in": -318.1,
+      "windage_mil": 2.1,
+      "windage_in": 75.8,
+      "velocity_fps": 1488.6,
+      "energy_ftlbs": 688.7,
+      "tof_s": 1.493
+    },
+    "1500": {
+      "drop_mil": -18.5,
+      "drop_in": -996.5,
+      "windage_mil": 3.8,
+      "windage_in": 207.7,
+      "velocity_fps": 1052.2,
+      "energy_ftlbs": 344.1,
+      "tof_s": 2.711
+    }
+  },
+  "Muzzle Velocity": {
+    "param": "muzzle_vel",
+    "unit": "fps",
+    "baseline_val": 2710,
+    "extra_params": {},
+    "sweep": [
+      {
+        "value": 2560,
+        "data": {
+          "300": {
+            "drop_mil": -1.4,
+            "drop_in": -15.4,
+            "windage_mil": 0.6,
+            "windage_in": 6.0,
+            "velocity_fps": 2168.7,
+            "energy_ftlbs": 1461.9,
+            "tof_s": 0.382
+          },
+          "600": {
+            "drop_mil": -4.5,
+            "drop_in": -96.6,
+            "windage_mil": 1.2,
+            "windage_in": 26.2,
+            "velocity_fps": 1810.0,
+            "energy_ftlbs": 1018.2,
+            "tof_s": 0.836
+          },
+          "1000": {
+            "drop_mil": -10.1,
+            "drop_in": -363.3,
+            "windage_mil": 2.3,
+            "windage_in": 83.3,
+            "velocity_fps": 1378.2,
+            "energy_ftlbs": 590.3,
+            "tof_s": 1.596
+          },
+          "1500": {
+            "drop_mil": -21.2,
+            "drop_in": -1146.3,
+            "windage_mil": 4.2,
+            "windage_in": 226.6,
+            "velocity_fps": 1016.6,
+            "energy_ftlbs": 321.2,
+            "tof_s": 2.9
+          }
+        }
+      },
+      {
+        "value": 2610,
+        "data": {
+          "300": {
+            "drop_mil": -1.4,
+            "drop_in": -14.7,
+            "windage_mil": 0.5,
+            "windage_in": 5.9,
+            "velocity_fps": 2214.2,
+            "energy_ftlbs": 1523.8,
+            "tof_s": 0.374
+          },
+          "600": {
+            "drop_mil": -4.3,
+            "drop_in": -92.4,
+            "windage_mil": 1.2,
+            "windage_in": 25.4,
+            "velocity_fps": 1851.4,
+            "energy_ftlbs": 1065.3,
+            "tof_s": 0.819
+          },
+          "1000": {
+            "drop_mil": -9.6,
+            "drop_in": -347.3,
+            "windage_mil": 2.2,
+            "windage_in": 80.7,
+            "velocity_fps": 1414.9,
+            "energy_ftlbs": 622.2,
+            "tof_s": 1.56
+          },
+          "1500": {
+            "drop_mil": -20.2,
+            "drop_in": -1093.4,
+            "windage_mil": 4.1,
+            "windage_in": 220.3,
+            "velocity_fps": 1027.6,
+            "energy_ftlbs": 328.2,
+            "tof_s": 2.836
+          }
+        }
+      },
+      {
+        "value": 2660,
+        "data": {
+          "300": {
+            "drop_mil": -1.3,
+            "drop_in": -14.0,
+            "windage_mil": 0.5,
+            "windage_in": 5.7,
+            "velocity_fps": 2259.8,
+            "energy_ftlbs": 1587.2,
+            "tof_s": 0.367
+          },
+          "600": {
+            "drop_mil": -4.1,
+            "drop_in": -88.5,
+            "windage_mil": 1.1,
+            "windage_in": 24.7,
+            "velocity_fps": 1892.8,
+            "energy_ftlbs": 1113.5,
+            "tof_s": 0.802
+          },
+          "1000": {
+            "drop_mil": -9.2,
+            "drop_in": -332.2,
+            "windage_mil": 2.2,
+            "windage_in": 78.2,
+            "velocity_fps": 1451.7,
+            "energy_ftlbs": 655.0,
+            "tof_s": 1.526
+          },
+          "1500": {
+            "drop_mil": -19.3,
+            "drop_in": -1043.5,
+            "windage_mil": 4.0,
+            "windage_in": 214.0,
+            "velocity_fps": 1039.3,
+            "energy_ftlbs": 335.7,
+            "tof_s": 2.773
+          }
+        }
+      },
+      {
+        "value": 2710,
+        "data": {
+          "300": {
+            "drop_mil": -1.2,
+            "drop_in": -13.4,
+            "windage_mil": 0.5,
+            "windage_in": 5.5,
+            "velocity_fps": 2305.5,
+            "energy_ftlbs": 1652.0,
+            "tof_s": 0.36
+          },
+          "600": {
+            "drop_mil": -3.9,
+            "drop_in": -84.7,
+            "windage_mil": 1.1,
+            "windage_in": 24.0,
+            "velocity_fps": 1934.2,
+            "energy_ftlbs": 1162.7,
+            "tof_s": 0.786
+          },
+          "1000": {
+            "drop_mil": -8.8,
+            "drop_in": -318.1,
+            "windage_mil": 2.1,
+            "windage_in": 75.8,
+            "velocity_fps": 1488.6,
+            "energy_ftlbs": 688.7,
+            "tof_s": 1.493
+          },
+          "1500": {
+            "drop_mil": -18.5,
+            "drop_in": -996.5,
+            "windage_mil": 3.8,
+            "windage_in": 207.7,
+            "velocity_fps": 1052.2,
+            "energy_ftlbs": 344.1,
+            "tof_s": 2.711
+          }
+        }
+      },
+      {
+        "value": 2760,
+        "data": {
+          "300": {
+            "drop_mil": -1.2,
+            "drop_in": -12.7,
+            "windage_mil": 0.5,
+            "windage_in": 5.4,
+            "velocity_fps": 2351.2,
+            "energy_ftlbs": 1718.3,
+            "tof_s": 0.353
+          },
+          "600": {
+            "drop_mil": -3.8,
+            "drop_in": -81.2,
+            "windage_mil": 1.1,
+            "windage_in": 23.3,
+            "velocity_fps": 1975.6,
+            "energy_ftlbs": 1213.1,
+            "tof_s": 0.771
+          },
+          "1000": {
+            "drop_mil": -8.5,
+            "drop_in": -304.9,
+            "windage_mil": 2.0,
+            "windage_in": 73.5,
+            "velocity_fps": 1525.5,
+            "energy_ftlbs": 723.3,
+            "tof_s": 1.462
+          },
+          "1500": {
+            "drop_mil": -17.6,
+            "drop_in": -952.2,
+            "windage_mil": 3.7,
+            "windage_in": 201.4,
+            "velocity_fps": 1066.6,
+            "energy_ftlbs": 353.6,
+            "tof_s": 2.65
+          }
+        }
+      },
+      {
+        "value": 2810,
+        "data": {
+          "300": {
+            "drop_mil": -1.1,
+            "drop_in": -12.2,
+            "windage_mil": 0.5,
+            "windage_in": 5.2,
+            "velocity_fps": 2397.1,
+            "energy_ftlbs": 1786.0,
+            "tof_s": 0.347
+          },
+          "600": {
+            "drop_mil": -3.6,
+            "drop_in": -77.9,
+            "windage_mil": 1.0,
+            "windage_in": 22.7,
+            "velocity_fps": 2017.1,
+            "energy_ftlbs": 1264.6,
+            "tof_s": 0.756
+          },
+          "1000": {
+            "drop_mil": -8.1,
+            "drop_in": -292.4,
+            "windage_mil": 2.0,
+            "windage_in": 71.4,
+            "velocity_fps": 1562.5,
+            "energy_ftlbs": 758.8,
+            "tof_s": 1.432
+          },
+          "1500": {
+            "drop_mil": -16.9,
+            "drop_in": -910.6,
+            "windage_mil": 3.6,
+            "windage_in": 195.2,
+            "velocity_fps": 1084.7,
+            "energy_ftlbs": 365.7,
+            "tof_s": 2.591
+          }
+        }
+      },
+      {
+        "value": 2860,
+        "data": {
+          "300": {
+            "drop_mil": -1.1,
+            "drop_in": -11.6,
+            "windage_mil": 0.5,
+            "windage_in": 5.1,
+            "velocity_fps": 2443.1,
+            "energy_ftlbs": 1855.1,
+            "tof_s": 0.34
+          },
+          "600": {
+            "drop_mil": -3.5,
+            "drop_in": -74.7,
+            "windage_mil": 1.0,
+            "windage_in": 22.0,
+            "velocity_fps": 2058.7,
+            "energy_ftlbs": 1317.3,
+            "tof_s": 0.742
+          },
+          "1000": {
+            "drop_mil": -7.8,
+            "drop_in": -280.6,
+            "windage_mil": 1.9,
+            "windage_in": 69.3,
+            "velocity_fps": 1599.6,
+            "energy_ftlbs": 795.3,
+            "tof_s": 1.403
+          },
+          "1500": {
+            "drop_mil": -16.1,
+            "drop_in": -871.4,
+            "windage_mil": 3.5,
+            "windage_in": 189.2,
+            "velocity_fps": 1107.7,
+            "energy_ftlbs": 381.4,
+            "tof_s": 2.533
+          }
+        }
+      }
+    ]
+  },
+  "Ballistic Coefficient (G7)": {
+    "param": "bc",
+    "unit": "",
+    "baseline_val": 0.326,
+    "extra_params": {},
+    "sweep": [
+      {
+        "value": 0.293,
+        "data": {
+          "300": {
+            "drop_mil": -1.3,
+            "drop_in": -13.6,
+            "windage_mil": 0.6,
+            "windage_in": 6.1,
+            "velocity_fps": 2262.2,
+            "energy_ftlbs": 1590.6,
+            "tof_s": 0.363
+          },
+          "600": {
+            "drop_mil": -4.1,
+            "drop_in": -87.8,
+            "windage_mil": 1.2,
+            "windage_in": 27.0,
+            "velocity_fps": 1855.7,
+            "energy_ftlbs": 1070.3,
+            "tof_s": 0.803
+          },
+          "1000": {
+            "drop_mil": -9.4,
+            "drop_in": -338.6,
+            "windage_mil": 2.4,
+            "windage_in": 87.1,
+            "velocity_fps": 1372.8,
+            "energy_ftlbs": 585.7,
+            "tof_s": 1.554
+          },
+          "1500": {
+            "drop_mil": -20.6,
+            "drop_in": -1109.9,
+            "windage_mil": 4.5,
+            "windage_in": 240.4,
+            "velocity_fps": 999.0,
+            "energy_ftlbs": 310.2,
+            "tof_s": 2.882
+          }
+        }
+      },
+      {
+        "value": 0.31,
+        "data": {
+          "300": {
+            "drop_mil": -1.2,
+            "drop_in": -13.5,
+            "windage_mil": 0.5,
+            "windage_in": 5.8,
+            "velocity_fps": 2285.6,
+            "energy_ftlbs": 1623.6,
+            "tof_s": 0.361
+          },
+          "600": {
+            "drop_mil": -4.0,
+            "drop_in": -86.1,
+            "windage_mil": 1.2,
+            "windage_in": 25.3,
+            "velocity_fps": 1898.0,
+            "energy_ftlbs": 1119.7,
+            "tof_s": 0.794
+          },
+          "1000": {
+            "drop_mil": -9.1,
+            "drop_in": -327.3,
+            "windage_mil": 2.2,
+            "windage_in": 80.9,
+            "velocity_fps": 1435.0,
+            "energy_ftlbs": 640.0,
+            "tof_s": 1.52
+          },
+          "1500": {
+            "drop_mil": -19.4,
+            "drop_in": -1047.1,
+            "windage_mil": 4.1,
+            "windage_in": 223.0,
+            "velocity_fps": 1025.5,
+            "energy_ftlbs": 326.9,
+            "tof_s": 2.791
+          }
+        }
+      },
+      {
+        "value": 0.326,
+        "data": {
+          "300": {
+            "drop_mil": -1.2,
+            "drop_in": -13.4,
+            "windage_mil": 0.5,
+            "windage_in": 5.5,
+            "velocity_fps": 2305.5,
+            "energy_ftlbs": 1652.0,
+            "tof_s": 0.36
+          },
+          "600": {
+            "drop_mil": -3.9,
+            "drop_in": -84.7,
+            "windage_mil": 1.1,
+            "windage_in": 24.0,
+            "velocity_fps": 1934.2,
+            "energy_ftlbs": 1162.7,
+            "tof_s": 0.786
+          },
+          "1000": {
+            "drop_mil": -8.8,
+            "drop_in": -318.1,
+            "windage_mil": 2.1,
+            "windage_in": 75.8,
+            "velocity_fps": 1488.6,
+            "energy_ftlbs": 688.7,
+            "tof_s": 1.493
+          },
+          "1500": {
+            "drop_mil": -18.5,
+            "drop_in": -996.5,
+            "windage_mil": 3.8,
+            "windage_in": 207.7,
+            "velocity_fps": 1052.2,
+            "energy_ftlbs": 344.1,
+            "tof_s": 2.711
+          }
+        }
+      },
+      {
+        "value": 0.342,
+        "data": {
+          "300": {
+            "drop_mil": -1.2,
+            "drop_in": -13.2,
+            "windage_mil": 0.5,
+            "windage_in": 5.3,
+            "velocity_fps": 2323.6,
+            "energy_ftlbs": 1678.1,
+            "tof_s": 0.358
+          },
+          "600": {
+            "drop_mil": -3.9,
+            "drop_in": -83.5,
+            "windage_mil": 1.1,
+            "windage_in": 22.8,
+            "velocity_fps": 1967.2,
+            "energy_ftlbs": 1202.8,
+            "tof_s": 0.779
+          },
+          "1000": {
+            "drop_mil": -8.6,
+            "drop_in": -310.2,
+            "windage_mil": 2.0,
+            "windage_in": 71.3,
+            "velocity_fps": 1538.0,
+            "energy_ftlbs": 735.2,
+            "tof_s": 1.469
+          },
+          "1500": {
+            "drop_mil": -17.6,
+            "drop_in": -953.2,
+            "windage_mil": 3.6,
+            "windage_in": 193.6,
+            "velocity_fps": 1085.0,
+            "energy_ftlbs": 365.9,
+            "tof_s": 2.637
+          }
+        }
+      },
+      {
+        "value": 0.359,
+        "data": {
+          "300": {
+            "drop_mil": -1.2,
+            "drop_in": -13.1,
+            "windage_mil": 0.5,
+            "windage_in": 5.0,
+            "velocity_fps": 2341.1,
+            "energy_ftlbs": 1703.5,
+            "tof_s": 0.357
+          },
+          "600": {
+            "drop_mil": -3.8,
+            "drop_in": -82.4,
+            "windage_mil": 1.0,
+            "windage_in": 21.6,
+            "velocity_fps": 1999.4,
+            "energy_ftlbs": 1242.5,
+            "tof_s": 0.773
+          },
+          "1000": {
+            "drop_mil": -8.4,
+            "drop_in": -302.9,
+            "windage_mil": 1.9,
+            "windage_in": 67.2,
+            "velocity_fps": 1586.3,
+            "energy_ftlbs": 782.1,
+            "tof_s": 1.447
+          },
+          "1500": {
+            "drop_mil": -16.9,
+            "drop_in": -914.1,
+            "windage_mil": 3.3,
+            "windage_in": 180.1,
+            "velocity_fps": 1135.3,
+            "energy_ftlbs": 400.6,
+            "tof_s": 2.566
+          }
+        }
+      }
+    ]
+  },
+  "Wind Speed": {
+    "param": "wind_speed",
+    "unit": "mph",
+    "baseline_val": 10.0,
+    "extra_params": {},
+    "sweep": [
+      {
+        "value": 0,
+        "data": {
+          "300": {
+            "drop_mil": -1.2,
+            "drop_in": -13.4,
+            "windage_mil": 0.1,
+            "windage_in": 0.6,
+            "velocity_fps": 2305.5,
+            "energy_ftlbs": 1652.0,
+            "tof_s": 0.36
+          },
+          "600": {
+            "drop_mil": -3.9,
+            "drop_in": -84.7,
+            "windage_mil": 0.1,
+            "windage_in": 2.3,
+            "velocity_fps": 1934.2,
+            "energy_ftlbs": 1162.7,
+            "tof_s": 0.786
+          },
+          "1000": {
+            "drop_mil": -8.8,
+            "drop_in": -318.1,
+            "windage_mil": 0.2,
+            "windage_in": 7.5,
+            "velocity_fps": 1488.6,
+            "energy_ftlbs": 688.7,
+            "tof_s": 1.493
+          },
+          "1500": {
+            "drop_mil": -18.5,
+            "drop_in": -996.5,
+            "windage_mil": 0.4,
+            "windage_in": 22.3,
+            "velocity_fps": 1052.1,
+            "energy_ftlbs": 344.1,
+            "tof_s": 2.711
+          }
+        }
+      },
+      {
+        "value": 5,
+        "data": {
+          "300": {
+            "drop_mil": -1.2,
+            "drop_in": -13.4,
+            "windage_mil": 0.3,
+            "windage_in": 3.0,
+            "velocity_fps": 2305.5,
+            "energy_ftlbs": 1652.0,
+            "tof_s": 0.36
+          },
+          "600": {
+            "drop_mil": -3.9,
+            "drop_in": -84.7,
+            "windage_mil": 0.6,
+            "windage_in": 13.1,
+            "velocity_fps": 1934.2,
+            "energy_ftlbs": 1162.7,
+            "tof_s": 0.786
+          },
+          "1000": {
+            "drop_mil": -8.8,
+            "drop_in": -318.1,
+            "windage_mil": 1.2,
+            "windage_in": 41.6,
+            "velocity_fps": 1488.6,
+            "energy_ftlbs": 688.7,
+            "tof_s": 1.493
+          },
+          "1500": {
+            "drop_mil": -18.5,
+            "drop_in": -996.5,
+            "windage_mil": 2.1,
+            "windage_in": 115.0,
+            "velocity_fps": 1052.1,
+            "energy_ftlbs": 344.1,
+            "tof_s": 2.711
+          }
+        }
+      },
+      {
+        "value": 10,
+        "data": {
+          "300": {
+            "drop_mil": -1.2,
+            "drop_in": -13.4,
+            "windage_mil": 0.5,
+            "windage_in": 5.5,
+            "velocity_fps": 2305.5,
+            "energy_ftlbs": 1652.0,
+            "tof_s": 0.36
+          },
+          "600": {
+            "drop_mil": -3.9,
+            "drop_in": -84.7,
+            "windage_mil": 1.1,
+            "windage_in": 24.0,
+            "velocity_fps": 1934.2,
+            "energy_ftlbs": 1162.7,
+            "tof_s": 0.786
+          },
+          "1000": {
+            "drop_mil": -8.8,
+            "drop_in": -318.1,
+            "windage_mil": 2.1,
+            "windage_in": 75.8,
+            "velocity_fps": 1488.6,
+            "energy_ftlbs": 688.7,
+            "tof_s": 1.493
+          },
+          "1500": {
+            "drop_mil": -18.5,
+            "drop_in": -996.5,
+            "windage_mil": 3.8,
+            "windage_in": 207.7,
+            "velocity_fps": 1052.2,
+            "energy_ftlbs": 344.1,
+            "tof_s": 2.711
+          }
+        }
+      },
+      {
+        "value": 15,
+        "data": {
+          "300": {
+            "drop_mil": -1.2,
+            "drop_in": -13.4,
+            "windage_mil": 0.7,
+            "windage_in": 8.0,
+            "velocity_fps": 2305.5,
+            "energy_ftlbs": 1652.0,
+            "tof_s": 0.36
+          },
+          "600": {
+            "drop_mil": -3.9,
+            "drop_in": -84.7,
+            "windage_mil": 1.6,
+            "windage_in": 34.8,
+            "velocity_fps": 1934.2,
+            "energy_ftlbs": 1162.7,
+            "tof_s": 0.786
+          },
+          "1000": {
+            "drop_mil": -8.8,
+            "drop_in": -318.1,
+            "windage_mil": 3.1,
+            "windage_in": 109.9,
+            "velocity_fps": 1488.6,
+            "energy_ftlbs": 688.7,
+            "tof_s": 1.493
+          },
+          "1500": {
+            "drop_mil": -18.5,
+            "drop_in": -996.5,
+            "windage_mil": 5.6,
+            "windage_in": 300.4,
+            "velocity_fps": 1052.2,
+            "energy_ftlbs": 344.1,
+            "tof_s": 2.711
+          }
+        }
+      },
+      {
+        "value": 20,
+        "data": {
+          "300": {
+            "drop_mil": -1.2,
+            "drop_in": -13.4,
+            "windage_mil": 1.0,
+            "windage_in": 10.5,
+            "velocity_fps": 2305.5,
+            "energy_ftlbs": 1652.0,
+            "tof_s": 0.36
+          },
+          "600": {
+            "drop_mil": -3.9,
+            "drop_in": -84.7,
+            "windage_mil": 2.1,
+            "windage_in": 45.6,
+            "velocity_fps": 1934.2,
+            "energy_ftlbs": 1162.7,
+            "tof_s": 0.786
+          },
+          "1000": {
+            "drop_mil": -8.8,
+            "drop_in": -318.1,
+            "windage_mil": 4.0,
+            "windage_in": 144.1,
+            "velocity_fps": 1488.6,
+            "energy_ftlbs": 688.7,
+            "tof_s": 1.493
+          },
+          "1500": {
+            "drop_mil": -18.5,
+            "drop_in": -996.5,
+            "windage_mil": 7.3,
+            "windage_in": 393.1,
+            "velocity_fps": 1052.2,
+            "energy_ftlbs": 344.1,
+            "tof_s": 2.711
+          }
+        }
+      }
+    ]
+  },
+  "Temperature": {
+    "param": "temp",
+    "unit": "\u00b0F",
+    "baseline_val": 59.0,
+    "extra_params": {},
+    "sweep": [
+      {
+        "value": 0,
+        "data": {
+          "300": {
+            "drop_mil": -1.3,
+            "drop_in": -13.6,
+            "windage_mil": 0.6,
+            "windage_in": 6.0,
+            "velocity_fps": 2268.0,
+            "energy_ftlbs": 1598.7,
+            "tof_s": 0.363
+          },
+          "600": {
+            "drop_mil": -4.0,
+            "drop_in": -87.4,
+            "windage_mil": 1.2,
+            "windage_in": 26.4,
+            "velocity_fps": 1865.6,
+            "energy_ftlbs": 1081.8,
+            "tof_s": 0.8
+          },
+          "1000": {
+            "drop_mil": -9.3,
+            "drop_in": -335.7,
+            "windage_mil": 2.4,
+            "windage_in": 84.9,
+            "velocity_fps": 1390.3,
+            "energy_ftlbs": 600.8,
+            "tof_s": 1.545
+          },
+          "1500": {
+            "drop_mil": -20.3,
+            "drop_in": -1096.4,
+            "windage_mil": 4.4,
+            "windage_in": 237.6,
+            "velocity_fps": 966.1,
+            "energy_ftlbs": 290.1,
+            "tof_s": 2.876
+          }
+        }
+      },
+      {
+        "value": 20,
+        "data": {
+          "300": {
+            "drop_mil": -1.3,
+            "drop_in": -13.5,
+            "windage_mil": 0.5,
+            "windage_in": 5.8,
+            "velocity_fps": 2281.5,
+            "energy_ftlbs": 1617.8,
+            "tof_s": 0.362
+          },
+          "600": {
+            "drop_mil": -4.0,
+            "drop_in": -86.4,
+            "windage_mil": 1.2,
+            "windage_in": 25.5,
+            "velocity_fps": 1890.3,
+            "energy_ftlbs": 1110.6,
+            "tof_s": 0.795
+          },
+          "1000": {
+            "drop_mil": -9.1,
+            "drop_in": -329.2,
+            "windage_mil": 2.3,
+            "windage_in": 81.5,
+            "velocity_fps": 1425.6,
+            "energy_ftlbs": 631.7,
+            "tof_s": 1.526
+          },
+          "1500": {
+            "drop_mil": -19.6,
+            "drop_in": -1058.4,
+            "windage_mil": 4.2,
+            "windage_in": 226.5,
+            "velocity_fps": 995.8,
+            "energy_ftlbs": 308.2,
+            "tof_s": 2.815
+          }
+        }
+      },
+      {
+        "value": 40,
+        "data": {
+          "300": {
+            "drop_mil": -1.2,
+            "drop_in": -13.4,
+            "windage_mil": 0.5,
+            "windage_in": 5.7,
+            "velocity_fps": 2294.2,
+            "energy_ftlbs": 1635.8,
+            "tof_s": 0.361
+          },
+          "600": {
+            "drop_mil": -4.0,
+            "drop_in": -85.5,
+            "windage_mil": 1.1,
+            "windage_in": 24.7,
+            "velocity_fps": 1913.5,
+            "energy_ftlbs": 1138.0,
+            "tof_s": 0.79
+          },
+          "1000": {
+            "drop_mil": -9.0,
+            "drop_in": -323.3,
+            "windage_mil": 2.2,
+            "windage_in": 78.5,
+            "velocity_fps": 1458.8,
+            "energy_ftlbs": 661.4,
+            "tof_s": 1.508
+          },
+          "1500": {
+            "drop_mil": -19.0,
+            "drop_in": -1024.9,
+            "windage_mil": 4.0,
+            "windage_in": 216.4,
+            "velocity_fps": 1024.9,
+            "energy_ftlbs": 326.5,
+            "tof_s": 2.759
+          }
+        }
+      },
+      {
+        "value": 59,
+        "data": {
+          "300": {
+            "drop_mil": -1.2,
+            "drop_in": -13.4,
+            "windage_mil": 0.5,
+            "windage_in": 5.5,
+            "velocity_fps": 2305.5,
+            "energy_ftlbs": 1652.0,
+            "tof_s": 0.36
+          },
+          "600": {
+            "drop_mil": -3.9,
+            "drop_in": -84.7,
+            "windage_mil": 1.1,
+            "windage_in": 24.0,
+            "velocity_fps": 1934.2,
+            "energy_ftlbs": 1162.7,
+            "tof_s": 0.786
+          },
+          "1000": {
+            "drop_mil": -8.8,
+            "drop_in": -318.1,
+            "windage_mil": 2.1,
+            "windage_in": 75.8,
+            "velocity_fps": 1488.6,
+            "energy_ftlbs": 688.7,
+            "tof_s": 1.493
+          },
+          "1500": {
+            "drop_mil": -18.5,
+            "drop_in": -996.5,
+            "windage_mil": 3.8,
+            "windage_in": 207.7,
+            "velocity_fps": 1052.2,
+            "energy_ftlbs": 344.1,
+            "tof_s": 2.711
+          }
+        }
+      },
+      {
+        "value": 80,
+        "data": {
+          "300": {
+            "drop_mil": -1.2,
+            "drop_in": -13.3,
+            "windage_mil": 0.5,
+            "windage_in": 5.4,
+            "velocity_fps": 2317.2,
+            "energy_ftlbs": 1668.9,
+            "tof_s": 0.359
+          },
+          "600": {
+            "drop_mil": -3.9,
+            "drop_in": -83.9,
+            "windage_mil": 1.1,
+            "windage_in": 23.2,
+            "velocity_fps": 1955.7,
+            "energy_ftlbs": 1188.7,
+            "tof_s": 0.782
+          },
+          "1000": {
+            "drop_mil": -8.7,
+            "drop_in": -313.0,
+            "windage_mil": 2.0,
+            "windage_in": 73.1,
+            "velocity_fps": 1519.7,
+            "energy_ftlbs": 717.8,
+            "tof_s": 1.478
+          },
+          "1500": {
+            "drop_mil": -17.9,
+            "drop_in": -968.4,
+            "windage_mil": 3.7,
+            "windage_in": 198.9,
+            "velocity_fps": 1081.6,
+            "energy_ftlbs": 363.6,
+            "tof_s": 2.663
+          }
+        }
+      },
+      {
+        "value": 100,
+        "data": {
+          "300": {
+            "drop_mil": -1.2,
+            "drop_in": -13.2,
+            "windage_mil": 0.5,
+            "windage_in": 5.2,
+            "velocity_fps": 2327.8,
+            "energy_ftlbs": 1684.1,
+            "tof_s": 0.358
+          },
+          "600": {
+            "drop_mil": -3.9,
+            "drop_in": -83.2,
+            "windage_mil": 1.0,
+            "windage_in": 22.6,
+            "velocity_fps": 1974.9,
+            "energy_ftlbs": 1212.2,
+            "tof_s": 0.778
+          },
+          "1000": {
+            "drop_mil": -8.6,
+            "drop_in": -308.5,
+            "windage_mil": 2.0,
+            "windage_in": 70.7,
+            "velocity_fps": 1547.6,
+            "energy_ftlbs": 744.4,
+            "tof_s": 1.464
+          },
+          "1500": {
+            "drop_mil": -17.5,
+            "drop_in": -944.4,
+            "windage_mil": 3.5,
+            "windage_in": 191.3,
+            "velocity_fps": 1109.3,
+            "energy_ftlbs": 382.5,
+            "tof_s": 2.62
+          }
+        }
+      }
+    ]
+  },
+  "Barometric Pressure": {
+    "param": "pressure",
+    "unit": "inHg",
+    "baseline_val": 29.92,
+    "extra_params": {
+      "corrected_pressure": false
+    },
+    "sweep": [
+      {
+        "value": 25.0,
+        "data": {
+          "300": {
+            "drop_mil": -1.2,
+            "drop_in": -13.0,
+            "windage_mil": 0.4,
+            "windage_in": 4.7,
+            "velocity_fps": 2369.5,
+            "energy_ftlbs": 1745.0,
+            "tof_s": 0.355
+          },
+          "600": {
+            "drop_mil": -3.7,
+            "drop_in": -80.6,
+            "windage_mil": 0.9,
+            "windage_in": 20.0,
+            "velocity_fps": 2051.6,
+            "energy_ftlbs": 1308.2,
+            "tof_s": 0.763
+          },
+          "1000": {
+            "drop_mil": -8.1,
+            "drop_in": -291.8,
+            "windage_mil": 1.7,
+            "windage_in": 61.6,
+            "velocity_fps": 1665.2,
+            "energy_ftlbs": 861.8,
+            "tof_s": 1.412
+          },
+          "1500": {
+            "drop_mil": -15.9,
+            "drop_in": -856.8,
+            "windage_mil": 3.0,
+            "windage_in": 161.8,
+            "velocity_fps": 1234.4,
+            "energy_ftlbs": 473.6,
+            "tof_s": 2.459
+          }
+        }
+      },
+      {
+        "value": 27.0,
+        "data": {
+          "300": {
+            "drop_mil": -1.2,
+            "drop_in": -13.1,
+            "windage_mil": 0.5,
+            "windage_in": 5.0,
+            "velocity_fps": 2343.3,
+            "energy_ftlbs": 1706.7,
+            "tof_s": 0.357
+          },
+          "600": {
+            "drop_mil": -3.8,
+            "drop_in": -82.2,
+            "windage_mil": 1.0,
+            "windage_in": 21.6,
+            "velocity_fps": 2003.4,
+            "energy_ftlbs": 1247.5,
+            "tof_s": 0.772
+          },
+          "1000": {
+            "drop_mil": -8.4,
+            "drop_in": -302.0,
+            "windage_mil": 1.9,
+            "windage_in": 67.1,
+            "velocity_fps": 1592.4,
+            "energy_ftlbs": 788.1,
+            "tof_s": 1.444
+          },
+          "1500": {
+            "drop_mil": -16.8,
+            "drop_in": -909.4,
+            "windage_mil": 3.3,
+            "windage_in": 179.7,
+            "velocity_fps": 1142.7,
+            "energy_ftlbs": 405.8,
+            "tof_s": 2.558
+          }
+        }
+      },
+      {
+        "value": 28.0,
+        "data": {
+          "300": {
+            "drop_mil": -1.2,
+            "drop_in": -13.2,
+            "windage_mil": 0.5,
+            "windage_in": 5.2,
+            "velocity_fps": 2330.3,
+            "energy_ftlbs": 1687.8,
+            "tof_s": 0.358
+          },
+          "600": {
+            "drop_mil": -3.8,
+            "drop_in": -83.1,
+            "windage_mil": 1.0,
+            "windage_in": 22.4,
+            "velocity_fps": 1979.6,
+            "energy_ftlbs": 1218.0,
+            "tof_s": 0.777
+          },
+          "1000": {
+            "drop_mil": -8.5,
+            "drop_in": -307.4,
+            "windage_mil": 1.9,
+            "windage_in": 70.0,
+            "velocity_fps": 1556.5,
+            "energy_ftlbs": 753.0,
+            "tof_s": 1.461
+          },
+          "1500": {
+            "drop_mil": -17.4,
+            "drop_in": -937.8,
+            "windage_mil": 3.5,
+            "windage_in": 189.2,
+            "velocity_fps": 1102.0,
+            "energy_ftlbs": 377.5,
+            "tof_s": 2.61
+          }
+        }
+      },
+      {
+        "value": 29.0,
+        "data": {
+          "300": {
+            "drop_mil": -1.2,
+            "drop_in": -13.3,
+            "windage_mil": 0.5,
+            "windage_in": 5.4,
+            "velocity_fps": 2317.4,
+            "energy_ftlbs": 1669.1,
+            "tof_s": 0.359
+          },
+          "600": {
+            "drop_mil": -3.9,
+            "drop_in": -83.9,
+            "windage_mil": 1.1,
+            "windage_in": 23.2,
+            "velocity_fps": 1955.9,
+            "energy_ftlbs": 1189.0,
+            "tof_s": 0.782
+          },
+          "1000": {
+            "drop_mil": -8.7,
+            "drop_in": -312.9,
+            "windage_mil": 2.0,
+            "windage_in": 73.0,
+            "velocity_fps": 1521.0,
+            "energy_ftlbs": 719.0,
+            "tof_s": 1.477
+          },
+          "1500": {
+            "drop_mil": -17.9,
+            "drop_in": -967.7,
+            "windage_mil": 3.7,
+            "windage_in": 198.8,
+            "velocity_fps": 1071.9,
+            "energy_ftlbs": 357.1,
+            "tof_s": 2.663
+          }
+        }
+      },
+      {
+        "value": 29.92,
+        "data": {
+          "300": {
+            "drop_mil": -1.2,
+            "drop_in": -13.4,
+            "windage_mil": 0.5,
+            "windage_in": 5.5,
+            "velocity_fps": 2305.5,
+            "energy_ftlbs": 1652.0,
+            "tof_s": 0.36
+          },
+          "600": {
+            "drop_mil": -3.9,
+            "drop_in": -84.7,
+            "windage_mil": 1.1,
+            "windage_in": 24.0,
+            "velocity_fps": 1934.2,
+            "energy_ftlbs": 1162.7,
+            "tof_s": 0.786
+          },
+          "1000": {
+            "drop_mil": -8.8,
+            "drop_in": -318.1,
+            "windage_mil": 2.1,
+            "windage_in": 75.8,
+            "velocity_fps": 1488.6,
+            "energy_ftlbs": 688.7,
+            "tof_s": 1.493
+          },
+          "1500": {
+            "drop_mil": -18.5,
+            "drop_in": -996.5,
+            "windage_mil": 3.8,
+            "windage_in": 207.7,
+            "velocity_fps": 1052.2,
+            "energy_ftlbs": 344.1,
+            "tof_s": 2.711
+          }
+        }
+      },
+      {
+        "value": 30.5,
+        "data": {
+          "300": {
+            "drop_mil": -1.2,
+            "drop_in": -13.4,
+            "windage_mil": 0.5,
+            "windage_in": 5.6,
+            "velocity_fps": 2298.0,
+            "energy_ftlbs": 1641.3,
+            "tof_s": 0.36
+          },
+          "600": {
+            "drop_mil": -3.9,
+            "drop_in": -85.2,
+            "windage_mil": 1.1,
+            "windage_in": 24.5,
+            "velocity_fps": 1920.5,
+            "energy_ftlbs": 1146.4,
+            "tof_s": 0.789
+          },
+          "1000": {
+            "drop_mil": -8.9,
+            "drop_in": -321.5,
+            "windage_mil": 2.2,
+            "windage_in": 77.6,
+            "velocity_fps": 1468.3,
+            "energy_ftlbs": 670.1,
+            "tof_s": 1.503
+          },
+          "1500": {
+            "drop_mil": -18.8,
+            "drop_in": -1015.2,
+            "windage_mil": 3.9,
+            "windage_in": 213.2,
+            "velocity_fps": 1041.4,
+            "energy_ftlbs": 337.1,
+            "tof_s": 2.741
+          }
+        }
+      }
+    ]
+  },
+  "Altitude": {
+    "param": "altitude",
+    "unit": "ft",
+    "baseline_val": 0,
+    "extra_params": {},
+    "sweep": [
+      {
+        "value": 0,
+        "data": {
+          "300": {
+            "drop_mil": -1.2,
+            "drop_in": -13.4,
+            "windage_mil": 0.5,
+            "windage_in": 5.5,
+            "velocity_fps": 2305.5,
+            "energy_ftlbs": 1652.0,
+            "tof_s": 0.36
+          },
+          "600": {
+            "drop_mil": -3.9,
+            "drop_in": -84.7,
+            "windage_mil": 1.1,
+            "windage_in": 24.0,
+            "velocity_fps": 1934.2,
+            "energy_ftlbs": 1162.7,
+            "tof_s": 0.786
+          },
+          "1000": {
+            "drop_mil": -8.8,
+            "drop_in": -318.1,
+            "windage_mil": 2.1,
+            "windage_in": 75.8,
+            "velocity_fps": 1488.6,
+            "energy_ftlbs": 688.7,
+            "tof_s": 1.493
+          },
+          "1500": {
+            "drop_mil": -18.5,
+            "drop_in": -996.5,
+            "windage_mil": 3.8,
+            "windage_in": 207.7,
+            "velocity_fps": 1052.2,
+            "energy_ftlbs": 344.1,
+            "tof_s": 2.711
+          }
+        }
+      },
+      {
+        "value": 2000,
+        "data": {
+          "300": {
+            "drop_mil": -1.2,
+            "drop_in": -13.2,
+            "windage_mil": 0.5,
+            "windage_in": 5.1,
+            "velocity_fps": 2332.7,
+            "energy_ftlbs": 1691.2,
+            "tof_s": 0.358
+          },
+          "600": {
+            "drop_mil": -3.8,
+            "drop_in": -82.9,
+            "windage_mil": 1.0,
+            "windage_in": 22.2,
+            "velocity_fps": 1983.9,
+            "energy_ftlbs": 1223.2,
+            "tof_s": 0.776
+          },
+          "1000": {
+            "drop_mil": -8.5,
+            "drop_in": -306.4,
+            "windage_mil": 1.9,
+            "windage_in": 69.2,
+            "velocity_fps": 1562.9,
+            "energy_ftlbs": 759.2,
+            "tof_s": 1.458
+          },
+          "1500": {
+            "drop_mil": -17.3,
+            "drop_in": -932.6,
+            "windage_mil": 3.5,
+            "windage_in": 186.5,
+            "velocity_fps": 1108.7,
+            "energy_ftlbs": 382.0,
+            "tof_s": 2.6
+          }
+        }
+      },
+      {
+        "value": 4000,
+        "data": {
+          "300": {
+            "drop_mil": -1.2,
+            "drop_in": -13.0,
+            "windage_mil": 0.4,
+            "windage_in": 4.8,
+            "velocity_fps": 2358.5,
+            "energy_ftlbs": 1728.8,
+            "tof_s": 0.356
+          },
+          "600": {
+            "drop_mil": -3.8,
+            "drop_in": -81.3,
+            "windage_mil": 0.9,
+            "windage_in": 20.5,
+            "velocity_fps": 2031.3,
+            "energy_ftlbs": 1282.4,
+            "tof_s": 0.767
+          },
+          "1000": {
+            "drop_mil": -8.2,
+            "drop_in": -296.0,
+            "windage_mil": 1.8,
+            "windage_in": 63.2,
+            "velocity_fps": 1634.4,
+            "energy_ftlbs": 830.3,
+            "tof_s": 1.426
+          },
+          "1500": {
+            "drop_mil": -16.3,
+            "drop_in": -878.2,
+            "windage_mil": 3.1,
+            "windage_in": 167.4,
+            "velocity_fps": 1195.0,
+            "energy_ftlbs": 443.9,
+            "tof_s": 2.5
+          }
+        }
+      },
+      {
+        "value": 5280,
+        "data": {
+          "300": {
+            "drop_mil": -1.2,
+            "drop_in": -12.9,
+            "windage_mil": 0.4,
+            "windage_in": 4.6,
+            "velocity_fps": 2374.3,
+            "energy_ftlbs": 1752.1,
+            "tof_s": 0.355
+          },
+          "600": {
+            "drop_mil": -3.7,
+            "drop_in": -80.3,
+            "windage_mil": 0.9,
+            "windage_in": 19.5,
+            "velocity_fps": 2060.5,
+            "energy_ftlbs": 1319.5,
+            "tof_s": 0.762
+          },
+          "1000": {
+            "drop_mil": -8.1,
+            "drop_in": -289.9,
+            "windage_mil": 1.7,
+            "windage_in": 59.8,
+            "velocity_fps": 1678.6,
+            "energy_ftlbs": 875.8,
+            "tof_s": 1.407
+          },
+          "1500": {
+            "drop_mil": -15.7,
+            "drop_in": -847.7,
+            "windage_mil": 2.9,
+            "windage_in": 156.4,
+            "velocity_fps": 1251.8,
+            "energy_ftlbs": 487.0,
+            "tof_s": 2.442
+          }
+        }
+      },
+      {
+        "value": 7000,
+        "data": {
+          "300": {
+            "drop_mil": -1.2,
+            "drop_in": -12.8,
+            "windage_mil": 0.4,
+            "windage_in": 4.3,
+            "velocity_fps": 2394.6,
+            "energy_ftlbs": 1782.3,
+            "tof_s": 0.353
+          },
+          "600": {
+            "drop_mil": -3.7,
+            "drop_in": -79.0,
+            "windage_mil": 0.8,
+            "windage_in": 18.2,
+            "velocity_fps": 2098.3,
+            "energy_ftlbs": 1368.4,
+            "tof_s": 0.755
+          },
+          "1000": {
+            "drop_mil": -7.8,
+            "drop_in": -282.5,
+            "windage_mil": 1.5,
+            "windage_in": 55.4,
+            "velocity_fps": 1736.1,
+            "energy_ftlbs": 936.8,
+            "tof_s": 1.383
+          },
+          "1500": {
+            "drop_mil": -15.0,
+            "drop_in": -811.2,
+            "windage_mil": 2.6,
+            "windage_in": 143.0,
+            "velocity_fps": 1327.3,
+            "energy_ftlbs": 547.6,
+            "tof_s": 2.372
+          }
+        }
+      }
+    ]
+  },
+  "Humidity": {
+    "param": "humidity",
+    "unit": "%",
+    "baseline_val": 0,
+    "extra_params": {},
+    "sweep": [
+      {
+        "value": 0,
+        "data": {
+          "300": {
+            "drop_mil": -1.2,
+            "drop_in": -13.4,
+            "windage_mil": 0.5,
+            "windage_in": 5.5,
+            "velocity_fps": 2305.5,
+            "energy_ftlbs": 1652.0,
+            "tof_s": 0.36
+          },
+          "600": {
+            "drop_mil": -3.9,
+            "drop_in": -84.7,
+            "windage_mil": 1.1,
+            "windage_in": 24.0,
+            "velocity_fps": 1934.2,
+            "energy_ftlbs": 1162.7,
+            "tof_s": 0.786
+          },
+          "1000": {
+            "drop_mil": -8.8,
+            "drop_in": -318.1,
+            "windage_mil": 2.1,
+            "windage_in": 75.8,
+            "velocity_fps": 1488.6,
+            "energy_ftlbs": 688.7,
+            "tof_s": 1.493
+          },
+          "1500": {
+            "drop_mil": -18.5,
+            "drop_in": -996.5,
+            "windage_mil": 3.8,
+            "windage_in": 207.7,
+            "velocity_fps": 1052.2,
+            "energy_ftlbs": 344.1,
+            "tof_s": 2.711
+          }
+        }
+      },
+      {
+        "value": 25,
+        "data": {
+          "300": {
+            "drop_mil": -1.2,
+            "drop_in": -13.4,
+            "windage_mil": 0.5,
+            "windage_in": 5.5,
+            "velocity_fps": 2306.1,
+            "energy_ftlbs": 1652.9,
+            "tof_s": 0.36
+          },
+          "600": {
+            "drop_mil": -3.9,
+            "drop_in": -84.7,
+            "windage_mil": 1.1,
+            "windage_in": 23.9,
+            "velocity_fps": 1935.3,
+            "energy_ftlbs": 1164.1,
+            "tof_s": 0.786
+          },
+          "1000": {
+            "drop_mil": -8.8,
+            "drop_in": -317.9,
+            "windage_mil": 2.1,
+            "windage_in": 75.6,
+            "velocity_fps": 1490.3,
+            "energy_ftlbs": 690.3,
+            "tof_s": 1.492
+          },
+          "1500": {
+            "drop_mil": -18.4,
+            "drop_in": -995.0,
+            "windage_mil": 3.8,
+            "windage_in": 207.2,
+            "velocity_fps": 1053.1,
+            "energy_ftlbs": 344.7,
+            "tof_s": 2.709
+          }
+        }
+      },
+      {
+        "value": 50,
+        "data": {
+          "300": {
+            "drop_mil": -1.2,
+            "drop_in": -13.3,
+            "windage_mil": 0.5,
+            "windage_in": 5.5,
+            "velocity_fps": 2306.7,
+            "energy_ftlbs": 1653.8,
+            "tof_s": 0.36
+          },
+          "600": {
+            "drop_mil": -3.9,
+            "drop_in": -84.6,
+            "windage_mil": 1.1,
+            "windage_in": 23.9,
+            "velocity_fps": 1936.4,
+            "energy_ftlbs": 1165.4,
+            "tof_s": 0.786
+          },
+          "1000": {
+            "drop_mil": -8.8,
+            "drop_in": -317.6,
+            "windage_mil": 2.1,
+            "windage_in": 75.5,
+            "velocity_fps": 1491.9,
+            "energy_ftlbs": 691.8,
+            "tof_s": 1.491
+          },
+          "1500": {
+            "drop_mil": -18.4,
+            "drop_in": -993.4,
+            "windage_mil": 3.8,
+            "windage_in": 206.7,
+            "velocity_fps": 1054.0,
+            "energy_ftlbs": 345.3,
+            "tof_s": 2.706
+          }
+        }
+      },
+      {
+        "value": 75,
+        "data": {
+          "300": {
+            "drop_mil": -1.2,
+            "drop_in": -13.3,
+            "windage_mil": 0.5,
+            "windage_in": 5.5,
+            "velocity_fps": 2307.3,
+            "energy_ftlbs": 1654.6,
+            "tof_s": 0.36
+          },
+          "600": {
+            "drop_mil": -3.9,
+            "drop_in": -84.6,
+            "windage_mil": 1.1,
+            "windage_in": 23.8,
+            "velocity_fps": 1937.5,
+            "energy_ftlbs": 1166.8,
+            "tof_s": 0.785
+          },
+          "1000": {
+            "drop_mil": -8.8,
+            "drop_in": -317.3,
+            "windage_mil": 2.1,
+            "windage_in": 75.3,
+            "velocity_fps": 1493.6,
+            "energy_ftlbs": 693.4,
+            "tof_s": 1.491
+          },
+          "1500": {
+            "drop_mil": -18.4,
+            "drop_in": -991.9,
+            "windage_mil": 3.8,
+            "windage_in": 206.3,
+            "velocity_fps": 1055.0,
+            "energy_ftlbs": 345.9,
+            "tof_s": 2.704
+          }
+        }
+      },
+      {
+        "value": 100,
+        "data": {
+          "300": {
+            "drop_mil": -1.2,
+            "drop_in": -13.3,
+            "windage_mil": 0.5,
+            "windage_in": 5.5,
+            "velocity_fps": 2307.9,
+            "energy_ftlbs": 1655.5,
+            "tof_s": 0.36
+          },
+          "600": {
+            "drop_mil": -3.9,
+            "drop_in": -84.6,
+            "windage_mil": 1.1,
+            "windage_in": 23.8,
+            "velocity_fps": 1938.6,
+            "energy_ftlbs": 1168.1,
+            "tof_s": 0.785
+          },
+          "1000": {
+            "drop_mil": -8.8,
+            "drop_in": -317.0,
+            "windage_mil": 2.1,
+            "windage_in": 75.2,
+            "velocity_fps": 1495.3,
+            "energy_ftlbs": 694.9,
+            "tof_s": 1.49
+          },
+          "1500": {
+            "drop_mil": -18.3,
+            "drop_in": -990.4,
+            "windage_mil": 3.8,
+            "windage_in": 205.8,
+            "velocity_fps": 1055.9,
+            "energy_ftlbs": 346.5,
+            "tof_s": 2.701
+          }
+        }
+      }
+    ]
+  },
+  "Sight Height Over Bore": {
+    "param": "sight_height",
+    "unit": "in",
+    "baseline_val": 1.5,
+    "extra_params": {},
+    "sweep": [
+      {
+        "value": 1.25,
+        "data": {
+          "300": {
+            "drop_mil": -1.3,
+            "drop_in": -13.9,
+            "windage_mil": 0.5,
+            "windage_in": 5.5,
+            "velocity_fps": 2305.5,
+            "energy_ftlbs": 1652.0,
+            "tof_s": 0.36
+          },
+          "600": {
+            "drop_mil": -4.0,
+            "drop_in": -86.0,
+            "windage_mil": 1.1,
+            "windage_in": 24.0,
+            "velocity_fps": 1934.2,
+            "energy_ftlbs": 1162.7,
+            "tof_s": 0.786
+          },
+          "1000": {
+            "drop_mil": -8.9,
+            "drop_in": -320.4,
+            "windage_mil": 2.1,
+            "windage_in": 75.8,
+            "velocity_fps": 1488.6,
+            "energy_ftlbs": 688.7,
+            "tof_s": 1.493
+          },
+          "1500": {
+            "drop_mil": -18.5,
+            "drop_in": -1000.0,
+            "windage_mil": 3.8,
+            "windage_in": 207.7,
+            "velocity_fps": 1052.2,
+            "energy_ftlbs": 344.1,
+            "tof_s": 2.711
+          }
+        }
+      },
+      {
+        "value": 1.5,
+        "data": {
+          "300": {
+            "drop_mil": -1.2,
+            "drop_in": -13.4,
+            "windage_mil": 0.5,
+            "windage_in": 5.5,
+            "velocity_fps": 2305.5,
+            "energy_ftlbs": 1652.0,
+            "tof_s": 0.36
+          },
+          "600": {
+            "drop_mil": -3.9,
+            "drop_in": -84.7,
+            "windage_mil": 1.1,
+            "windage_in": 24.0,
+            "velocity_fps": 1934.2,
+            "energy_ftlbs": 1162.7,
+            "tof_s": 0.786
+          },
+          "1000": {
+            "drop_mil": -8.8,
+            "drop_in": -318.1,
+            "windage_mil": 2.1,
+            "windage_in": 75.8,
+            "velocity_fps": 1488.6,
+            "energy_ftlbs": 688.7,
+            "tof_s": 1.493
+          },
+          "1500": {
+            "drop_mil": -18.5,
+            "drop_in": -996.5,
+            "windage_mil": 3.8,
+            "windage_in": 207.7,
+            "velocity_fps": 1052.2,
+            "energy_ftlbs": 344.1,
+            "tof_s": 2.711
+          }
+        }
+      },
+      {
+        "value": 1.75,
+        "data": {
+          "300": {
+            "drop_mil": -1.2,
+            "drop_in": -12.9,
+            "windage_mil": 0.5,
+            "windage_in": 5.5,
+            "velocity_fps": 2305.5,
+            "energy_ftlbs": 1652.0,
+            "tof_s": 0.36
+          },
+          "600": {
+            "drop_mil": -3.9,
+            "drop_in": -83.5,
+            "windage_mil": 1.1,
+            "windage_in": 24.0,
+            "velocity_fps": 1934.2,
+            "energy_ftlbs": 1162.7,
+            "tof_s": 0.786
+          },
+          "1000": {
+            "drop_mil": -8.8,
+            "drop_in": -315.9,
+            "windage_mil": 2.1,
+            "windage_in": 75.8,
+            "velocity_fps": 1488.6,
+            "energy_ftlbs": 688.7,
+            "tof_s": 1.493
+          },
+          "1500": {
+            "drop_mil": -18.4,
+            "drop_in": -993.0,
+            "windage_mil": 3.8,
+            "windage_in": 207.7,
+            "velocity_fps": 1052.2,
+            "energy_ftlbs": 344.1,
+            "tof_s": 2.711
+          }
+        }
+      },
+      {
+        "value": 2.0,
+        "data": {
+          "300": {
+            "drop_mil": -1.1,
+            "drop_in": -12.4,
+            "windage_mil": 0.5,
+            "windage_in": 5.5,
+            "velocity_fps": 2305.5,
+            "energy_ftlbs": 1652.0,
+            "tof_s": 0.36
+          },
+          "600": {
+            "drop_mil": -3.8,
+            "drop_in": -82.2,
+            "windage_mil": 1.1,
+            "windage_in": 24.0,
+            "velocity_fps": 1934.2,
+            "energy_ftlbs": 1162.7,
+            "tof_s": 0.786
+          },
+          "1000": {
+            "drop_mil": -8.7,
+            "drop_in": -313.6,
+            "windage_mil": 2.1,
+            "windage_in": 75.8,
+            "velocity_fps": 1488.6,
+            "energy_ftlbs": 688.7,
+            "tof_s": 1.493
+          },
+          "1500": {
+            "drop_mil": -18.3,
+            "drop_in": -989.5,
+            "windage_mil": 3.8,
+            "windage_in": 207.7,
+            "velocity_fps": 1052.2,
+            "energy_ftlbs": 344.1,
+            "tof_s": 2.711
+          }
+        }
+      },
+      {
+        "value": 2.5,
+        "data": {
+          "300": {
+            "drop_mil": -1.1,
+            "drop_in": -11.4,
+            "windage_mil": 0.5,
+            "windage_in": 5.5,
+            "velocity_fps": 2305.5,
+            "energy_ftlbs": 1652.0,
+            "tof_s": 0.36
+          },
+          "600": {
+            "drop_mil": -3.7,
+            "drop_in": -79.7,
+            "windage_mil": 1.1,
+            "windage_in": 24.0,
+            "velocity_fps": 1934.2,
+            "energy_ftlbs": 1162.7,
+            "tof_s": 0.786
+          },
+          "1000": {
+            "drop_mil": -8.6,
+            "drop_in": -309.1,
+            "windage_mil": 2.1,
+            "windage_in": 75.8,
+            "velocity_fps": 1488.6,
+            "energy_ftlbs": 688.7,
+            "tof_s": 1.493
+          },
+          "1500": {
+            "drop_mil": -18.2,
+            "drop_in": -982.5,
+            "windage_mil": 3.8,
+            "windage_in": 207.7,
+            "velocity_fps": 1052.2,
+            "energy_ftlbs": 344.1,
+            "tof_s": 2.711
+          }
+        }
+      }
+    ]
+  },
+  "Zero Distance": {
+    "param": "zero_range",
+    "unit": "yd",
+    "baseline_val": 100,
+    "extra_params": {},
+    "sweep": [
+      {
+        "value": 50,
+        "data": {
+          "300": {
+            "drop_mil": -1.2,
+            "drop_in": -12.6,
+            "windage_mil": 0.5,
+            "windage_in": 5.5,
+            "velocity_fps": 2305.5,
+            "energy_ftlbs": 1652.0,
+            "tof_s": 0.36
+          },
+          "600": {
+            "drop_mil": -3.9,
+            "drop_in": -83.2,
+            "windage_mil": 1.1,
+            "windage_in": 24.0,
+            "velocity_fps": 1934.2,
+            "energy_ftlbs": 1162.7,
+            "tof_s": 0.786
+          },
+          "1000": {
+            "drop_mil": -8.8,
+            "drop_in": -315.6,
+            "windage_mil": 2.1,
+            "windage_in": 75.8,
+            "velocity_fps": 1488.6,
+            "energy_ftlbs": 688.7,
+            "tof_s": 1.493
+          },
+          "1500": {
+            "drop_mil": -18.4,
+            "drop_in": -992.6,
+            "windage_mil": 3.8,
+            "windage_in": 207.7,
+            "velocity_fps": 1052.2,
+            "energy_ftlbs": 344.1,
+            "tof_s": 2.711
+          }
+        }
+      },
+      {
+        "value": 100,
+        "data": {
+          "300": {
+            "drop_mil": -1.2,
+            "drop_in": -13.4,
+            "windage_mil": 0.5,
+            "windage_in": 5.5,
+            "velocity_fps": 2305.5,
+            "energy_ftlbs": 1652.0,
+            "tof_s": 0.36
+          },
+          "600": {
+            "drop_mil": -3.9,
+            "drop_in": -84.7,
+            "windage_mil": 1.1,
+            "windage_in": 24.0,
+            "velocity_fps": 1934.2,
+            "energy_ftlbs": 1162.7,
+            "tof_s": 0.786
+          },
+          "1000": {
+            "drop_mil": -8.8,
+            "drop_in": -318.1,
+            "windage_mil": 2.1,
+            "windage_in": 75.8,
+            "velocity_fps": 1488.6,
+            "energy_ftlbs": 688.7,
+            "tof_s": 1.493
+          },
+          "1500": {
+            "drop_mil": -18.5,
+            "drop_in": -996.5,
+            "windage_mil": 3.8,
+            "windage_in": 207.7,
+            "velocity_fps": 1052.2,
+            "energy_ftlbs": 344.1,
+            "tof_s": 2.711
+          }
+        }
+      },
+      {
+        "value": 200,
+        "data": {
+          "300": {
+            "drop_mil": -0.7,
+            "drop_in": -7.7,
+            "windage_mil": 0.5,
+            "windage_in": 5.5,
+            "velocity_fps": 2305.5,
+            "energy_ftlbs": 1652.0,
+            "tof_s": 0.36
+          },
+          "600": {
+            "drop_mil": -3.4,
+            "drop_in": -73.5,
+            "windage_mil": 1.1,
+            "windage_in": 24.0,
+            "velocity_fps": 1934.2,
+            "energy_ftlbs": 1162.7,
+            "tof_s": 0.786
+          },
+          "1000": {
+            "drop_mil": -8.3,
+            "drop_in": -299.4,
+            "windage_mil": 2.1,
+            "windage_in": 75.8,
+            "velocity_fps": 1488.6,
+            "energy_ftlbs": 688.7,
+            "tof_s": 1.493
+          },
+          "1500": {
+            "drop_mil": -17.9,
+            "drop_in": -968.3,
+            "windage_mil": 3.8,
+            "windage_in": 207.7,
+            "velocity_fps": 1052.1,
+            "energy_ftlbs": 344.1,
+            "tof_s": 2.711
+          }
+        }
+      },
+      {
+        "value": 300,
+        "data": {
+          "300": {
+            "drop_mil": -0.0,
+            "drop_in": -0.0,
+            "windage_mil": 0.5,
+            "windage_in": 5.5,
+            "velocity_fps": 2305.5,
+            "energy_ftlbs": 1652.0,
+            "tof_s": 0.36
+          },
+          "600": {
+            "drop_mil": -2.7,
+            "drop_in": -58.0,
+            "windage_mil": 1.1,
+            "windage_in": 24.0,
+            "velocity_fps": 1934.1,
+            "energy_ftlbs": 1162.7,
+            "tof_s": 0.786
+          },
+          "1000": {
+            "drop_mil": -7.6,
+            "drop_in": -273.6,
+            "windage_mil": 2.1,
+            "windage_in": 75.8,
+            "velocity_fps": 1488.6,
+            "energy_ftlbs": 688.7,
+            "tof_s": 1.493
+          },
+          "1500": {
+            "drop_mil": -17.2,
+            "drop_in": -929.7,
+            "windage_mil": 3.8,
+            "windage_in": 207.7,
+            "velocity_fps": 1052.1,
+            "energy_ftlbs": 344.1,
+            "tof_s": 2.711
+          }
+        }
+      }
+    ]
+  },
+  "Bullet Length": {
+    "param": "bullet_length",
+    "unit": "in",
+    "baseline_val": 1.376,
+    "extra_params": {},
+    "sweep": [
+      {
+        "value": 1.2,
+        "data": {
+          "300": {
+            "drop_mil": -1.2,
+            "drop_in": -13.4,
+            "windage_mil": 0.5,
+            "windage_in": 5.7,
+            "velocity_fps": 2305.5,
+            "energy_ftlbs": 1652.0,
+            "tof_s": 0.36
+          },
+          "600": {
+            "drop_mil": -3.9,
+            "drop_in": -84.7,
+            "windage_mil": 1.1,
+            "windage_in": 24.6,
+            "velocity_fps": 1934.2,
+            "energy_ftlbs": 1162.7,
+            "tof_s": 0.786
+          },
+          "1000": {
+            "drop_mil": -8.8,
+            "drop_in": -318.1,
+            "windage_mil": 2.2,
+            "windage_in": 77.9,
+            "velocity_fps": 1488.6,
+            "energy_ftlbs": 688.7,
+            "tof_s": 1.493
+          },
+          "1500": {
+            "drop_mil": -18.5,
+            "drop_in": -996.5,
+            "windage_mil": 4.0,
+            "windage_in": 214.1,
+            "velocity_fps": 1052.2,
+            "energy_ftlbs": 344.1,
+            "tof_s": 2.711
+          }
+        }
+      },
+      {
+        "value": 1.3,
+        "data": {
+          "300": {
+            "drop_mil": -1.2,
+            "drop_in": -13.4,
+            "windage_mil": 0.5,
+            "windage_in": 5.6,
+            "velocity_fps": 2305.5,
+            "energy_ftlbs": 1652.0,
+            "tof_s": 0.36
+          },
+          "600": {
+            "drop_mil": -3.9,
+            "drop_in": -84.7,
+            "windage_mil": 1.1,
+            "windage_in": 24.2,
+            "velocity_fps": 1934.2,
+            "energy_ftlbs": 1162.7,
+            "tof_s": 0.786
+          },
+          "1000": {
+            "drop_mil": -8.8,
+            "drop_in": -318.1,
+            "windage_mil": 2.1,
+            "windage_in": 76.6,
+            "velocity_fps": 1488.6,
+            "energy_ftlbs": 688.7,
+            "tof_s": 1.493
+          },
+          "1500": {
+            "drop_mil": -18.5,
+            "drop_in": -996.5,
+            "windage_mil": 3.9,
+            "windage_in": 210.0,
+            "velocity_fps": 1052.2,
+            "energy_ftlbs": 344.1,
+            "tof_s": 2.711
+          }
+        }
+      },
+      {
+        "value": 1.376,
+        "data": {
+          "300": {
+            "drop_mil": -1.2,
+            "drop_in": -13.4,
+            "windage_mil": 0.5,
+            "windage_in": 5.5,
+            "velocity_fps": 2305.5,
+            "energy_ftlbs": 1652.0,
+            "tof_s": 0.36
+          },
+          "600": {
+            "drop_mil": -3.9,
+            "drop_in": -84.7,
+            "windage_mil": 1.1,
+            "windage_in": 24.0,
+            "velocity_fps": 1934.2,
+            "energy_ftlbs": 1162.7,
+            "tof_s": 0.786
+          },
+          "1000": {
+            "drop_mil": -8.8,
+            "drop_in": -318.1,
+            "windage_mil": 2.1,
+            "windage_in": 75.8,
+            "velocity_fps": 1488.6,
+            "energy_ftlbs": 688.7,
+            "tof_s": 1.493
+          },
+          "1500": {
+            "drop_mil": -18.5,
+            "drop_in": -996.5,
+            "windage_mil": 3.8,
+            "windage_in": 207.7,
+            "velocity_fps": 1052.2,
+            "energy_ftlbs": 344.1,
+            "tof_s": 2.711
+          }
+        }
+      },
+      {
+        "value": 1.45,
+        "data": {
+          "300": {
+            "drop_mil": -1.2,
+            "drop_in": -13.4,
+            "windage_mil": 0.5,
+            "windage_in": 5.5,
+            "velocity_fps": 2305.5,
+            "energy_ftlbs": 1652.0,
+            "tof_s": 0.36
+          },
+          "600": {
+            "drop_mil": -3.9,
+            "drop_in": -84.7,
+            "windage_mil": 1.1,
+            "windage_in": 23.8,
+            "velocity_fps": 1934.2,
+            "energy_ftlbs": 1162.7,
+            "tof_s": 0.786
+          },
+          "1000": {
+            "drop_mil": -8.8,
+            "drop_in": -318.1,
+            "windage_mil": 2.1,
+            "windage_in": 75.2,
+            "velocity_fps": 1488.6,
+            "energy_ftlbs": 688.7,
+            "tof_s": 1.493
+          },
+          "1500": {
+            "drop_mil": -18.5,
+            "drop_in": -996.5,
+            "windage_mil": 3.8,
+            "windage_in": 205.8,
+            "velocity_fps": 1052.2,
+            "energy_ftlbs": 344.1,
+            "tof_s": 2.711
+          }
+        }
+      },
+      {
+        "value": 1.55,
+        "data": {
+          "300": {
+            "drop_mil": -1.2,
+            "drop_in": -13.4,
+            "windage_mil": 0.5,
+            "windage_in": 5.4,
+            "velocity_fps": 2305.5,
+            "energy_ftlbs": 1652.0,
+            "tof_s": 0.36
+          },
+          "600": {
+            "drop_mil": -3.9,
+            "drop_in": -84.7,
+            "windage_mil": 1.1,
+            "windage_in": 23.6,
+            "velocity_fps": 1934.2,
+            "energy_ftlbs": 1162.7,
+            "tof_s": 0.786
+          },
+          "1000": {
+            "drop_mil": -8.8,
+            "drop_in": -318.1,
+            "windage_mil": 2.1,
+            "windage_in": 74.5,
+            "velocity_fps": 1488.6,
+            "energy_ftlbs": 688.7,
+            "tof_s": 1.493
+          },
+          "1500": {
+            "drop_mil": -18.5,
+            "drop_in": -996.5,
+            "windage_mil": 3.8,
+            "windage_in": 203.9,
+            "velocity_fps": 1052.2,
+            "energy_ftlbs": 344.1,
+            "tof_s": 2.711
+          }
+        }
+      }
+    ]
+  },
+  "Barrel Twist Rate": {
+    "param": "twist_rate",
+    "unit": "in",
+    "baseline_val": 8.0,
+    "extra_params": {},
+    "sweep": [
+      {
+        "value": 7.0,
+        "data": {
+          "300": {
+            "drop_mil": -1.2,
+            "drop_in": -13.4,
+            "windage_mil": 0.5,
+            "windage_in": 5.6,
+            "velocity_fps": 2305.5,
+            "energy_ftlbs": 1652.0,
+            "tof_s": 0.36
+          },
+          "600": {
+            "drop_mil": -3.9,
+            "drop_in": -84.7,
+            "windage_mil": 1.1,
+            "windage_in": 24.4,
+            "velocity_fps": 1934.2,
+            "energy_ftlbs": 1162.7,
+            "tof_s": 0.786
+          },
+          "1000": {
+            "drop_mil": -8.8,
+            "drop_in": -318.1,
+            "windage_mil": 2.1,
+            "windage_in": 77.1,
+            "velocity_fps": 1488.6,
+            "energy_ftlbs": 688.7,
+            "tof_s": 1.493
+          },
+          "1500": {
+            "drop_mil": -18.5,
+            "drop_in": -996.5,
+            "windage_mil": 3.9,
+            "windage_in": 211.7,
+            "velocity_fps": 1052.2,
+            "energy_ftlbs": 344.1,
+            "tof_s": 2.711
+          }
+        }
+      },
+      {
+        "value": 7.5,
+        "data": {
+          "300": {
+            "drop_mil": -1.2,
+            "drop_in": -13.4,
+            "windage_mil": 0.5,
+            "windage_in": 5.6,
+            "velocity_fps": 2305.5,
+            "energy_ftlbs": 1652.0,
+            "tof_s": 0.36
+          },
+          "600": {
+            "drop_mil": -3.9,
+            "drop_in": -84.7,
+            "windage_mil": 1.1,
+            "windage_in": 24.2,
+            "velocity_fps": 1934.2,
+            "energy_ftlbs": 1162.7,
+            "tof_s": 0.786
+          },
+          "1000": {
+            "drop_mil": -8.8,
+            "drop_in": -318.1,
+            "windage_mil": 2.1,
+            "windage_in": 76.4,
+            "velocity_fps": 1488.6,
+            "energy_ftlbs": 688.7,
+            "tof_s": 1.493
+          },
+          "1500": {
+            "drop_mil": -18.5,
+            "drop_in": -996.5,
+            "windage_mil": 3.9,
+            "windage_in": 209.5,
+            "velocity_fps": 1052.2,
+            "energy_ftlbs": 344.1,
+            "tof_s": 2.711
+          }
+        }
+      },
+      {
+        "value": 8.0,
+        "data": {
+          "300": {
+            "drop_mil": -1.2,
+            "drop_in": -13.4,
+            "windage_mil": 0.5,
+            "windage_in": 5.5,
+            "velocity_fps": 2305.5,
+            "energy_ftlbs": 1652.0,
+            "tof_s": 0.36
+          },
+          "600": {
+            "drop_mil": -3.9,
+            "drop_in": -84.7,
+            "windage_mil": 1.1,
+            "windage_in": 24.0,
+            "velocity_fps": 1934.2,
+            "energy_ftlbs": 1162.7,
+            "tof_s": 0.786
+          },
+          "1000": {
+            "drop_mil": -8.8,
+            "drop_in": -318.1,
+            "windage_mil": 2.1,
+            "windage_in": 75.8,
+            "velocity_fps": 1488.6,
+            "energy_ftlbs": 688.7,
+            "tof_s": 1.493
+          },
+          "1500": {
+            "drop_mil": -18.5,
+            "drop_in": -996.5,
+            "windage_mil": 3.8,
+            "windage_in": 207.7,
+            "velocity_fps": 1052.2,
+            "energy_ftlbs": 344.1,
+            "tof_s": 2.711
+          }
+        }
+      },
+      {
+        "value": 8.5,
+        "data": {
+          "300": {
+            "drop_mil": -1.2,
+            "drop_in": -13.4,
+            "windage_mil": 0.5,
+            "windage_in": 5.5,
+            "velocity_fps": 2305.5,
+            "energy_ftlbs": 1652.0,
+            "tof_s": 0.36
+          },
+          "600": {
+            "drop_mil": -3.9,
+            "drop_in": -84.7,
+            "windage_mil": 1.1,
+            "windage_in": 23.8,
+            "velocity_fps": 1934.2,
+            "energy_ftlbs": 1162.7,
+            "tof_s": 0.786
+          },
+          "1000": {
+            "drop_mil": -8.8,
+            "drop_in": -318.1,
+            "windage_mil": 2.1,
+            "windage_in": 75.3,
+            "velocity_fps": 1488.6,
+            "energy_ftlbs": 688.7,
+            "tof_s": 1.493
+          },
+          "1500": {
+            "drop_mil": -18.5,
+            "drop_in": -996.5,
+            "windage_mil": 3.8,
+            "windage_in": 206.2,
+            "velocity_fps": 1052.2,
+            "energy_ftlbs": 344.1,
+            "tof_s": 2.711
+          }
+        }
+      },
+      {
+        "value": 9.0,
+        "data": {
+          "300": {
+            "drop_mil": -1.2,
+            "drop_in": -13.4,
+            "windage_mil": 0.5,
+            "windage_in": 5.5,
+            "velocity_fps": 2305.5,
+            "energy_ftlbs": 1652.0,
+            "tof_s": 0.36
+          },
+          "600": {
+            "drop_mil": -3.9,
+            "drop_in": -84.7,
+            "windage_mil": 1.1,
+            "windage_in": 23.7,
+            "velocity_fps": 1934.2,
+            "energy_ftlbs": 1162.7,
+            "tof_s": 0.786
+          },
+          "1000": {
+            "drop_mil": -8.8,
+            "drop_in": -318.1,
+            "windage_mil": 2.1,
+            "windage_in": 74.9,
+            "velocity_fps": 1488.6,
+            "energy_ftlbs": 688.7,
+            "tof_s": 1.493
+          },
+          "1500": {
+            "drop_mil": -18.5,
+            "drop_in": -996.5,
+            "windage_mil": 3.8,
+            "windage_in": 205.0,
+            "velocity_fps": 1052.2,
+            "energy_ftlbs": 344.1,
+            "tof_s": 2.711
+          }
+        }
+      },
+      {
+        "value": 10.0,
+        "data": {
+          "300": {
+            "drop_mil": -1.2,
+            "drop_in": -13.4,
+            "windage_mil": 0.5,
+            "windage_in": 5.4,
+            "velocity_fps": 2305.5,
+            "energy_ftlbs": 1652.0,
+            "tof_s": 0.36
+          },
+          "600": {
+            "drop_mil": -3.9,
+            "drop_in": -84.7,
+            "windage_mil": 1.1,
+            "windage_in": 23.5,
+            "velocity_fps": 1934.2,
+            "energy_ftlbs": 1162.7,
+            "tof_s": 0.786
+          },
+          "1000": {
+            "drop_mil": -8.8,
+            "drop_in": -318.1,
+            "windage_mil": 2.1,
+            "windage_in": 74.2,
+            "velocity_fps": 1488.6,
+            "energy_ftlbs": 688.7,
+            "tof_s": 1.493
+          },
+          "1500": {
+            "drop_mil": -18.5,
+            "drop_in": -996.5,
+            "windage_mil": 3.8,
+            "windage_in": 203.0,
+            "velocity_fps": 1052.2,
+            "energy_ftlbs": 344.1,
+            "tof_s": 2.711
+          }
+        }
+      }
+    ]
+  },
+  "Shooting Angle (LOS)": {
+    "param": "los_angle",
+    "unit": "deg",
+    "baseline_val": 0,
+    "extra_params": {},
+    "sweep": [
+      {
+        "value": -45,
+        "data": {
+          "300": {
+            "drop_mil": -0.6,
+            "drop_in": -6.4,
+            "windage_mil": 0.5,
+            "windage_in": 5.4,
+            "velocity_fps": 2309.4,
+            "energy_ftlbs": 1657.7,
+            "tof_s": 0.359
+          },
+          "600": {
+            "drop_mil": -2.5,
+            "drop_in": -53.1,
+            "windage_mil": 1.1,
+            "windage_in": 23.5,
+            "velocity_fps": 1936.4,
+            "energy_ftlbs": 1165.4,
+            "tof_s": 0.785
+          },
+          "1000": {
+            "drop_mil": -5.9,
+            "drop_in": -212.3,
+            "windage_mil": 2.1,
+            "windage_in": 74.9,
+            "velocity_fps": 1482.8,
+            "energy_ftlbs": 683.4,
+            "tof_s": 1.493
+          },
+          "1500": {
+            "drop_mil": -12.6,
+            "drop_in": -682.0,
+            "windage_mil": 3.8,
+            "windage_in": 206.5,
+            "velocity_fps": 1054.2,
+            "energy_ftlbs": 345.4,
+            "tof_s": 2.718
+          }
+        }
+      },
+      {
+        "value": -30,
+        "data": {
+          "300": {
+            "drop_mil": -0.9,
+            "drop_in": -10.2,
+            "windage_mil": 0.5,
+            "windage_in": 5.5,
+            "velocity_fps": 2308.3,
+            "energy_ftlbs": 1656.0,
+            "tof_s": 0.36
+          },
+          "600": {
+            "drop_mil": -3.2,
+            "drop_in": -70.1,
+            "windage_mil": 1.1,
+            "windage_in": 23.8,
+            "velocity_fps": 1935.8,
+            "energy_ftlbs": 1164.7,
+            "tof_s": 0.785
+          },
+          "1000": {
+            "drop_mil": -7.5,
+            "drop_in": -269.1,
+            "windage_mil": 2.1,
+            "windage_in": 75.7,
+            "velocity_fps": 1484.7,
+            "energy_ftlbs": 685.1,
+            "tof_s": 1.493
+          },
+          "1500": {
+            "drop_mil": -15.7,
+            "drop_in": -850.1,
+            "windage_mil": 3.9,
+            "windage_in": 208.5,
+            "velocity_fps": 1053.6,
+            "energy_ftlbs": 345.0,
+            "tof_s": 2.716
+          }
+        }
+      },
+      {
+        "value": -15,
+        "data": {
+          "300": {
+            "drop_mil": -1.2,
+            "drop_in": -12.5,
+            "windage_mil": 0.5,
+            "windage_in": 5.5,
+            "velocity_fps": 2306.9,
+            "energy_ftlbs": 1654.1,
+            "tof_s": 0.36
+          },
+          "600": {
+            "drop_mil": -3.7,
+            "drop_in": -80.9,
+            "windage_mil": 1.1,
+            "windage_in": 24.0,
+            "velocity_fps": 1935.0,
+            "energy_ftlbs": 1163.8,
+            "tof_s": 0.786
+          },
+          "1000": {
+            "drop_mil": -8.5,
+            "drop_in": -305.2,
+            "windage_mil": 2.1,
+            "windage_in": 76.0,
+            "velocity_fps": 1486.7,
+            "energy_ftlbs": 687.0,
+            "tof_s": 1.493
+          },
+          "1500": {
+            "drop_mil": -17.7,
+            "drop_in": -957.5,
+            "windage_mil": 3.9,
+            "windage_in": 208.9,
+            "velocity_fps": 1052.9,
+            "energy_ftlbs": 344.6,
+            "tof_s": 2.714
+          }
+        }
+      },
+      {
+        "value": 0,
+        "data": {
+          "300": {
+            "drop_mil": -1.2,
+            "drop_in": -13.4,
+            "windage_mil": 0.5,
+            "windage_in": 5.5,
+            "velocity_fps": 2305.5,
+            "energy_ftlbs": 1652.0,
+            "tof_s": 0.36
+          },
+          "600": {
+            "drop_mil": -3.9,
+            "drop_in": -84.7,
+            "windage_mil": 1.1,
+            "windage_in": 24.0,
+            "velocity_fps": 1934.2,
+            "energy_ftlbs": 1162.7,
+            "tof_s": 0.786
+          },
+          "1000": {
+            "drop_mil": -8.8,
+            "drop_in": -318.1,
+            "windage_mil": 2.1,
+            "windage_in": 75.8,
+            "velocity_fps": 1488.6,
+            "energy_ftlbs": 688.7,
+            "tof_s": 1.493
+          },
+          "1500": {
+            "drop_mil": -18.5,
+            "drop_in": -996.5,
+            "windage_mil": 3.8,
+            "windage_in": 207.7,
+            "velocity_fps": 1052.2,
+            "energy_ftlbs": 344.1,
+            "tof_s": 2.711
+          }
+        }
+      },
+      {
+        "value": 15,
+        "data": {
+          "300": {
+            "drop_mil": -1.2,
+            "drop_in": -12.6,
+            "windage_mil": 0.5,
+            "windage_in": 5.5,
+            "velocity_fps": 2304.0,
+            "energy_ftlbs": 1649.9,
+            "tof_s": 0.36
+          },
+          "600": {
+            "drop_mil": -3.8,
+            "drop_in": -81.2,
+            "windage_mil": 1.1,
+            "windage_in": 23.8,
+            "velocity_fps": 1933.2,
+            "energy_ftlbs": 1161.6,
+            "tof_s": 0.786
+          },
+          "1000": {
+            "drop_mil": -8.5,
+            "drop_in": -306.8,
+            "windage_mil": 2.1,
+            "windage_in": 75.1,
+            "velocity_fps": 1490.2,
+            "energy_ftlbs": 690.2,
+            "tof_s": 1.493
+          },
+          "1500": {
+            "drop_mil": -17.8,
+            "drop_in": -963.8,
+            "windage_mil": 3.8,
+            "windage_in": 205.0,
+            "velocity_fps": 1051.4,
+            "energy_ftlbs": 343.6,
+            "tof_s": 2.709
+          }
+        }
+      },
+      {
+        "value": 30,
+        "data": {
+          "300": {
+            "drop_mil": -0.9,
+            "drop_in": -10.2,
+            "windage_mil": 0.5,
+            "windage_in": 5.4,
+            "velocity_fps": 2302.6,
+            "energy_ftlbs": 1647.9,
+            "tof_s": 0.36
+          },
+          "600": {
+            "drop_mil": -3.3,
+            "drop_in": -70.7,
+            "windage_mil": 1.1,
+            "windage_in": 23.5,
+            "velocity_fps": 1932.3,
+            "energy_ftlbs": 1160.4,
+            "tof_s": 0.787
+          },
+          "1000": {
+            "drop_mil": -7.6,
+            "drop_in": -271.9,
+            "windage_mil": 2.1,
+            "windage_in": 73.9,
+            "velocity_fps": 1491.5,
+            "energy_ftlbs": 691.4,
+            "tof_s": 1.494
+          },
+          "1500": {
+            "drop_mil": -15.9,
+            "drop_in": -860.9,
+            "windage_mil": 3.7,
+            "windage_in": 201.1,
+            "velocity_fps": 1050.5,
+            "energy_ftlbs": 343.0,
+            "tof_s": 2.707
+          }
+        }
+      },
+      {
+        "value": 45,
+        "data": {
+          "300": {
+            "drop_mil": -0.6,
+            "drop_in": -6.4,
+            "windage_mil": 0.5,
+            "windage_in": 5.3,
+            "velocity_fps": 2301.4,
+            "energy_ftlbs": 1646.2,
+            "tof_s": 0.36
+          },
+          "600": {
+            "drop_mil": -2.5,
+            "drop_in": -53.7,
+            "windage_mil": 1.1,
+            "windage_in": 23.1,
+            "velocity_fps": 1931.4,
+            "energy_ftlbs": 1159.4,
+            "tof_s": 0.787
+          },
+          "1000": {
+            "drop_mil": -6.0,
+            "drop_in": -215.5,
+            "windage_mil": 2.0,
+            "windage_in": 72.4,
+            "velocity_fps": 1492.4,
+            "energy_ftlbs": 692.2,
+            "tof_s": 1.494
+          },
+          "1500": {
+            "drop_mil": -12.9,
+            "drop_in": -694.3,
+            "windage_mil": 3.6,
+            "windage_in": 196.1,
+            "velocity_fps": 1049.7,
+            "energy_ftlbs": 342.5,
+            "tof_s": 2.705
+          }
+        }
+      }
+    ]
+  }
+}
