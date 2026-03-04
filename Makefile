@@ -1,4 +1,4 @@
-.PHONY: install test lint format migrate new-migration seed reset-seed
+.PHONY: install test lint format migrate new-migration seed reset-seed describe-db
 
 VENV := .venv/bin
 
@@ -31,3 +31,6 @@ seed:
 
 reset-seed:
 	$(VENV)/python scripts/seed_db.py --reset
+
+describe-db:
+	$(VENV)/python scripts/describe_db.py

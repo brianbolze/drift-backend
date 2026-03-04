@@ -59,7 +59,32 @@
       "Bash(python -m pytest tests/ -q)",
       "Bash(python -c \":*)",
       "Bash(grep -r \"priority\\\\|Priority\" /Users/brianbolze/Development/software/shooting/docs/*.md)",
-      "Bash(python -m alembic revision --autogenerate -m \"add_parent_company_to_manufacturer\")"
+      "Bash(python -m alembic revision --autogenerate -m \"add_parent_company_to_manufacturer\")",
+      "Bash(python scripts/describe_db.py)",
+      "mcp__filesystem__read_text_file",
+      "Bash(find /Users/brianbolze/Development/software/doro/doro/services/app/src/app/services/web_search/fetching/backends -name \"__init__.py\" -exec grep -l \"registry\\\\|register\" {} ;)",
+      "Bash(.venv/bin/pip install -e \".[pipeline]\")",
+      "Bash(.venv/bin/pip install python-dotenv)",
+      "Bash(python scripts/spike_fetch.py --firecrawl \"https://www.hornady.com/bullets/rifle/6.5mm-.264-130-gr-eld-match#!/\")",
+      "Bash(pip show firecrawl-py)",
+      "Bash(python -c \"from firecrawl import FirecrawlApp; app = FirecrawlApp\\(api_key=''test''\\); print\\([m for m in dir\\(app\\) if not m.startswith\\(''_''\\)]\\)\")",
+      "Bash(python scripts/spike_reduce.py data/pipeline/spike/raw.html)",
+      "Bash(python scripts/spike_reduce.py)",
+      "Bash(python scripts/spike_extract.py --entity bullet)",
+      "Bash(python scripts/spike_fetch.py \"https://www.hornady.com/bullets/rifle/6.5mm-.264-130-gr-eld-match#!/\")",
+      "Bash(python scripts/spike_extract.py --entity bullet --input data/pipeline/spike/raw.html)",
+      "Bash(python scripts/spike_fetch.py \"https://www.bergerbullets.com/product/6-5-mm-140-grain-hybrid-target/\")",
+      "Bash(python scripts/spike_fetch.py \"https://bergerbullets.com/product/6-5-mm-creedmoor-140gr-hybrid-target/\")",
+      "Bash(python scripts/spike_fetch.py \"https://www.bergara.online/us/rifles/b14wilderness/hmr-rifle/\" -o data/pipeline/spike/bergara_raw.html)",
+      "Bash(python scripts/spike_reduce.py -i data/pipeline/spike/bergara_raw.html -o data/pipeline/spike/bergara_reduced.html)",
+      "Bash(python scripts/spike_extract.py --entity rifle --input data/pipeline/spike/bergara_reduced.html --output data/pipeline/spike/bergara_extracted.json)",
+      "Bash(python scripts/spike_fetch.py \"https://www.federalpremium.com/rifle/gold-medal/gold-medal-sierra-matchking/11-GM65CRD1.html\" -o data/pipeline/spike/federal_raw.html)",
+      "Bash(python scripts/spike_reduce.py -i data/pipeline/spike/federal_raw.html -o data/pipeline/spike/federal_reduced.html)",
+      "Bash(python scripts/spike_extract.py --entity cartridge --input data/pipeline/spike/federal_reduced.html --output data/pipeline/spike/federal_extracted.json)",
+      "Bash(python scripts/spike_fetch.py \"https://sierrabullets.com/30-cal-168-gr-hpbt-matchking-smk/\" -o data/pipeline/spike/sierra_raw.html)",
+      "Bash(python scripts/spike_reduce.py -i data/pipeline/spike/sierra_raw.html -o data/pipeline/spike/sierra_reduced.html)",
+      "Bash(python scripts/spike_extract.py --entity bullet --input data/pipeline/spike/sierra_reduced.html --output data/pipeline/spike/sierra_extracted.json)",
+      "mcp__362bfe6f-5493-447a-8eb8-85a8dc200cf1__create_comment"
     ]
   }
 }
