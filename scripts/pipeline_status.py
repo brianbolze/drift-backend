@@ -164,15 +164,12 @@ def main() -> None:  # noqa: C901
             try:
                 shopping = json.loads(shopping_list_path.read_text(encoding="utf-8"))
                 summary = shopping.get("summary", {})
-                print(f"  Priority calibers: {summary.get('priority_calibers', '?')}")
-                for etype in ["bullets", "cartridges", "rifles"]:
-                    have = summary.get(f"total_{etype}_have", 0)
-                    target = summary.get(f"total_{etype}_target", 0)
-                    gap = summary.get(f"total_{etype}_gap", 0)
-                    pct = (have / target * 100) if target > 0 else 0
-                    bar_len = int(pct / 5)
-                    bar = "█" * bar_len + "░" * (20 - bar_len)
-                    print(f"  {etype:12s}: {have:>4d}/{target:<4d} ({pct:>5.1f}%) [{bar}] gap={gap}")
+                total_gaps = summary.get("total_gaps", {})
+                print(f"  Total calibers:     {summary.get('total_calibers', '?')}")
+                print(f"  Calibers with gaps: {summary.get('calibers_with_gaps', '?')}")
+                print(f"  Gaps — bullets: {total_gaps.get('bullets', 0)}, "
+                      f"cartridges: {total_gaps.get('cartridges', 0)}, "
+                      f"rifle models: {total_gaps.get('rifle_models', 0)}")
             except (json.JSONDecodeError, TypeError):
                 print("  (Could not parse shopping list)")
 

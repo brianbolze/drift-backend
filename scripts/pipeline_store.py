@@ -20,6 +20,8 @@ import json
 import logging
 import uuid
 
+from sqlalchemy.exc import DataError, IntegrityError
+
 from drift.database import get_session_factory
 from drift.models.bullet import Bullet, BulletBCSource
 from drift.models.cartridge import Cartridge
@@ -222,6 +224,10 @@ def main() -> None:  # noqa: C901
                     entry["action"] = "flagged_unresolved"
                     stats[entity_type]["flagged"] += 1
                     logger.warning("  [%d] FLAGGED (unresolved refs): %s — %s", j + 1, name, resolution.unresolved_refs)
+                elif entity_type == "cartridge" and resolution.bullet_id is None:
+                    entry["action"] = "flagged_unresolved"
+                    stats[entity_type]["flagged"] += 1
+                    logger.warning("  [%d] FLAGGED (no bullet_id): %s", j + 1, name)
                 else:
                     # New entity — create it
                     entry["action"] = "created"
@@ -256,7 +262,7 @@ def main() -> None:  # noqa: C901
                                 session.add(obj)
                                 entry["created_id"] = obj.id
                             savepoint.commit()
-                        except Exception as e:
+                        except (IntegrityError, DataError) as e:
                             savepoint.rollback()
                             logger.exception("  [%d] CREATE FAILED: %s — %s", j + 1, name, e)
                             entry["action"] = "create_failed"

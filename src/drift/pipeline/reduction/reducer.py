@@ -61,7 +61,7 @@ def _class_word_match(tag: Tag, keyword: str) -> bool:
     """Check if a tag has a class that IS the keyword or is keyword-delimited.
 
     Matches: "social-share", "social", "my-social-widget"
-    Does NOT match: "antisocial", "avada-has-boxed-modal-shadow-none" for "modal"
+    Does NOT match: "antisocial", "modals-container" for "modal"
 
     The rule: keyword must appear as a standalone hyphen-delimited segment.
     """

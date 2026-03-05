@@ -12,6 +12,7 @@ import logging
 import re
 
 import anthropic
+import pydantic
 
 from drift.pipeline.config import ANTHROPIC_API_KEY, DEFAULT_MODEL, MAX_TOKENS, VALIDATION_RANGES
 from drift.pipeline.extraction.schemas import (
@@ -235,14 +236,32 @@ class ExtractionEngine:
 
         logger.info("Extracting %s entities with %s (%d chars input)", entity_type, self._model, len(reduced_html))
 
-        response = self._client.messages.create(
-            model=self._model,
-            max_tokens=MAX_TOKENS,
-            system=SYSTEM_PROMPT,
-            messages=[{"role": "user", "content": user_prompt}],
-        )
+        try:
+            response = self._client.messages.create(
+                model=self._model,
+                max_tokens=MAX_TOKENS,
+                system=SYSTEM_PROMPT,
+                messages=[{"role": "user", "content": user_prompt}],
+            )
+        except anthropic.AuthenticationError:
+            raise
+        except anthropic.BadRequestError as e:
+            raise ValueError(
+                f"Extraction request rejected (input may be too large: {len(reduced_html)} chars): {e}"
+            ) from e
 
-        raw_text = response.content[0].text
+        if not response.content:
+            raise ValueError(
+                f"Anthropic API returned empty response for {entity_type} extraction "
+                f"(stop_reason={response.stop_reason})"
+            )
+        content_block = response.content[0]
+        if not hasattr(content_block, "text"):
+            raise ValueError(
+                f"Anthropic API returned non-text content block (type={content_block.type}) "
+                f"for {entity_type} extraction"
+            )
+        raw_text = content_block.text
         usage = {
             "input_tokens": response.usage.input_tokens,
             "output_tokens": response.usage.output_tokens,
@@ -269,7 +288,7 @@ class ExtractionEngine:
         for raw in raw_entities:
             try:
                 entities.append(pydantic_class.model_validate(raw))
-            except Exception as e:
+            except pydantic.ValidationError as e:
                 logger.warning("Failed to parse %s entity: %s", entity_type, e)
                 warnings.append(f"Parse error: {e}")
 
