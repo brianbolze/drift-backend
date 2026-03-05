@@ -3,14 +3,15 @@
 
 Tiered matching strategy:
   1. Exact SKU match
-  2. Composite key match (manufacturer + caliber + weight/model + name substring)
+  2. Composite key match (manufacturer + diameter/caliber + weight/model + name substring)
   3. Fuzzy name match (Jaccard word-overlap, scaled by 0.8 confidence ceiling)
 
 Also resolves FK references:
   - manufacturer → match by name or alt_names
-  - caliber → match by name or alt_names
+  - bullet_diameter_inches → physical diameter for bullet matching (±0.001")
+  - caliber → match by name or alt_names (for cartridges/rifles)
   - chamber → match by name or alt_names (for rifles)
-  - bullet → match by manufacturer + caliber + weight + name (for cartridges)
+  - bullet → match by manufacturer + diameter + weight + name (for cartridges)
 """
 
 from __future__ import annotations
@@ -242,6 +243,8 @@ class EntityResolver:
             query = query.filter(
                 Bullet.bullet_diameter_inches.between(bullet_diameter_inches - 0.001, bullet_diameter_inches + 0.001)
             )
+        else:
+            logger.warning("match_bullet called without diameter filter — may match across caliber families")
 
         candidates = query.all()
 
@@ -473,6 +476,15 @@ class EntityResolver:
             if bullet_name and result.manufacturer_id and result.caliber_id:
                 # Look up the caliber's bullet diameter so we can match bullets by diameter
                 cal_obj = self._session.get(Caliber, result.caliber_id)
+                if cal_obj is None:
+                    logger.warning(
+                        "Caliber %s resolved but not found in DB — bullet diameter "
+                        "filter will be skipped for bullet '%s'",
+                        result.caliber_id, bullet_name,
+                    )
+                    result.warnings.append(
+                        f"caliber {result.caliber_id} not found; bullet match has no diameter filter"
+                    )
                 cart_bullet_diameter = cal_obj.bullet_diameter_inches if cal_obj else None
                 weight = _get_value(extracted, "bullet_weight_grains")
                 bullet_stub = {"name": {"value": bullet_name}, "weight_grains": {"value": weight}}

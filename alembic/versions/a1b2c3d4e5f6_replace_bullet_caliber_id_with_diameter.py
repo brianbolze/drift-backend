@@ -38,13 +38,29 @@ def upgrade() -> None:
         with op.batch_alter_table('bullet', schema=None) as batch_op:
             batch_op.add_column(sa.Column('bullet_diameter_inches', sa.Float(), nullable=True))
 
-    # Step 2: Populate from caliber table
+    # Step 2: Pre-flight check — abort if any bullets have orphaned caliber refs
+    # or calibers with NULL diameter (would produce NULLs that fail NOT NULL enforcement).
+    orphans = conn.execute(
+        sa.text(
+            "SELECT b.id, b.name, b.caliber_id FROM bullet b "
+            "LEFT JOIN caliber c ON c.id = b.caliber_id "
+            "WHERE c.id IS NULL OR c.bullet_diameter_inches IS NULL"
+        )
+    ).fetchall()
+    if orphans:
+        details = "; ".join(f"bullet.id={r[0]} name={r[1]}" for r in orphans[:10])
+        raise RuntimeError(
+            f"Cannot migrate: {len(orphans)} bullet(s) have missing/NULL-diameter "
+            f"caliber refs: {details}"
+        )
+
+    # Step 3: Populate from caliber table
     op.execute(
         "UPDATE bullet SET bullet_diameter_inches = "
         "(SELECT caliber.bullet_diameter_inches FROM caliber WHERE caliber.id = bullet.caliber_id)"
     )
 
-    # Step 3: Drop caliber_id and make bullet_diameter_inches NOT NULL.
+    # Step 4: Drop caliber_id and make bullet_diameter_inches NOT NULL.
     # SQLite requires batch mode to drop columns and alter nullability.
     # Note: In SQLite with batch operations, foreign keys are automatically handled
     # when dropping the column, so we don't need to explicitly drop the constraint.
@@ -62,12 +78,26 @@ def downgrade() -> None:
         # For SQLite, the foreign key name isn't critical - just ensure it's created
         batch_op.create_foreign_key(None, 'caliber', ['caliber_id'], ['id'])
 
-    # Best-effort: assign each bullet to the first caliber with matching diameter
+    # Best-effort: assign each bullet to the first caliber with matching diameter.
+    # Uses ABS() tolerance to avoid exact float comparison issues.
     op.execute(
         "UPDATE bullet SET caliber_id = "
         "(SELECT caliber.id FROM caliber "
-        "WHERE caliber.bullet_diameter_inches = bullet.bullet_diameter_inches LIMIT 1)"
+        "WHERE ABS(caliber.bullet_diameter_inches - bullet.bullet_diameter_inches) < 0.001 "
+        "LIMIT 1)"
     )
+
+    # Verify all bullets got a caliber_id before enforcing NOT NULL
+    conn = op.get_bind()
+    unmatched = conn.execute(
+        sa.text("SELECT id, name, bullet_diameter_inches FROM bullet WHERE caliber_id IS NULL")
+    ).fetchall()
+    if unmatched:
+        details = "; ".join(f"bullet.id={r[0]} name={r[1]} dia={r[2]}" for r in unmatched[:10])
+        raise RuntimeError(
+            f"Downgrade aborted: {len(unmatched)} bullet(s) could not be matched to a "
+            f"caliber by diameter: {details}. Manually assign caliber_id before retrying."
+        )
 
     with op.batch_alter_table('bullet', schema=None) as batch_op:
         batch_op.alter_column('caliber_id', nullable=False)

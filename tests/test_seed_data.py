@@ -242,8 +242,8 @@ def test_bullet_has_bc_sources(seeded_db):
 
 def test_bullets_span_both_diameters(seeded_db):
     """Bullets should cover both .264 (6.5mm) and .308 diameters."""
-    count_264 = seeded_db.query(Bullet).filter_by(bullet_diameter_inches=0.264).count()
-    count_308 = seeded_db.query(Bullet).filter_by(bullet_diameter_inches=0.308).count()
+    count_264 = seeded_db.query(Bullet).filter(Bullet.bullet_diameter_inches.between(0.263, 0.265)).count()
+    count_308 = seeded_db.query(Bullet).filter(Bullet.bullet_diameter_inches.between(0.307, 0.309)).count()
     assert count_264 >= 5, f"Expected >= 5 .264 bullets, got {count_264}"
     assert count_308 >= 5, f"Expected >= 5 .308 bullets, got {count_308}"
 

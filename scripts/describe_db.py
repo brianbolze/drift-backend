@@ -174,18 +174,18 @@ def build_summary(conn: sqlite3.Connection) -> str:
     bullet_count = _q1(conn, "SELECT COUNT(*) FROM bullet")[0]
     w(f"**{bullet_count} bullets** across the following calibers:")
     w("")
-    w("| Caliber | Count | Weight Range (gr) | Manufacturers |")
-    w("|---------|------:|------------------:|---------------|")
+    w("| Diameter (in) | Count | Weight Range (gr) | Manufacturers |")
+    w("|---------------|------:|------------------:|---------------|")
     for row in _q(
         conn,
-        """SELECT c.name,
+        """SELECT PRINTF('%.3f', b.bullet_diameter_inches),
                   COUNT(b.id),
                   MIN(b.weight_grains) || '–' || MAX(b.weight_grains),
                   GROUP_CONCAT(DISTINCT m.name)
            FROM bullet b
-           JOIN caliber c ON b.caliber_id = c.id
            LEFT JOIN manufacturer m ON b.manufacturer_id = m.id
-           GROUP BY c.id ORDER BY c.lr_popularity_rank""",
+           GROUP BY PRINTF('%.3f', b.bullet_diameter_inches)
+           ORDER BY b.bullet_diameter_inches""",
     ):
         w(f"| {row[0]} | {row[1]} | {row[2]} | {row[3]} |")
     w("")
@@ -193,22 +193,21 @@ def build_summary(conn: sqlite3.Connection) -> str:
     # Bullet detail
     w("### Full Bullet List")
     w("")
-    w("| Bullet | Caliber | Weight (gr) | G1 BC | G7 BC | Manufacturer |")
-    w("|--------|---------|------------:|------:|------:|--------------|")
+    w("| Bullet | Diameter (in) | Weight (gr) | G1 BC | G7 BC | Manufacturer |")
+    w("|--------|---------------|------------:|------:|------:|--------------|")
     for row in _q(
         conn,
-        """SELECT b.name, c.name, b.weight_grains,
+        """SELECT b.name, PRINTF('%.3f', b.bullet_diameter_inches), b.weight_grains,
                   b.bc_g1_published, b.bc_g7_published, m.name
            FROM bullet b
-           JOIN caliber c ON b.caliber_id = c.id
            LEFT JOIN manufacturer m ON b.manufacturer_id = m.id
-           ORDER BY c.lr_popularity_rank, b.weight_grains""",
+           ORDER BY b.bullet_diameter_inches, b.weight_grains""",
     ):
-        name, cal, wt, g1, g7, mfr = row
+        name, dia, wt, g1, g7, mfr = row
         g1_str = f"{g1:.3f}" if g1 else "—"
         g7_str = f"{g7:.3f}" if g7 else "—"
         wt_str = f"{wt:.0f}" if wt else "—"
-        w(f"| {name} | {cal} | {wt_str} | {g1_str} | {g7_str} | {mfr or '—'} |")
+        w(f"| {name} | {dia} | {wt_str} | {g1_str} | {g7_str} | {mfr or '—'} |")
     w("")
 
     # ── Cartridges ──────────────────────────────────────────────
@@ -303,7 +302,10 @@ def build_summary(conn: sqlite3.Connection) -> str:
         """SELECT c.name, c.lr_popularity_rank
            FROM caliber c
            WHERE c.lr_popularity_rank IS NOT NULL AND c.lr_popularity_rank <= 15
-           AND c.id NOT IN (SELECT DISTINCT caliber_id FROM bullet)
+           AND NOT EXISTS (
+               SELECT 1 FROM bullet b
+               WHERE ABS(b.bullet_diameter_inches - c.bullet_diameter_inches) < 0.001
+           )
            AND c.id NOT IN (SELECT DISTINCT caliber_id FROM cartridge)
            ORDER BY c.lr_popularity_rank""",
     )
@@ -324,7 +326,7 @@ def build_summary(conn: sqlite3.Connection) -> str:
         "caliber": "name, alt_names (JSON), bullet_diameter_inches, overall_popularity_rank, lr_popularity_rank, is_common_lr, parent_caliber_id (FK self)",
         "chamber": "name, alt_names (JSON). Junction: `chamber_accepts_caliber` (chamber_id, caliber_id, is_primary)",
         "platform": "name, short_name. Junction: `caliber_platform` (caliber_id, platform_id, popularity_rank)",
-        "bullet": "name, manufacturer_id, caliber_id, weight_grains, bc_g1_published, bc_g7_published, type_tags (JSON), base_type, tip_type",
+        "bullet": "name, manufacturer_id, bullet_diameter_inches, weight_grains, bc_g1_published, bc_g7_published, type_tags (JSON), base_type, tip_type",
         "cartridge": "name, manufacturer_id, caliber_id, bullet_id, bullet_weight_grains, muzzle_velocity_fps, test_barrel_length_inches",
         "rifle_model": "model, manufacturer_id, chamber_id, barrel_length_inches, twist_rate, twist_rate_inches",
         "optic": "name, manufacturer_id, reticle_id, click_unit (mil/moa), click_value, magnification_min/max, focal_plane (ffp/sfp)",

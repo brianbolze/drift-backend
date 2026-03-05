@@ -254,6 +254,10 @@ def main() -> None:  # noqa: C901
                         savepoint = session.begin_nested()
                         try:
                             if entity_type == "bullet":
+                                if resolution.bullet_diameter_inches is None:
+                                    raise ValueError(
+                                        f"Cannot create bullet '{name}': bullet_diameter_inches is None"
+                                    )
                                 obj = _make_bullet(
                                     entity, resolution.manufacturer_id, resolution.bullet_diameter_inches, url
                                 )
