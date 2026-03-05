@@ -84,7 +84,14 @@
       "Bash(python scripts/spike_fetch.py \"https://sierrabullets.com/30-cal-168-gr-hpbt-matchking-smk/\" -o data/pipeline/spike/sierra_raw.html)",
       "Bash(python scripts/spike_reduce.py -i data/pipeline/spike/sierra_raw.html -o data/pipeline/spike/sierra_reduced.html)",
       "Bash(python scripts/spike_extract.py --entity bullet --input data/pipeline/spike/sierra_reduced.html --output data/pipeline/spike/sierra_extracted.json)",
-      "mcp__362bfe6f-5493-447a-8eb8-85a8dc200cf1__create_comment"
+      "mcp__362bfe6f-5493-447a-8eb8-85a8dc200cf1__create_comment",
+      "Skill(pr-review-toolkit:review-pr)",
+      "Skill(pr-review-toolkit:review-pr:*)",
+      "Bash(python -m pytest tests/pipeline/ tests/test_models.py -v)",
+      "Bash(git add scripts/pipeline_status.py scripts/pipeline_store.py src/drift/pipeline/extraction/engine.py src/drift/pipeline/reduction/reducer.py)",
+      "Bash(git commit:*)",
+      "Bash(git push origin develop)",
+      "Bash(git add scripts/pipeline_store.py src/drift/pipeline/resolution/resolver.py tests/pipeline/test_pipeline_components.py)"
     ]
   }
 }

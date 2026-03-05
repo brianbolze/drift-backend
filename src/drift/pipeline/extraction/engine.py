@@ -36,7 +36,7 @@ Extract ALL bullet products from this page. For each bullet, extract:
   "weight_grains": {"value": number, "source_text": "...", "confidence": ...},
   "bc_g1": {"value": number or null, "source_text": "...", "confidence": ...},
   "bc_g7": {"value": number or null, "source_text": "...", "confidence": ...},
-  "length_inches": {"value": number or null, "source_text": "...", "confidence": ...},
+  "length_inches": {"value": number or null, "source_text": "...", "confidence": ...},  // BULLET LENGTH ONLY — the projectile's tip-to-base length. Do NOT extract cartridge OAL (overall length) here.
   "sectional_density": {"value": number or null, "source_text": "...", "confidence": ...},
   "base_type": {"value": "one of: boat_tail, flat_base, rebated_boat_tail, hybrid — or null", "source_text": "...", "confidence": ...},
   "tip_type": {"value": "one of: polymer_tip, hollow_point, open_tip_match, fmj, soft_point, ballistic_tip, meplat — or null", "source_text": "...", "confidence": ...},
@@ -44,6 +44,11 @@ Extract ALL bullet products from this page. For each bullet, extract:
   "used_for": {"value": ["list of: competition, hunting_deer, hunting_elk, hunting_varmint, long_range, precision, self_defense, plinking"], "source_text": "...", "confidence": ...},
   "sku": {"value": "string or null — manufacturer part number", "source_text": "...", "confidence": ...}
 }
+
+IMPORTANT: "length_inches" is the BULLET (projectile) length — the physical tip-to-base measurement of \
+the projectile itself, typically 0.5–1.8 inches. Do NOT confuse this with cartridge OAL (overall length), \
+which is the full assembled round length (bullet seated in the case) and is typically 2.0–3.7 inches. \
+If the page only lists OAL/COAL and not the standalone bullet length, set length_inches to null.
 
 Return a JSON array of extracted bullets. If a field is not found on the page, set value to null with confidence 0.0.
 """
@@ -106,10 +111,15 @@ Rules:
    - Bullet weight: 15 to 750 grains
    - Barrel length: 10 to 34 inches
    - Sectional density: 0.05 to 0.500
-   - Bullet length: 0.2 to 3.0 inches
+   - Bullet length (projectile only, NOT cartridge OAL): 0.2 to 3.0 inches
    - Rifle weight: 2 to 20 lbs
    Flag any values outside these ranges by setting confidence to 0.3 or lower.
 6. Return valid JSON only — no markdown fencing, no commentary outside the JSON.
+7. CRITICAL DISTINCTION — "bullet length" vs "cartridge OAL":
+   - Bullet length (length_inches) = the projectile's tip-to-base measurement, typically 0.5–1.8".
+   - Cartridge OAL/COAL = the full assembled round from case head to bullet tip, typically 2.0–3.7".
+   These are different measurements. Only extract the projectile length into length_inches. If a page \
+only lists OAL/COAL, do NOT use that value for length_inches.
 """
 
 

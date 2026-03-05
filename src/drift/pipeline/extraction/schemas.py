@@ -60,7 +60,11 @@ class ExtractedBullet(BaseModel):
     weight_grains: ExtractedValue[float]
     bc_g1: ExtractedValue[float | None]
     bc_g7: ExtractedValue[float | None]
-    length_inches: ExtractedValue[float | None]
+    length_inches: ExtractedValue[float | None] = Field(
+        ...,
+        description="Bullet (projectile) tip-to-base length in inches. "
+        "NOT cartridge OAL/COAL. Typically 0.5–1.8 inches.",
+    )
     sectional_density: ExtractedValue[float | None]
     base_type: ExtractedValue[str | None]
     tip_type: ExtractedValue[str | None]
