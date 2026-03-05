@@ -91,7 +91,16 @@
       "Bash(git add scripts/pipeline_status.py scripts/pipeline_store.py src/drift/pipeline/extraction/engine.py src/drift/pipeline/reduction/reducer.py)",
       "Bash(git commit:*)",
       "Bash(git push origin develop)",
-      "Bash(git add scripts/pipeline_store.py src/drift/pipeline/resolution/resolver.py tests/pipeline/test_pipeline_components.py)"
+      "Bash(git add scripts/pipeline_store.py src/drift/pipeline/resolution/resolver.py tests/pipeline/test_pipeline_components.py)",
+      "mcp__filesystem__list_allowed_directories",
+      "Bash(PYTHONPATH=src python3 scripts/generate_shopping_list.py --lr-only)",
+      "Bash(PYTHONPATH=src python3 scripts/validate_manifest.py)",
+      "Bash(PYTHONPATH=src python3 -c \":*)",
+      "Bash(PYTHONPATH=src python3 scripts/pipeline_fetch.py --no-firecrawl --delay 0.5)",
+      "Bash(PYTHONPATH=src python3 scripts/pipeline_extract.py --limit 5)",
+      "Bash(set -a)",
+      "Bash(set +a)",
+      "Bash(PYTHONPATH=src python3 scripts/pipeline_extract.py)"
     ]
   }
 }
