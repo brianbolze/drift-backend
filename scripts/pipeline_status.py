@@ -121,7 +121,7 @@ def main() -> None:  # noqa: C901
                 print(f"  {'─'*4}  {'─'*30}  {'─'*7}  {'─'*5}  {'─'*6}")
 
                 for cal in calibers:
-                    n_bullets = session.query(func.count(Bullet.id)).filter(Bullet.caliber_id == cal.id).scalar()
+                    n_bullets = session.query(func.count(Bullet.id)).filter(Bullet.bullet_diameter_inches == cal.bullet_diameter_inches).scalar()
                     n_carts = session.query(func.count(Cartridge.id)).filter(Cartridge.caliber_id == cal.id).scalar()
                     # Rifles reference chamber_id; look up via ChamberAcceptsCaliber
                     chamber_ids = [

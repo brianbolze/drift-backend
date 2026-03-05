@@ -56,7 +56,7 @@ def generate_shopping_list(session: Session) -> dict:
 
     # Count entities per caliber
     bullet_counts = dict(
-        session.execute(select(Bullet.caliber_id, func.count(Bullet.id)).group_by(Bullet.caliber_id)).all()
+        session.execute(select(Bullet.bullet_diameter_inches, func.count(Bullet.id)).group_by(Bullet.bullet_diameter_inches)).all()
     )
     cartridge_counts = dict(
         session.execute(select(Cartridge.caliber_id, func.count(Cartridge.id)).group_by(Cartridge.caliber_id)).all()
@@ -91,7 +91,7 @@ def generate_shopping_list(session: Session) -> dict:
 
     for cal in calibers:
         targets = _target_counts(cal.lr_popularity_rank, cal.overall_popularity_rank)
-        have_bullets = bullet_counts.get(cal.id, 0)
+        have_bullets = bullet_counts.get(cal.bullet_diameter_inches, 0)
         have_cartridges = cartridge_counts.get(cal.id, 0)
         have_rifles = rifle_counts.get(cal.id, 0)
 
