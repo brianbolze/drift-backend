@@ -18,8 +18,9 @@ import asyncio
 import hashlib
 import json
 import logging
-import time
 from pathlib import Path
+
+import httpx
 
 from drift.pipeline.config import (
     EXTRACTED_DIR,
@@ -129,13 +130,16 @@ async def main() -> None:
 
             stats["fetched"] += 1
 
+        except (httpx.HTTPError, OSError) as e:
+            logger.exception("  FAILED: %s — %s", url, e)
+            stats["failed"] += 1
         except Exception:
-            logger.exception("  FAILED: %s", url)
+            logger.exception("  UNEXPECTED FAILURE: %s", url)
             stats["failed"] += 1
 
-        # Rate limiting
+        # Rate limiting (non-blocking in async context)
         if i < len(entries) - 1:
-            time.sleep(args.delay)
+            await asyncio.sleep(args.delay)
 
     print()
     print(

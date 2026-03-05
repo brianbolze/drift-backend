@@ -4,7 +4,7 @@
 Tiered matching strategy:
   1. Exact SKU match
   2. Composite key match (manufacturer + caliber + weight/model + name substring)
-  3. Fuzzy name match (normalized name comparison weighted by manufacturer match)
+  3. Fuzzy name match (Jaccard word-overlap, scaled by 0.8 confidence ceiling)
 
 Also resolves FK references:
   - manufacturer → match by name or alt_names
@@ -57,9 +57,10 @@ class ResolutionResult:
 
 
 def _normalize(name: str) -> str:
-    """Normalize a name for comparison: lowercase, strip punctuation, collapse whitespace."""
+    """Normalize a name for comparison: lowercase, strip punctuation (preserving periods), collapse whitespace."""
     name = name.lower().strip()
-    name = re.sub(r"[^\w\s]", " ", name)
+    # Keep periods to preserve caliber names like ".308", ".223"
+    name = re.sub(r"[^\w\s.]", " ", name)
     name = re.sub(r"\s+", " ", name)
     return name.strip()
 

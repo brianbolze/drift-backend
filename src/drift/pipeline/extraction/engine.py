@@ -105,6 +105,8 @@ Rules:
    - Bullet weight: 15 to 750 grains
    - Barrel length: 10 to 34 inches
    - Sectional density: 0.05 to 0.500
+   - Bullet length: 0.2 to 3.0 inches
+   - Rifle weight: 2 to 20 lbs
    Flag any values outside these ranges by setting confidence to 0.3 or lower.
 6. Return valid JSON only — no markdown fencing, no commentary outside the JSON.
 """
@@ -148,7 +150,7 @@ def validate_ranges(entities: list[dict]) -> list[str]:
 
 
 def _extract_bc_sources(entity: dict) -> list[ExtractedBCSource]:
-    """Extract BulletBCSource entries from a bullet entity's BC fields."""
+    """Extract ExtractedBCSource entries from a bullet entity's BC fields."""
     sources = []
     name = entity.get("name", {})
     bullet_name = name.get("value", "") if isinstance(name, dict) else str(name)
@@ -163,6 +165,7 @@ def _extract_bc_sources(entity: dict) -> list[ExtractedBCSource]:
         try:
             bc_val = float(val)
         except (ValueError, TypeError):
+            logger.warning("Unparseable BC value for %s.%s: %r", bullet_name, bc_field, val)
             continue
         sources.append(
             ExtractedBCSource(

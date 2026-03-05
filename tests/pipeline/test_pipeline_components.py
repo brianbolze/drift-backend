@@ -2,7 +2,9 @@
 
 from __future__ import annotations
 
-from drift.pipeline.extraction.engine import validate_ranges
+import json
+
+from drift.pipeline.extraction.engine import _extract_bc_sources, _parse_json_response, validate_ranges
 from drift.pipeline.extraction.schemas import (
     ExtractedBullet,
     ExtractedCartridge,
@@ -185,10 +187,11 @@ class TestValidation:
 
 
 class TestResolverUtils:
-    def test_normalize_strips_punctuation(self):
-        assert _normalize("6.5 Creedmoor") == "6 5 creedmoor"
+    def test_normalize_strips_punctuation_preserves_periods(self):
+        assert _normalize("6.5 Creedmoor") == "6.5 creedmoor"
         assert _normalize("  Hornady  ") == "hornady"
-        assert _normalize(".308 Winchester") == "308 winchester"
+        assert _normalize(".308 Winchester") == ".308 winchester"
+        assert _normalize("ELD-X (Hunting)") == "eld x hunting"
 
     def test_name_similarity_identical(self):
         assert _name_similarity("Hornady ELD Match", "Hornady ELD Match") == 1.0
@@ -229,3 +232,161 @@ class TestResolverUtils:
         assert rr.unresolved_refs == []
         assert rr.warnings == []
         assert rr.match.matched is False
+
+
+# ── _parse_json_response ───────────────────────────────────────────────────
+
+
+class TestParseJsonResponse:
+    def test_plain_json_array(self):
+        result = _parse_json_response('[{"name": "test"}]')
+        assert len(result) == 1
+        assert result[0]["name"] == "test"
+
+    def test_single_object_wrapped_in_list(self):
+        result = _parse_json_response('{"name": "test"}')
+        assert len(result) == 1
+        assert result[0]["name"] == "test"
+
+    def test_markdown_fenced_json(self):
+        raw = '```json\n[{"name": "test"}]\n```'
+        result = _parse_json_response(raw)
+        assert len(result) == 1
+        assert result[0]["name"] == "test"
+
+    def test_markdown_fenced_no_lang(self):
+        raw = '```\n[{"name": "test"}]\n```'
+        result = _parse_json_response(raw)
+        assert len(result) == 1
+
+    def test_surrounding_text_with_fenced_json(self):
+        raw = 'Here are the results:\n```json\n[{"name": "bullet"}]\n```\nDone.'
+        result = _parse_json_response(raw)
+        assert result[0]["name"] == "bullet"
+
+    def test_invalid_json_raises(self):
+        import pytest
+
+        with pytest.raises(json.JSONDecodeError):
+            _parse_json_response("this is not json at all")
+
+    def test_multiple_entities(self):
+        raw = '[{"name": "a"}, {"name": "b"}, {"name": "c"}]'
+        result = _parse_json_response(raw)
+        assert len(result) == 3
+
+
+# ── _extract_bc_sources ──────────────────────────────────────────────────────
+
+
+class TestExtractBCSources:
+    def test_both_g1_and_g7(self):
+        entity = {
+            "name": {"value": "ELD Match", "source_text": "ELD Match", "confidence": 0.9},
+            "bc_g1": {"value": 0.610, "source_text": ".610", "confidence": 0.9},
+            "bc_g7": {"value": 0.305, "source_text": ".305", "confidence": 0.9},
+        }
+        sources = _extract_bc_sources(entity)
+        assert len(sources) == 2
+        assert sources[0].bc_type == "g1"
+        assert sources[0].bc_value == 0.610
+        assert sources[0].bullet_name == "ELD Match"
+        assert sources[1].bc_type == "g7"
+        assert sources[1].bc_value == 0.305
+
+    def test_only_g1(self):
+        entity = {
+            "name": {"value": "Test"},
+            "bc_g1": {"value": 0.5},
+        }
+        sources = _extract_bc_sources(entity)
+        assert len(sources) == 1
+        assert sources[0].bc_type == "g1"
+
+    def test_null_bc_values_skipped(self):
+        entity = {
+            "name": {"value": "Test"},
+            "bc_g1": {"value": None},
+            "bc_g7": {"value": None},
+        }
+        sources = _extract_bc_sources(entity)
+        assert len(sources) == 0
+
+    def test_no_bc_fields(self):
+        entity = {"name": {"value": "No BCs"}}
+        sources = _extract_bc_sources(entity)
+        assert len(sources) == 0
+
+    def test_unparseable_bc_value_skipped(self):
+        entity = {
+            "name": {"value": "Bad BC"},
+            "bc_g1": {"value": "not-a-number"},
+        }
+        sources = _extract_bc_sources(entity)
+        assert len(sources) == 0
+
+    def test_plain_value_not_wrapped(self):
+        entity = {
+            "name": "Plain Name",
+            "bc_g1": 0.450,
+        }
+        sources = _extract_bc_sources(entity)
+        assert len(sources) == 1
+        assert sources[0].bc_value == 0.450
+        assert sources[0].bullet_name == "Plain Name"
+
+
+# ── Store script helpers ─────────────────────────────────────────────────────
+
+
+class TestStoreHelpers:
+    """Test the _safe_float, _safe_int, and _avg_confidence helpers from pipeline_store."""
+
+    def test_safe_float_valid(self):
+        from scripts.pipeline_store import _safe_float
+
+        assert _safe_float(1.5) == 1.5
+        assert _safe_float("2.5") == 2.5
+        assert _safe_float(0) == 0.0
+
+    def test_safe_float_none(self):
+        from scripts.pipeline_store import _safe_float
+
+        assert _safe_float(None) is None
+
+    def test_safe_float_invalid(self):
+        from scripts.pipeline_store import _safe_float
+
+        assert _safe_float("not_a_number") is None
+
+    def test_safe_int_valid(self):
+        from scripts.pipeline_store import _safe_int
+
+        assert _safe_int(5) == 5
+        assert _safe_int("10") == 10
+
+    def test_safe_int_none(self):
+        from scripts.pipeline_store import _safe_int
+
+        assert _safe_int(None) is None
+
+    def test_safe_int_invalid(self):
+        from scripts.pipeline_store import _safe_int
+
+        assert _safe_int("not_a_number") is None
+
+    def test_avg_confidence(self):
+        from scripts.pipeline_store import _avg_confidence
+
+        entity = {
+            "name": {"value": "Test", "confidence": 0.9},
+            "sku": {"value": "123", "confidence": 0.8},
+            "plain_field": "not a dict",
+        }
+        assert _avg_confidence(entity) == 0.85
+
+    def test_avg_confidence_empty(self):
+        from scripts.pipeline_store import _avg_confidence
+
+        assert _avg_confidence({}) == 0.0
+        assert _avg_confidence({"plain": "val"}) == 0.0

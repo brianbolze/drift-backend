@@ -25,6 +25,8 @@ from drift.pipeline.config import (
     REDUCED_DIR,
     REVIEW_DIR,
 )
+import anthropic
+
 from drift.pipeline.extraction.engine import ExtractionEngine
 
 logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
@@ -154,8 +156,11 @@ def main() -> None:  # noqa: C901
 
             stats["extracted"] += 1
 
+        except (anthropic.APIError, json.JSONDecodeError) as e:
+            logger.exception("  FAILED: %s — %s", url, e)
+            stats["failed"] += 1
         except Exception:
-            logger.exception("  FAILED: %s", url)
+            logger.exception("  UNEXPECTED FAILURE: %s", url)
             stats["failed"] += 1
 
     # Write flagged items
@@ -167,7 +172,7 @@ def main() -> None:  # noqa: C901
             try:
                 existing_flagged = json.loads(flagged_path.read_text(encoding="utf-8"))
             except (json.JSONDecodeError, TypeError):
-                pass
+                logger.warning("Could not parse existing flagged items at %s", flagged_path)
 
         # Deduplicate by url_hash
         existing_hashes = {f["url_hash"] for f in existing_flagged}

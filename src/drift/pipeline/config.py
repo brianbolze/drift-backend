@@ -7,9 +7,9 @@ from pathlib import Path
 
 from dotenv import load_dotenv
 
-# Load .env from project root
+# Load .env from project root (without override so env vars set by tests take precedence)
 _PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent.parent
-load_dotenv(_PROJECT_ROOT / ".env", override=True)
+load_dotenv(_PROJECT_ROOT / ".env")
 
 # ── API Keys ─────────────────────────────────────────────────────────────────
 
@@ -115,7 +115,7 @@ BC_SOURCE_TYPES = frozenset(
 
 HTTPX_TIMEOUT_SECONDS = 30.0
 HTTPX_CONNECT_TIMEOUT_SECONDS = 10.0
-FIRECRAWL_RATE_LIMIT_SECONDS = 1.0
+FIRECRAWL_RATE_LIMIT_SECONDS = 1.0  # Default inter-request delay (used for all fetchers, not just Firecrawl)
 
 HTTPX_HEADERS = {
     "User-Agent": (

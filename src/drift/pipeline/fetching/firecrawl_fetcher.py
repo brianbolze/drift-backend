@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import asyncio
 import hashlib
 from datetime import datetime, timezone
 
@@ -22,7 +23,8 @@ class FirecrawlFetcher(BaseFetcher):
         from firecrawl import FirecrawlApp
 
         app = FirecrawlApp(api_key=self._api_key)
-        doc = app.scrape(url, formats=["html"])
+        # FirecrawlApp.scrape() is synchronous — run in executor to avoid blocking the event loop
+        doc = await asyncio.to_thread(app.scrape, url, formats=["html"])
 
         html = doc.html or ""
         status = getattr(doc.metadata, "statusCode", 200) if doc.metadata else 200

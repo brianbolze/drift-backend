@@ -29,6 +29,7 @@ def _load_flagged() -> list[dict]:
     try:
         return json.loads(flagged_path.read_text(encoding="utf-8"))
     except (json.JSONDecodeError, TypeError):
+        logger.warning("Could not parse flagged items at %s", flagged_path)
         return []
 
 
@@ -41,6 +42,7 @@ def _load_store_report() -> dict | None:
     try:
         return json.loads(STORE_REPORT_PATH.read_text(encoding="utf-8"))
     except (json.JSONDecodeError, TypeError):
+        logger.warning("Could not parse store report at %s", STORE_REPORT_PATH)
         return None
 
 
@@ -52,6 +54,7 @@ def _load_extraction(url_hash: str) -> dict | None:
     try:
         return json.loads(path.read_text(encoding="utf-8"))
     except (json.JSONDecodeError, TypeError):
+        logger.warning("Could not parse extraction at %s", path)
         return None
 
 

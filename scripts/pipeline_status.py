@@ -21,7 +21,7 @@ from drift.database import get_session_factory
 from drift.models.bullet import Bullet
 from drift.models.caliber import Caliber
 from drift.models.cartridge import Cartridge
-from drift.models.chamber import Chamber
+from drift.models.chamber import Chamber, ChamberAcceptsCaliber
 from drift.models.manufacturer import Manufacturer
 from drift.models.rifle_model import RifleModel
 from drift.pipeline.config import (
@@ -83,7 +83,7 @@ def main() -> None:  # noqa: C901
                 manifest = json.loads(MANIFEST_PATH.read_text(encoding="utf-8"))
                 manifest_count = len(manifest)
             except (json.JSONDecodeError, TypeError):
-                pass
+                logger.warning("Could not parse manifest at %s", MANIFEST_PATH)
 
         pipeline_counts = {
             "Manifest entries": manifest_count,
@@ -99,7 +99,7 @@ def main() -> None:  # noqa: C901
                 flagged = json.loads(flagged_path.read_text(encoding="utf-8"))
                 pipeline_counts["Flagged"] = len(flagged)
             except (json.JSONDecodeError, TypeError):
-                pass
+                logger.warning("Could not parse flagged items at %s", flagged_path)
 
         for label, count in pipeline_counts.items():
             print(f"  {label:20s}: {count:>5d}")
@@ -123,22 +123,7 @@ def main() -> None:  # noqa: C901
                 for cal in calibers:
                     n_bullets = session.query(func.count(Bullet.id)).filter(Bullet.caliber_id == cal.id).scalar()
                     n_carts = session.query(func.count(Cartridge.id)).filter(Cartridge.caliber_id == cal.id).scalar()
-                    # Rifles go through chamber → caliber
-                    n_rifles = (
-                        session.query(func.count(RifleModel.id))
-                        .join(Chamber, RifleModel.chamber_id == Chamber.id)
-                        .join(
-                            Caliber,
-                            Chamber.id.in_(
-                                session.query(func.distinct(Caliber.id)).filter(Caliber.id == cal.id)  # noqa: E501
-                            ),
-                        )
-                        .scalar()
-                    ) or 0
-
-                    # Simpler rifle count via ChamberAcceptsCaliber
-                    from drift.models.chamber import ChamberAcceptsCaliber
-
+                    # Rifles reference chamber_id; look up via ChamberAcceptsCaliber
                     chamber_ids = [
                         link.chamber_id
                         for link in session.query(ChamberAcceptsCaliber)

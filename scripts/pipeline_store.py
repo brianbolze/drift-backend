@@ -39,7 +39,7 @@ def _make_bullet(entity: dict, manufacturer_id: str, caliber_id: str, source_url
         caliber_id=caliber_id,
         name=_get_value(entity, "name", ""),
         sku=_get_value(entity, "sku"),
-        weight_grains=float(_get_value(entity, "weight_grains", 0)),
+        weight_grains=_safe_float(_get_value(entity, "weight_grains")) or 0.0,
         bc_g1_published=_safe_float(_get_value(entity, "bc_g1")),
         bc_g7_published=_safe_float(_get_value(entity, "bc_g7")),
         length_inches=_safe_float(_get_value(entity, "length_inches")),
@@ -57,7 +57,7 @@ def _make_cartridge(
     entity: dict,
     manufacturer_id: str,
     caliber_id: str,
-    bullet_id: str,
+    bullet_id: str | None,
     source_url: str,
 ) -> Cartridge:
     """Create a Cartridge ORM instance from an extracted entity dict."""
@@ -68,8 +68,8 @@ def _make_cartridge(
         bullet_id=bullet_id,
         name=_get_value(entity, "name", ""),
         sku=_get_value(entity, "sku"),
-        bullet_weight_grains=float(_get_value(entity, "bullet_weight_grains", 0)),
-        muzzle_velocity_fps=int(_get_value(entity, "muzzle_velocity_fps", 0)),
+        bullet_weight_grains=_safe_float(_get_value(entity, "bullet_weight_grains")) or 0.0,
+        muzzle_velocity_fps=_safe_int(_get_value(entity, "muzzle_velocity_fps")) or 0,
         test_barrel_length_inches=_safe_float(_get_value(entity, "test_barrel_length_inches")),
         round_count=_safe_int(_get_value(entity, "round_count")),
         product_line=_get_value(entity, "product_line"),
@@ -119,6 +119,7 @@ def _safe_float(val) -> float | None:
     try:
         return float(val)
     except (ValueError, TypeError):
+        logger.debug("Could not convert %r to float", val)
         return None
 
 
@@ -128,6 +129,7 @@ def _safe_int(val) -> int | None:
     try:
         return int(val)
     except (ValueError, TypeError):
+        logger.debug("Could not convert %r to int", val)
         return None
 
 
@@ -226,19 +228,26 @@ def main() -> None:  # noqa: C901
                     stats[entity_type]["created"] += 1
 
                     if args.commit:
+                        savepoint = session.begin_nested()
                         try:
                             if entity_type == "bullet":
                                 obj = _make_bullet(entity, resolution.manufacturer_id, resolution.caliber_id, url)
                                 session.add(obj)
-                                # BC sources
-                                for bc_obj in _make_bc_sources(obj.id, bc_sources, url):
+                                # Only attach BC sources that belong to this bullet
+                                bullet_name = _get_value(entity, "name", "")
+                                bullet_bc_sources = [
+                                    bc for bc in bc_sources if bc.get("bullet_name", "") == bullet_name
+                                ]
+                                for bc_obj in _make_bc_sources(obj.id, bullet_bc_sources, url):
                                     session.add(bc_obj)
                                 entry["created_id"] = obj.id
                             elif entity_type == "cartridge":
-                                # bullet_id might be None if unresolved
-                                bullet_id = resolution.bullet_id or ""
                                 obj = _make_cartridge(
-                                    entity, resolution.manufacturer_id, resolution.caliber_id, bullet_id, url
+                                    entity,
+                                    resolution.manufacturer_id,
+                                    resolution.caliber_id,
+                                    resolution.bullet_id,  # None if unresolved (not empty string)
+                                    url,
                                 )
                                 session.add(obj)
                                 entry["created_id"] = obj.id
@@ -246,7 +255,9 @@ def main() -> None:  # noqa: C901
                                 obj = _make_rifle(entity, resolution.manufacturer_id, resolution.chamber_id, url)
                                 session.add(obj)
                                 entry["created_id"] = obj.id
+                            savepoint.commit()
                         except Exception as e:
+                            savepoint.rollback()
                             logger.exception("  [%d] CREATE FAILED: %s — %s", j + 1, name, e)
                             entry["action"] = "create_failed"
                             entry["error"] = str(e)
