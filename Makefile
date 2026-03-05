@@ -22,9 +22,10 @@ PIPELINE_LIMIT ?= 0
 .PHONY: install test lint format clean
 .PHONY: migrate new-migration seed reset-seed describe-db
 .PHONY: pipeline-install pipeline-models pipeline-shopping-list pipeline-validate pipeline-fetch
-.PHONY: pipeline-extract pipeline-extract-openai pipeline-extract-anthropic
+.PHONY: pipeline-extract pipeline-extract-batch pipeline-extract-sync
+.PHONY: pipeline-extract-openai pipeline-extract-anthropic
 .PHONY: pipeline-extract-gpt-5 pipeline-extract-gpt-5-nano pipeline-extract-claude-4
-.PHONY: pipeline-extract-parallel pipeline-env-check
+.PHONY: pipeline-extract-parallel pipeline-extract-poll pipeline-env-check
 .PHONY: pipeline-store pipeline-store-commit pipeline-review
 .PHONY: pipeline-status pipeline-all pipeline-clean
 
@@ -138,16 +139,31 @@ pipeline-validate: ## Validate pipeline manifest and configuration
 pipeline-fetch: ## Fetch data from external sources
 	$(VENV)/python scripts/pipeline_fetch.py
 
-pipeline-extract: ## Extract and transform fetched data (provider auto-detected from model)
+pipeline-extract: ## Extract data (batch for Anthropic, sync for OpenAI — auto-detected)
 	$(VENV)/python scripts/pipeline_extract.py \
 		$(if $(PIPELINE_PROVIDER),--provider $(PIPELINE_PROVIDER)) \
 		$(if $(PIPELINE_MODEL),--model $(PIPELINE_MODEL)) \
 		$(if $(filter-out 0,$(PIPELINE_LIMIT)),--limit $(PIPELINE_LIMIT))
 
-pipeline-extract-openai: ## Extract data using OpenAI models
-	@$(MAKE) pipeline-extract PIPELINE_PROVIDER=openai
+pipeline-extract-batch: ## Extract using Anthropic batch API (50% cheaper, no rate limits)
+	$(VENV)/python scripts/pipeline_extract.py --batch \
+		$(if $(PIPELINE_MODEL),--model $(PIPELINE_MODEL)) \
+		$(if $(filter-out 0,$(PIPELINE_LIMIT)),--limit $(PIPELINE_LIMIT))
 
-pipeline-extract-anthropic: ## Extract data using Anthropic models (Claude)
+pipeline-extract-sync: ## Extract sequentially with retries (for small runs or OpenAI)
+	$(VENV)/python scripts/pipeline_extract.py --sync \
+		$(if $(PIPELINE_PROVIDER),--provider $(PIPELINE_PROVIDER)) \
+		$(if $(PIPELINE_MODEL),--model $(PIPELINE_MODEL)) \
+		$(if $(filter-out 0,$(PIPELINE_LIMIT)),--limit $(PIPELINE_LIMIT))
+
+pipeline-extract-poll: ## Poll/collect results from a pending batch (prompts for batch ID)
+	@read -p "Batch ID: " bid; \
+	$(VENV)/python scripts/pipeline_extract.py --poll $$bid
+
+pipeline-extract-openai: ## Extract data using OpenAI models (sync mode)
+	@$(MAKE) pipeline-extract-sync PIPELINE_PROVIDER=openai
+
+pipeline-extract-anthropic: ## Extract data using Anthropic models (batch mode)
 	@$(MAKE) pipeline-extract PIPELINE_PROVIDER=anthropic
 
 pipeline-extract-gpt-5: ## Extract using GPT-5 (most capable OpenAI model)

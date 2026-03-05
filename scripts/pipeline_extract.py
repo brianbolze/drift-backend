@@ -1,15 +1,17 @@
 """Extract structured product data from reduced HTML via LLM.
 
-Reads reduced HTML from data/pipeline/reduced/, sends each to the
-ExtractionEngine, and saves results to data/pipeline/extracted/.
-
-Resume-safe: skips already-extracted URLs based on cache files.
+Supports two modes:
+  --batch (default for Anthropic): Submit all pending items as a single batch via
+      the Anthropic Message Batches API. No rate limits, 50% cheaper.
+  --sync: Process items one at a time with retry logic. Required for OpenAI.
+  --poll BATCH_ID: Resume polling/collecting a previously submitted batch.
 
 Usage:
-    python scripts/pipeline_extract.py
-    python scripts/pipeline_extract.py --provider openai --model gpt-4.1-mini
-    python scripts/pipeline_extract.py --model claude-sonnet-4-20250514
-    python scripts/pipeline_extract.py --limit 5
+    python scripts/pipeline_extract.py                        # batch mode (default)
+    python scripts/pipeline_extract.py --sync                 # sequential with retries
+    python scripts/pipeline_extract.py --sync --provider openai
+    python scripts/pipeline_extract.py --poll msgbatch_abc123 # resume a batch
+    python scripts/pipeline_extract.py --batch --limit 10
 """
 
 from __future__ import annotations
@@ -20,6 +22,7 @@ import logging
 from pathlib import Path
 
 from drift.pipeline.config import (
+    BATCH_DIR,
     EXTRACTED_DIR,
     MANIFEST_PATH,
     REDUCED_DIR,
@@ -37,11 +40,7 @@ logger = logging.getLogger(__name__)
 
 
 def _url_hash_from_manifest(manifest: list[dict]) -> dict[str, dict]:
-    """Build a lookup from url_hash → manifest entry.
-
-    The url_hash is computed the same way as in pipeline_fetch.py,
-    but we read it from the reduced JSON metadata instead.
-    """
+    """Build a lookup from url_hash -> manifest entry."""
     import hashlib
 
     lookup: dict[str, dict] = {}
@@ -57,51 +56,30 @@ def _infer_provider_from_model(model: str | None) -> str | None:
     if not model:
         return None
     model_lower = model.lower()
-
-    # OpenAI model patterns
-    if any(prefix in model_lower for prefix in ['gpt-', 'o1-', 'o3-']):
+    if any(prefix in model_lower for prefix in ["gpt-", "o1-", "o3-"]):
         return "openai"
-
-    # Anthropic model patterns
-    if any(prefix in model_lower for prefix in ['claude-', 'haiku-', 'sonnet-', 'opus-']):
+    if any(prefix in model_lower for prefix in ["claude-", "haiku-", "sonnet-", "opus-"]):
         return "anthropic"
-
     return None
 
 
-def main() -> None:  # noqa: C901
-    parser = argparse.ArgumentParser(description="Extract product data from reduced HTML")
-    parser.add_argument("--manifest", type=Path, default=MANIFEST_PATH, help="URL manifest JSON path")
-    parser.add_argument(
-        "--provider",
-        type=str,
-        default=None,
-        choices=["anthropic", "openai"],
-        help="LLM provider to use (auto-detected from model if not specified)",
-    )
-    parser.add_argument("--model", type=str, default=None, help="LLM model to use (default: provider-specific)")
-    parser.add_argument("--limit", type=int, default=0, help="Max URLs to process (0 = all)")
-    parser.add_argument("--reextract", action="store_true", help="Re-extract even if cached result exists")
-    args = parser.parse_args()
+def _load_pending_items(
+    manifest_path: Path,
+    limit: int,
+    reextract: bool,
+) -> tuple[list[dict], dict[str, dict]]:
+    """Scan reduced files and return pending items that need extraction.
 
-    # Auto-detect provider from model name if not explicitly specified
-    provider_name = args.provider
-    if not provider_name and args.model:
-        provider_name = _infer_provider_from_model(args.model)
-        if provider_name:
-            logger.info("Auto-detected provider '%s' from model name '%s'", provider_name, args.model)
+    Returns:
+        Tuple of (pending_items, hash_lookup) where pending_items is a list of dicts
+        with keys: url_hash, url, entity_type, reduced_html_path.
+    """
+    if not manifest_path.exists():
+        raise SystemExit(f"Manifest not found: {manifest_path}\nRun pipeline_fetch.py first.")
 
-    # Default to anthropic if still not determined
-    if not provider_name:
-        provider_name = "anthropic"
-
-    if not args.manifest.exists():
-        raise SystemExit(f"Manifest not found: {args.manifest}\nRun pipeline_fetch.py first.")
-
-    manifest = json.loads(args.manifest.read_text(encoding="utf-8"))
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
     hash_lookup = _url_hash_from_manifest(manifest)
 
-    # Find all reduced files ready for extraction
     reduced_files = sorted(REDUCED_DIR.glob("*.json"))
     if not reduced_files:
         raise SystemExit(f"No reduced files found in {REDUCED_DIR}\nRun pipeline_fetch.py first.")
@@ -109,87 +87,144 @@ def main() -> None:  # noqa: C901
     EXTRACTED_DIR.mkdir(parents=True, exist_ok=True)
     REVIEW_DIR.mkdir(parents=True, exist_ok=True)
 
-    provider = create_provider(provider_name)
-    engine = ExtractionEngine(provider=provider, model=args.model)
+    entries = reduced_files[:limit] if limit > 0 else reduced_files
+    pending = []
 
-    stats = {"extracted": 0, "skipped": 0, "failed": 0, "flagged": 0, "total": 0}
-    flagged_items: list[dict] = []
-
-    entries = reduced_files[: args.limit] if args.limit > 0 else reduced_files
-
-    for i, reduced_json_path in enumerate(entries):
+    for reduced_json_path in entries:
         uhash = reduced_json_path.stem
-        stats["total"] += 1
 
         # Check cache
         extracted_cache = EXTRACTED_DIR / f"{uhash}.json"
-        if extracted_cache.exists() and not args.reextract:
-            logger.info("[%d/%d] SKIP (cached): %s", i + 1, len(entries), uhash)
-            stats["skipped"] += 1
+        if extracted_cache.exists() and not reextract:
             continue
 
-        # Load reduced metadata
+        # Load metadata
         reduced_meta = json.loads(reduced_json_path.read_text(encoding="utf-8"))
         url = reduced_meta.get("url", uhash)
         entity_type = reduced_meta.get("entity_type")
 
         if not entity_type:
-            # Try manifest lookup
             manifest_entry = hash_lookup.get(uhash, {})
             entity_type = manifest_entry.get("entity_type")
 
         if not entity_type:
-            logger.warning("[%d/%d] SKIP (no entity_type): %s", i + 1, len(entries), url)
-            stats["failed"] += 1
+            logger.warning("SKIP (no entity_type): %s", url)
             continue
 
-        # Load reduced HTML
         reduced_html_path = REDUCED_DIR / f"{uhash}.html"
         if not reduced_html_path.exists():
-            logger.warning("[%d/%d] SKIP (no reduced HTML): %s", i + 1, len(entries), url)
-            stats["failed"] += 1
+            logger.warning("SKIP (no reduced HTML): %s", url)
             continue
 
-        reduced_html = reduced_html_path.read_text(encoding="utf-8")
-        logger.info("[%d/%d] EXTRACT (%s): %s", i + 1, len(entries), entity_type, url)
+        pending.append(
+            {
+                "url_hash": uhash,
+                "url": url,
+                "entity_type": entity_type,
+                "reduced_html_path": str(reduced_html_path),
+            }
+        )
 
-        try:
-            result = engine.extract(reduced_html, entity_type)
+    return pending, hash_lookup
 
-            # Build extraction output
-            extraction_data = {
+
+def _save_extraction(uhash: str, url: str, entity_type: str, result, flagged_items: list[dict]) -> None:
+    """Save an extraction result to the cache and flag if needed."""
+    extraction_data = {
+        "url": url,
+        "url_hash": uhash,
+        "entity_type": entity_type,
+        "model": result.model,
+        "usage": result.usage,
+        "entity_count": len(result.entities),
+        "entities": result.raw_entities,
+        "bc_sources": [bc.model_dump() for bc in result.bc_sources],
+        "warnings": result.warnings,
+    }
+
+    extracted_cache = EXTRACTED_DIR / f"{uhash}.json"
+    extracted_cache.write_text(json.dumps(extraction_data, indent=2), encoding="utf-8")
+
+    if result.warnings:
+        flagged_items.append(
+            {
                 "url": url,
                 "url_hash": uhash,
                 "entity_type": entity_type,
-                "model": result.model,
-                "usage": result.usage,
-                "entity_count": len(result.entities),
-                "entities": result.raw_entities,
-                "bc_sources": [bc.model_dump() for bc in result.bc_sources],
+                "reason": "validation_warnings",
                 "warnings": result.warnings,
             }
+        )
 
-            extracted_cache.write_text(json.dumps(extraction_data, indent=2), encoding="utf-8")
+
+def _write_flagged(flagged_items: list[dict]) -> Path | None:
+    """Merge flagged items with existing flagged file."""
+    if not flagged_items:
+        return None
+
+    flagged_path = REVIEW_DIR / "flagged.json"
+    existing_flagged: list[dict] = []
+    if flagged_path.exists():
+        try:
+            existing_flagged = json.loads(flagged_path.read_text(encoding="utf-8"))
+        except (json.JSONDecodeError, TypeError):
+            logger.warning("Could not parse existing flagged items at %s", flagged_path)
+
+    existing_hashes = {f["url_hash"] for f in existing_flagged}
+    for item in flagged_items:
+        if item["url_hash"] not in existing_hashes:
+            existing_flagged.append(item)
+
+    flagged_path.write_text(json.dumps(existing_flagged, indent=2), encoding="utf-8")
+    return flagged_path
+
+
+# ── Sync mode ───────────────────────────────────────────────────────────────
+
+
+def _run_sync(args: argparse.Namespace, provider_name: str) -> None:
+    """Sequential extraction with retry logic."""
+    pending, _ = _load_pending_items(args.manifest, args.limit, args.reextract)
+
+    total = len(pending)
+    reduced_files = sorted(REDUCED_DIR.glob("*.json"))
+    all_count = min(len(reduced_files), args.limit) if args.limit > 0 else len(reduced_files)
+    skipped = all_count - total
+
+    if total == 0:
+        print(f"Nothing to extract ({skipped} cached).")
+        return
+
+    logger.info("%d items to extract, %d cached", total, skipped)
+
+    provider = create_provider(provider_name)
+    engine = ExtractionEngine(provider=provider, model=args.model)
+
+    stats = {"extracted": 0, "failed": 0, "flagged": 0}
+    flagged_items: list[dict] = []
+
+    for i, item in enumerate(pending):
+        uhash = item["url_hash"]
+        url = item["url"]
+        entity_type = item["entity_type"]
+        reduced_html = Path(item["reduced_html_path"]).read_text(encoding="utf-8")
+
+        logger.info("[%d/%d] EXTRACT (%s): %s", i + 1, total, entity_type, url)
+
+        try:
+            result = engine.extract(reduced_html, entity_type)
+            _save_extraction(uhash, url, entity_type, result, flagged_items)
 
             logger.info(
                 "  %d entities, %d BC sources, %d warnings, %d input / %d output tokens",
                 len(result.entities),
                 len(result.bc_sources),
                 len(result.warnings),
-                result.usage["input_tokens"],
-                result.usage["output_tokens"],
+                result.usage.get("input_tokens", 0),
+                result.usage.get("output_tokens", 0),
             )
 
-            # Flag items with warnings or low confidence
             if result.warnings:
-                flag_entry = {
-                    "url": url,
-                    "url_hash": uhash,
-                    "entity_type": entity_type,
-                    "reason": "validation_warnings",
-                    "warnings": result.warnings,
-                }
-                flagged_items.append(flag_entry)
                 stats["flagged"] += 1
                 logger.warning("  FLAGGED: %s", result.warnings)
 
@@ -197,7 +232,7 @@ def main() -> None:  # noqa: C901
 
         except LLMAuthenticationError as e:
             logger.error("  Authentication failed — aborting: %s", e)
-            raise SystemExit(1)
+            raise SystemExit(1) from e
         except (LLMProviderError, json.JSONDecodeError) as e:
             logger.exception("  FAILED: %s — %s", url, e)
             stats["failed"] += 1
@@ -205,33 +240,226 @@ def main() -> None:  # noqa: C901
             logger.exception("  UNEXPECTED FAILURE: %s", url)
             stats["failed"] += 1
 
-    # Write flagged items
-    flagged_path = REVIEW_DIR / "flagged.json"
-    if flagged_items:
-        # Merge with existing flagged items if any
-        existing_flagged: list[dict] = []
-        if flagged_path.exists():
-            try:
-                existing_flagged = json.loads(flagged_path.read_text(encoding="utf-8"))
-            except (json.JSONDecodeError, TypeError):
-                logger.warning("Could not parse existing flagged items at %s", flagged_path)
-
-        # Deduplicate by url_hash
-        existing_hashes = {f["url_hash"] for f in existing_flagged}
-        for item in flagged_items:
-            if item["url_hash"] not in existing_hashes:
-                existing_flagged.append(item)
-
-        flagged_path.write_text(json.dumps(existing_flagged, indent=2), encoding="utf-8")
+    flagged_path = _write_flagged(flagged_items)
 
     print()
     print(
-        f"Done: {stats['extracted']} extracted, {stats['skipped']} skipped, "
+        f"Done: {stats['extracted']} extracted, {skipped} skipped, "
         f"{stats['failed']} failed, {stats['flagged']} flagged "
-        f"(of {stats['total']} total)"
+        f"(of {skipped + total} total)"
     )
-    if flagged_items:
+    if flagged_path:
         print(f"Flagged items written to: {flagged_path}")
+
+
+# ── Batch mode ──────────────────────────────────────────────────────────────
+
+
+def _run_batch(args: argparse.Namespace) -> None:
+    """Batch extraction via Anthropic Message Batches API."""
+    from drift.pipeline.extraction.batch import BatchExtractor, BatchItem
+    from drift.pipeline.extraction.providers.anthropic_provider import AnthropicProvider
+
+    pending, _ = _load_pending_items(args.manifest, args.limit, args.reextract)
+
+    total = len(pending)
+    reduced_files = sorted(REDUCED_DIR.glob("*.json"))
+    all_count = min(len(reduced_files), args.limit) if args.limit > 0 else len(reduced_files)
+    skipped = all_count - total
+
+    if total == 0:
+        print(f"Nothing to extract ({skipped} cached).")
+        return
+
+    logger.info("%d items to extract via batch API, %d cached", total, skipped)
+
+    provider = AnthropicProvider()
+    engine = ExtractionEngine(provider=provider, model=args.model)
+    batch_extractor = BatchExtractor(engine=engine, client=provider.client)
+
+    # Build batch items
+    batch_items = []
+    item_meta: dict[str, dict] = {}  # url_hash → {url, entity_type}
+    for item in pending:
+        reduced_html = Path(item["reduced_html_path"]).read_text(encoding="utf-8")
+        batch_items.append(
+            BatchItem(
+                url_hash=item["url_hash"],
+                url=item["url"],
+                entity_type=item["entity_type"],
+                reduced_html=reduced_html,
+            )
+        )
+        item_meta[item["url_hash"]] = {
+            "url": item["url"],
+            "entity_type": item["entity_type"],
+        }
+
+    # Submit and save batch metadata
+    batch_id = batch_extractor.submit(batch_items)
+    _save_batch_metadata(batch_id, item_meta, engine.model)
+    logger.info("Batch metadata saved. You can resume with: --poll %s", batch_id)
+
+    # Poll and collect
+    batch_extractor.poll(batch_id)
+    item_types = {uhash: meta["entity_type"] for uhash, meta in item_meta.items()}
+    results = batch_extractor.collect(batch_id, item_types)
+
+    # Save results
+    stats = {"succeeded": 0, "errored": 0, "flagged": 0}
+    flagged_items: list[dict] = []
+
+    for uhash, result_item in results.items():
+        meta = item_meta.get(uhash, {})
+        url = meta.get("url", uhash)
+        entity_type = meta.get("entity_type", "unknown")
+
+        if result_item.status == "succeeded" and result_item.result is not None:
+            _save_extraction(uhash, url, entity_type, result_item.result, flagged_items)
+            stats["succeeded"] += 1
+            if result_item.result.warnings:
+                stats["flagged"] += 1
+        else:
+            logger.warning("  %s: %s — %s", uhash, result_item.status, result_item.error)
+            stats["errored"] += 1
+
+    flagged_path = _write_flagged(flagged_items)
+
+    print()
+    print(
+        f"Done (batch {batch_id}): {stats['succeeded']} extracted, {skipped} skipped, "
+        f"{stats['errored']} errored, {stats['flagged']} flagged "
+        f"(of {skipped + total} total)"
+    )
+    if flagged_path:
+        print(f"Flagged items written to: {flagged_path}")
+
+
+def _run_poll(args: argparse.Namespace) -> None:
+    """Resume polling/collecting a previously submitted batch."""
+    from drift.pipeline.extraction.batch import BatchExtractor
+    from drift.pipeline.extraction.providers.anthropic_provider import AnthropicProvider
+
+    batch_id = args.poll
+
+    # Load batch metadata
+    meta_path = BATCH_DIR / f"{batch_id}.json"
+    if not meta_path.exists():
+        raise SystemExit(
+            f"No batch metadata found at {meta_path}\n"
+            f"This batch may have been submitted from a different machine or the metadata was deleted."
+        )
+
+    batch_meta = json.loads(meta_path.read_text(encoding="utf-8"))
+    item_meta = batch_meta["items"]
+    model = batch_meta.get("model")
+
+    logger.info("Resuming batch %s (%d items, model: %s)", batch_id, len(item_meta), model)
+
+    provider = AnthropicProvider()
+    engine = ExtractionEngine(provider=provider, model=model)
+    batch_extractor = BatchExtractor(engine=engine, client=provider.client)
+
+    # Poll
+    batch_extractor.poll(batch_id)
+
+    # Collect
+    item_types = {uhash: meta["entity_type"] for uhash, meta in item_meta.items()}
+    results = batch_extractor.collect(batch_id, item_types)
+
+    EXTRACTED_DIR.mkdir(parents=True, exist_ok=True)
+    REVIEW_DIR.mkdir(parents=True, exist_ok=True)
+
+    stats = {"succeeded": 0, "errored": 0, "flagged": 0}
+    flagged_items: list[dict] = []
+
+    for uhash, result_item in results.items():
+        meta = item_meta.get(uhash, {})
+        url = meta.get("url", uhash)
+        entity_type = meta.get("entity_type", "unknown")
+
+        if result_item.status == "succeeded" and result_item.result is not None:
+            _save_extraction(uhash, url, entity_type, result_item.result, flagged_items)
+            stats["succeeded"] += 1
+            if result_item.result.warnings:
+                stats["flagged"] += 1
+        else:
+            logger.warning("  %s: %s — %s", uhash, result_item.status, result_item.error)
+            stats["errored"] += 1
+
+    flagged_path = _write_flagged(flagged_items)
+
+    print()
+    print(
+        f"Done (batch {batch_id}): {stats['succeeded']} extracted, "
+        f"{stats['errored']} errored, {stats['flagged']} flagged"
+    )
+    if flagged_path:
+        print(f"Flagged items written to: {flagged_path}")
+
+
+def _save_batch_metadata(batch_id: str, item_meta: dict[str, dict], model: str) -> None:
+    """Save batch metadata so we can resume polling later."""
+    BATCH_DIR.mkdir(parents=True, exist_ok=True)
+    meta_path = BATCH_DIR / f"{batch_id}.json"
+    meta_path.write_text(
+        json.dumps({"batch_id": batch_id, "model": model, "items": item_meta}, indent=2),
+        encoding="utf-8",
+    )
+
+
+# ── Main ────────────────────────────────────────────────────────────────────
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser(description="Extract product data from reduced HTML")
+    parser.add_argument("--manifest", type=Path, default=MANIFEST_PATH, help="URL manifest JSON path")
+    parser.add_argument(
+        "--provider",
+        type=str,
+        default=None,
+        choices=["anthropic", "openai"],
+        help="LLM provider (auto-detected from model if not specified)",
+    )
+    parser.add_argument("--model", type=str, default=None, help="LLM model to use")
+    parser.add_argument("--limit", type=int, default=0, help="Max URLs to process (0 = all)")
+    parser.add_argument("--reextract", action="store_true", help="Re-extract even if cached")
+
+    mode = parser.add_mutually_exclusive_group()
+    mode.add_argument("--batch", action="store_true", help="Use Anthropic batch API (default for Anthropic)")
+    mode.add_argument("--sync", action="store_true", help="Sequential extraction with retries")
+    mode.add_argument("--poll", type=str, metavar="BATCH_ID", help="Resume polling a submitted batch")
+
+    args = parser.parse_args()
+
+    # Handle --poll mode
+    if args.poll:
+        _run_poll(args)
+        return
+
+    # Determine provider
+    provider_name = args.provider
+    if not provider_name and args.model:
+        provider_name = _infer_provider_from_model(args.model)
+        if provider_name:
+            logger.info("Auto-detected provider '%s' from model '%s'", provider_name, args.model)
+    if not provider_name:
+        provider_name = "anthropic"
+
+    # Determine mode: explicit flags take priority, otherwise auto-select
+    if args.sync:
+        _run_sync(args, provider_name)
+    elif args.batch:
+        if provider_name != "anthropic":
+            raise SystemExit("Batch mode is only supported with Anthropic provider.")
+        _run_batch(args)
+    else:
+        # Auto-select: batch for Anthropic, sync for everything else
+        if provider_name == "anthropic":
+            logger.info("Auto-selecting batch mode (use --sync to force sequential)")
+            _run_batch(args)
+        else:
+            _run_sync(args, provider_name)
 
 
 if __name__ == "__main__":

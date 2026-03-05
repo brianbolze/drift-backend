@@ -34,6 +34,7 @@ Issues, weaknesses, quirks and ideas for the data pipeline.
 
 
 ### Extraction
+- SUPER slow. Constantly running into rate limits. Need to improve approach.
 - Need to enforce naming guidelines, right now it's really messy. Examples from first run:
 -- `12,0 g / 185 gr Scenar OTM GB432`
 -- `30 CAL 175 GR HPBT MATCHKING (SMK)` -- All caps, includes caliber

@@ -25,6 +25,11 @@ class AnthropicProvider(BaseLLMProvider):
         self._client = anthropic.Anthropic(api_key=self._api_key)
 
     @property
+    def client(self) -> anthropic.Anthropic:
+        """Expose the underlying Anthropic client (needed for batch API access)."""
+        return self._client
+
+    @property
     def default_model(self) -> str:
         return "claude-haiku-4-5-20251001"
 
@@ -53,9 +58,7 @@ class AnthropicProvider(BaseLLMProvider):
             raise LLMProviderError(str(e)) from e
 
         if not response.content or not hasattr(response.content[0], "text"):
-            raise LLMRequestError(
-                f"Anthropic returned empty/non-text response (stop_reason={response.stop_reason})"
-            )
+            raise LLMRequestError(f"Anthropic returned empty/non-text response (stop_reason={response.stop_reason})")
 
         return LLMResponse(
             text=response.content[0].text,

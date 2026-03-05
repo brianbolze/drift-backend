@@ -9,14 +9,17 @@ from __future__ import annotations
 
 import json
 import logging
+import random
 import re
+import time
 
 import pydantic
 
-from drift.pipeline.config import MAX_TOKENS, VALIDATION_RANGES
+from drift.pipeline.config import MAX_TOKENS, SYNC_MAX_RETRIES, SYNC_RETRY_BASE_SECONDS, VALIDATION_RANGES
 from drift.pipeline.extraction.providers import (
     BaseLLMProvider,
     LLMAuthenticationError,
+    LLMRateLimitError,
     LLMRequestError,
     create_provider,
 )
@@ -237,60 +240,42 @@ class ExtractionEngine:
         self._provider = provider
         self._model = model or provider.default_model
 
-    def extract(self, reduced_html: str, entity_type: str) -> ExtractionResult:
-        """Extract entities from reduced HTML.
+    def build_messages(self, reduced_html: str, entity_type: str) -> tuple[str, str]:
+        """Build the (system_prompt, user_message) pair for a given extraction.
 
         Args:
             reduced_html: HTML that has been through the reducer.
             entity_type: One of "bullet", "cartridge", "rifle".
 
         Returns:
-            ExtractionResult with parsed entities, BC sources, and validation warnings.
+            Tuple of (system_prompt, user_message).
         """
         if entity_type not in SCHEMAS:
             raise ValueError(f"Unknown entity_type: {entity_type!r}. Must be one of {list(SCHEMAS.keys())}")
-
         schema = SCHEMAS[entity_type]
-        user_prompt = f"{schema}\n\nHere is the HTML content to extract from:\n\n{reduced_html}"
+        user_message = f"{schema}\n\nHere is the HTML content to extract from:\n\n{reduced_html}"
+        return SYSTEM_PROMPT, user_message
 
-        logger.info("Extracting %s entities with %s (%d chars input)", entity_type, self._model, len(reduced_html))
+    def parse_response(self, raw_text: str, entity_type: str, usage: dict | None = None) -> ExtractionResult:
+        """Parse raw LLM response text into an ExtractionResult.
 
-        try:
-            llm_response = self._provider.complete(
-                system=SYSTEM_PROMPT,
-                user_message=user_prompt,
-                model=self._model,
-                max_tokens=MAX_TOKENS,
-            )
-        except LLMAuthenticationError:
-            raise
-        except LLMRequestError as e:
-            raise ValueError(
-                f"LLM request failed for {entity_type} extraction " f"({len(reduced_html)} chars input): {e}"
-            ) from e
+        Args:
+            raw_text: The raw JSON text returned by the LLM.
+            entity_type: One of "bullet", "cartridge", "rifle".
+            usage: Optional dict with "input_tokens" and "output_tokens".
 
-        raw_text = llm_response.text
-        usage = {
-            "input_tokens": llm_response.input_tokens,
-            "output_tokens": llm_response.output_tokens,
-        }
+        Returns:
+            ExtractionResult with parsed entities, BC sources, and validation warnings.
+        """
+        if entity_type not in _SCHEMA_MAP:
+            raise ValueError(f"Unknown entity_type: {entity_type!r}. Must be one of {list(_SCHEMA_MAP.keys())}")
 
-        logger.info(
-            "Response: %d chars, %d input / %d output tokens",
-            len(raw_text),
-            usage["input_tokens"],
-            usage["output_tokens"],
-        )
-
-        # Parse JSON
         raw_entities = _parse_json_response(raw_text)
 
-        # Validate ranges
         warnings = validate_ranges(raw_entities)
         if warnings:
             logger.warning("Range warnings: %s", warnings)
 
-        # Parse into Pydantic models
         pydantic_class = _SCHEMA_MAP[entity_type]
         entities: list[EntityType] = []
         for raw in raw_entities:
@@ -300,7 +285,6 @@ class ExtractionEngine:
                 logger.warning("Failed to parse %s entity: %s", entity_type, e)
                 warnings.append(f"Parse error: {e}")
 
-        # Extract BC sources for bullets
         bc_sources: list[ExtractedBCSource] = []
         if entity_type == "bullet":
             for raw in raw_entities:
@@ -312,5 +296,67 @@ class ExtractionEngine:
             bc_sources=bc_sources,
             warnings=warnings,
             model=self._model,
-            usage=usage,
+            usage=usage or {},
         )
+
+    @property
+    def model(self) -> str:
+        """The model string this engine uses."""
+        return self._model
+
+    def extract(self, reduced_html: str, entity_type: str) -> ExtractionResult:
+        """Extract entities from reduced HTML (synchronous, single request).
+
+        Uses exponential backoff on rate limit errors.
+
+        Args:
+            reduced_html: HTML that has been through the reducer.
+            entity_type: One of "bullet", "cartridge", "rifle".
+
+        Returns:
+            ExtractionResult with parsed entities, BC sources, and validation warnings.
+        """
+        system_prompt, user_message = self.build_messages(reduced_html, entity_type)
+
+        logger.info("Extracting %s entities with %s (%d chars input)", entity_type, self._model, len(reduced_html))
+
+        llm_response = None
+        for attempt in range(SYNC_MAX_RETRIES + 1):
+            try:
+                llm_response = self._provider.complete(
+                    system=system_prompt,
+                    user_message=user_message,
+                    model=self._model,
+                    max_tokens=MAX_TOKENS,
+                )
+                break
+            except LLMAuthenticationError:
+                raise
+            except LLMRateLimitError as e:
+                if attempt == SYNC_MAX_RETRIES:
+                    raise
+                delay = SYNC_RETRY_BASE_SECONDS * (2**attempt) + random.uniform(0, 1)
+                logger.warning(
+                    "Rate limited (attempt %d/%d), retrying in %.1fs: %s", attempt + 1, SYNC_MAX_RETRIES, delay, e
+                )
+                time.sleep(delay)
+            except LLMRequestError as e:
+                raise ValueError(
+                    f"LLM request failed for {entity_type} extraction ({len(reduced_html)} chars input): {e}"
+                ) from e
+
+        assert llm_response is not None  # guaranteed by loop logic
+
+        usage = {
+            "input_tokens": llm_response.input_tokens,
+            "output_tokens": llm_response.output_tokens,
+        }
+
+        logger.info(
+            "Response: %d chars, %d input / %d output tokens",
+            len(llm_response.text),
+            usage["input_tokens"],
+            usage["output_tokens"],
+        )
+
+        return self.parse_response(llm_response.text, entity_type, usage=usage)

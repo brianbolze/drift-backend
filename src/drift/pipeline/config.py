@@ -113,6 +113,17 @@ BC_SOURCE_TYPES = frozenset(
     }
 )
 
+# ── Batch Extraction ────────────────────────────────────────────────────────
+
+BATCH_DIR = DATA_DIR / "batches"  # Stores batch metadata (batch_id → item mapping)
+BATCH_POLL_INTERVAL_SECONDS = 30  # How often to poll for batch completion
+BATCH_MAX_WAIT_SECONDS = 3600  # 1 hour default timeout for batch polling
+
+# ── Sync Extraction Retries ─────────────────────────────────────────────────
+
+SYNC_MAX_RETRIES = 5
+SYNC_RETRY_BASE_SECONDS = 2.0  # Exponential backoff: 2s, 4s, 8s, 16s, 32s
+
 # ── Fetching ─────────────────────────────────────────────────────────────────
 
 HTTPX_TIMEOUT_SECONDS = 30.0
