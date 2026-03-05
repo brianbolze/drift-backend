@@ -20,7 +20,7 @@ _ROOT = Path(__file__).resolve().parent.parent
 REQUIRED_FIELDS = {"url", "entity_type", "expected_manufacturer"}
 VALID_ENTITY_TYPES = {"bullet", "cartridge", "rifle"}
 VALID_SOURCE_TYPES = {"manufacturer", "retailer", "review", "reference"}
-VALID_DISCOVERY_METHODS = {"ai_research", "manual", "crawl", "known"}
+VALID_DISCOVERY_METHODS = {"ai_research", "manual", "crawl", "known", "cowork_research"}
 
 
 def validate_manifest(manifest_path: Path) -> tuple[list[dict], list[str], list[str]]:  # noqa: C901

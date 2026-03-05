@@ -3,10 +3,11 @@ Issues, weaknesses, quirks and ideas for the data pipeline.
 
 ### URL Manifest / Discovery
 
-- *Idea*: Manually curate "url schemes" per manufacturer — what do their product pages look like? What about their category / product-family pages? Could use this to feed the URL manifest step, validate URLs, and eventually auto-discover new products by crawling category pages.
-- A Claude Code research agent (Task tool) without web/browser permissions was useless for URL discovery — it just mined our codebase and guessed URL patterns. A Cowork agent with actual Chrome access was far more effective (70/71 valid URLs).
-- The Cowork agent also surfaced real domain knowledge: Hornady's .25 cal 110gr ELD Match doesn't exist (it's 134gr), the Berger 200gr LRHT is discontinued (replaced by 220gr/245gr), Lapua's 140gr Scenar-L may only exist as factory ammo not component bullets.
-- Barnes uses multi-weight pages (one URL, multiple bullet weights via dropdown). The extraction prompt asks for all entities on a page, so this should work — but worth watching.
+- **Manufacturer-centric approach works great**: Generated 62 prompts (12 bullet, 18 ammo, 32 rifle manufacturers) covering all calibers. CoWork discovered 449 URLs in first 3 runs (Barnes: 95, Berger: 145, Nosler: 209).
+- **Multi-variant pages**: Barnes uses one URL for multiple bullet weights (e.g., LRX page lists 175gr, 190gr, 200gr, 208gr). Extraction engine handles this — prompts say "extract ALL entities from page" and return JSON arrays.
+- **Spec location varies**: Nosler has BC data in separate load data section, not on product pages. Extraction will succeed but BCs will be null — items will be flagged for manual review.
+- **Automated merge tool**: `scripts/merge_cowork_results.py` adds required fields (priority, source_type, discovery_method) and deduplicates against manifest.
+- *TODO*: After bullets complete, review flagged items for missing BCs and cross-reference manufacturer load data if needed.
 
 ### Bullets Data Model
 

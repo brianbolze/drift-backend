@@ -133,6 +133,13 @@ pipeline-models: ## List available LLM models for each provider
 pipeline-shopping-list: ## Generate shopping list for data sources
 	$(VENV)/python scripts/generate_shopping_list.py
 
+pipeline-cowork-prompts: ## Generate CoWork research prompts for URL discovery
+	$(VENV)/python scripts/generate_cowork_prompts.py
+
+pipeline-merge-cowork: ## Merge CoWork research results into URL manifest (prompts for file)
+	@read -p "CoWork JSON file path: " file; \
+	$(VENV)/python scripts/merge_cowork_results.py "$$file"
+
 pipeline-validate: ## Validate pipeline manifest and configuration
 	$(VENV)/python scripts/validate_manifest.py
 
