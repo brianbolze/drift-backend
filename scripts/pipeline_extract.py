@@ -1,8 +1,9 @@
 """Extract structured product data from reduced HTML via LLM.
 
-Supports two modes:
+Supports three modes:
   --batch (default for Anthropic): Submit all pending items as a single batch via
-      the Anthropic Message Batches API. No rate limits, 50% cheaper.
+      the Anthropic Message Batches API. Does not count against standard API rate
+      limits. 50% cheaper than synchronous calls.
   --sync: Process items one at a time with retry logic. Required for OpenAI.
   --poll BATCH_ID: Resume polling/collecting a previously submitted batch.
 
@@ -32,6 +33,7 @@ from drift.pipeline.extraction.engine import ExtractionEngine
 from drift.pipeline.extraction.providers import (
     LLMAuthenticationError,
     LLMProviderError,
+    LLMRateLimitError,
     create_provider,
 )
 
@@ -168,7 +170,10 @@ def _write_flagged(flagged_items: list[dict]) -> Path | None:
         try:
             existing_flagged = json.loads(flagged_path.read_text(encoding="utf-8"))
         except (json.JSONDecodeError, TypeError):
-            logger.warning("Could not parse existing flagged items at %s", flagged_path)
+            backup_path = flagged_path.with_suffix(".json.bak")
+            logger.warning("Corrupt flagged file at %s — backing up to %s", flagged_path, backup_path)
+            import shutil
+            shutil.copy2(flagged_path, backup_path)
 
     existing_hashes = {f["url_hash"] for f in existing_flagged}
     for item in flagged_items:
@@ -202,6 +207,8 @@ def _run_sync(args: argparse.Namespace, provider_name: str) -> None:
 
     stats = {"extracted": 0, "failed": 0, "flagged": 0}
     flagged_items: list[dict] = []
+    consecutive_failures = 0
+    max_consecutive_failures = 3
 
     for i, item in enumerate(pending):
         uhash = item["url_hash"]
@@ -229,16 +236,30 @@ def _run_sync(args: argparse.Namespace, provider_name: str) -> None:
                 logger.warning("  FLAGGED: %s", result.warnings)
 
             stats["extracted"] += 1
+            consecutive_failures = 0
 
         except LLMAuthenticationError as e:
             logger.error("  Authentication failed — aborting: %s", e)
             raise SystemExit(1) from e
+        except LLMRateLimitError as e:
+            logger.error("  Rate limit exhausted after retries — aborting remaining items: %s", e)
+            stats["failed"] += 1
+            break
         except (LLMProviderError, json.JSONDecodeError) as e:
             logger.exception("  FAILED: %s — %s", url, e)
             stats["failed"] += 1
+            consecutive_failures += 1
         except Exception:
             logger.exception("  UNEXPECTED FAILURE: %s", url)
             stats["failed"] += 1
+            consecutive_failures += 1
+
+        if consecutive_failures >= max_consecutive_failures:
+            logger.error(
+                "Aborting: %d consecutive failures — likely a systemic issue",
+                consecutive_failures,
+            )
+            break
 
     flagged_path = _write_flagged(flagged_items)
 
@@ -301,28 +322,19 @@ def _run_batch(args: argparse.Namespace) -> None:
     logger.info("Batch metadata saved. You can resume with: --poll %s", batch_id)
 
     # Poll and collect
-    batch_extractor.poll(batch_id)
+    try:
+        batch_extractor.poll(batch_id)
+    except TimeoutError:
+        logger.error("Batch %s did not complete within timeout.", batch_id)
+        print(f"\nBatch timed out. Resume later with:\n  python scripts/pipeline_extract.py --poll {batch_id}")
+        return
+
     item_types = {uhash: meta["entity_type"] for uhash, meta in item_meta.items()}
     results = batch_extractor.collect(batch_id, item_types)
 
     # Save results
-    stats = {"succeeded": 0, "errored": 0, "flagged": 0}
     flagged_items: list[dict] = []
-
-    for uhash, result_item in results.items():
-        meta = item_meta.get(uhash, {})
-        url = meta.get("url", uhash)
-        entity_type = meta.get("entity_type", "unknown")
-
-        if result_item.status == "succeeded" and result_item.result is not None:
-            _save_extraction(uhash, url, entity_type, result_item.result, flagged_items)
-            stats["succeeded"] += 1
-            if result_item.result.warnings:
-                stats["flagged"] += 1
-        else:
-            logger.warning("  %s: %s — %s", uhash, result_item.status, result_item.error)
-            stats["errored"] += 1
-
+    stats = _process_batch_results(results, item_meta, flagged_items)
     flagged_path = _write_flagged(flagged_items)
 
     print()
@@ -361,7 +373,12 @@ def _run_poll(args: argparse.Namespace) -> None:
     batch_extractor = BatchExtractor(engine=engine, client=provider.client)
 
     # Poll
-    batch_extractor.poll(batch_id)
+    try:
+        batch_extractor.poll(batch_id)
+    except TimeoutError:
+        logger.error("Batch %s did not complete within timeout.", batch_id)
+        print(f"\nBatch timed out. Resume later with:\n  python scripts/pipeline_extract.py --poll {batch_id}")
+        return
 
     # Collect
     item_types = {uhash: meta["entity_type"] for uhash, meta in item_meta.items()}
@@ -370,13 +387,35 @@ def _run_poll(args: argparse.Namespace) -> None:
     EXTRACTED_DIR.mkdir(parents=True, exist_ok=True)
     REVIEW_DIR.mkdir(parents=True, exist_ok=True)
 
-    stats = {"succeeded": 0, "errored": 0, "flagged": 0}
     flagged_items: list[dict] = []
+    stats = _process_batch_results(results, item_meta, flagged_items)
+    flagged_path = _write_flagged(flagged_items)
+
+    print()
+    print(
+        f"Done (batch {batch_id}): {stats['succeeded']} extracted, "
+        f"{stats['errored']} errored, {stats['flagged']} flagged"
+    )
+    if flagged_path:
+        print(f"Flagged items written to: {flagged_path}")
+
+
+def _process_batch_results(
+    results: dict,
+    item_meta: dict[str, dict],
+    flagged_items: list[dict],
+) -> dict[str, int]:
+    """Process batch results: save extractions, collect stats. Shared by _run_batch and _run_poll."""
+    stats = {"succeeded": 0, "errored": 0, "flagged": 0}
 
     for uhash, result_item in results.items():
         meta = item_meta.get(uhash, {})
         url = meta.get("url", uhash)
-        entity_type = meta.get("entity_type", "unknown")
+        entity_type = meta.get("entity_type")
+        if not entity_type:
+            logger.error("Missing entity_type in metadata for %s — marking as errored", uhash)
+            stats["errored"] += 1
+            continue
 
         if result_item.status == "succeeded" and result_item.result is not None:
             _save_extraction(uhash, url, entity_type, result_item.result, flagged_items)
@@ -387,15 +426,7 @@ def _run_poll(args: argparse.Namespace) -> None:
             logger.warning("  %s: %s — %s", uhash, result_item.status, result_item.error)
             stats["errored"] += 1
 
-    flagged_path = _write_flagged(flagged_items)
-
-    print()
-    print(
-        f"Done (batch {batch_id}): {stats['succeeded']} extracted, "
-        f"{stats['errored']} errored, {stats['flagged']} flagged"
-    )
-    if flagged_path:
-        print(f"Flagged items written to: {flagged_path}")
+    return stats
 
 
 def _save_batch_metadata(batch_id: str, item_meta: dict[str, dict], model: str) -> None:

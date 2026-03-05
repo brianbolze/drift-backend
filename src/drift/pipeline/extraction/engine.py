@@ -345,7 +345,8 @@ class ExtractionEngine:
                     f"LLM request failed for {entity_type} extraction ({len(reduced_html)} chars input): {e}"
                 ) from e
 
-        assert llm_response is not None  # guaranteed by loop logic
+        if llm_response is None:
+            raise RuntimeError("LLM response was None after retry loop — this should not happen")
 
         usage = {
             "input_tokens": llm_response.input_tokens,

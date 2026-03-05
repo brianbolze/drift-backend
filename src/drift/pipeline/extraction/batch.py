@@ -2,13 +2,13 @@
 """Batch extraction via the Anthropic Message Batches API.
 
 Submits all pending extraction requests as a single batch for server-side
-processing. No rate limits, 50% cheaper than synchronous API calls, and
-typically completes in minutes.
+processing. Does not count against standard API rate limits, 50% cheaper
+than synchronous API calls, and typically completes in minutes.
 
 Usage:
     from drift.pipeline.extraction.batch import BatchExtractor, BatchItem
     extractor = BatchExtractor(engine=engine, client=anthropic_client)
-    results = extractor.run(items)
+    batch_id, results = extractor.run(items)
 """
 
 from __future__ import annotations
@@ -22,7 +22,9 @@ import anthropic
 from anthropic.types.message_create_params import MessageCreateParamsNonStreaming
 from anthropic.types.messages.batch_create_params import Request
 
-from drift.pipeline.config import BATCH_MAX_WAIT_SECONDS, BATCH_POLL_INTERVAL_SECONDS, MAX_TOKENS
+from pathlib import Path
+
+from drift.pipeline.config import BATCH_DIR, BATCH_MAX_WAIT_SECONDS, BATCH_POLL_INTERVAL_SECONDS, MAX_TOKENS
 from drift.pipeline.extraction.engine import ExtractionEngine, ExtractionResult
 
 logger = logging.getLogger(__name__)
@@ -104,11 +106,21 @@ class BatchExtractor:
         Raises:
             TimeoutError: If the batch doesn't complete within the timeout.
         """
+        max_transient_retries = 3
         start = time.monotonic()
         last_log = ""
 
         while True:
-            batch = self._client.messages.batches.retrieve(batch_id)
+            for attempt in range(max_transient_retries + 1):
+                try:
+                    batch = self._client.messages.batches.retrieve(batch_id)
+                    break
+                except (anthropic.APIConnectionError, anthropic.InternalServerError) as e:
+                    if attempt == max_transient_retries:
+                        raise
+                    delay = 2 ** (attempt + 1)
+                    logger.warning("Transient error polling batch (attempt %d/%d), retrying in %ds: %s", attempt + 1, max_transient_retries, delay, e)
+                    time.sleep(delay)
             counts = batch.request_counts
 
             status_line = (
@@ -133,13 +145,13 @@ class BatchExtractor:
                 }
 
             elapsed = time.monotonic() - start
-            if elapsed + interval > timeout:
+            if elapsed >= timeout:
                 raise TimeoutError(
                     f"Batch {batch_id} did not complete within {timeout}s "
                     f"(last status: {batch.processing_status}, {status_line})"
                 )
 
-            time.sleep(interval)
+            time.sleep(min(interval, timeout - elapsed))
 
     def collect(self, batch_id: str, item_types: dict[str, str]) -> dict[str, BatchResultItem]:
         """Download and parse results for a completed batch.
@@ -155,11 +167,28 @@ class BatchExtractor:
 
         for entry in self._client.messages.batches.results(batch_id):
             url_hash = entry.custom_id
-            entity_type = item_types.get(url_hash, "bullet")
+
+            if url_hash not in item_types:
+                logger.error("No entity_type mapping for url_hash %s — skipping (possible metadata corruption)", url_hash)
+                results[url_hash] = BatchResultItem(
+                    url_hash=url_hash,
+                    status="errored",
+                    error="Missing entity_type in item_types mapping",
+                )
+                continue
+            entity_type = item_types[url_hash]
 
             if entry.result.type == "succeeded":
                 message = entry.result.message
-                raw_text = message.content[0].text if message.content else ""
+                if not message.content or not hasattr(message.content[0], "text"):
+                    logger.warning("Batch item %s: non-text or empty content block", url_hash)
+                    results[url_hash] = BatchResultItem(
+                        url_hash=url_hash,
+                        status="errored",
+                        error="Non-text or empty content block in response",
+                    )
+                    continue
+                raw_text = message.content[0].text
                 usage = {
                     "input_tokens": message.usage.input_tokens,
                     "output_tokens": message.usage.output_tokens,
@@ -174,7 +203,17 @@ class BatchExtractor:
                         usage=usage,
                     )
                 except (json.JSONDecodeError, ValueError) as e:
-                    logger.warning("Failed to parse batch result for %s: %s", url_hash, e)
+                    logger.warning(
+                        "Failed to parse batch result for %s: %s\nRaw (truncated): %.500s",
+                        url_hash, e, raw_text,
+                    )
+                    # Save raw response to debug file so the user can inspect/recover
+                    debug_dir = BATCH_DIR / "debug"
+                    debug_dir.mkdir(parents=True, exist_ok=True)
+                    debug_path = debug_dir / f"{batch_id}_{url_hash}.txt"
+                    debug_path.write_text(raw_text, encoding="utf-8")
+                    logger.info("Raw LLM response saved to %s", debug_path)
+
                     results[url_hash] = BatchResultItem(
                         url_hash=url_hash,
                         status="errored",
