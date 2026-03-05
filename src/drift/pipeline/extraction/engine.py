@@ -37,7 +37,7 @@ Extract ALL bullet products from this page. For each bullet, extract:
 {
   "name": {"value": "string — full product name", "source_text": "exact text from page", "confidence": 0.0-1.0},
   "manufacturer": {"value": "string — company name", "source_text": "...", "confidence": ...},
-  "caliber": {"value": "string — e.g. '6.5 Creedmoor', '.308 Winchester'", "source_text": "...", "confidence": ...},
+  "bullet_diameter_inches": {"value": number, "source_text": "...", "confidence": ...},  // Bullet diameter in inches — e.g. 0.264 for 6.5mm, 0.308 for .30 cal, 0.243 for 6mm, 0.284 for 7mm, 0.338 for .338 cal
   "weight_grains": {"value": number, "source_text": "...", "confidence": ...},
   "bc_g1": {"value": number or null, "source_text": "...", "confidence": ...},
   "bc_g7": {"value": number or null, "source_text": "...", "confidence": ...},
@@ -116,6 +116,7 @@ Rules:
    - Bullet weight: 15 to 750 grains
    - Barrel length: 10 to 34 inches
    - Sectional density: 0.05 to 0.500
+   - Bullet diameter: 0.172 to 0.510 inches
    - Bullet length (projectile only, NOT cartridge OAL): 0.2 to 3.0 inches
    - Rifle weight: 2 to 20 lbs
    Flag any values outside these ranges by setting confidence to 0.3 or lower.
@@ -265,8 +266,7 @@ class ExtractionEngine:
             raise
         except LLMRequestError as e:
             raise ValueError(
-                f"LLM request failed for {entity_type} extraction "
-                f"({len(reduced_html)} chars input): {e}"
+                f"LLM request failed for {entity_type} extraction " f"({len(reduced_html)} chars input): {e}"
             ) from e
 
         raw_text = llm_response.text

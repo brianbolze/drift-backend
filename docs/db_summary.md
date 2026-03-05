@@ -181,7 +181,7 @@ Key columns by table (not exhaustive — see `src/drift/models/` for full defini
 - **`caliber`**: name, alt_names (JSON), bullet_diameter_inches, overall_popularity_rank, lr_popularity_rank, is_common_lr, parent_caliber_id (FK self)
 - **`chamber`**: name, alt_names (JSON). Junction: `chamber_accepts_caliber` (chamber_id, caliber_id, is_primary)
 - **`platform`**: name, short_name. Junction: `caliber_platform` (caliber_id, platform_id, popularity_rank)
-- **`bullet`**: name, manufacturer_id, caliber_id, weight_grains, bc_g1_published, bc_g7_published, type_tags (JSON), base_type, tip_type
+- **`bullet`**: name, manufacturer_id, bullet_diameter_inches, weight_grains, bc_g1_published, bc_g7_published, type_tags (JSON), base_type, tip_type
 - **`cartridge`**: name, manufacturer_id, caliber_id, bullet_id, bullet_weight_grains, muzzle_velocity_fps, test_barrel_length_inches
 - **`rifle_model`**: model, manufacturer_id, chamber_id, barrel_length_inches, twist_rate, twist_rate_inches
 - **`optic`**: name, manufacturer_id, reticle_id, click_unit (mil/moa), click_value, magnification_min/max, focal_plane (ffp/sfp)

@@ -41,7 +41,7 @@ def _seed(db):
         manufacturer_id=mfr.id,
         name="ELD Match",
         sku="26331",
-        caliber_id=cal.id,
+        bullet_diameter_inches=0.264,
         weight_grains=140.0,
         bc_g7_published=0.326,
         type_tags=["boat-tail", "polymer-tip"],
@@ -105,7 +105,6 @@ def test_full_graph(db):
 
     # Caliber → children
     db.refresh(cal)
-    assert bullet in cal.bullets
     assert cart in cal.cartridges
 
     # Chamber ↔ Caliber via join table

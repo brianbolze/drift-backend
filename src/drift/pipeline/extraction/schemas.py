@@ -56,7 +56,7 @@ class ExtractedBullet(BaseModel):
 
     name: ExtractedValue[str]
     manufacturer: ExtractedValue[str]
-    caliber: ExtractedValue[str]
+    bullet_diameter_inches: ExtractedValue[float]
     weight_grains: ExtractedValue[float]
     bc_g1: ExtractedValue[float | None]
     bc_g7: ExtractedValue[float | None]

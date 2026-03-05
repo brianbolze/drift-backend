@@ -100,7 +100,7 @@ class TestExtractionSchemas:
         data = {
             "name": {"value": "ELD Match", "source_text": "ELD Match", "confidence": 0.95},
             "manufacturer": {"value": "Hornady", "source_text": "Hornady", "confidence": 1.0},
-            "caliber": {"value": "6.5 Creedmoor", "source_text": "6.5 Creedmoor", "confidence": 0.9},
+            "bullet_diameter_inches": {"value": 0.264, "source_text": "6.5mm .264", "confidence": 0.9},
             "weight_grains": {"value": 140, "source_text": "140 gr", "confidence": 1.0},
             "bc_g1": {"value": 0.610, "source_text": ".610", "confidence": 0.9},
             "bc_g7": {"value": 0.305, "source_text": ".305", "confidence": 0.9},
@@ -414,29 +414,44 @@ def _seed_for_fuzzy(db):
     db.add_all([chamber_65, chamber_30])
     db.flush()
 
-    db.add_all([
-        ChamberAcceptsCaliber(chamber_id=chamber_65.id, caliber_id=cal_65.id, is_primary=True),
-        ChamberAcceptsCaliber(chamber_id=chamber_30.id, caliber_id=cal_30.id, is_primary=True),
-    ])
+    db.add_all(
+        [
+            ChamberAcceptsCaliber(chamber_id=chamber_65.id, caliber_id=cal_65.id, is_primary=True),
+            ChamberAcceptsCaliber(chamber_id=chamber_30.id, caliber_id=cal_30.id, is_primary=True),
+        ]
+    )
     db.flush()
 
     bullet_140 = Bullet(
-        manufacturer_id=mfr.id, caliber_id=cal_65.id, name="ELD Match", weight_grains=140.0,
+        manufacturer_id=mfr.id,
+        bullet_diameter_inches=0.264,
+        name="ELD Match",
+        weight_grains=140.0,
     )
     db.add(bullet_140)
     db.flush()
 
     cart_140 = Cartridge(
-        manufacturer_id=mfr.id, caliber_id=cal_65.id, bullet_id=bullet_140.id,
-        name="Hornady 6.5 CM 140gr ELD Match", bullet_weight_grains=140.0, muzzle_velocity_fps=2710,
+        manufacturer_id=mfr.id,
+        caliber_id=cal_65.id,
+        bullet_id=bullet_140.id,
+        name="Hornady 6.5 CM 140gr ELD Match",
+        bullet_weight_grains=140.0,
+        muzzle_velocity_fps=2710,
     )
     db.add(cart_140)
 
     rifle_65 = RifleModel(
-        manufacturer_id=mfr.id, model="B-14 HMR", chamber_id=chamber_65.id, barrel_length_inches=22.0,
+        manufacturer_id=mfr.id,
+        model="B-14 HMR",
+        chamber_id=chamber_65.id,
+        barrel_length_inches=22.0,
     )
     rifle_30 = RifleModel(
-        manufacturer_id=mfr.id, model="B-14 HMR", chamber_id=chamber_30.id, barrel_length_inches=24.0,
+        manufacturer_id=mfr.id,
+        model="B-14 HMR",
+        chamber_id=chamber_30.id,
+        barrel_length_inches=24.0,
     )
     db.add_all([rifle_65, rifle_30])
     db.commit()
@@ -453,7 +468,7 @@ class TestFuzzyMatchConfidence:
 
         # 225gr ELD Match should fuzzy-match 140gr ELD Match but at LOW confidence
         extracted = {"name": {"value": "ELD Match"}, "weight_grains": {"value": 225}}
-        result = resolver.match_bullet(extracted, mfr.id, cal_65.id)
+        result = resolver.match_bullet(extracted, mfr.id, 0.264)
 
         assert result.matched is True
         assert result.method == "fuzzy_name"
@@ -465,7 +480,7 @@ class TestFuzzyMatchConfidence:
 
         # 140gr ELD Match should fuzzy-match 140gr ELD Match at HIGH confidence
         extracted = {"name": {"value": "ELD Match"}, "weight_grains": {"value": 140}}
-        result = resolver.match_bullet(extracted, mfr.id, cal_65.id)
+        result = resolver.match_bullet(extracted, mfr.id, 0.264)
 
         assert result.matched is True
         assert result.confidence >= 0.7  # Above threshold → auto-matched
@@ -476,7 +491,7 @@ class TestFuzzyMatchConfidence:
 
         # No weight → low confidence (can't verify it's the same product)
         extracted = {"name": {"value": "ELD Match"}}
-        result = resolver.match_bullet(extracted, mfr.id, cal_65.id)
+        result = resolver.match_bullet(extracted, mfr.id, 0.264)
 
         assert result.matched is True
         assert result.confidence < 0.7

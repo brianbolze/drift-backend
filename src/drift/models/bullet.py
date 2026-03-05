@@ -9,7 +9,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from drift.models.base import Base, TimestampMixin, uuid_fk, uuid_pk
 
 if TYPE_CHECKING:
-    from drift.models import Caliber, Cartridge, Manufacturer
+    from drift.models import Cartridge, Manufacturer
 
 
 class Bullet(TimestampMixin, Base):
@@ -20,7 +20,7 @@ class Bullet(TimestampMixin, Base):
     name: Mapped[str] = mapped_column(String(255), index=True)
     alt_names: Mapped[list | None] = mapped_column(JSON, nullable=True)
     sku: Mapped[str | None] = mapped_column(String(100), nullable=True, index=True)
-    caliber_id: Mapped[str] = uuid_fk("caliber.id")
+    bullet_diameter_inches: Mapped[float] = mapped_column(Float, nullable=False)
     weight_grains: Mapped[float] = mapped_column(Float, nullable=False)
 
     # BC values — published and estimated
@@ -54,7 +54,6 @@ class Bullet(TimestampMixin, Base):
 
     # Relationships
     manufacturer: Mapped["Manufacturer"] = relationship(back_populates="bullets")  # noqa: F821
-    caliber: Mapped["Caliber"] = relationship(back_populates="bullets")  # noqa: F821
     cartridges: Mapped[list["Cartridge"]] = relationship(back_populates="bullet")  # noqa: F821
     bc_sources: Mapped[list["BulletBCSource"]] = relationship(back_populates="bullet")
 

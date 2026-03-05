@@ -52,6 +52,7 @@ class ResolutionResult:
     caliber_id: str | None = None
     chamber_id: str | None = None
     bullet_id: str | None = None
+    bullet_diameter_inches: float | None = None
     unresolved_refs: list[str] = field(default_factory=list)
     warnings: list[str] = field(default_factory=list)
 
@@ -215,7 +216,9 @@ class EntityResolver:
 
     # ── Entity matching ──────────────────────────────────────────────────────
 
-    def match_bullet(self, extracted: dict, manufacturer_id: str | None, caliber_id: str | None) -> MatchResult:
+    def match_bullet(
+        self, extracted: dict, manufacturer_id: str | None, bullet_diameter_inches: float | None
+    ) -> MatchResult:
         """Match an extracted bullet against existing DB bullets."""
         # Extract values from the ExtractedValue wrapper
         name = _get_value(extracted, "name", "")
@@ -234,8 +237,11 @@ class EntityResolver:
         query = self._session.query(Bullet)
         if manufacturer_id:
             query = query.filter(Bullet.manufacturer_id == manufacturer_id)
-        if caliber_id:
-            query = query.filter(Bullet.caliber_id == caliber_id)
+        if bullet_diameter_inches is not None:
+            # Filter by diameter within ±0.001" tolerance (diameter is a physical constant)
+            query = query.filter(
+                Bullet.bullet_diameter_inches.between(bullet_diameter_inches - 0.001, bullet_diameter_inches + 0.001)
+            )
 
         candidates = query.all()
 
@@ -423,39 +429,54 @@ class EntityResolver:
         else:
             result.unresolved_refs.append("manufacturer: not extracted")
 
-        # Resolve caliber / chamber
-        caliber_name = _get_value(extracted, "caliber")
-        if caliber_name:
-            if entity_type == "rifle":
-                chamber_match = self.resolve_chamber(caliber_name)
-                if chamber_match.matched:
-                    result.chamber_id = chamber_match.entity_id
-                else:
-                    result.unresolved_refs.append(f"chamber (from caliber): {caliber_name}")
-                # Also resolve caliber for reference
-                cal_match = self.resolve_caliber(caliber_name)
-                if cal_match.matched:
-                    result.caliber_id = cal_match.entity_id
+        # Resolve caliber / chamber / diameter depending on entity type
+        if entity_type == "bullet":
+            # Bullets use bullet_diameter_inches (physical property), not caliber_id FK
+            diameter = _get_value(extracted, "bullet_diameter_inches")
+            if diameter is not None:
+                try:
+                    result.bullet_diameter_inches = float(diameter)
+                except (ValueError, TypeError):
+                    result.unresolved_refs.append(f"bullet_diameter_inches: invalid value '{diameter}'")
             else:
-                cal_match = self.resolve_caliber(caliber_name)
-                if cal_match.matched:
-                    result.caliber_id = cal_match.entity_id
-                else:
-                    result.unresolved_refs.append(f"caliber: {caliber_name}")
+                result.unresolved_refs.append("bullet_diameter_inches: not extracted")
         else:
-            result.unresolved_refs.append("caliber: not extracted")
+            # Cartridges and rifles still use caliber_id FK
+            caliber_name = _get_value(extracted, "caliber")
+            if caliber_name:
+                if entity_type == "rifle":
+                    chamber_match = self.resolve_chamber(caliber_name)
+                    if chamber_match.matched:
+                        result.chamber_id = chamber_match.entity_id
+                    else:
+                        result.unresolved_refs.append(f"chamber (from caliber): {caliber_name}")
+                    # Also resolve caliber for reference
+                    cal_match = self.resolve_caliber(caliber_name)
+                    if cal_match.matched:
+                        result.caliber_id = cal_match.entity_id
+                else:
+                    cal_match = self.resolve_caliber(caliber_name)
+                    if cal_match.matched:
+                        result.caliber_id = cal_match.entity_id
+                    else:
+                        result.unresolved_refs.append(f"caliber: {caliber_name}")
+            else:
+                result.unresolved_refs.append("caliber: not extracted")
 
         # Match against existing entities
         if entity_type == "bullet":
-            result.match = self.match_bullet(extracted, result.manufacturer_id, result.caliber_id)
+            result.match = self.match_bullet(extracted, result.manufacturer_id, result.bullet_diameter_inches)
         elif entity_type == "cartridge":
             result.match = self.match_cartridge(extracted, result.manufacturer_id, result.caliber_id)
             # Also try to resolve bullet FK for cartridges
             bullet_name = _get_value(extracted, "bullet_name")
             if bullet_name and result.manufacturer_id and result.caliber_id:
+                # Look up the caliber's bullet diameter so we can match bullets by diameter
+                cal_obj = self._session.get(Caliber, result.caliber_id)
+                cart_bullet_diameter = cal_obj.bullet_diameter_inches if cal_obj else None
                 weight = _get_value(extracted, "bullet_weight_grains")
                 bullet_stub = {"name": {"value": bullet_name}, "weight_grains": {"value": weight}}
-                bullet_match = self.match_bullet(bullet_stub, result.manufacturer_id, result.caliber_id)
+                bullet_match = self.match_bullet(bullet_stub, result.manufacturer_id, cart_bullet_diameter)
                 if bullet_match.matched:
                     result.bullet_id = bullet_match.entity_id
                 else:

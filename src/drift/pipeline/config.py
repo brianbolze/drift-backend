@@ -41,6 +41,7 @@ VALIDATION_RANGES: dict[str, tuple[float, float]] = {
     "bc_g1": (0.05, 1.2),
     "bc_g7": (0.05, 1.2),
     "bc_value": (0.05, 1.2),
+    "bullet_diameter_inches": (0.172, 0.510),
     "weight_grains": (15, 750),
     "bullet_weight_grains": (15, 750),
     "muzzle_velocity_fps": (400, 4000),

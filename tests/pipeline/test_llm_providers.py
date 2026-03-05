@@ -17,7 +17,6 @@ from drift.pipeline.extraction.providers.base import (
 )
 from drift.pipeline.extraction.providers.factory import create_provider
 
-
 # ── LLMResponse ─────────────────────────────────────────────────────────────
 
 
@@ -109,9 +108,7 @@ class TestAnthropicProvider:
         )
 
         with pytest.raises(LLMAuthenticationError):
-            provider.complete(
-                system="sys", user_message="msg", model="test", max_tokens=100
-            )
+            provider.complete(system="sys", user_message="msg", model="test", max_tokens=100)
 
     def test_bad_request_error_translated(self):
         import anthropic
@@ -124,9 +121,7 @@ class TestAnthropicProvider:
         )
 
         with pytest.raises(LLMRequestError):
-            provider.complete(
-                system="sys", user_message="msg", model="test", max_tokens=100
-            )
+            provider.complete(system="sys", user_message="msg", model="test", max_tokens=100)
 
     def test_rate_limit_error_translated(self):
         import anthropic
@@ -139,9 +134,7 @@ class TestAnthropicProvider:
         )
 
         with pytest.raises(LLMRateLimitError):
-            provider.complete(
-                system="sys", user_message="msg", model="test", max_tokens=100
-            )
+            provider.complete(system="sys", user_message="msg", model="test", max_tokens=100)
 
     def test_generic_api_error_translated(self):
         import anthropic
@@ -154,9 +147,7 @@ class TestAnthropicProvider:
         )
 
         with pytest.raises(LLMProviderError):
-            provider.complete(
-                system="sys", user_message="msg", model="test", max_tokens=100
-            )
+            provider.complete(system="sys", user_message="msg", model="test", max_tokens=100)
 
     def test_empty_response_raises(self):
         provider, mock_client, _ = self._make_provider()
@@ -166,9 +157,7 @@ class TestAnthropicProvider:
         mock_client.messages.create.return_value = mock_response
 
         with pytest.raises(LLMRequestError, match="empty"):
-            provider.complete(
-                system="sys", user_message="msg", model="test", max_tokens=100
-            )
+            provider.complete(system="sys", user_message="msg", model="test", max_tokens=100)
 
     def test_missing_api_key_raises(self):
         from drift.pipeline.extraction.providers.anthropic_provider import AnthropicProvider
@@ -238,9 +227,7 @@ class TestOpenAIProvider:
         )
 
         with pytest.raises(LLMAuthenticationError):
-            provider.complete(
-                system="sys", user_message="msg", model="test", max_tokens=100
-            )
+            provider.complete(system="sys", user_message="msg", model="test", max_tokens=100)
 
     def test_bad_request_error_translated(self):
         provider = self._make_provider()
@@ -255,9 +242,7 @@ class TestOpenAIProvider:
         )
 
         with pytest.raises(LLMRequestError):
-            provider.complete(
-                system="sys", user_message="msg", model="test", max_tokens=100
-            )
+            provider.complete(system="sys", user_message="msg", model="test", max_tokens=100)
 
     def test_rate_limit_error_translated(self):
         provider = self._make_provider()
@@ -272,9 +257,7 @@ class TestOpenAIProvider:
         )
 
         with pytest.raises(LLMRateLimitError):
-            provider.complete(
-                system="sys", user_message="msg", model="test", max_tokens=100
-            )
+            provider.complete(system="sys", user_message="msg", model="test", max_tokens=100)
 
     def test_generic_api_error_translated(self):
         provider = self._make_provider()
@@ -289,9 +272,7 @@ class TestOpenAIProvider:
         )
 
         with pytest.raises(LLMProviderError):
-            provider.complete(
-                system="sys", user_message="msg", model="test", max_tokens=100
-            )
+            provider.complete(system="sys", user_message="msg", model="test", max_tokens=100)
 
     def test_empty_response_raises(self):
         provider = self._make_provider()
@@ -300,9 +281,7 @@ class TestOpenAIProvider:
         provider._client.chat.completions.create = MagicMock(return_value=mock_response)
 
         with pytest.raises(LLMRequestError, match="empty"):
-            provider.complete(
-                system="sys", user_message="msg", model="test", max_tokens=100
-            )
+            provider.complete(system="sys", user_message="msg", model="test", max_tokens=100)
 
     def test_missing_usage_raises(self):
         provider = self._make_provider()
@@ -314,9 +293,7 @@ class TestOpenAIProvider:
         provider._client.chat.completions.create = MagicMock(return_value=mock_response)
 
         with pytest.raises(LLMRequestError, match="no usage data"):
-            provider.complete(
-                system="sys", user_message="msg", model="test", max_tokens=100
-            )
+            provider.complete(system="sys", user_message="msg", model="test", max_tokens=100)
 
     def test_none_token_counts_default_to_zero(self):
         provider = self._make_provider()
@@ -330,9 +307,7 @@ class TestOpenAIProvider:
         mock_response.usage = mock_usage
         provider._client.chat.completions.create = MagicMock(return_value=mock_response)
 
-        result = provider.complete(
-            system="sys", user_message="msg", model="test", max_tokens=100
-        )
+        result = provider.complete(system="sys", user_message="msg", model="test", max_tokens=100)
 
         assert result.input_tokens == 0
         assert result.output_tokens == 0
@@ -391,7 +366,7 @@ class TestExtractionEngineWithProvider:
             {
                 "name": {"value": "ELD Match", "source_text": "ELD Match", "confidence": 0.95},
                 "manufacturer": {"value": "Hornady", "source_text": "Hornady", "confidence": 1.0},
-                "caliber": {"value": "6.5 Creedmoor", "source_text": "6.5 CM", "confidence": 0.9},
+                "bullet_diameter_inches": {"value": 0.264, "source_text": "6.5mm .264", "confidence": 0.9},
                 "weight_grains": {"value": 140, "source_text": "140 gr", "confidence": 1.0},
                 "bc_g1": {"value": 0.610, "source_text": ".610", "confidence": 0.9},
                 "bc_g7": {"value": 0.305, "source_text": ".305", "confidence": 0.9},

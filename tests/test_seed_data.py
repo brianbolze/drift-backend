@@ -166,7 +166,9 @@ def test_auto_chambers_have_one_primary_link(seeded_db):
 
 def test_caliber_lr_popularity_ranks_unique(seeded_db):
     """All LR popularity ranks should be unique (no ties)."""
-    ranks = [c.lr_popularity_rank for c in seeded_db.query(Caliber).filter(Caliber.lr_popularity_rank.isnot(None)).all()]
+    ranks = [
+        c.lr_popularity_rank for c in seeded_db.query(Caliber).filter(Caliber.lr_popularity_rank.isnot(None)).all()
+    ]
     assert len(ranks) == len(set(ranks)), f"Duplicate ranks: {ranks}"
 
 
@@ -238,14 +240,12 @@ def test_bullet_has_bc_sources(seeded_db):
     assert "applied_ballistics" in source_names
 
 
-def test_bullets_span_both_calibers(seeded_db):
-    """Bullets should cover both 6.5 CM and .308 Win."""
-    cal_65 = seeded_db.query(Caliber).filter_by(name="6.5 Creedmoor").one()
-    cal_308 = seeded_db.query(Caliber).filter_by(name=".308 Winchester").one()
-    count_65 = seeded_db.query(Bullet).filter_by(caliber_id=cal_65.id).count()
-    count_308 = seeded_db.query(Bullet).filter_by(caliber_id=cal_308.id).count()
-    assert count_65 >= 5, f"Expected >= 5 6.5 CM bullets, got {count_65}"
-    assert count_308 >= 5, f"Expected >= 5 .308 Win bullets, got {count_308}"
+def test_bullets_span_both_diameters(seeded_db):
+    """Bullets should cover both .264 (6.5mm) and .308 diameters."""
+    count_264 = seeded_db.query(Bullet).filter_by(bullet_diameter_inches=0.264).count()
+    count_308 = seeded_db.query(Bullet).filter_by(bullet_diameter_inches=0.308).count()
+    assert count_264 >= 5, f"Expected >= 5 .264 bullets, got {count_264}"
+    assert count_308 >= 5, f"Expected >= 5 .308 bullets, got {count_308}"
 
 
 # ---------------------------------------------------------------------------

@@ -36,12 +36,12 @@ logger = logging.getLogger(__name__)
 MATCH_CONFIDENCE_THRESHOLD = 0.7
 
 
-def _make_bullet(entity: dict, manufacturer_id: str, caliber_id: str, source_url: str) -> Bullet:
+def _make_bullet(entity: dict, manufacturer_id: str, bullet_diameter_inches: float, source_url: str) -> Bullet:
     """Create a Bullet ORM instance from an extracted entity dict."""
     return Bullet(
         id=str(uuid.uuid4()),
         manufacturer_id=manufacturer_id,
-        caliber_id=caliber_id,
+        bullet_diameter_inches=bullet_diameter_inches,
         name=_get_value(entity, "name", ""),
         sku=_get_value(entity, "sku"),
         weight_grains=_safe_float(_get_value(entity, "weight_grains")) or 0.0,
@@ -207,6 +207,7 @@ def main() -> None:  # noqa: C901
                     "caliber_id": resolution.caliber_id,
                     "chamber_id": resolution.chamber_id,
                     "bullet_id": resolution.bullet_id,
+                    "bullet_diameter_inches": resolution.bullet_diameter_inches,
                     "unresolved_refs": resolution.unresolved_refs,
                     "warnings": resolution.warnings,
                     "action": "",
@@ -253,7 +254,9 @@ def main() -> None:  # noqa: C901
                         savepoint = session.begin_nested()
                         try:
                             if entity_type == "bullet":
-                                obj = _make_bullet(entity, resolution.manufacturer_id, resolution.caliber_id, url)
+                                obj = _make_bullet(
+                                    entity, resolution.manufacturer_id, resolution.bullet_diameter_inches, url
+                                )
                                 session.add(obj)
                                 # Only attach BC sources that belong to this bullet
                                 bullet_name = _get_value(entity, "name", "")

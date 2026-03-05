@@ -10,7 +10,7 @@ Issues, weaknesses, quirks and ideas for the data pipeline.
 
 ### Bullets Data Model
 
-- Bullets are FK'd to a specific `caliber_id` (e.g. "6.5 Creedmoor"), but physically a bullet works in any cartridge sharing that diameter. The `caliber_id` on bullet effectively acts as a "diameter group reference" — the cartridge table has its own `caliber_id`. Not a bug, but potentially confusing.
+- Bullets use `bullet_diameter_inches` (float) — a physical property, not an FK. A .264" bullet works in 6.5 CM, .260 Rem, 6.5 PRC, etc. Compatibility is derived via `bullet.bullet_diameter_inches == caliber.bullet_diameter_inches`. Cartridges and rifles still FK to `caliber_id` / `chamber_id` since those are specific designations.
 
 ### Fetch & Reduce (first real run: 71 bullet URLs)
 
