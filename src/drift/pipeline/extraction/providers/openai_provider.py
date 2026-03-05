@@ -44,14 +44,23 @@ class OpenAIProvider(BaseLLMProvider):
         max_tokens: int,
     ) -> LLMResponse:
         try:
-            response = self._client.chat.completions.create(
-                model=model,
-                max_tokens=max_tokens,
-                messages=[
+            # Use max_completion_tokens for newer models (gpt-4o, gpt-5 series)
+            # and max_tokens for older models
+            params = {
+                "model": model,
+                "messages": [
                     {"role": "system", "content": system},
                     {"role": "user", "content": user_message},
                 ],
-            )
+            }
+
+            # Models that require max_completion_tokens instead of max_tokens
+            if any(prefix in model.lower() for prefix in ['gpt-4o', 'gpt-5', 'o1']):
+                params["max_completion_tokens"] = max_tokens
+            else:
+                params["max_tokens"] = max_tokens
+
+            response = self._client.chat.completions.create(**params)
         except self._openai.AuthenticationError as e:
             raise LLMAuthenticationError(str(e)) from e
         except self._openai.RateLimitError as e:
