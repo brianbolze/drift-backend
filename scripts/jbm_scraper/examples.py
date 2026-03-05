@@ -10,8 +10,9 @@ Demonstrates:
 """
 
 import time
-from jbm_scraper import JBMScraper, JBMInput
-from validation_matrix import ValidationSuite, CARTRIDGES
+
+from jbm_scraper import JBMInput, JBMScraper
+from validation_matrix import CARTRIDGES, ValidationSuite
 
 
 def example_1_basic_query():
@@ -322,10 +323,10 @@ def example_7_list_cartridges():
         df_name = {0: "G1", 4: "G7", 1: "G2", 2: "G5", 3: "G6"}.get(cart.d_f_v, f"G{cart.d_f_v}")
         print(
             f"{cart.name:20s} "
-            f"{cart.bt_wgt_v:5.0f}gr/{cart.cal_v:5.3f}\"  "
+            f'{cart.bt_wgt_v:5.0f}gr/{cart.cal_v:5.3f}"  '
             f"{cart.bc_v:6.3f}({df_name:2s}) "
             f"{cart.m_vel_v:6.0f}ft/s "
-            f"{cart.b_twt_v:5.1f}\""
+            f'{cart.b_twt_v:5.1f}"'
         )
 
     print("-" * 70)

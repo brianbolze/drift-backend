@@ -8,7 +8,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from drift.models.base import Base, TimestampMixin, uuid_fk_nullable, uuid_pk
 
 if TYPE_CHECKING:
-    from drift.models import Cartridge, CaliberPlatform, ChamberAcceptsCaliber
+    from drift.models import CaliberPlatform, Cartridge, ChamberAcceptsCaliber
 
 
 class Caliber(TimestampMixin, Base):

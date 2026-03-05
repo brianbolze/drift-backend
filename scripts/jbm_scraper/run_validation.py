@@ -13,15 +13,15 @@ Usage:
 Typical execution time: ~5 minutes for full suite (281 test cases)
 """
 
-import json
-import time
-import logging
 import argparse
-from pathlib import Path
+import json
+import logging
+import time
 from datetime import datetime
+from pathlib import Path
 from typing import Dict, List, Optional
 
-from jbm_scraper import JBMScraper, JBMInput, JBMResult
+from jbm_scraper import JBMInput, JBMResult, JBMScraper
 from validation_matrix import ValidationSuite
 
 # Configure logging
@@ -139,11 +139,7 @@ class ValidationRunner:
 
         # Filter to requested suites
         if requested_suites:
-            suites_to_run = {
-                name: cases
-                for name, cases in all_suites.items()
-                if name in requested_suites
-            }
+            suites_to_run = {name: cases for name, cases in all_suites.items() if name in requested_suites}
         else:
             suites_to_run = all_suites
 
@@ -159,28 +155,17 @@ class ValidationRunner:
             print(f"\n{suite_name:20s} ({len(test_cases):3d} cases)")
             print("-" * 70)
 
-            suite_results, suite_errors = self.run_suite(
-                suite_name, test_cases, verbose=verbose
-            )
+            suite_results, suite_errors = self.run_suite(suite_name, test_cases, verbose=verbose)
 
             all_results[suite_name] = suite_results
             all_errors[suite_name] = suite_errors
 
             # Print suite summary
-            success_count = sum(
-                1 for r in suite_results.values() if r.get("status") == "success"
-            )
-            error_count = sum(
-                1 for r in suite_results.values() if r.get("status") == "error"
-            )
-            skip_count = sum(
-                1 for r in suite_results.values() if "skipped" in r.get("status", "")
-            )
+            success_count = sum(1 for r in suite_results.values() if r.get("status") == "success")
+            error_count = sum(1 for r in suite_results.values() if r.get("status") == "error")
+            skip_count = sum(1 for r in suite_results.values() if "skipped" in r.get("status", ""))
 
-            print(
-                f"\nSuite summary: {success_count} success, "
-                f"{error_count} error, {skip_count} skipped"
-            )
+            print(f"\nSuite summary: {success_count} success, " f"{error_count} error, {skip_count} skipped")
 
         print("\n" + "=" * 70)
         print("Validation complete")
@@ -204,9 +189,7 @@ class ValidationRunner:
                 "dry_run": self.dry_run,
             },
             "results": results,
-            "error_summary": {
-                suite: len(errs) for suite, errs in errors.items()
-            },
+            "error_summary": {suite: len(errs) for suite, errs in errors.items()},
             "errors": errors,
         }
 
@@ -270,9 +253,7 @@ class ValidationRunner:
 
 
 def main():
-    parser = argparse.ArgumentParser(
-        description="Run validation suite against JBM ballistics calculator"
-    )
+    parser = argparse.ArgumentParser(description="Run validation suite against JBM ballistics calculator")
     parser.add_argument(
         "--suites",
         default=None,

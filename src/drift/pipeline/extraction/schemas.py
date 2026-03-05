@@ -80,10 +80,10 @@ class ExtractedCartridge(BaseModel):
 
     name: ExtractedValue[str]
     manufacturer: ExtractedValue[str]
-    caliber: ExtractedValue[str]
+    caliber: ExtractedValue[str | None]
     bullet_name: ExtractedValue[str | None]
-    bullet_weight_grains: ExtractedValue[float]
-    muzzle_velocity_fps: ExtractedValue[int]
+    bullet_weight_grains: ExtractedValue[float | None]
+    muzzle_velocity_fps: ExtractedValue[int | None]
     test_barrel_length_inches: ExtractedValue[float | None]
     round_count: ExtractedValue[int | None]
     product_line: ExtractedValue[str | None]

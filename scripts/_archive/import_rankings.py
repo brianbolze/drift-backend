@@ -46,6 +46,7 @@ def load_json(filename: str) -> list[dict]:
 # Step 1: Add .25x47 Lapua (critical omission)
 # ---------------------------------------------------------------------------
 
+
 def add_missing_calibers(session: Session) -> None:
     """Add calibers flagged as missing by the domain expert."""
     print("[1/6] Adding missing calibers...")
@@ -108,6 +109,7 @@ def add_missing_calibers(session: Session) -> None:
 # Step 2: Overall popularity rankings
 # ---------------------------------------------------------------------------
 
+
 def import_overall_rankings(session: Session) -> None:
     """Set overall_popularity_rank for all calibers."""
     print("[2/6] Importing overall popularity rankings...")
@@ -132,6 +134,7 @@ def import_overall_rankings(session: Session) -> None:
 # ---------------------------------------------------------------------------
 # Step 3: LR popularity rankings + is_common_lr
 # ---------------------------------------------------------------------------
+
 
 def import_lr_rankings(session: Session) -> None:
     """Set lr_popularity_rank and correct is_common_lr flags."""
@@ -166,9 +169,15 @@ def import_lr_rankings(session: Session) -> None:
     for cal in cal_lookup.values():
         # Had a rank before but now doesn't
         if cal.lr_popularity_rank is None and cal.name in {
-            ".223 Remington", "5.56x45mm NATO", ".270 Winchester",
-            ".30-06 Springfield", "7.62x51mm NATO", ".243 Winchester",
-            "7mm-08 Remington", "6.5x55mm Swedish", ".300 AAC Blackout",
+            ".223 Remington",
+            "5.56x45mm NATO",
+            ".270 Winchester",
+            ".30-06 Springfield",
+            "7.62x51mm NATO",
+            ".243 Winchester",
+            "7mm-08 Remington",
+            "6.5x55mm Swedish",
+            ".300 AAC Blackout",
             ".338 Winchester Magnum",
         }:
             removed.append(cal.name)
@@ -179,6 +188,7 @@ def import_lr_rankings(session: Session) -> None:
 # ---------------------------------------------------------------------------
 # Step 4: is_common_lr corrections
 # ---------------------------------------------------------------------------
+
 
 def apply_is_common_lr_corrections(session: Session) -> None:
     """Apply specific is_common_lr corrections from reviewer."""
@@ -209,6 +219,7 @@ def apply_is_common_lr_corrections(session: Session) -> None:
 # Step 5: Per-platform rankings
 # ---------------------------------------------------------------------------
 
+
 def import_platform_rankings(session: Session) -> None:
     """Update caliber_platform.popularity_rank from expert data."""
     print("[5/6] Importing per-platform rankings...")
@@ -235,11 +246,7 @@ def import_platform_rankings(session: Session) -> None:
             warnings += 1
             continue
 
-        link = (
-            session.query(CaliberPlatform)
-            .filter_by(caliber_id=cal_id, platform_id=plat_id)
-            .first()
-        )
+        link = session.query(CaliberPlatform).filter_by(caliber_id=cal_id, platform_id=plat_id).first()
         if link:
             link.popularity_rank = entry["rank"]
             updated += 1
@@ -262,6 +269,7 @@ def import_platform_rankings(session: Session) -> None:
 # ---------------------------------------------------------------------------
 # Step 6: Description corrections
 # ---------------------------------------------------------------------------
+
 
 def apply_description_corrections(session: Session) -> None:
     """Apply description corrections flagged by reviewer."""
@@ -287,10 +295,9 @@ def apply_description_corrections(session: Session) -> None:
 # Main
 # ---------------------------------------------------------------------------
 
+
 def main() -> None:
-    parser = argparse.ArgumentParser(
-        description="Import expert-reviewed rankings and corrections into drift.db."
-    )
+    parser = argparse.ArgumentParser(description="Import expert-reviewed rankings and corrections into drift.db.")
     parser.add_argument(
         "--apply",
         action="store_true",

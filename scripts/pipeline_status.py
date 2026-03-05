@@ -121,7 +121,11 @@ def main() -> None:  # noqa: C901
                 print(f"  {'─'*4}  {'─'*30}  {'─'*7}  {'─'*5}  {'─'*6}")
 
                 for cal in calibers:
-                    n_bullets = session.query(func.count(Bullet.id)).filter(Bullet.bullet_diameter_inches == cal.bullet_diameter_inches).scalar()
+                    n_bullets = (
+                        session.query(func.count(Bullet.id))
+                        .filter(Bullet.bullet_diameter_inches == cal.bullet_diameter_inches)
+                        .scalar()
+                    )
                     n_carts = session.query(func.count(Cartridge.id)).filter(Cartridge.caliber_id == cal.id).scalar()
                     # Rifles reference chamber_id; look up via ChamberAcceptsCaliber
                     chamber_ids = [
@@ -167,9 +171,11 @@ def main() -> None:  # noqa: C901
                 total_gaps = summary.get("total_gaps", {})
                 print(f"  Total calibers:     {summary.get('total_calibers', '?')}")
                 print(f"  Calibers with gaps: {summary.get('calibers_with_gaps', '?')}")
-                print(f"  Gaps — bullets: {total_gaps.get('bullets', 0)}, "
-                      f"cartridges: {total_gaps.get('cartridges', 0)}, "
-                      f"rifle models: {total_gaps.get('rifle_models', 0)}")
+                print(
+                    f"  Gaps — bullets: {total_gaps.get('bullets', 0)}, "
+                    f"cartridges: {total_gaps.get('cartridges', 0)}, "
+                    f"rifle models: {total_gaps.get('rifle_models', 0)}"
+                )
             except (json.JSONDecodeError, TypeError):
                 print("  (Could not parse shopping list)")
 

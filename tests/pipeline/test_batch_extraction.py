@@ -16,7 +16,6 @@ from drift.pipeline.extraction.providers.base import (
     LLMResponse,
 )
 
-
 # ── Helpers ────────────────────────────────────────────────────────────────
 
 
@@ -75,7 +74,9 @@ class TestBuildMessages:
 class TestParseResponse:
     def test_parses_valid_bullet_json(self):
         engine = ExtractionEngine(provider=_make_mock_provider())
-        result = engine.parse_response(json.dumps([MINIMAL_BULLET]), "bullet", usage={"input_tokens": 100, "output_tokens": 50})
+        result = engine.parse_response(
+            json.dumps([MINIMAL_BULLET]), "bullet", usage={"input_tokens": 100, "output_tokens": 50}
+        )
         assert isinstance(result, ExtractionResult)
         assert len(result.entities) == 1
         assert result.entities[0].name.value == "Test Bullet"
@@ -347,13 +348,23 @@ class TestProcessBatchResults:
 class TestWriteFlagged:
     def test_corrupt_flagged_file_backed_up(self, tmp_path):
         """Important 10: corrupt flagged.json should be backed up."""
-        from scripts.pipeline_extract import _write_flagged, REVIEW_DIR
+        from scripts.pipeline_extract import REVIEW_DIR, _write_flagged
 
         flagged_path = tmp_path / "flagged.json"
         flagged_path.write_text("NOT JSON {{{", encoding="utf-8")
 
         with patch("scripts.pipeline_extract.REVIEW_DIR", tmp_path):
-            result = _write_flagged([{"url": "http://example.com", "url_hash": "abc123", "entity_type": "bullet", "reason": "test", "warnings": ["w1"]}])
+            result = _write_flagged(
+                [
+                    {
+                        "url": "http://example.com",
+                        "url_hash": "abc123",
+                        "entity_type": "bullet",
+                        "reason": "test",
+                        "warnings": ["w1"],
+                    }
+                ]
+            )
 
         backup_path = tmp_path / "flagged.json.bak"
         assert backup_path.exists()

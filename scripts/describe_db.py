@@ -108,7 +108,9 @@ def build_summary(conn: sqlite3.Connection) -> str:
         """,
     )
     bullet_m, ammo_m, rifle_m, optic_m, total_m = rows[0]
-    w(f"**{total_m} manufacturers** — {bullet_m} bullet makers, {ammo_m} ammo makers, {rifle_m} rifle makers, {optic_m} optic makers.")
+    w(
+        f"**{total_m} manufacturers** — {bullet_m} bullet makers, {ammo_m} ammo makers, {rifle_m} rifle makers, {optic_m} optic makers."
+    )
     w("(Manufacturers can have multiple type tags.)")
     w("")
 
@@ -119,7 +121,9 @@ def build_summary(conn: sqlite3.Connection) -> str:
     lr_count = _q1(conn, "SELECT COUNT(*) FROM caliber WHERE is_common_lr = 1")[0]
     ranked_overall = _q1(conn, "SELECT COUNT(*) FROM caliber WHERE overall_popularity_rank IS NOT NULL")[0]
     ranked_lr = _q1(conn, "SELECT COUNT(*) FROM caliber WHERE lr_popularity_rank IS NOT NULL")[0]
-    w(f"**{cal_total} calibers** — {lr_count} flagged as common long-range, {ranked_overall} with overall popularity ranking, {ranked_lr} with LR ranking.")
+    w(
+        f"**{cal_total} calibers** — {lr_count} flagged as common long-range, {ranked_overall} with overall popularity ranking, {ranked_lr} with LR ranking."
+    )
     w("")
 
     w("### Top 20 Overall Calibers")
@@ -344,7 +348,9 @@ def build_summary(conn: sqlite3.Connection) -> str:
 def main() -> None:
     parser = argparse.ArgumentParser(description="Generate drift.db markdown summary")
     parser.add_argument("--stdout", action="store_true", help="print to stdout instead of file")
-    parser.add_argument("-o", "--output", type=Path, default=DEFAULT_OUT, help="output path (default: docs/db_summary.md)")
+    parser.add_argument(
+        "-o", "--output", type=Path, default=DEFAULT_OUT, help="output path (default: docs/db_summary.md)"
+    )
     args = parser.parse_args()
 
     if not DB_PATH.exists():

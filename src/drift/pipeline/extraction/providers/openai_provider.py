@@ -21,8 +21,7 @@ class OpenAIProvider(BaseLLMProvider):
             import openai
         except ImportError as e:
             raise ImportError(
-                f"Failed to import openai package ({e}). "
-                f"Install with: pip install 'drift-ballistics[openai]'"
+                f"Failed to import openai package ({e}). " f"Install with: pip install 'drift-ballistics[openai]'"
             ) from e
 
         self._api_key = api_key or OPENAI_API_KEY
@@ -55,7 +54,7 @@ class OpenAIProvider(BaseLLMProvider):
             }
 
             # Models that require max_completion_tokens instead of max_tokens
-            if any(prefix in model.lower() for prefix in ['gpt-4o', 'gpt-5', 'o1']):
+            if any(prefix in model.lower() for prefix in ["gpt-4o", "gpt-5", "o1"]):
                 params["max_completion_tokens"] = max_tokens
             else:
                 params["max_tokens"] = max_tokens

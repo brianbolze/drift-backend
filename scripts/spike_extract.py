@@ -9,6 +9,7 @@ Usage:
     python scripts/spike_extract.py --entity-type rifle
     python scripts/spike_extract.py --entity-type bullet --model claude-sonnet-4-20250514
 """
+
 # flake8: noqa: E501 B950 — prompt strings are intentionally long
 
 from __future__ import annotations

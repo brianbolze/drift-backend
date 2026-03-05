@@ -173,6 +173,7 @@ def _write_flagged(flagged_items: list[dict]) -> Path | None:
             backup_path = flagged_path.with_suffix(".json.bak")
             logger.warning("Corrupt flagged file at %s — backing up to %s", flagged_path, backup_path)
             import shutil
+
             shutil.copy2(flagged_path, backup_path)
 
     existing_hashes = {f["url_hash"] for f in existing_flagged}

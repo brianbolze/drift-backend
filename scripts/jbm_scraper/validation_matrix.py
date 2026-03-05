@@ -14,7 +14,8 @@ This decomposed approach enables validation of each physics component independen
 """
 
 from dataclasses import dataclass, field
-from typing import List, Dict
+from typing import Dict, List
+
 from jbm_scraper import JBMInput
 
 

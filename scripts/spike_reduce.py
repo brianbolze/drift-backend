@@ -88,7 +88,10 @@ def _remove_by_class_word(soup: BeautifulSoup, keyword: str) -> None:
     targets = [
         tag
         for tag in soup.find_all(True)
-        if isinstance(tag, Tag) and tag.attrs is not None and tag.name not in ("body", "html") and _class_word_match(tag, keyword)
+        if isinstance(tag, Tag)
+        and tag.attrs is not None
+        and tag.name not in ("body", "html")
+        and _class_word_match(tag, keyword)
     ]
     for tag in targets:
         tag.decompose()

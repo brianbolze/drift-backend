@@ -11,12 +11,13 @@ Usage:
         print(f"At {result.range_yd}yd: drop={result.drop_in}in, drift={result.windage_in}in")
 """
 
-import requests
-from dataclasses import dataclass, field, asdict
-from typing import Optional
-import re
-from html.parser import HTMLParser
 import logging
+import re
+from dataclasses import asdict, dataclass, field
+from html.parser import HTMLParser
+from typing import Optional
+
+import requests
 
 logger = logging.getLogger(__name__)
 
@@ -151,21 +152,62 @@ class JBMInput:
 
         # Numeric fields - always include
         numeric_fields = [
-            "b_id_v", "bc_v", "d_f_v",
-            "bt_wgt_v", "bt_wgt_u", "cal_v", "cal_u", "blt_len_v", "blt_len_u",
-            "tip_len_v", "tip_len_u",
-            "m_vel_v", "m_vel_u", "ch_dst_v", "ch_dst_u",
-            "hgt_sgt_v", "hgt_sgt_u", "ofs_sgt_v", "ofs_sgt_u",
-            "hgt_zer_v", "hgt_zer_u", "ofs_zer_v", "ofs_zer_u",
-            "azm_v", "azm_u", "ele_v", "ele_u",
-            "los_v", "cnt_v",
-            "b_twt_v", "b_twt_u", "b_twt_dir_v",
-            "spd_wnd_v", "spd_wnd_u", "ang_wnd_v",
-            "spd_tgt_v", "spd_tgt_u", "ang_tgt_v",
-            "siz_tgt_v", "siz_tgt_u",
-            "rng_min_v", "rng_max_v", "rng_inc_v", "rng_zer_v",
-            "tmp_v", "tmp_u", "prs_v", "prs_u", "hum_v", "alt_v", "alt_u",
-            "col_eng_v", "col1_un_v", "col1_un_u", "col2_un_v", "col2_un_u",
+            "b_id_v",
+            "bc_v",
+            "d_f_v",
+            "bt_wgt_v",
+            "bt_wgt_u",
+            "cal_v",
+            "cal_u",
+            "blt_len_v",
+            "blt_len_u",
+            "tip_len_v",
+            "tip_len_u",
+            "m_vel_v",
+            "m_vel_u",
+            "ch_dst_v",
+            "ch_dst_u",
+            "hgt_sgt_v",
+            "hgt_sgt_u",
+            "ofs_sgt_v",
+            "ofs_sgt_u",
+            "hgt_zer_v",
+            "hgt_zer_u",
+            "ofs_zer_v",
+            "ofs_zer_u",
+            "azm_v",
+            "azm_u",
+            "ele_v",
+            "ele_u",
+            "los_v",
+            "cnt_v",
+            "b_twt_v",
+            "b_twt_u",
+            "b_twt_dir_v",
+            "spd_wnd_v",
+            "spd_wnd_u",
+            "ang_wnd_v",
+            "spd_tgt_v",
+            "spd_tgt_u",
+            "ang_tgt_v",
+            "siz_tgt_v",
+            "siz_tgt_u",
+            "rng_min_v",
+            "rng_max_v",
+            "rng_inc_v",
+            "rng_zer_v",
+            "tmp_v",
+            "tmp_u",
+            "prs_v",
+            "prs_u",
+            "hum_v",
+            "alt_v",
+            "alt_u",
+            "col_eng_v",
+            "col1_un_v",
+            "col1_un_u",
+            "col2_un_v",
+            "col2_un_u",
         ]
 
         for field_name in numeric_fields:
@@ -176,9 +218,18 @@ class JBMInput:
 
         # Checkbox fields - only include if True
         checkbox_fields = [
-            "std_alt_v", "cor_prs_v", "cor_ele_v", "cor_azm_v",
-            "inc_drf_v", "inc_ds_v", "def_cnt_v", "rng_un_v",
-            "pbr_zer_v", "mrk_trs_v", "ext_row_v", "rnd_clk_v",
+            "std_alt_v",
+            "cor_prs_v",
+            "cor_ele_v",
+            "cor_azm_v",
+            "inc_drf_v",
+            "inc_ds_v",
+            "def_cnt_v",
+            "rng_un_v",
+            "pbr_zer_v",
+            "mrk_trs_v",
+            "ext_row_v",
+            "rnd_clk_v",
         ]
 
         for field_name in checkbox_fields:
@@ -302,10 +353,7 @@ class JBMScraper:
                 continue
 
             # Clean cell content: remove HTML tags, trim whitespace
-            cells = [
-                re.sub(r"<[^>]+>", "", cell).strip()
-                for cell in cells
-            ]
+            cells = [re.sub(r"<[^>]+>", "", cell).strip() for cell in cells]
 
             # Filter empty cells
             cells = [c for c in cells if c]

@@ -17,12 +17,11 @@ import dataclasses
 import json
 import logging
 import time
+from pathlib import Path
 
 import anthropic
 from anthropic.types.message_create_params import MessageCreateParamsNonStreaming
 from anthropic.types.messages.batch_create_params import Request
-
-from pathlib import Path
 
 from drift.pipeline.config import BATCH_DIR, BATCH_MAX_WAIT_SECONDS, BATCH_POLL_INTERVAL_SECONDS, MAX_TOKENS
 from drift.pipeline.extraction.engine import ExtractionEngine, ExtractionResult
@@ -119,7 +118,13 @@ class BatchExtractor:
                     if attempt == max_transient_retries:
                         raise
                     delay = 2 ** (attempt + 1)
-                    logger.warning("Transient error polling batch (attempt %d/%d), retrying in %ds: %s", attempt + 1, max_transient_retries, delay, e)
+                    logger.warning(
+                        "Transient error polling batch (attempt %d/%d), retrying in %ds: %s",
+                        attempt + 1,
+                        max_transient_retries,
+                        delay,
+                        e,
+                    )
                     time.sleep(delay)
             counts = batch.request_counts
 
@@ -169,7 +174,9 @@ class BatchExtractor:
             url_hash = entry.custom_id
 
             if url_hash not in item_types:
-                logger.error("No entity_type mapping for url_hash %s — skipping (possible metadata corruption)", url_hash)
+                logger.error(
+                    "No entity_type mapping for url_hash %s — skipping (possible metadata corruption)", url_hash
+                )
                 results[url_hash] = BatchResultItem(
                     url_hash=url_hash,
                     status="errored",
@@ -205,7 +212,9 @@ class BatchExtractor:
                 except (json.JSONDecodeError, ValueError) as e:
                     logger.warning(
                         "Failed to parse batch result for %s: %s\nRaw (truncated): %.500s",
-                        url_hash, e, raw_text,
+                        url_hash,
+                        e,
+                        raw_text,
                     )
                     # Save raw response to debug file so the user can inspect/recover
                     debug_dir = BATCH_DIR / "debug"

@@ -93,9 +93,7 @@ def import_calibers(session: Session) -> int:
         if not parent_id:
             print(f"  WARNING: parent {parent_name!r} not found for {entry['name']!r}")
             continue
-        session.query(Caliber).filter(Caliber.id == cal_id).update(
-            {"parent_caliber_id": parent_id}
-        )
+        session.query(Caliber).filter(Caliber.id == cal_id).update({"parent_caliber_id": parent_id})
         parent_count += 1
 
     session.flush()
@@ -143,11 +141,7 @@ def import_chamber_accepts_caliber(session: Session) -> int:
             continue
 
         # Check for existing mapping
-        existing = (
-            session.query(ChamberAcceptsCaliber)
-            .filter_by(chamber_id=ch_id, caliber_id=cal_id)
-            .first()
-        )
+        existing = session.query(ChamberAcceptsCaliber).filter_by(chamber_id=ch_id, caliber_id=cal_id).first()
         if existing:
             print(f"  SKIP (exists): {entry['chamber_name']} -> {entry['caliber_name']}")
             continue
@@ -188,11 +182,7 @@ def import_caliber_platforms(session: Session) -> int:
             continue
 
         # Check for existing mapping
-        existing = (
-            session.query(CaliberPlatform)
-            .filter_by(caliber_id=cal_id, platform_id=plat_id)
-            .first()
-        )
+        existing = session.query(CaliberPlatform).filter_by(caliber_id=cal_id, platform_id=plat_id).first()
         if existing:
             print(f"  SKIP (exists): {entry['caliber_name']} on {entry['platform']}")
             continue
@@ -213,9 +203,7 @@ def import_caliber_platforms(session: Session) -> int:
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(
-        description="Import curated caliber/chamber data from JSON files into drift.db."
-    )
+    parser = argparse.ArgumentParser(description="Import curated caliber/chamber data from JSON files into drift.db.")
     parser.add_argument(
         "--apply",
         action="store_true",
