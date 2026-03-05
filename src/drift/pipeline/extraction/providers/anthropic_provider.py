@@ -8,6 +8,8 @@ from drift.pipeline.config import ANTHROPIC_API_KEY
 from drift.pipeline.extraction.providers.base import (
     BaseLLMProvider,
     LLMAuthenticationError,
+    LLMProviderError,
+    LLMRateLimitError,
     LLMRequestError,
     LLMResponse,
 )
@@ -43,8 +45,12 @@ class AnthropicProvider(BaseLLMProvider):
             )
         except anthropic.AuthenticationError as e:
             raise LLMAuthenticationError(str(e)) from e
+        except anthropic.RateLimitError as e:
+            raise LLMRateLimitError(str(e)) from e
         except anthropic.BadRequestError as e:
             raise LLMRequestError(str(e)) from e
+        except anthropic.APIError as e:
+            raise LLMProviderError(str(e)) from e
 
         if not response.content or not hasattr(response.content[0], "text"):
             raise LLMRequestError(

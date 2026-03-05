@@ -23,6 +23,10 @@ class LLMAuthenticationError(LLMProviderError):
     """API key is invalid or missing."""
 
 
+class LLMRateLimitError(LLMProviderError):
+    """Provider rate limit exceeded — caller should back off and retry."""
+
+
 class LLMRequestError(LLMProviderError):
     """Request was rejected (e.g., input too large, invalid model)."""
 

@@ -11,6 +11,7 @@ from drift.pipeline.extraction.providers.base import (
     BaseLLMProvider,
     LLMAuthenticationError,
     LLMProviderError,
+    LLMRateLimitError,
     LLMRequestError,
     LLMResponse,
 )
@@ -42,6 +43,9 @@ class TestExceptions:
 
     def test_request_error_is_provider_error(self):
         assert issubclass(LLMRequestError, LLMProviderError)
+
+    def test_rate_limit_error_is_provider_error(self):
+        assert issubclass(LLMRateLimitError, LLMProviderError)
 
     def test_provider_error_is_exception(self):
         assert issubclass(LLMProviderError, Exception)
@@ -120,6 +124,36 @@ class TestAnthropicProvider:
         )
 
         with pytest.raises(LLMRequestError):
+            provider.complete(
+                system="sys", user_message="msg", model="test", max_tokens=100
+            )
+
+    def test_rate_limit_error_translated(self):
+        import anthropic
+
+        provider, mock_client, _ = self._make_provider()
+        mock_client.messages.create.side_effect = anthropic.RateLimitError(
+            message="rate limited",
+            response=MagicMock(status_code=429),
+            body=None,
+        )
+
+        with pytest.raises(LLMRateLimitError):
+            provider.complete(
+                system="sys", user_message="msg", model="test", max_tokens=100
+            )
+
+    def test_generic_api_error_translated(self):
+        import anthropic
+
+        provider, mock_client, _ = self._make_provider()
+        mock_client.messages.create.side_effect = anthropic.InternalServerError(
+            message="server error",
+            response=MagicMock(status_code=500),
+            body=None,
+        )
+
+        with pytest.raises(LLMProviderError):
             provider.complete(
                 system="sys", user_message="msg", model="test", max_tokens=100
             )
@@ -225,6 +259,40 @@ class TestOpenAIProvider:
                 system="sys", user_message="msg", model="test", max_tokens=100
             )
 
+    def test_rate_limit_error_translated(self):
+        provider = self._make_provider()
+        import openai
+
+        provider._client.chat.completions.create = MagicMock(
+            side_effect=openai.RateLimitError(
+                message="rate limited",
+                response=MagicMock(status_code=429),
+                body=None,
+            )
+        )
+
+        with pytest.raises(LLMRateLimitError):
+            provider.complete(
+                system="sys", user_message="msg", model="test", max_tokens=100
+            )
+
+    def test_generic_api_error_translated(self):
+        provider = self._make_provider()
+        import openai
+
+        provider._client.chat.completions.create = MagicMock(
+            side_effect=openai.InternalServerError(
+                message="server error",
+                response=MagicMock(status_code=500),
+                body=None,
+            )
+        )
+
+        with pytest.raises(LLMProviderError):
+            provider.complete(
+                system="sys", user_message="msg", model="test", max_tokens=100
+            )
+
     def test_empty_response_raises(self):
         provider = self._make_provider()
         mock_response = MagicMock()
@@ -235,6 +303,39 @@ class TestOpenAIProvider:
             provider.complete(
                 system="sys", user_message="msg", model="test", max_tokens=100
             )
+
+    def test_missing_usage_raises(self):
+        provider = self._make_provider()
+        mock_choice = MagicMock()
+        mock_choice.message.content = '{"result": "ok"}'
+        mock_response = MagicMock()
+        mock_response.choices = [mock_choice]
+        mock_response.usage = None
+        provider._client.chat.completions.create = MagicMock(return_value=mock_response)
+
+        with pytest.raises(LLMRequestError, match="no usage data"):
+            provider.complete(
+                system="sys", user_message="msg", model="test", max_tokens=100
+            )
+
+    def test_none_token_counts_default_to_zero(self):
+        provider = self._make_provider()
+        mock_choice = MagicMock()
+        mock_choice.message.content = '{"result": "ok"}'
+        mock_usage = MagicMock()
+        mock_usage.prompt_tokens = None
+        mock_usage.completion_tokens = None
+        mock_response = MagicMock()
+        mock_response.choices = [mock_choice]
+        mock_response.usage = mock_usage
+        provider._client.chat.completions.create = MagicMock(return_value=mock_response)
+
+        result = provider.complete(
+            system="sys", user_message="msg", model="test", max_tokens=100
+        )
+
+        assert result.input_tokens == 0
+        assert result.output_tokens == 0
 
     def test_missing_api_key_raises(self):
         from drift.pipeline.extraction.providers.openai_provider import OpenAIProvider
@@ -371,7 +472,7 @@ class TestExtractionEngineWithProvider:
 
         engine = ExtractionEngine(provider=provider)
 
-        with pytest.raises(ValueError, match="Extraction request rejected"):
+        with pytest.raises(ValueError, match="LLM request failed"):
             engine.extract("<html>test</html>", "bullet")
 
     def test_default_provider_is_anthropic(self):

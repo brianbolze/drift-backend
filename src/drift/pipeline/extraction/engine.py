@@ -265,7 +265,8 @@ class ExtractionEngine:
             raise
         except LLMRequestError as e:
             raise ValueError(
-                f"Extraction request rejected (input may be too large: {len(reduced_html)} chars): {e}"
+                f"LLM request failed for {entity_type} extraction "
+                f"({len(reduced_html)} chars input): {e}"
             ) from e
 
         raw_text = llm_response.text

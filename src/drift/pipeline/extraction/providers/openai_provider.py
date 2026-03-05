@@ -6,6 +6,8 @@ from drift.pipeline.config import OPENAI_API_KEY
 from drift.pipeline.extraction.providers.base import (
     BaseLLMProvider,
     LLMAuthenticationError,
+    LLMProviderError,
+    LLMRateLimitError,
     LLMRequestError,
     LLMResponse,
 )
@@ -17,10 +19,11 @@ class OpenAIProvider(BaseLLMProvider):
     def __init__(self, api_key: str | None = None):
         try:
             import openai
-        except ImportError:
+        except ImportError as e:
             raise ImportError(
-                "openai package not installed. Install with: pip install 'drift-ballistics[openai]'"
-            ) from None
+                f"Failed to import openai package ({e}). "
+                f"Install with: pip install 'drift-ballistics[openai]'"
+            ) from e
 
         self._api_key = api_key or OPENAI_API_KEY
         if not self._api_key:
@@ -51,8 +54,12 @@ class OpenAIProvider(BaseLLMProvider):
             )
         except self._openai.AuthenticationError as e:
             raise LLMAuthenticationError(str(e)) from e
+        except self._openai.RateLimitError as e:
+            raise LLMRateLimitError(str(e)) from e
         except self._openai.BadRequestError as e:
             raise LLMRequestError(str(e)) from e
+        except self._openai.APIError as e:
+            raise LLMProviderError(str(e)) from e
 
         choice = response.choices[0] if response.choices else None
         if not choice or not choice.message or not choice.message.content:
@@ -64,6 +71,6 @@ class OpenAIProvider(BaseLLMProvider):
 
         return LLMResponse(
             text=choice.message.content,
-            input_tokens=usage.prompt_tokens,
-            output_tokens=usage.completion_tokens,
+            input_tokens=usage.prompt_tokens or 0,
+            output_tokens=usage.completion_tokens or 0,
         )

@@ -26,7 +26,11 @@ from drift.pipeline.config import (
     REVIEW_DIR,
 )
 from drift.pipeline.extraction.engine import ExtractionEngine
-from drift.pipeline.extraction.providers import LLMProviderError, create_provider
+from drift.pipeline.extraction.providers import (
+    LLMAuthenticationError,
+    LLMProviderError,
+    create_provider,
+)
 
 logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
 logger = logging.getLogger(__name__)
@@ -163,6 +167,9 @@ def main() -> None:  # noqa: C901
 
             stats["extracted"] += 1
 
+        except LLMAuthenticationError as e:
+            logger.error("  Authentication failed — aborting: %s", e)
+            raise SystemExit(1)
         except (LLMProviderError, json.JSONDecodeError) as e:
             logger.exception("  FAILED: %s — %s", url, e)
             stats["failed"] += 1

@@ -4,6 +4,7 @@ from drift.pipeline.extraction.providers.base import (
     BaseLLMProvider,
     LLMAuthenticationError,
     LLMProviderError,
+    LLMRateLimitError,
     LLMRequestError,
     LLMResponse,
 )
@@ -13,6 +14,7 @@ __all__ = [
     "BaseLLMProvider",
     "LLMAuthenticationError",
     "LLMProviderError",
+    "LLMRateLimitError",
     "LLMRequestError",
     "LLMResponse",
     "create_provider",
