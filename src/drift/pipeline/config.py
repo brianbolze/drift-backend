@@ -14,6 +14,7 @@ load_dotenv(_PROJECT_ROOT / ".env")
 # ── API Keys ─────────────────────────────────────────────────────────────────
 
 ANTHROPIC_API_KEY = os.getenv("ANTHROPIC_API_KEY", "")
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "")
 FIRECRAWL_API_KEY = os.getenv("FIRECRAWL_API_KEY", "")
 
 # ── Models ───────────────────────────────────────────────────────────────────

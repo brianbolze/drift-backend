@@ -1,8 +1,8 @@
 # flake8: noqa: E501 B950 — prompt strings are intentionally long
-"""LLM extraction engine — sends reduced HTML to Claude and parses structured product data.
+"""LLM extraction engine — sends reduced HTML to an LLM and parses structured product data.
 
-Uses Claude Haiku as the primary model (validated across 5 manufacturer sites in spike).
-Sonnet available via model parameter for manual re-extraction of flagged items.
+Uses Claude Haiku as the default model (validated across 5 manufacturer sites in spike).
+Supports multiple LLM providers (Anthropic, OpenAI) via the providers abstraction.
 """
 
 from __future__ import annotations
@@ -11,10 +11,15 @@ import json
 import logging
 import re
 
-import anthropic
 import pydantic
 
-from drift.pipeline.config import ANTHROPIC_API_KEY, DEFAULT_MODEL, MAX_TOKENS, VALIDATION_RANGES
+from drift.pipeline.config import MAX_TOKENS, VALIDATION_RANGES
+from drift.pipeline.extraction.providers import (
+    BaseLLMProvider,
+    LLMAuthenticationError,
+    LLMRequestError,
+    create_provider,
+)
 from drift.pipeline.extraction.schemas import (
     ExtractedBCSource,
     ExtractedBullet,
@@ -219,14 +224,17 @@ class ExtractionResult:
 
 
 class ExtractionEngine:
-    """Sends reduced HTML to Claude and parses structured product data."""
+    """Sends reduced HTML to an LLM and parses structured product data."""
 
-    def __init__(self, api_key: str | None = None, model: str = DEFAULT_MODEL):
-        self._api_key = api_key or ANTHROPIC_API_KEY
-        if not self._api_key:
-            raise ValueError("ANTHROPIC_API_KEY not set. Export it or add to .env")
-        self._client = anthropic.Anthropic(api_key=self._api_key)
-        self._model = model
+    def __init__(
+        self,
+        provider: BaseLLMProvider | None = None,
+        model: str | None = None,
+    ):
+        if provider is None:
+            provider = create_provider("anthropic")
+        self._provider = provider
+        self._model = model or provider.default_model
 
     def extract(self, reduced_html: str, entity_type: str) -> ExtractionResult:
         """Extract entities from reduced HTML.
@@ -247,34 +255,24 @@ class ExtractionEngine:
         logger.info("Extracting %s entities with %s (%d chars input)", entity_type, self._model, len(reduced_html))
 
         try:
-            response = self._client.messages.create(
+            llm_response = self._provider.complete(
+                system=SYSTEM_PROMPT,
+                user_message=user_prompt,
                 model=self._model,
                 max_tokens=MAX_TOKENS,
-                system=SYSTEM_PROMPT,
-                messages=[{"role": "user", "content": user_prompt}],
             )
-        except anthropic.AuthenticationError:
+        except LLMAuthenticationError:
             raise
-        except anthropic.BadRequestError as e:
+        except LLMRequestError as e:
             raise ValueError(
-                f"Extraction request rejected (input may be too large: {len(reduced_html)} chars): {e}"
+                f"LLM request failed for {entity_type} extraction "
+                f"({len(reduced_html)} chars input): {e}"
             ) from e
 
-        if not response.content:
-            raise ValueError(
-                f"Anthropic API returned empty response for {entity_type} extraction "
-                f"(stop_reason={response.stop_reason})"
-            )
-        content_block = response.content[0]
-        if not hasattr(content_block, "text"):
-            raise ValueError(
-                f"Anthropic API returned non-text content block (type={content_block.type}) "
-                f"for {entity_type} extraction"
-            )
-        raw_text = content_block.text
+        raw_text = llm_response.text
         usage = {
-            "input_tokens": response.usage.input_tokens,
-            "output_tokens": response.usage.output_tokens,
+            "input_tokens": llm_response.input_tokens,
+            "output_tokens": llm_response.output_tokens,
         }
 
         logger.info(

@@ -1,12 +1,13 @@
-"""Extract structured product data from reduced HTML via Claude.
+"""Extract structured product data from reduced HTML via LLM.
 
 Reads reduced HTML from data/pipeline/reduced/, sends each to the
-ExtractionEngine (Claude Haiku), and saves results to data/pipeline/extracted/.
+ExtractionEngine, and saves results to data/pipeline/extracted/.
 
 Resume-safe: skips already-extracted URLs based on cache files.
 
 Usage:
     python scripts/pipeline_extract.py
+    python scripts/pipeline_extract.py --provider openai --model gpt-4.1-mini
     python scripts/pipeline_extract.py --model claude-sonnet-4-20250514
     python scripts/pipeline_extract.py --limit 5
 """
@@ -19,15 +20,17 @@ import logging
 from pathlib import Path
 
 from drift.pipeline.config import (
-    DEFAULT_MODEL,
     EXTRACTED_DIR,
     MANIFEST_PATH,
     REDUCED_DIR,
     REVIEW_DIR,
 )
-import anthropic
-
 from drift.pipeline.extraction.engine import ExtractionEngine
+from drift.pipeline.extraction.providers import (
+    LLMAuthenticationError,
+    LLMProviderError,
+    create_provider,
+)
 
 logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
 logger = logging.getLogger(__name__)
@@ -52,7 +55,14 @@ def _url_hash_from_manifest(manifest: list[dict]) -> dict[str, dict]:
 def main() -> None:  # noqa: C901
     parser = argparse.ArgumentParser(description="Extract product data from reduced HTML")
     parser.add_argument("--manifest", type=Path, default=MANIFEST_PATH, help="URL manifest JSON path")
-    parser.add_argument("--model", type=str, default=DEFAULT_MODEL, help="Claude model to use")
+    parser.add_argument(
+        "--provider",
+        type=str,
+        default="anthropic",
+        choices=["anthropic", "openai"],
+        help="LLM provider to use (default: anthropic)",
+    )
+    parser.add_argument("--model", type=str, default=None, help="LLM model to use (default: provider-specific)")
     parser.add_argument("--limit", type=int, default=0, help="Max URLs to process (0 = all)")
     parser.add_argument("--reextract", action="store_true", help="Re-extract even if cached result exists")
     args = parser.parse_args()
@@ -71,7 +81,8 @@ def main() -> None:  # noqa: C901
     EXTRACTED_DIR.mkdir(parents=True, exist_ok=True)
     REVIEW_DIR.mkdir(parents=True, exist_ok=True)
 
-    engine = ExtractionEngine(model=args.model)
+    provider = create_provider(args.provider)
+    engine = ExtractionEngine(provider=provider, model=args.model)
 
     stats = {"extracted": 0, "skipped": 0, "failed": 0, "flagged": 0, "total": 0}
     flagged_items: list[dict] = []
@@ -156,7 +167,10 @@ def main() -> None:  # noqa: C901
 
             stats["extracted"] += 1
 
-        except (anthropic.APIError, json.JSONDecodeError) as e:
+        except LLMAuthenticationError as e:
+            logger.error("  Authentication failed — aborting: %s", e)
+            raise SystemExit(1)
+        except (LLMProviderError, json.JSONDecodeError) as e:
             logger.exception("  FAILED: %s — %s", url, e)
             stats["failed"] += 1
         except Exception:
