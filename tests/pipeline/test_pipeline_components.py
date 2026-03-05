@@ -13,6 +13,7 @@ from drift.pipeline.extraction.schemas import (
 )
 from drift.pipeline.reduction.reducer import HtmlReducer
 from drift.pipeline.resolution.resolver import (
+    EntityResolver,
     MatchResult,
     ResolutionResult,
     _get_value,
@@ -390,3 +391,126 @@ class TestStoreHelpers:
 
         assert _avg_confidence({}) == 0.0
         assert _avg_confidence({"plain": "val"}) == 0.0
+
+
+# ── Fuzzy match confidence penalties (DR-115) ─────────────────────────────────
+
+
+def _seed_for_fuzzy(db):
+    """Create DB fixtures for fuzzy match tests: two bullets, two cartridges, two rifles."""
+    from drift.models import Bullet, Caliber, Cartridge, Chamber, ChamberAcceptsCaliber, Manufacturer, RifleModel
+
+    mfr = Manufacturer(name="Hornady", type_tags=["bullet_maker"], country="USA")
+    db.add(mfr)
+    db.flush()
+
+    cal_65 = Caliber(name="6.5 Creedmoor", bullet_diameter_inches=0.264, lr_popularity_rank=1, is_common_lr=True)
+    cal_30 = Caliber(name=".308 Winchester", bullet_diameter_inches=0.308, lr_popularity_rank=2, is_common_lr=True)
+    db.add_all([cal_65, cal_30])
+    db.flush()
+
+    chamber_65 = Chamber(name="6.5 Creedmoor")
+    chamber_30 = Chamber(name=".308 Winchester")
+    db.add_all([chamber_65, chamber_30])
+    db.flush()
+
+    db.add_all([
+        ChamberAcceptsCaliber(chamber_id=chamber_65.id, caliber_id=cal_65.id, is_primary=True),
+        ChamberAcceptsCaliber(chamber_id=chamber_30.id, caliber_id=cal_30.id, is_primary=True),
+    ])
+    db.flush()
+
+    bullet_140 = Bullet(
+        manufacturer_id=mfr.id, caliber_id=cal_65.id, name="ELD Match", weight_grains=140.0,
+    )
+    db.add(bullet_140)
+    db.flush()
+
+    cart_140 = Cartridge(
+        manufacturer_id=mfr.id, caliber_id=cal_65.id, bullet_id=bullet_140.id,
+        name="Hornady 6.5 CM 140gr ELD Match", bullet_weight_grains=140.0, muzzle_velocity_fps=2710,
+    )
+    db.add(cart_140)
+
+    rifle_65 = RifleModel(
+        manufacturer_id=mfr.id, model="B-14 HMR", chamber_id=chamber_65.id, barrel_length_inches=22.0,
+    )
+    rifle_30 = RifleModel(
+        manufacturer_id=mfr.id, model="B-14 HMR", chamber_id=chamber_30.id, barrel_length_inches=24.0,
+    )
+    db.add_all([rifle_65, rifle_30])
+    db.commit()
+
+    return mfr, cal_65, cal_30, chamber_65, chamber_30, bullet_140, cart_140, rifle_65, rifle_30
+
+
+class TestFuzzyMatchConfidence:
+    """DR-115: Fuzzy matches with disagreeing weight/caliber/chamber should have low confidence."""
+
+    def test_bullet_fuzzy_weight_disagrees_low_confidence(self, db):
+        mfr, cal_65, *_ = _seed_for_fuzzy(db)
+        resolver = EntityResolver(db)
+
+        # 225gr ELD Match should fuzzy-match 140gr ELD Match but at LOW confidence
+        extracted = {"name": {"value": "ELD Match"}, "weight_grains": {"value": 225}}
+        result = resolver.match_bullet(extracted, mfr.id, cal_65.id)
+
+        assert result.matched is True
+        assert result.method == "fuzzy_name"
+        assert result.confidence < 0.7  # Below threshold → flagged, not auto-skipped
+
+    def test_bullet_fuzzy_weight_agrees_high_confidence(self, db):
+        mfr, cal_65, *_ = _seed_for_fuzzy(db)
+        resolver = EntityResolver(db)
+
+        # 140gr ELD Match should fuzzy-match 140gr ELD Match at HIGH confidence
+        extracted = {"name": {"value": "ELD Match"}, "weight_grains": {"value": 140}}
+        result = resolver.match_bullet(extracted, mfr.id, cal_65.id)
+
+        assert result.matched is True
+        assert result.confidence >= 0.7  # Above threshold → auto-matched
+
+    def test_bullet_fuzzy_no_weight_low_confidence(self, db):
+        mfr, cal_65, *_ = _seed_for_fuzzy(db)
+        resolver = EntityResolver(db)
+
+        # No weight → low confidence (can't verify it's the same product)
+        extracted = {"name": {"value": "ELD Match"}}
+        result = resolver.match_bullet(extracted, mfr.id, cal_65.id)
+
+        assert result.matched is True
+        assert result.confidence < 0.7
+
+    def test_cartridge_fuzzy_weight_disagrees_low_confidence(self, db):
+        mfr, cal_65, *_ = _seed_for_fuzzy(db)
+        resolver = EntityResolver(db)
+
+        extracted = {"name": {"value": "Hornady 6.5 CM 225gr ELD Match"}, "bullet_weight_grains": {"value": 225}}
+        result = resolver.match_cartridge(extracted, mfr.id, cal_65.id)
+
+        assert result.matched is True
+        assert result.method == "fuzzy_name"
+        assert result.confidence < 0.7
+
+    def test_rifle_fuzzy_chamber_disagrees_low_confidence(self, db):
+        fixtures = _seed_for_fuzzy(db)
+        mfr = fixtures[0]
+        resolver = EntityResolver(db)
+
+        # Match "B-14 HMR" with a non-existent chamber to simulate disagreement
+        extracted = {"model": {"value": "B-14 HMR"}}
+        result = resolver.match_rifle(extracted, mfr.id, "nonexistent-chamber-id")
+
+        assert result.matched is True
+        assert result.confidence < 0.7
+
+    def test_rifle_fuzzy_chamber_agrees_high_confidence(self, db):
+        fixtures = _seed_for_fuzzy(db)
+        mfr, chamber_65 = fixtures[0], fixtures[3]
+        resolver = EntityResolver(db)
+
+        extracted = {"model": {"value": "B-14 HMR"}}
+        result = resolver.match_rifle(extracted, mfr.id, chamber_65.id)
+
+        assert result.matched is True
+        assert result.confidence >= 0.7

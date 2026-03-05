@@ -253,23 +253,32 @@ class EntityResolver:
                             details=f"weight={weight}, name_score={name_score:.2f}",
                         )
 
-        # Tier 3: Fuzzy name match
+        # Tier 3: Fuzzy name match — with weight agreement check
         if name:
             best_score = 0.0
             best_bullet: Bullet | None = None
+            best_weight_agrees = False
             for bullet in candidates:
                 score = _name_similarity(name, bullet.name)
                 if score > best_score:
                     best_score = score
                     best_bullet = bullet
+                    if weight is not None:
+                        try:
+                            best_weight_agrees = abs(bullet.weight_grains - float(weight)) <= 1.0
+                        except (ValueError, TypeError):
+                            best_weight_agrees = False
+                    else:
+                        best_weight_agrees = False
 
             if best_bullet and best_score > 0.5:
+                confidence_factor = 0.8 if best_weight_agrees else 0.4
                 return MatchResult(
                     matched=True,
                     entity_id=best_bullet.id,
-                    confidence=round(best_score * 0.8, 2),
+                    confidence=round(best_score * confidence_factor, 2),
                     method="fuzzy_name",
-                    details=f"matched '{best_bullet.name}' with score {best_score:.2f}",
+                    details=f"matched '{best_bullet.name}' score={best_score:.2f} weight_agrees={best_weight_agrees}",
                 )
 
         return MatchResult(matched=False, details=f"no match for bullet '{name}'")
@@ -311,23 +320,32 @@ class EntityResolver:
                             details=f"weight={weight}, name_score={name_score:.2f}",
                         )
 
-        # Tier 3: Fuzzy name match
+        # Tier 3: Fuzzy name match — with weight agreement check
         if name:
             best_score = 0.0
             best_cart: Cartridge | None = None
+            best_weight_agrees = False
             for cart in candidates:
                 score = _name_similarity(name, cart.name)
                 if score > best_score:
                     best_score = score
                     best_cart = cart
+                    if weight is not None:
+                        try:
+                            best_weight_agrees = abs(cart.bullet_weight_grains - float(weight)) <= 1.0
+                        except (ValueError, TypeError):
+                            best_weight_agrees = False
+                    else:
+                        best_weight_agrees = False
 
             if best_cart and best_score > 0.5:
+                confidence_factor = 0.8 if best_weight_agrees else 0.4
                 return MatchResult(
                     matched=True,
                     entity_id=best_cart.id,
-                    confidence=round(best_score * 0.8, 2),
+                    confidence=round(best_score * confidence_factor, 2),
                     method="fuzzy_name",
-                    details=f"matched '{best_cart.name}' with score {best_score:.2f}",
+                    details=f"matched '{best_cart.name}' score={best_score:.2f} weight_agrees={best_weight_agrees}",
                 )
 
         return MatchResult(matched=False, details=f"no match for cartridge '{name}'")
@@ -356,7 +374,7 @@ class EntityResolver:
                     details=f"model_score={name_score:.2f}",
                 )
 
-        # Tier 3: Fuzzy — search all rifles by this manufacturer
+        # Tier 3: Fuzzy — search all rifles by this manufacturer, with chamber agreement check
         if manufacturer_id:
             all_by_mfr = self._session.query(RifleModel).filter(RifleModel.manufacturer_id == manufacturer_id).all()
             best_score = 0.0
@@ -368,12 +386,14 @@ class EntityResolver:
                     best_rifle = rifle
 
             if best_rifle and best_score > 0.5:
+                chamber_agrees = chamber_id is not None and best_rifle.chamber_id == chamber_id
+                confidence_factor = 0.8 if chamber_agrees else 0.4
                 return MatchResult(
                     matched=True,
                     entity_id=best_rifle.id,
-                    confidence=round(best_score * 0.8, 2),
+                    confidence=round(best_score * confidence_factor, 2),
                     method="fuzzy_name",
-                    details=f"matched '{best_rifle.model}' with score {best_score:.2f}",
+                    details=f"matched '{best_rifle.model}' score={best_score:.2f} chamber_agrees={chamber_agrees}",
                 )
 
         return MatchResult(matched=False, details=f"no match for rifle '{model_name}'")

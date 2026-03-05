@@ -32,6 +32,9 @@ from drift.pipeline.resolution.resolver import EntityResolver, _get_value
 logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
 logger = logging.getLogger(__name__)
 
+# Matches below this confidence are flagged for review instead of auto-skipped
+MATCH_CONFIDENCE_THRESHOLD = 0.7
+
 
 def _make_bullet(entity: dict, manufacturer_id: str, caliber_id: str, source_url: str) -> Bullet:
     """Create a Bullet ORM instance from an extracted entity dict."""
@@ -209,7 +212,7 @@ def main() -> None:  # noqa: C901
                     "action": "",
                 }
 
-                if resolution.match.matched:
+                if resolution.match.matched and resolution.match.confidence >= MATCH_CONFIDENCE_THRESHOLD:
                     entry["action"] = "matched_existing"
                     stats[entity_type]["matched"] += 1
                     logger.info(
@@ -219,6 +222,19 @@ def main() -> None:  # noqa: C901
                         resolution.match.entity_id,
                         resolution.match.confidence * 100,
                         resolution.match.method,
+                    )
+                elif resolution.match.matched:
+                    # Low-confidence match — flag for review instead of auto-skipping
+                    entry["action"] = "flagged_low_confidence"
+                    entry["suggested_match"] = resolution.match.entity_id
+                    stats[entity_type]["flagged"] += 1
+                    logger.warning(
+                        "  [%d] FLAGGED (low confidence %.0f%%): %s → %s (%s)",
+                        j + 1,
+                        resolution.match.confidence * 100,
+                        name,
+                        resolution.match.entity_id,
+                        resolution.match.details,
                     )
                 elif resolution.unresolved_refs:
                     entry["action"] = "flagged_unresolved"
