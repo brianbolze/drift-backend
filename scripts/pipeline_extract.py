@@ -52,20 +52,48 @@ def _url_hash_from_manifest(manifest: list[dict]) -> dict[str, dict]:
     return lookup
 
 
+def _infer_provider_from_model(model: str | None) -> str | None:
+    """Infer provider from model name if possible."""
+    if not model:
+        return None
+    model_lower = model.lower()
+
+    # OpenAI model patterns
+    if any(prefix in model_lower for prefix in ['gpt-', 'o1-', 'o3-']):
+        return "openai"
+
+    # Anthropic model patterns
+    if any(prefix in model_lower for prefix in ['claude-', 'haiku-', 'sonnet-', 'opus-']):
+        return "anthropic"
+
+    return None
+
+
 def main() -> None:  # noqa: C901
     parser = argparse.ArgumentParser(description="Extract product data from reduced HTML")
     parser.add_argument("--manifest", type=Path, default=MANIFEST_PATH, help="URL manifest JSON path")
     parser.add_argument(
         "--provider",
         type=str,
-        default="anthropic",
+        default=None,
         choices=["anthropic", "openai"],
-        help="LLM provider to use (default: anthropic)",
+        help="LLM provider to use (auto-detected from model if not specified)",
     )
     parser.add_argument("--model", type=str, default=None, help="LLM model to use (default: provider-specific)")
     parser.add_argument("--limit", type=int, default=0, help="Max URLs to process (0 = all)")
     parser.add_argument("--reextract", action="store_true", help="Re-extract even if cached result exists")
     args = parser.parse_args()
+
+    # Auto-detect provider from model name if not explicitly specified
+    provider_name = args.provider
+    if not provider_name and args.model:
+        provider_name = _infer_provider_from_model(args.model)
+        if provider_name:
+            logger.info("Auto-detected provider '%s' from model name '%s'", provider_name, args.model)
+
+    # Default to anthropic if still not determined
+    if not provider_name:
+        provider_name = "anthropic"
 
     if not args.manifest.exists():
         raise SystemExit(f"Manifest not found: {args.manifest}\nRun pipeline_fetch.py first.")
@@ -81,7 +109,7 @@ def main() -> None:  # noqa: C901
     EXTRACTED_DIR.mkdir(parents=True, exist_ok=True)
     REVIEW_DIR.mkdir(parents=True, exist_ok=True)
 
-    provider = create_provider(args.provider)
+    provider = create_provider(provider_name)
     engine = ExtractionEngine(provider=provider, model=args.model)
 
     stats = {"extracted": 0, "skipped": 0, "failed": 0, "flagged": 0, "total": 0}

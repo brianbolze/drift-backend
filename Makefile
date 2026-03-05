@@ -7,7 +7,7 @@ VENV := .venv/bin
 PYTHON := python3
 
 # Pipeline Configuration (can be overridden via environment)
-PIPELINE_PROVIDER ?= anthropic
+PIPELINE_PROVIDER ?=
 PIPELINE_MODEL ?=
 PIPELINE_LIMIT ?= 0
 
@@ -138,9 +138,9 @@ pipeline-validate: ## Validate pipeline manifest and configuration
 pipeline-fetch: ## Fetch data from external sources
 	$(VENV)/python scripts/pipeline_fetch.py
 
-pipeline-extract: ## Extract and transform fetched data (use PIPELINE_PROVIDER env var)
+pipeline-extract: ## Extract and transform fetched data (provider auto-detected from model)
 	$(VENV)/python scripts/pipeline_extract.py \
-		--provider $(PIPELINE_PROVIDER) \
+		$(if $(PIPELINE_PROVIDER),--provider $(PIPELINE_PROVIDER)) \
 		$(if $(PIPELINE_MODEL),--model $(PIPELINE_MODEL)) \
 		$(if $(filter-out 0,$(PIPELINE_LIMIT)),--limit $(PIPELINE_LIMIT))
 
