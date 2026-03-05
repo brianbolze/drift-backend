@@ -59,12 +59,18 @@ class ResolutionResult:
 
 
 def _normalize(name: str) -> str:
-    """Normalize a name for comparison: lowercase, strip punctuation (preserving periods), collapse whitespace."""
+    """Normalize a name for comparison: lowercase, strip punctuation, collapse whitespace.
+
+    Periods are kept only when leading a token (caliber names like ".308", ".223").
+    Trailing periods are stripped (handles "Inc." vs "Inc", "INC." vs "Inc").
+    """
     name = name.lower().strip()
     # Keep periods to preserve caliber names like ".308", ".223"
     name = re.sub(r"[^\w\s.]", " ", name)
     name = re.sub(r"\s+", " ", name)
-    return name.strip()
+    # Strip trailing periods from tokens that don't start with "." (caliber prefix)
+    tokens = [t.rstrip(".") if not t.startswith(".") else t for t in name.split()]
+    return " ".join(tokens).strip()
 
 
 def _name_similarity(a: str, b: str) -> float:
@@ -123,20 +129,22 @@ class EntityResolver:
                     if _normalize(alt) == norm_name:
                         return MatchResult(matched=True, entity_id=mfr.id, confidence=0.95, method="alt_name")
 
-        # Fuzzy: check if extracted name contains or is contained in DB name
+        # Fuzzy: check main name and all alt_names
         best_match: MatchResult | None = None
         best_score = 0.0
         for mfr in self._get_manufacturers():
-            score = _name_similarity(name, mfr.name)
-            if score > 0.5 and score > best_score:
-                best_score = score
-                best_match = MatchResult(
-                    matched=True,
-                    entity_id=mfr.id,
-                    confidence=round(score * 0.9, 2),
-                    method="fuzzy_name",
-                    details=f"matched '{mfr.name}' with score {score:.2f}",
-                )
+            candidates = [mfr.name] + (mfr.alt_names or [])
+            for candidate in candidates:
+                score = _name_similarity(name, candidate)
+                if score > 0.5 and score > best_score:
+                    best_score = score
+                    best_match = MatchResult(
+                        matched=True,
+                        entity_id=mfr.id,
+                        confidence=round(score * 0.9, 2),
+                        method="fuzzy_name",
+                        details=f"matched '{candidate}' (via {mfr.name}) with score {score:.2f}",
+                    )
 
         if best_match:
             return best_match
