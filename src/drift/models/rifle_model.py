@@ -2,7 +2,7 @@
 
 from typing import TYPE_CHECKING
 
-from sqlalchemy import JSON, Float, String, Text
+from sqlalchemy import JSON, Boolean, Float, String, Text
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from drift.models.base import Base, TimestampMixin, uuid_fk, uuid_pk
@@ -29,6 +29,8 @@ class RifleModel(TimestampMixin, Base):
     barrel_finish: Mapped[str | None] = mapped_column(String(100), nullable=True)
     model_family: Mapped[str | None] = mapped_column(String(255), nullable=True)
     source_url: Mapped[str | None] = mapped_column(String(500), nullable=True)
+    data_source: Mapped[str] = mapped_column(String(50), default="pipeline", server_default="pipeline")
+    is_locked: Mapped[bool] = mapped_column(Boolean, default=False, server_default="0")
 
     # Relationships
     manufacturer: Mapped["Manufacturer"] = relationship(back_populates="rifle_models")  # noqa: F821

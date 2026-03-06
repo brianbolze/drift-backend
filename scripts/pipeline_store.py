@@ -35,6 +35,22 @@ logger = logging.getLogger(__name__)
 # Matches below this confidence are flagged for review instead of auto-skipped
 MATCH_CONFIDENCE_THRESHOLD = 0.7
 
+# Valid data_source values for provenance tracking
+_VALID_DATA_SOURCES = {"pipeline", "cowork", "manual"}
+
+# ORM model class for each entity type (used for locked-record checks)
+_ENTITY_MODEL = {
+    "bullet": Bullet,
+    "cartridge": Cartridge,
+    "rifle": RifleModel,
+}
+
+
+def _get_data_source(extraction_data: dict) -> str:
+    """Read data_source from extraction metadata, defaulting to 'pipeline'."""
+    ds = extraction_data.get("data_source", "pipeline")
+    return ds if ds in _VALID_DATA_SOURCES else "pipeline"
+
 
 def _load_rejected_calibers() -> set[str]:
     """Load caliber names that should be auto-rejected (pistol, shotgun, etc.).
@@ -60,7 +76,9 @@ def _has_rejected_caliber(resolution, rejected_calibers: set[str]) -> bool:
     return False
 
 
-def _make_bullet(entity: dict, manufacturer_id: str, bullet_diameter_inches: float, source_url: str) -> Bullet:
+def _make_bullet(
+    entity: dict, manufacturer_id: str, bullet_diameter_inches: float, source_url: str, data_source: str = "pipeline"
+) -> Bullet:
     """Create a Bullet ORM instance from an extracted entity dict."""
     return Bullet(
         id=str(uuid.uuid4()),
@@ -79,6 +97,7 @@ def _make_bullet(entity: dict, manufacturer_id: str, bullet_diameter_inches: flo
         used_for=_get_value(entity, "used_for"),
         source_url=source_url,
         extraction_confidence=_avg_confidence(entity),
+        data_source=data_source,
     )
 
 
@@ -88,6 +107,7 @@ def _make_cartridge(
     caliber_id: str,
     bullet_id: str | None,
     source_url: str,
+    data_source: str = "pipeline",
 ) -> Cartridge:
     """Create a Cartridge ORM instance from an extracted entity dict."""
     return Cartridge(
@@ -107,10 +127,13 @@ def _make_cartridge(
         product_line=_get_value(entity, "product_line"),
         source_url=source_url,
         extraction_confidence=_avg_confidence(entity),
+        data_source=data_source,
     )
 
 
-def _make_rifle(entity: dict, manufacturer_id: str, chamber_id: str, source_url: str) -> RifleModel:
+def _make_rifle(
+    entity: dict, manufacturer_id: str, chamber_id: str, source_url: str, data_source: str = "pipeline"
+) -> RifleModel:
     """Create a RifleModel ORM instance from an extracted entity dict."""
     return RifleModel(
         id=str(uuid.uuid4()),
@@ -124,6 +147,7 @@ def _make_rifle(entity: dict, manufacturer_id: str, chamber_id: str, source_url:
         barrel_finish=_get_value(entity, "barrel_finish"),
         model_family=_get_value(entity, "model_family"),
         source_url=source_url,
+        data_source=data_source,
     )
 
 
@@ -217,9 +241,9 @@ def main() -> None:  # noqa: C901
         logger.info("Loaded %d rejected calibers", len(rejected_calibers))
 
     stats = {
-        "bullet": {"created": 0, "matched": 0, "updated": 0, "flagged": 0, "rejected": 0},
-        "cartridge": {"created": 0, "matched": 0, "updated": 0, "flagged": 0, "rejected": 0},
-        "rifle": {"created": 0, "matched": 0, "updated": 0, "flagged": 0, "rejected": 0},
+        "bullet": {"created": 0, "matched": 0, "updated": 0, "flagged": 0, "rejected": 0, "skipped_locked": 0},
+        "cartridge": {"created": 0, "matched": 0, "updated": 0, "flagged": 0, "rejected": 0, "skipped_locked": 0},
+        "rifle": {"created": 0, "matched": 0, "updated": 0, "flagged": 0, "rejected": 0, "skipped_locked": 0},
     }
     report_entries: list[dict] = []
 
@@ -234,6 +258,7 @@ def main() -> None:  # noqa: C901
             entity_type = extraction_data.get("entity_type", "")
             entities = extraction_data.get("entities", [])
             bc_sources = extraction_data.get("bc_sources", [])
+            data_source = _get_data_source(extraction_data)
 
             if entity_type not in stats:
                 logger.warning("[%d/%d] SKIP (unknown type '%s'): %s", i + 1, len(entries), entity_type, url)
@@ -273,6 +298,16 @@ def main() -> None:  # noqa: C901
                     continue
 
                 if resolution.match.matched and resolution.match.confidence >= MATCH_CONFIDENCE_THRESHOLD:
+                    # Check if the existing record is locked (manually curated)
+                    model_cls = _ENTITY_MODEL.get(entity_type)
+                    existing = session.get(model_cls, resolution.match.entity_id) if model_cls else None
+                    if existing and getattr(existing, "is_locked", False):
+                        entry["action"] = "skipped_locked"
+                        stats[entity_type]["skipped_locked"] += 1
+                        logger.info("  [%d] SKIPPED (locked): %s → %s", j + 1, name, resolution.match.entity_id)
+                        report_entries.append(entry)
+                        continue
+
                     entry["action"] = "matched_existing"
                     stats[entity_type]["matched"] += 1
                     logger.info(
@@ -288,7 +323,7 @@ def main() -> None:  # noqa: C901
                     # This allows re-runs with improved resolvers to fix previously committed
                     # bad matches (e.g. wrong bullet_id assigned before abbreviation expansion).
                     if entity_type == "cartridge" and resolution.match.entity_id:
-                        existing_cart = session.get(Cartridge, resolution.match.entity_id)
+                        existing_cart = existing or session.get(Cartridge, resolution.match.entity_id)
                         if existing_cart and resolution.bullet_id and existing_cart.bullet_id != resolution.bullet_id:
                             entry["action"] = "matched_updated"
                             entry["old_bullet_id"] = existing_cart.bullet_id
@@ -350,7 +385,11 @@ def main() -> None:  # noqa: C901
                                 if resolution.bullet_diameter_inches is None:
                                     raise ValueError(f"Cannot create bullet '{name}': bullet_diameter_inches is None")
                                 obj = _make_bullet(
-                                    entity, resolution.manufacturer_id, resolution.bullet_diameter_inches, url
+                                    entity,
+                                    resolution.manufacturer_id,
+                                    resolution.bullet_diameter_inches,
+                                    url,
+                                    data_source=data_source,
                                 )
                                 session.add(obj)
                                 # Only attach BC sources that belong to this bullet
@@ -368,12 +407,19 @@ def main() -> None:  # noqa: C901
                                     resolution.caliber_id,
                                     resolution.bullet_id,  # None if unresolved (not empty string)
                                     url,
+                                    data_source=data_source,
                                 )
                                 session.add(obj)
                                 entry["created_id"] = obj.id
                                 _add_cartridge_bc_sources(session, resolution.bullet_id, bc_sources, entity, url)
                             elif entity_type == "rifle":
-                                obj = _make_rifle(entity, resolution.manufacturer_id, resolution.chamber_id, url)
+                                obj = _make_rifle(
+                                    entity,
+                                    resolution.manufacturer_id,
+                                    resolution.chamber_id,
+                                    url,
+                                    data_source=data_source,
+                                )
                                 session.add(obj)
                                 entry["created_id"] = obj.id
                             savepoint.commit()
@@ -415,6 +461,7 @@ def main() -> None:  # noqa: C901
     for etype, counts in stats.items():
         updated = counts.get("updated", 0)
         rejected = counts.get("rejected", 0)
+        locked = counts.get("skipped_locked", 0)
         parts = [
             f"{counts['created']} created",
             f"{counts['matched']} matched",
@@ -424,6 +471,8 @@ def main() -> None:  # noqa: C901
         parts.append(f"{counts['flagged']} flagged")
         if rejected:
             parts.append(f"{rejected} rejected")
+        if locked:
+            parts.append(f"{locked} skipped (locked)")
         print(f"  {etype}: {', '.join(parts)}")
     print(f"\nReport written to: {STORE_REPORT_PATH}")
 

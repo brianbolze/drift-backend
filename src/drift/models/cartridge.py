@@ -3,7 +3,7 @@
 from datetime import datetime
 from typing import TYPE_CHECKING
 
-from sqlalchemy import JSON, DateTime, Float, Integer, String
+from sqlalchemy import JSON, Boolean, DateTime, Float, Integer, String
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from drift.models.base import Base, TimestampMixin, uuid_fk, uuid_pk
@@ -48,10 +48,12 @@ class Cartridge(TimestampMixin, Base):
     # Ranking
     popularity_rank: Mapped[int | None] = mapped_column(Integer, nullable=True)
 
-    # Provenance
+    # Provenance & curation
     source_url: Mapped[str | None] = mapped_column(String(500), nullable=True)
     extraction_confidence: Mapped[float | None] = mapped_column(Float, nullable=True)
     last_verified_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+    data_source: Mapped[str] = mapped_column(String(50), default="pipeline", server_default="pipeline")
+    is_locked: Mapped[bool] = mapped_column(Boolean, default=False, server_default="0")
 
     # Relationships
     manufacturer: Mapped["Manufacturer"] = relationship(back_populates="cartridges")  # noqa: F821
