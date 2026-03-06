@@ -4,13 +4,57 @@ You're responsible for auditing the data in our ballistics database for correctn
 
 The database is at `data/drift.db` (SQLite). Start by reading `docs/db_summary.md` for a schema overview and data snapshot.
 
+## Persistent State Files
+
+This task maintains two state files across runs. **Read these at the start of every run.**
+
+### `data/data_qa/spot_check_log.json`
+
+Tracks which records have been spot-checked and when. Format:
+
+```json
+[
+  {"entity": "bullet", "id": 42, "name": "Berger 30cal 168gr VLD Target", "verified": "2026-03-06", "status": "pass", "notes": ""},
+  {"entity": "bullet", "id": 99, "name": "Lapua 8mm G573 120gr", "verified": "2026-03-06", "status": "fail", "notes": "Weight 180 in DB, 120 on website"}
+]
+```
+
+- **Exclude** records verified in the last **30 days** from spot-check sampling.
+- **Prioritize** never-verified records first, then oldest-verified.
+- **Append** new verification results after each run. Do not remove old entries.
+- If the file doesn't exist, create it.
+
+### `data/data_qa/known_issues.json`
+
+Tracks previously-identified structural issues so each run can distinguish **new** findings from **known** ones. Format:
+
+```json
+[
+  {
+    "id": "C1-cartridge-bullet-weight-mismatches",
+    "severity": "critical",
+    "summary": "70 cartridge-bullet weight mismatches from resolver bug",
+    "first_seen": "2026-03-06",
+    "last_seen": "2026-03-06",
+    "count": 70,
+    "status": "open"
+  }
+]
+```
+
+- After Phase 1, compare current findings against this file.
+- **New issues** (not in the file): report prominently in Critical/Warnings sections and add to the file.
+- **Known issues** (already in the file): update `last_seen` and `count`. Report in a separate "Known Issues Status" section — note if count changed (improved/worsened) or resolved.
+- **Resolved issues** (in file but no longer found): set `status: "resolved"` and note in the report.
+- If the file doesn't exist, create it and treat all findings as new.
+
 ## Audit Methodology
 
 For each run, do the following in order:
 
 ### Phase 1: Structural Integrity (SQL only — no web needed)
 
-Run these checks via SQL queries on drift.db:
+Run these checks via SQL queries on drift.db. After completing all checks, compare findings against `known_issues.json` to classify each finding as **new** or **known** (see Persistent State Files above).
 
 **Referential integrity:**
 _Low Priority_: Foreign Key constraints should handle this at the database level.
@@ -38,18 +82,25 @@ _Low Priority_: Foreign Key constraints should handle this at the database level
 
 ### Phase 2: Spot-Check Verification (web search)
 
-Sample **10 records** for web-based cross-referencing. Pick a mix:
-- 9-12 bullets from high-priority calibers (.264, .308, .284 diameter) from major manufacturers (Hornady, Sierra, Berger, Lapua)
-- 9-12 cartridges from top LR calibers (6.5 Creedmoor, .308 Win, 6.5 PRC)
+**Before sampling**, read `data/data_qa/spot_check_log.json`. Exclude any record verified in the last 30 days. Prioritize never-verified records, then oldest-verified.
+
+Sample **10 bullets** and **10 cartridges** for web-based cross-referencing. Pick a mix:
+- 6-8 bullets from high-priority calibers (.264, .308, .284 diameter) from major manufacturers (Hornady, Sierra, Berger, Lapua)
+- 6-8 cartridges from top LR calibers (6.5 Creedmoor, .308 Win, 6.5 PRC)
 - 2 bullets that had unusual values flagged in Phase 1
 - 2 randomly selected records
+- Fill remaining slots from never-verified or oldest-verified records across any manufacturer
 
-For the 10 bullets and 10 cartridges, it's okay to do similar sets of 2-3 -- say, 2-3 bullets from the same manufacturer & family, 3-5 sets - to make the searching efficient. 
+For the 10 bullets and 10 cartridges, it's okay to do similar sets of 2-3 — say, 2-3 bullets from the same manufacturer & family, 3-5 sets — to make the searching efficient.
 
 For each sampled record:
 1. Visit the `source_url` (if available) or search the manufacturer's site
 2. Verify: BC values (G1 and G7), bullet weight, diameter, muzzle velocity (for cartridges)
 3. Note any discrepancies between our DB and the source
+
+**BC verification is exact-match.** Published BC values are physical constants printed by the manufacturer — they must match the website exactly to the published precision (typically 3 decimal places). ANY discrepancy is **CRITICAL**, even 0.001. A BC of 0.507 stored as 0.508 means the extraction or storage was wrong and will produce incorrect ballistic solutions. Do not apply tolerance.
+
+**After verification**, append all results to `data/data_qa/spot_check_log.json`.
 
 **Tips for specific manufacturer sites:**
 From earlier AI research agent runs, here are some guidelines from what we've found so far:
@@ -86,18 +137,24 @@ Write a markdown report to `data/data_qa/report_YYYY-MM-DD.md` with this structu
 
 ## Summary
 - Database: X manufacturers, Y calibers, Z bullets, W cartridges
-- Critical issues found: N
-- Warnings found: N
+- **New** critical issues: N | **New** warnings: N
+- Known open issues: N (X resolved since last run)
+- Spot-check coverage: N/Z bullets verified (X%), N/W cartridges verified (X%)
 - Informational: N
 
-## Critical Issues
-[Wrong values, broken linkages, diameter mismatches — things that would cause incorrect ballistic solutions]
+## New Critical Issues
+[Only issues NOT in known_issues.json — wrong values, broken linkages, BC mismatches]
 
-## Warnings
-[Duplicates, missing BCs for major manufacturers, implausible but not necessarily wrong values]
+## New Warnings
+[Only issues NOT in known_issues.json — duplicates, missing BCs, implausible values]
+
+## Known Issues Status
+[For each issue in known_issues.json: still present / count changed / resolved]
+[Update known_issues.json accordingly]
 
 ## Spot-Check Results
-[Table of 10 sampled records with verification status]
+[Table of 10 bullets + 10 cartridges with verification status]
+[Note which records were new-to-verify vs re-verification]
 
 ## Informational
 [Name quality stats, coverage gaps, expected manufacturer limitations]
@@ -107,6 +164,6 @@ Write a markdown report to `data/data_qa/report_YYYY-MM-DD.md` with this structu
 ```
 
 **Severity guide:**
-- **CRITICAL**: Wrong BC, wrong bullet-cartridge link, diameter/caliber mismatch — directly causes wrong ballistic calculations
+- **CRITICAL**: Wrong BC (ANY discrepancy from published value, even 0.001), wrong bullet-cartridge link, diameter/caliber mismatch — directly causes wrong ballistic calculations
 - **WARNING**: Missing BC (rifle bullets from publishers who should have it), likely duplicates, implausible velocity
 - **INFO**: Name cosmetics, expected gaps (Cutting Edge BCs, Nosler BCs), coverage observations
