@@ -168,3 +168,14 @@ Write a markdown report to `data/data_qa/report_YYYY-MM-DD.md` with this structu
 - **CRITICAL**: Wrong BC (ANY discrepancy from published value, even 0.001), wrong bullet-cartridge link, diameter/caliber mismatch — directly causes wrong ballistic calculations
 - **WARNING**: Missing BC (rifle bullets from publishers who should have it), likely duplicates, implausible velocity
 - **INFO**: Name cosmetics, expected gaps (Cutting Edge BCs, Nosler BCs), coverage observations
+
+## Fixing Issues
+
+Data corrections should be made via **curation patches** (`data/patches/`), not one-off scripts or raw SQL. The curation system (`src/drift/curation.py`) applies numbered YAML patches idempotently, automatically sets `data_source="manual"` + `is_locked=True`, and supports operations like `create_bullet`, `update_bullet`, `add_bc_source`, etc.
+
+```bash
+make curate           # Dry-run preview
+make curate-commit    # Write to DB
+```
+
+See `curation_plan.md` for the full YAML format spec.

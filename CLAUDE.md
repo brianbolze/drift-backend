@@ -9,6 +9,8 @@ Offline-first: LLM extraction at ingestion time, no inference at query time.
 make test                     # Run full test suite
 make lint                     # Check style (black, isort, flake8)
 make format                   # Auto-format code
+make curate                   # Preview curation patches (dry-run)
+make curate-commit            # Apply curation patches to database
 make pipeline-status          # Pipeline execution status
 make pipeline-store           # Dry-run resolve (preview DB changes)
 make pipeline-store-commit    # Commit resolved data to DB
@@ -27,6 +29,7 @@ MANIFEST -> FETCH -> REDUCE -> EXTRACT -> RESOLVE -> STORE
 - **Schemas**: `src/drift/schemas/` (Pydantic 2.0 validation)
 - **Pipeline**: `src/drift/pipeline/` (scraping, extraction, resolution)
 - **Scripts**: `scripts/` (CLI entry points, called via Makefile)
+- **Curation**: `src/drift/curation.py` (YAML patch applier), `data/patches/` (numbered YAML patches)
 - **Database**: `data/drift.db` (SQLite, source of truth)
 - **Pipeline cache**: `data/pipeline/{fetched,reduced,extracted,review,batches}/`
 
@@ -70,6 +73,22 @@ make pipeline-store-commit    # Commit
 ```
 
 Env vars: `PIPELINE_PROVIDER` (anthropic|openai), `PIPELINE_MODEL`, `PIPELINE_LIMIT`
+
+## Data Curation Quick Reference
+
+YAML patches in `data/patches/` for manual data fixes (missing bullets, BC corrections, aliases). Replaces one-off scripts.
+
+```bash
+make curate           # Dry-run preview
+make curate-commit    # Write to DB
+```
+
+- Patches are numbered (`001_`, `002_`, ...) and applied in order
+- All created records get `data_source="manual"` + `is_locked=True` automatically
+- Operations: `create_bullet`, `create_cartridge`, `create_rifle`, `update_bullet`, `update_cartridge`, `add_bc_source`, `add_entity_alias`
+- Name resolution uses EntityAlias table (same as pipeline)
+- Idempotent: safe to re-run — existing records are skipped
+- See `curation_plan.md` for full design and YAML format spec
 
 ## TODO.md — Tech Debt Backlog
 
