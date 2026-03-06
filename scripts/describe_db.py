@@ -336,7 +336,7 @@ def build_summary(conn: sqlite3.Connection) -> str:
         "chamber": "name, alt_names (JSON). Junction: `chamber_accepts_caliber` (chamber_id, caliber_id, is_primary)",
         "platform": "name, short_name. Junction: `caliber_platform` (caliber_id, platform_id, popularity_rank)",
         "bullet": "name, manufacturer_id, bullet_diameter_inches, weight_grains, bc_g1_published, bc_g7_published, type_tags (JSON), base_type, tip_type",
-        "cartridge": "name, manufacturer_id, caliber_id, bullet_id, bullet_weight_grains, muzzle_velocity_fps, test_barrel_length_inches",
+        "cartridge": "name, manufacturer_id, caliber_id, bullet_id, bullet_weight_grains, muzzle_velocity_fps, test_barrel_length_inches, bc_g1, bc_g7, bullet_length_inches",
         "rifle_model": "model, manufacturer_id, chamber_id, barrel_length_inches, twist_rate, twist_rate_inches",
         "optic": "name, manufacturer_id, reticle_id, click_unit (mil/moa), click_value, magnification_min/max, focal_plane (ffp/sfp)",
         "reticle": "name, alt_names (JSON), unit (mil/moa), manufacturer_id",

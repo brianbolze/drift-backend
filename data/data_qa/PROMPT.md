@@ -43,7 +43,7 @@ Tracks previously-identified structural issues so each run can distinguish **new
 ```
 
 - After Phase 1, compare current findings against this file.
-- **New issues** (not in the file): report prominently in Critical/Warnings sections and add to the file.
+- **New issues** (not in the file): report prominently in Critical/Warnings sections, add to this file, and append an entry to `TODO.md` under "Data Quality" if one doesn't already exist (format per CLAUDE.md).
 - **Known issues** (already in the file): update `last_seen` and `count`. Report in a separate "Known Issues Status" section — note if count changed (improved/worsened) or resolved.
 - **Resolved issues** (in file but no longer found): set `status: "resolved"` and note in the report.
 - If the file doesn't exist, create it and treat all findings as new.
@@ -54,7 +54,7 @@ For each run, do the following in order:
 
 ### Phase 1: Structural Integrity (SQL only — no web needed)
 
-Run these checks via SQL queries on drift.db. After completing all checks, compare findings against `known_issues.json` to classify each finding as **new** or **known** (see Persistent State Files above).
+Run these checks via SQL queries on drift.db. Curated queries for most checks are in `.claude/skills/data-quality/SKILL.md` — use them as a starting point. After completing all checks, compare findings against `known_issues.json` to classify each finding as **new** or **known** (see Persistent State Files above).
 
 **Referential integrity:**
 _Low Priority_: Foreign Key constraints should handle this at the database level.
@@ -72,13 +72,14 @@ _Low Priority_: Foreign Key constraints should handle this at the database level
 - Find bullet pairs sharing the same `manufacturer_id` + `bullet_diameter_inches` + `weight_grains`. List both names and source_urls. If their BC values also match, it's almost certainly a duplicate. Group by manufacturer.
 
 **Implausible values:**
-- BC values: G1 should be 0.050–0.900, G7 should be 0.030–0.500. Flag anything outside these ranges.
+- BC values: G1 should be 0.100–0.800, G7 should be 0.050–0.450. Flag anything outside these ranges.
 - G1/G7 ratio: For bullets with both, the ratio G1/G7 typically falls between 1.5 and 2.5. Outliers may indicate a G1/G7 swap.
 - Muzzle velocity: Flag cartridges with `muzzle_velocity_fps = 0`. Also flag rifle cartridges (non-handgun calibers) with velocity outside 1,600–4,200 fps, and handgun cartridges outside 600–2,200 fps. The exception would be subsonic cartridges like .300 blackout or 8.6 blackout.
 - Bullet weight vs diameter: A .224 bullet over 90gr or a .308 bullet under 80gr is suspicious. Use your domain knowledge to flag implausible weight/diameter combinations.
 
 **Missing critical fields:**
 - Bullets with all four BC fields NULL (`bc_g1_published`, `bc_g1_estimated`, `bc_g7_published`, `bc_g7_estimated`). Group by manufacturer. **Note:** Cutting Edge Bullets and some Nosler entries are expected to have missing BCs — their product pages don't publish them. Only flag rifle-caliber bullets (diameter <= .375) from other manufacturers as warnings.
+- `cartridge.bc_g1`, `cartridge.bc_g7`, and `cartridge.bullet_length_inches` are extracted from manufacturer pages where published — many loads don't publish these specs. NULL values are expected and not errors.
 
 ### Phase 2: Spot-Check Verification (web search)
 

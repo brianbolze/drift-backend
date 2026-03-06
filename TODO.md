@@ -19,6 +19,8 @@ Lightweight tech debt and engineering improvement tracker. Agents and humans app
 
 ## Data Quality
 
+- [ ] Populate cartridge.bc_g1, bc_g7, bullet_length_inches — columns added via migration but not yet extracted/populated from manufacturer pages (source: human, 2026-03-06)
+
 - [ ] 70+ cartridge-bullet weight mismatches (30% of cartridges) — likely wrong bullet_id linkages from pre-abbreviation-expansion pipeline runs (source: QA report, 2026-03-06)
 - [ ] 99 existing cartridges with wrong bullet_id — re-run pipeline-store-commit after ensuring correct bullets exist in DB (source: pipeline working notes)
 - [ ] 7 Hornady International cartridges with zero velocity — pages don't publish MV, need supplementary data source (source: QA report, 2026-03-06)
@@ -35,7 +37,7 @@ Lightweight tech debt and engineering improvement tracker. Agents and humans app
 
 ## Code / Tooling
 
-- [ ] `scripts/describe_db.py` crashes — references `ct.bc_g1` column that doesn't exist on cartridge table (source: agent session, 2026-03-06)
+- [ ]
 
 ## Documentation
 
