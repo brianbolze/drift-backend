@@ -15,7 +15,6 @@ from __future__ import annotations
 
 import argparse
 import asyncio
-import hashlib
 import json
 import logging
 from pathlib import Path
@@ -31,14 +30,10 @@ from drift.pipeline.config import (
 )
 from drift.pipeline.fetching.registry import FetcherRegistry
 from drift.pipeline.reduction.reducer import HtmlReducer
+from drift.pipeline.utils import url_hash
 
 logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
 logger = logging.getLogger(__name__)
-
-
-def url_hash(url: str) -> str:
-    """Deterministic short hash for a URL, used as cache key."""
-    return hashlib.sha256(url.encode()).hexdigest()[:16]
 
 
 async def main() -> None:

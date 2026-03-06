@@ -60,7 +60,7 @@ Lightweight tech debt and engineering improvement tracker. Agents and humans app
 - [ ] `Optic.reticle_id` non-nullable — blocks storing optics with unknown/custom reticles (source: code review, 2026-03-06)
 - [x] `bc_type` and `source` in `ExtractedBCSource` are unconstrained strings — should use `Literal["g1","g7"]` and validate against `BC_SOURCE_TYPES` (source: code review, 2026-03-06)
 - [ ] No controlled-vocabulary validation on `base_type`, `tip_type`, `type_tags`, `used_for` in extraction schemas — config defines valid values but Pydantic doesn't enforce them (source: code review, 2026-03-06)
-- [ ] Duplicate `url_hash()` implementations in `pipeline_fetch.py` and `pipeline_extract.py` — should be a shared util (source: code review, 2026-03-06)
+- [x] Duplicate `url_hash()` implementations in `pipeline_fetch.py` and `pipeline_extract.py` — should be a shared util (source: code review, 2026-03-06)
 - [ ] Confusing script names: `validate_manifest.py` (JSON format) vs `manifest_validate.py` (DB cross-check) (source: code review, 2026-03-06)
 - [x] `pipeline-clean` Makefile target cleans non-existent dirs (`cache/`, `tmp/`) instead of real pipeline dirs (source: code review, 2026-03-06)
 - [ ] `openai` extras not included in any install target — `make pipeline-install` installs `[dev,pipeline]` but not `[openai]`, provider tests fail on fresh install (source: code review, 2026-03-06)

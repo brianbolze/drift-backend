@@ -36,6 +36,7 @@ from drift.pipeline.extraction.providers import (
     LLMRateLimitError,
     create_provider,
 )
+from drift.pipeline.utils import url_hash
 
 logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
 logger = logging.getLogger(__name__)
@@ -43,14 +44,7 @@ logger = logging.getLogger(__name__)
 
 def _url_hash_from_manifest(manifest: list[dict]) -> dict[str, dict]:
     """Build a lookup from url_hash -> manifest entry."""
-    import hashlib
-
-    lookup: dict[str, dict] = {}
-    for entry in manifest:
-        url = entry["url"]
-        uhash = hashlib.sha256(url.encode()).hexdigest()[:16]
-        lookup[uhash] = entry
-    return lookup
+    return {url_hash(entry["url"]): entry for entry in manifest}
 
 
 def _infer_provider_from_model(model: str | None) -> str | None:
