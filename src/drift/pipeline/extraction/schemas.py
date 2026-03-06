@@ -6,7 +6,7 @@ the raw value, the source text from the HTML, and a confidence score.
 
 from __future__ import annotations
 
-from typing import Generic, TypeVar
+from typing import Generic, Literal, TypeVar
 
 from pydantic import BaseModel, ConfigDict, Field
 
@@ -119,7 +119,9 @@ class ExtractedBCSource(BaseModel):
     model_config = ConfigDict(str_strip_whitespace=True)
 
     bullet_name: str
-    bc_type: str = Field(..., description="g1 or g7")
+    bc_type: Literal["g1", "g7"]
     bc_value: float
-    source: str = Field(default="manufacturer", description="e.g. manufacturer, applied_ballistics")
+    source: Literal["manufacturer", "cartridge_page", "applied_ballistics", "doppler_radar", "independent_test", "estimated"] = (
+        "manufacturer"
+    )
     source_methodology: str | None = None

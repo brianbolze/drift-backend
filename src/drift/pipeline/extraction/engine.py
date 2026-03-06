@@ -134,7 +134,7 @@ Rules:
 6. Return valid JSON only — no markdown fencing, no commentary outside the JSON.
 7. Keep "source_text" short (under 80 chars). Use plain text only — never copy raw JSON, HTML tags, \
    or structured markup into source_text. If the supporting text is longer, truncate with "...".
-7. CRITICAL DISTINCTION — "bullet length" vs "cartridge OAL":
+8. CRITICAL DISTINCTION — "bullet length" vs "cartridge OAL":
    - Bullet length (length_inches) = the projectile's tip-to-base measurement, typically 0.5–1.8".
    - Cartridge OAL/COAL = the full assembled round from case head to bullet tip, typically 2.0–3.7".
    These are different measurements. Only extract the projectile length into length_inches. If a page \

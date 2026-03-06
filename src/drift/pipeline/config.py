@@ -108,6 +108,7 @@ BC_TYPES = frozenset({"g1", "g7"})
 BC_SOURCE_TYPES = frozenset(
     {
         "manufacturer",
+        "cartridge_page",
         "applied_ballistics",
         "doppler_radar",
         "independent_test",

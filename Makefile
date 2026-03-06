@@ -232,6 +232,9 @@ pipeline-all: pipeline-shopping-list pipeline-validate pipeline-fetch pipeline-e
 	@echo "═══════════════════════════════════════════════════════════════════════════"
 
 pipeline-clean: ## Clean pipeline temporary files and cache
-	rm -rf data/pipeline/cache/*
-	rm -rf data/pipeline/tmp/*
+	rm -rf data/pipeline/fetched/*
+	rm -rf data/pipeline/reduced/*
+	rm -rf data/pipeline/extracted/*
+	rm -rf data/pipeline/review/*
+	rm -rf data/pipeline/batches/*
 	@echo "✓ Pipeline cache cleaned"

@@ -30,14 +30,6 @@ _load_rejected_calibers = _store_mod._load_rejected_calibers
 
 
 @pytest.fixture()
-def db():
-    engine = create_engine("sqlite:///:memory:")
-    Base.metadata.create_all(engine)
-    with Session(engine) as session:
-        yield session
-
-
-@pytest.fixture()
 def seeded(db):
     """Seed a minimal set of entities for resolver testing."""
     mfr = Manufacturer(
