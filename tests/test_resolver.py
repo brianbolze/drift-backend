@@ -12,7 +12,9 @@ from sqlalchemy.orm import Session
 
 from drift.models import Base, Bullet, Caliber, Cartridge, Manufacturer
 from drift.pipeline.resolution.resolver import (
+    AlternativeMatch,
     EntityResolver,
+    MatchResult,
     ResolutionResult,
     _bc_weight_confidence_boost,
     _bullet_name_score,
@@ -20,6 +22,7 @@ from drift.pipeline.resolution.resolver import (
     _name_similarity,
     _normalize,
     _normalize_caliber,
+    _pick_best_with_alternatives,
 )
 
 _SCRIPTS_DIR = Path(__file__).resolve().parent.parent / "scripts"
@@ -1021,3 +1024,270 @@ class TestCalibreRejection:
         with patch.object(_store_mod, "REJECTED_CALIBERS_PATH", tmp_path / "nonexistent.json"):
             result = _load_rejected_calibers()
         assert result == set()
+
+
+# ---------------------------------------------------------------------------
+# Multi-candidate tracking: alternatives, methods_tried, is_ambiguous
+# ---------------------------------------------------------------------------
+
+
+class TestMatchCartridgeTier2BestNotFirst:
+    """Tier 2 should pick the best-scored candidate, not the first weight match."""
+
+    def test_picks_best_not_first(self, db):
+        """Two cartridges with same weight — higher name score should win."""
+        mfr = Manufacturer(name="TestMfr", country="US")
+        db.add(mfr)
+        db.flush()
+        cal = Caliber(name=".308 Win", bullet_diameter_inches=0.308)
+        db.add(cal)
+        db.flush()
+        bullet = Bullet(manufacturer_id=mfr.id, name="180gr Test", bullet_diameter_inches=0.308, weight_grains=180.0)
+        db.add(bullet)
+        db.flush()
+        # Low name score cartridge (inserted first)
+        c_low = Cartridge(
+            manufacturer_id=mfr.id,
+            caliber_id=cal.id,
+            bullet_id=bullet.id,
+            name="Generic 180gr Load",
+            bullet_weight_grains=180.0,
+            muzzle_velocity_fps=2600,
+        )
+        # High name score cartridge (inserted second)
+        c_high = Cartridge(
+            manufacturer_id=mfr.id,
+            caliber_id=cal.id,
+            bullet_id=bullet.id,
+            name="Premium 180gr AccuBond",
+            bullet_weight_grains=180.0,
+            muzzle_velocity_fps=2600,
+        )
+        db.add_all([c_low, c_high])
+        db.commit()
+
+        resolver = EntityResolver(db)
+        result = resolver.match_cartridge(
+            {"name": {"value": "AccuBond"}, "bullet_weight_grains": {"value": 180.0}},
+            manufacturer_id=mfr.id,
+            caliber_id=cal.id,
+        )
+        assert result.matched is True
+        assert result.entity_id == c_high.id
+
+
+class TestMatchCartridgeTier2ContainmentScoring:
+    """Tier 2 should use containment scoring for asymmetric names."""
+
+    def test_short_name_matches_via_containment(self, db):
+        """'ELD-X' should match '6.5 CM 143gr ELD-X®' via containment, not Jaccard."""
+        mfr = Manufacturer(name="Hornady", country="US")
+        db.add(mfr)
+        db.flush()
+        cal = Caliber(name="6.5 Creedmoor", bullet_diameter_inches=0.264)
+        db.add(cal)
+        db.flush()
+        bullet = Bullet(manufacturer_id=mfr.id, name="143 ELD-X", bullet_diameter_inches=0.264, weight_grains=143.0)
+        db.add(bullet)
+        db.flush()
+        cart = Cartridge(
+            manufacturer_id=mfr.id,
+            caliber_id=cal.id,
+            bullet_id=bullet.id,
+            name="6.5 Creedmoor 143gr ELD-X®",
+            bullet_weight_grains=143.0,
+            muzzle_velocity_fps=2700,
+        )
+        db.add(cart)
+        db.commit()
+
+        resolver = EntityResolver(db)
+        result = resolver.match_cartridge(
+            {"name": {"value": "ELD-X"}, "bullet_weight_grains": {"value": 143.0}},
+            manufacturer_id=mfr.id,
+            caliber_id=cal.id,
+        )
+        assert result.matched is True
+        assert result.entity_id == cart.id
+        assert result.method == "composite_key"
+
+
+class TestMatchCartridgeTier2Threshold055:
+    """Tier 2 threshold should be 0.55 — names scoring 0.3-0.55 should NOT match."""
+
+    def test_low_name_score_rejected(self, db):
+        """A name with low similarity (0.3-0.55) should not match at Tier 2."""
+        mfr = Manufacturer(name="TestMfr", country="US")
+        db.add(mfr)
+        db.flush()
+        cal = Caliber(name=".308 Win", bullet_diameter_inches=0.308)
+        db.add(cal)
+        db.flush()
+        bullet = Bullet(manufacturer_id=mfr.id, name="150gr Test", bullet_diameter_inches=0.308, weight_grains=150.0)
+        db.add(bullet)
+        db.flush()
+        cart = Cartridge(
+            manufacturer_id=mfr.id,
+            caliber_id=cal.id,
+            bullet_id=bullet.id,
+            name="Very Different Product Name XYZ",
+            bullet_weight_grains=150.0,
+            muzzle_velocity_fps=2800,
+        )
+        db.add(cart)
+        db.commit()
+
+        resolver = EntityResolver(db)
+        result = resolver.match_cartridge(
+            {"name": {"value": "Totally Unrelated ABC"}, "bullet_weight_grains": {"value": 150.0}},
+            manufacturer_id=mfr.id,
+            caliber_id=cal.id,
+        )
+        # Even though weight matches, name score should be too low for Tier 2
+        if result.matched:
+            assert result.confidence < 0.85  # If it matched, it should be via fuzzy (lower confidence)
+
+
+class TestAlternativesPopulated:
+    """After matching, alternatives list should contain runner-up candidates."""
+
+    def test_bullet_alternatives_populated(self, db):
+        """With multiple scored bullets, alternatives should be non-empty."""
+        mfr = Manufacturer(name="TestMfr", country="US")
+        db.add(mfr)
+        db.flush()
+        # Two bullets with same weight, both matching "Match" in name
+        b1 = Bullet(
+            manufacturer_id=mfr.id, name="308 Match Target", bullet_diameter_inches=0.308, weight_grains=175.0
+        )
+        b2 = Bullet(
+            manufacturer_id=mfr.id, name="308 Match Competition", bullet_diameter_inches=0.308, weight_grains=175.0
+        )
+        db.add_all([b1, b2])
+        db.commit()
+
+        resolver = EntityResolver(db)
+        result = resolver.match_bullet(
+            {"name": {"value": "Match"}, "weight_grains": {"value": 175.0}},
+            manufacturer_id=mfr.id,
+            bullet_diameter_inches=0.308,
+        )
+        assert result.matched is True
+        # Both should score — one is best, one is alternative
+        assert len(result.alternatives) > 0
+        assert all(isinstance(a, AlternativeMatch) for a in result.alternatives)
+
+
+class TestMatchResultIsAmbiguous:
+    """is_ambiguous should be True when gap to next-best is < 0.2."""
+
+    def test_close_scores_are_ambiguous(self):
+        """Two candidates with close scores should be flagged as ambiguous."""
+        result = MatchResult(
+            matched=True,
+            entity_id="a",
+            confidence=0.85,
+            method="composite_key",
+            alternatives=[AlternativeMatch(entity_id="b", confidence=0.80, method="composite_key")],
+        )
+        assert result.is_ambiguous is True
+
+    def test_distant_scores_not_ambiguous(self):
+        """Two candidates with distant scores should NOT be ambiguous."""
+        result = MatchResult(
+            matched=True,
+            entity_id="a",
+            confidence=0.95,
+            method="composite_key",
+            alternatives=[AlternativeMatch(entity_id="b", confidence=0.60, method="fuzzy_name")],
+        )
+        assert result.is_ambiguous is False
+
+    def test_high_confidence_not_ambiguous(self):
+        """Very high confidence (>= 0.97) is never ambiguous regardless of gap."""
+        result = MatchResult(
+            matched=True,
+            entity_id="a",
+            confidence=0.98,
+            method="exact_sku",
+            alternatives=[AlternativeMatch(entity_id="b", confidence=0.96, method="composite_key")],
+        )
+        assert result.is_ambiguous is False
+
+    def test_no_alternatives_not_ambiguous(self):
+        """No alternatives means not ambiguous."""
+        result = MatchResult(matched=True, entity_id="a", confidence=0.85, method="composite_key")
+        assert result.is_ambiguous is False
+
+
+class TestMethodsTried:
+    """methods_tried should be populated after resolve()."""
+
+    def test_bullet_methods_tried(self, seeded, db):
+        """resolve('bullet') should populate methods_tried on the result."""
+        resolver = EntityResolver(db)
+        result = resolver.resolve(
+            {
+                "name": {"value": "140 ELD Match"},
+                "manufacturer": {"value": "Hornady"},
+                "bullet_diameter_inches": {"value": 0.264},
+                "weight_grains": {"value": 140.0},
+                "sku": {"value": "26331"},
+            },
+            "bullet",
+        )
+        assert len(result.methods_tried) > 0
+        assert "exact_sku" in result.methods_tried
+
+    def test_cartridge_methods_tried(self, seeded, db):
+        """resolve('cartridge') without SKU should have composite_key and/or fuzzy_name."""
+        resolver = EntityResolver(db)
+        result = resolver.resolve(
+            {
+                "name": {"value": "Hornady 6.5 CM 140gr ELD Match"},
+                "manufacturer": {"value": "Hornady"},
+                "caliber": {"value": "6.5 Creedmoor"},
+                "bullet_name": {"value": "140 ELD Match"},
+                "bullet_weight_grains": {"value": 140.0},
+            },
+            "cartridge",
+        )
+        assert len(result.methods_tried) > 0
+
+
+class TestPickBestWithAlternatives:
+    """Unit tests for _pick_best_with_alternatives helper."""
+
+    def test_empty_returns_no_match(self):
+        result = _pick_best_with_alternatives([], ["composite_key"], "no match")
+        assert result.matched is False
+        assert result.methods_tried == ["composite_key"]
+
+    def test_single_candidate(self):
+        result = _pick_best_with_alternatives(
+            [("id-1", 0.9, "composite_key", "details")], ["composite_key"], "no match"
+        )
+        assert result.matched is True
+        assert result.entity_id == "id-1"
+        assert result.confidence == 0.9
+        assert result.alternatives == []
+
+    def test_deduplicates_by_entity_id(self):
+        """Same entity_id appearing twice — keep highest confidence."""
+        result = _pick_best_with_alternatives(
+            [("id-1", 0.7, "fuzzy_name", "low"), ("id-1", 0.9, "composite_key", "high")],
+            ["composite_key", "fuzzy_name"],
+            "no match",
+        )
+        assert result.entity_id == "id-1"
+        assert result.confidence == 0.9
+        assert result.alternatives == []
+
+    def test_alternatives_capped_at_3(self):
+        """Only top 3 runner-ups should be in alternatives."""
+        scored = [(f"id-{i}", 0.9 - i * 0.05, "test", f"details-{i}") for i in range(6)]
+        result = _pick_best_with_alternatives(scored, ["test"], "no match")
+        assert result.entity_id == "id-0"
+        assert len(result.alternatives) == 3
+        assert result.alternatives[0].entity_id == "id-1"
+        assert result.alternatives[2].entity_id == "id-3"

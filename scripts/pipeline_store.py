@@ -20,6 +20,7 @@ import json
 import logging
 import uuid
 
+from sqlalchemy import select
 from sqlalchemy.exc import DataError, IntegrityError
 
 from drift.database import get_session_factory
@@ -74,6 +75,21 @@ def _has_rejected_caliber(resolution, rejected_calibers: set[str]) -> bool:
             if cal_name in rejected_calibers:
                 return True
     return False
+
+
+def _bc_source_exists(session, bullet_id: str, bc_type: str, bc_value: float, source: str) -> bool:
+    """Check if a BulletBCSource row already exists with these exact values."""
+    return (
+        session.scalars(
+            select(BulletBCSource).where(
+                BulletBCSource.bullet_id == bullet_id,
+                BulletBCSource.bc_type == bc_type,
+                BulletBCSource.bc_value == bc_value,
+                BulletBCSource.source == source,
+            )
+        ).first()
+        is not None
+    )
 
 
 def _make_bullet(
@@ -195,6 +211,8 @@ def _add_cartridge_bc_sources(session, bullet_id: str, bc_sources: list[dict], e
     cart_name = _get_value(entity, "name", "")
     cart_sku = _get_value(entity, "sku", "N/A")
     for bc_obj in _make_bc_sources(bullet_id, cart_bc_sources, url):
+        if _bc_source_exists(session, bc_obj.bullet_id, bc_obj.bc_type, bc_obj.bc_value, bc_obj.source):
+            continue
         bc_obj.notes = f"from cartridge: {cart_name} (SKU: {cart_sku})"
         session.add(bc_obj)
 
@@ -398,7 +416,10 @@ def main() -> None:  # noqa: C901
                                     bc for bc in bc_sources if bc.get("bullet_name", "") == bullet_name
                                 ]
                                 for bc_obj in _make_bc_sources(obj.id, bullet_bc_sources, url):
-                                    session.add(bc_obj)
+                                    if not _bc_source_exists(
+                                        session, bc_obj.bullet_id, bc_obj.bc_type, bc_obj.bc_value, bc_obj.source
+                                    ):
+                                        session.add(bc_obj)
                                 entry["created_id"] = obj.id
                             elif entity_type == "cartridge":
                                 obj = _make_cartridge(

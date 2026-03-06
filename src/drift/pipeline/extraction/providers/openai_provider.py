@@ -77,6 +77,9 @@ class OpenAIProvider(BaseLLMProvider):
         if not usage:
             raise LLMRequestError("OpenAI returned no usage data")
 
+        if choice.finish_reason == "length":
+            raise LLMRequestError(f"Response truncated (finish_reason=length, {usage.completion_tokens} tokens).")
+
         return LLMResponse(
             text=choice.message.content,
             input_tokens=usage.prompt_tokens or 0,

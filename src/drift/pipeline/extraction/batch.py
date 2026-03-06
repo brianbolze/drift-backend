@@ -201,6 +201,20 @@ class BatchExtractor:
                     "output_tokens": message.usage.output_tokens,
                 }
 
+                if message.stop_reason == "max_tokens":
+                    logger.warning(
+                        "Batch item %s: response truncated (stop_reason=max_tokens, %d tokens)",
+                        url_hash,
+                        message.usage.output_tokens,
+                    )
+                    results[url_hash] = BatchResultItem(
+                        url_hash=url_hash,
+                        status="errored",
+                        error=f"Response truncated (stop_reason=max_tokens, {message.usage.output_tokens} tokens)",
+                        usage=usage,
+                    )
+                    continue
+
                 try:
                     extraction_result = self._engine.parse_response(raw_text, entity_type, usage=usage)
                     results[url_hash] = BatchResultItem(

@@ -60,6 +60,12 @@ class AnthropicProvider(BaseLLMProvider):
         if not response.content or not hasattr(response.content[0], "text"):
             raise LLMRequestError(f"Anthropic returned empty/non-text response (stop_reason={response.stop_reason})")
 
+        if response.stop_reason == "max_tokens":
+            raise LLMRequestError(
+                f"Response truncated (stop_reason=max_tokens, {response.usage.output_tokens} tokens). "
+                "Input may be too large for max_tokens budget."
+            )
+
         return LLMResponse(
             text=response.content[0].text,
             input_tokens=response.usage.input_tokens,

@@ -19,6 +19,7 @@ from drift.pipeline.config import MAX_TOKENS, SYNC_MAX_RETRIES, SYNC_RETRY_BASE_
 from drift.pipeline.extraction.providers import (
     BaseLLMProvider,
     LLMAuthenticationError,
+    LLMProviderError,
     LLMRateLimitError,
     LLMRequestError,
     create_provider,
@@ -376,6 +377,14 @@ class ExtractionEngine:
                 raise ValueError(
                     f"LLM request failed for {entity_type} extraction ({len(reduced_html)} chars input): {e}"
                 ) from e
+            except LLMProviderError as e:
+                if attempt == SYNC_MAX_RETRIES:
+                    raise
+                delay = SYNC_RETRY_BASE_SECONDS * (2**attempt) + random.uniform(0, 1)
+                logger.warning(
+                    "Transient error (attempt %d/%d), retrying in %.1fs: %s", attempt + 1, SYNC_MAX_RETRIES, delay, e
+                )
+                time.sleep(delay)
 
         if llm_response is None:
             raise RuntimeError("LLM response was None after retry loop — this should not happen")

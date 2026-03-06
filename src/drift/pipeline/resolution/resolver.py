@@ -20,6 +20,7 @@ import logging
 import re
 from dataclasses import dataclass, field
 
+from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from drift.models.bullet import Bullet, BulletBCSource
@@ -34,6 +35,16 @@ logger = logging.getLogger(__name__)
 
 
 @dataclass
+class AlternativeMatch:
+    """A runner-up candidate captured during entity matching for audit/diagnostics."""
+
+    entity_id: str
+    confidence: float
+    method: str
+    details: str = ""
+
+
+@dataclass
 class MatchResult:
     """Result of attempting to match an extracted entity to the DB."""
 
@@ -42,6 +53,15 @@ class MatchResult:
     confidence: float = 0.0
     method: str = ""
     details: str = ""
+    alternatives: list[AlternativeMatch] = field(default_factory=list)
+    methods_tried: list[str] = field(default_factory=list)
+
+    @property
+    def is_ambiguous(self) -> bool:
+        """True if the gap between best match and next-best is < 0.2."""
+        if not self.alternatives or self.confidence >= 0.97:
+            return False
+        return (self.confidence - self.alternatives[0].confidence) < 0.2
 
 
 @dataclass
@@ -58,6 +78,7 @@ class ResolutionResult:
     bullet_diameter_inches: float | None = None
     unresolved_refs: list[str] = field(default_factory=list)
     warnings: list[str] = field(default_factory=list)
+    methods_tried: list[str] = field(default_factory=list)
 
 
 def _normalize(name: str) -> str:
@@ -221,6 +242,51 @@ def _bullet_name_score(extracted_name: str, db_name: str) -> float:
     return score
 
 
+def _pick_best_with_alternatives(
+    all_scored: list[tuple[str, float, str, str]],
+    methods_tried: list[str],
+    fallback_detail: str,
+) -> MatchResult:
+    """Deduplicate scored candidates by entity_id, pick the best, and build alternatives.
+
+    Args:
+        all_scored: List of (entity_id, confidence, method, details) tuples from all tiers.
+        methods_tried: Which matching tiers were attempted.
+        fallback_detail: Detail string for the no-match case.
+
+    Returns:
+        MatchResult with best candidate selected and top 3 runner-ups as alternatives.
+    """
+    if not all_scored:
+        return MatchResult(matched=False, details=fallback_detail, methods_tried=methods_tried)
+
+    # Deduplicate by entity_id — keep highest confidence per entity
+    best_per_entity: dict[str, tuple[str, float, str, str]] = {}
+    for entity_id, conf, method, details in all_scored:
+        if entity_id not in best_per_entity or conf > best_per_entity[entity_id][1]:
+            best_per_entity[entity_id] = (entity_id, conf, method, details)
+
+    # Sort by confidence descending
+    ranked = sorted(best_per_entity.values(), key=lambda x: x[1], reverse=True)
+    best_id, best_conf, best_method, best_details = ranked[0]
+
+    # Build alternatives from runners-up (top 3)
+    alternatives = [
+        AlternativeMatch(entity_id=eid, confidence=conf, method=method, details=details)
+        for eid, conf, method, details in ranked[1:4]
+    ]
+
+    return MatchResult(
+        matched=True,
+        entity_id=best_id,
+        confidence=best_conf,
+        method=best_method,
+        details=best_details,
+        alternatives=alternatives,
+        methods_tried=methods_tried,
+    )
+
+
 class EntityResolver:
     """Resolves extracted entities against existing DB records."""
 
@@ -236,22 +302,24 @@ class EntityResolver:
 
     def _get_manufacturers(self) -> list[Manufacturer]:
         if self._manufacturers is None:
-            self._manufacturers = self._session.query(Manufacturer).all()
+            self._manufacturers = list(self._session.scalars(select(Manufacturer)))
         return self._manufacturers
 
     def _get_calibers(self) -> list[Caliber]:
         if self._calibers is None:
-            self._calibers = self._session.query(Caliber).all()
+            self._calibers = list(self._session.scalars(select(Caliber)))
         return self._calibers
 
     def _get_chambers(self) -> list[Chamber]:
         if self._chambers is None:
-            self._chambers = self._session.query(Chamber).all()
+            self._chambers = list(self._session.scalars(select(Chamber)))
         return self._chambers
 
     def _get_caliber_aliases(self) -> list[EntityAlias]:
         if self._caliber_aliases is None:
-            self._caliber_aliases = self._session.query(EntityAlias).filter(EntityAlias.entity_type == "caliber").all()
+            self._caliber_aliases = list(
+                self._session.scalars(select(EntityAlias).where(EntityAlias.entity_type == "caliber"))
+            )
         return self._caliber_aliases
 
     def resolve_manufacturer(self, name: str) -> MatchResult:
@@ -381,10 +449,10 @@ class EntityResolver:
             return MatchResult(matched=False, details=f"cannot resolve chamber: caliber '{caliber_name}' not found")
 
         # Find chambers that accept this caliber
-        links = (
-            self._session.query(ChamberAcceptsCaliber)
-            .filter(ChamberAcceptsCaliber.caliber_id == cal_match.entity_id)
-            .all()
+        links = list(
+            self._session.scalars(
+                select(ChamberAcceptsCaliber).where(ChamberAcceptsCaliber.caliber_id == cal_match.entity_id)
+            )
         )
         if not links:
             return MatchResult(matched=False, details=f"no chamber found for caliber '{caliber_name}'")
@@ -414,41 +482,49 @@ class EntityResolver:
     def match_bullet(
         self, extracted: dict, manufacturer_id: str | None, bullet_diameter_inches: float | None
     ) -> MatchResult:
-        """Match an extracted bullet against existing DB bullets."""
-        # Extract values from the ExtractedValue wrapper
+        """Match an extracted bullet against existing DB bullets.
+
+        Collects scored candidates across Tier 2 (composite key) and Tier 3 (fuzzy),
+        picks the global best, and records runner-up alternatives for diagnostics.
+        """
         name = _get_value(extracted, "name", "")
         sku = _get_value(extracted, "sku")
         weight = _get_value(extracted, "weight_grains")
+        methods_tried: list[str] = []
 
-        # Tier 1: Exact SKU match
+        # Tier 1: Exact SKU match (deterministic, short-circuits)
         if sku:
-            bullet = self._session.query(Bullet).filter(Bullet.sku == sku).first()
+            methods_tried.append("exact_sku")
+            bullet = self._session.scalars(select(Bullet).where(Bullet.sku == sku)).first()
             if bullet:
                 return MatchResult(
-                    matched=True, entity_id=bullet.id, confidence=1.0, method="exact_sku", details=f"SKU={sku}"
+                    matched=True,
+                    entity_id=bullet.id,
+                    confidence=1.0,
+                    method="exact_sku",
+                    details=f"SKU={sku}",
+                    methods_tried=methods_tried,
                 )
 
-        # Build query for tier 2/3
-        query = self._session.query(Bullet)
+        # Build candidate pool for tier 2/3
+        stmt = select(Bullet)
         if manufacturer_id:
-            query = query.filter(Bullet.manufacturer_id == manufacturer_id)
+            stmt = stmt.where(Bullet.manufacturer_id == manufacturer_id)
         if bullet_diameter_inches is not None:
-            # Filter by diameter within ±0.001" tolerance (diameter is a physical constant)
-            query = query.filter(
+            stmt = stmt.where(
                 Bullet.bullet_diameter_inches.between(bullet_diameter_inches - 0.001, bullet_diameter_inches + 0.001)
             )
         else:
             logger.warning("match_bullet called without diameter filter — may match across caliber families")
 
-        candidates = query.all()
+        candidates = list(self._session.scalars(stmt))
+
+        # Collect all scored candidates across tiers: (entity_id, confidence, method, details)
+        all_scored: list[tuple[str, float, str, str]] = []
 
         # Tier 2: Composite key — weight match + best name similarity
-        # Uses both Jaccard and containment-based scoring to handle asymmetric names
-        # (e.g. cartridge extracts "ELD-X" while DB has "30 Cal .308 178 gr ELD-X®").
-        # Picks the best-scoring candidate among all weight matches, not just the first.
         if weight is not None:
-            best_composite: MatchResult | None = None
-            best_composite_score = 0.0
+            methods_tried.append("composite_key")
             for bullet in candidates:
                 if abs(bullet.weight_grains - float(weight)) < 0.5:
                     if name and bullet.name:
@@ -457,164 +533,167 @@ class EntityResolver:
                         name_score = max(jaccard, containment)
                     else:
                         name_score = 0.0
-                    if name_score > 0.55 and name_score > best_composite_score:
-                        best_composite_score = name_score
-                        best_composite = MatchResult(
-                            matched=True,
-                            entity_id=bullet.id,
-                            confidence=round(0.85 + name_score * 0.1, 2),
-                            method="composite_key",
-                            details=f"weight={weight}, name_score={name_score:.2f}",
+                    if name_score > 0.55:
+                        conf = round(0.85 + name_score * 0.1, 2)
+                        all_scored.append(
+                            (bullet.id, conf, "composite_key", f"weight={weight}, name_score={name_score:.2f}")
                         )
-            if best_composite:
-                return best_composite
 
         # Tier 3: Fuzzy name match — with weight agreement check
         if name:
-            best_score = 0.0
-            best_bullet: Bullet | None = None
-            best_weight_agrees = False
+            methods_tried.append("fuzzy_name")
             for bullet in candidates:
                 jaccard = _name_similarity(name, bullet.name)
                 containment = _bullet_name_score(name, bullet.name)
                 score = max(jaccard, containment)
-                if score > best_score:
-                    best_score = score
-                    best_bullet = bullet
+                if score > 0.5:
                     if weight is not None:
                         try:
-                            best_weight_agrees = abs(bullet.weight_grains - float(weight)) <= 1.0
+                            weight_agrees = abs(bullet.weight_grains - float(weight)) <= 1.0
                         except (ValueError, TypeError):
-                            best_weight_agrees = False
+                            weight_agrees = False
                     else:
-                        best_weight_agrees = False
+                        weight_agrees = False
+                    confidence_factor = 0.8 if weight_agrees else 0.4
+                    conf = round(score * confidence_factor, 2)
+                    all_scored.append(
+                        (
+                            bullet.id,
+                            conf,
+                            "fuzzy_name",
+                            f"matched '{bullet.name}' score={score:.2f} weight_agrees={weight_agrees}",
+                        )
+                    )
 
-            if best_bullet and best_score > 0.5:
-                confidence_factor = 0.8 if best_weight_agrees else 0.4
-                return MatchResult(
-                    matched=True,
-                    entity_id=best_bullet.id,
-                    confidence=round(best_score * confidence_factor, 2),
-                    method="fuzzy_name",
-                    details=f"matched '{best_bullet.name}' score={best_score:.2f} weight_agrees={best_weight_agrees}",
-                )
-
-        return MatchResult(matched=False, details=f"no match for bullet '{name}'")
+        return _pick_best_with_alternatives(all_scored, methods_tried, f"no match for bullet '{name}'")
 
     def match_cartridge(self, extracted: dict, manufacturer_id: str | None, caliber_id: str | None) -> MatchResult:
-        """Match an extracted cartridge against existing DB cartridges."""
+        """Match an extracted cartridge against existing DB cartridges.
+
+        Collects scored candidates across Tier 2 (composite key) and Tier 3 (fuzzy),
+        picks the global best, and records runner-up alternatives for diagnostics.
+        """
         name = _get_value(extracted, "name", "")
         sku = _get_value(extracted, "sku")
         weight = _get_value(extracted, "bullet_weight_grains")
+        methods_tried: list[str] = []
 
-        # Tier 1: Exact SKU match
+        # Tier 1: Exact SKU match (deterministic, short-circuits)
         if sku:
-            cart = self._session.query(Cartridge).filter(Cartridge.sku == sku).first()
+            methods_tried.append("exact_sku")
+            cart = self._session.scalars(select(Cartridge).where(Cartridge.sku == sku)).first()
             if cart:
                 return MatchResult(
-                    matched=True, entity_id=cart.id, confidence=1.0, method="exact_sku", details=f"SKU={sku}"
+                    matched=True,
+                    entity_id=cart.id,
+                    confidence=1.0,
+                    method="exact_sku",
+                    details=f"SKU={sku}",
+                    methods_tried=methods_tried,
                 )
 
-        # Build query for tier 2/3
-        query = self._session.query(Cartridge)
+        # Build candidate pool for tier 2/3
+        stmt = select(Cartridge)
         if manufacturer_id:
-            query = query.filter(Cartridge.manufacturer_id == manufacturer_id)
+            stmt = stmt.where(Cartridge.manufacturer_id == manufacturer_id)
         if caliber_id:
-            query = query.filter(Cartridge.caliber_id == caliber_id)
+            stmt = stmt.where(Cartridge.caliber_id == caliber_id)
 
-        candidates = query.all()
+        candidates = list(self._session.scalars(stmt))
+        all_scored: list[tuple[str, float, str, str]] = []
 
-        # Tier 2: Composite key
+        # Tier 2: Composite key — weight match + best name similarity
+        # Uses both Jaccard and containment-based scoring to handle asymmetric names.
         if weight is not None:
+            methods_tried.append("composite_key")
             for cart in candidates:
                 if abs(cart.bullet_weight_grains - float(weight)) < 0.5:
-                    name_score = _name_similarity(name, cart.name) if name and cart.name else 0.0
-                    if name_score > 0.3:
-                        return MatchResult(
-                            matched=True,
-                            entity_id=cart.id,
-                            confidence=round(0.85 + name_score * 0.1, 2),
-                            method="composite_key",
-                            details=f"weight={weight}, name_score={name_score:.2f}",
+                    if name and cart.name:
+                        jaccard = _name_similarity(name, cart.name)
+                        containment = _bullet_name_score(name, cart.name)
+                        name_score = max(jaccard, containment)
+                    else:
+                        name_score = 0.0
+                    if name_score > 0.55:
+                        conf = round(0.85 + name_score * 0.1, 2)
+                        all_scored.append(
+                            (cart.id, conf, "composite_key", f"weight={weight}, name_score={name_score:.2f}")
                         )
 
         # Tier 3: Fuzzy name match — with weight agreement check
         if name:
-            best_score = 0.0
-            best_cart: Cartridge | None = None
-            best_weight_agrees = False
+            methods_tried.append("fuzzy_name")
             for cart in candidates:
                 score = _name_similarity(name, cart.name)
-                if score > best_score:
-                    best_score = score
-                    best_cart = cart
+                if score > 0.5:
                     if weight is not None:
                         try:
-                            best_weight_agrees = abs(cart.bullet_weight_grains - float(weight)) <= 1.0
+                            weight_agrees = abs(cart.bullet_weight_grains - float(weight)) <= 1.0
                         except (ValueError, TypeError):
-                            best_weight_agrees = False
+                            weight_agrees = False
                     else:
-                        best_weight_agrees = False
+                        weight_agrees = False
+                    confidence_factor = 0.8 if weight_agrees else 0.4
+                    conf = round(score * confidence_factor, 2)
+                    all_scored.append(
+                        (
+                            cart.id,
+                            conf,
+                            "fuzzy_name",
+                            f"matched '{cart.name}' score={score:.2f} weight_agrees={weight_agrees}",
+                        )
+                    )
 
-            if best_cart and best_score > 0.5:
-                confidence_factor = 0.8 if best_weight_agrees else 0.4
-                return MatchResult(
-                    matched=True,
-                    entity_id=best_cart.id,
-                    confidence=round(best_score * confidence_factor, 2),
-                    method="fuzzy_name",
-                    details=f"matched '{best_cart.name}' score={best_score:.2f} weight_agrees={best_weight_agrees}",
-                )
-
-        return MatchResult(matched=False, details=f"no match for cartridge '{name}'")
+        return _pick_best_with_alternatives(all_scored, methods_tried, f"no match for cartridge '{name}'")
 
     def match_rifle(self, extracted: dict, manufacturer_id: str | None, chamber_id: str | None) -> MatchResult:
-        """Match an extracted rifle model against existing DB rifles."""
+        """Match an extracted rifle model against existing DB rifles.
+
+        Collects scored candidates across Tier 2 (composite key) and Tier 3 (fuzzy),
+        picks the global best, and records runner-up alternatives for diagnostics.
+        """
         model_name = _get_value(extracted, "model", "")
+        methods_tried: list[str] = []
 
-        query = self._session.query(RifleModel)
+        stmt = select(RifleModel)
         if manufacturer_id:
-            query = query.filter(RifleModel.manufacturer_id == manufacturer_id)
+            stmt = stmt.where(RifleModel.manufacturer_id == manufacturer_id)
         if chamber_id:
-            query = query.filter(RifleModel.chamber_id == chamber_id)
+            stmt = stmt.where(RifleModel.chamber_id == chamber_id)
 
-        candidates = query.all()
+        candidates = list(self._session.scalars(stmt))
+        all_scored: list[tuple[str, float, str, str]] = []
 
         # Tier 2: Composite key — manufacturer + chamber + model name
+        methods_tried.append("composite_key")
         for rifle in candidates:
             name_score = _name_similarity(model_name, rifle.model)
             if name_score > 0.5:
-                return MatchResult(
-                    matched=True,
-                    entity_id=rifle.id,
-                    confidence=round(0.85 + name_score * 0.1, 2),
-                    method="composite_key",
-                    details=f"model_score={name_score:.2f}",
-                )
+                conf = round(0.85 + name_score * 0.1, 2)
+                all_scored.append((rifle.id, conf, "composite_key", f"model_score={name_score:.2f}"))
 
         # Tier 3: Fuzzy — search all rifles by this manufacturer, with chamber agreement check
         if manufacturer_id:
-            all_by_mfr = self._session.query(RifleModel).filter(RifleModel.manufacturer_id == manufacturer_id).all()
-            best_score = 0.0
-            best_rifle: RifleModel | None = None
+            methods_tried.append("fuzzy_name")
+            all_by_mfr = list(
+                self._session.scalars(select(RifleModel).where(RifleModel.manufacturer_id == manufacturer_id))
+            )
             for rifle in all_by_mfr:
                 score = _name_similarity(model_name, rifle.model)
-                if score > best_score:
-                    best_score = score
-                    best_rifle = rifle
+                if score > 0.5:
+                    chamber_agrees = chamber_id is not None and rifle.chamber_id == chamber_id
+                    confidence_factor = 0.8 if chamber_agrees else 0.4
+                    conf = round(score * confidence_factor, 2)
+                    all_scored.append(
+                        (
+                            rifle.id,
+                            conf,
+                            "fuzzy_name",
+                            f"matched '{rifle.model}' score={score:.2f} chamber_agrees={chamber_agrees}",
+                        )
+                    )
 
-            if best_rifle and best_score > 0.5:
-                chamber_agrees = chamber_id is not None and best_rifle.chamber_id == chamber_id
-                confidence_factor = 0.8 if chamber_agrees else 0.4
-                return MatchResult(
-                    matched=True,
-                    entity_id=best_rifle.id,
-                    confidence=round(best_score * confidence_factor, 2),
-                    method="fuzzy_name",
-                    details=f"matched '{best_rifle.model}' score={best_score:.2f} chamber_agrees={chamber_agrees}",
-                )
-
-        return MatchResult(matched=False, details=f"no match for rifle '{model_name}'")
+        return _pick_best_with_alternatives(all_scored, methods_tried, f"no match for rifle '{model_name}'")
 
     # ── Full resolution ──────────────────────────────────────────────────────
 
@@ -675,11 +754,13 @@ class EntityResolver:
             else:
                 result.unresolved_refs.append("caliber: not extracted")
 
-        # Match against existing entities
+        # Match against existing entities — propagate methods_tried to ResolutionResult
         if entity_type == "bullet":
             result.match = self.match_bullet(extracted, result.manufacturer_id, result.bullet_diameter_inches)
+            result.methods_tried = result.match.methods_tried
         elif entity_type == "cartridge":
             result.match = self.match_cartridge(extracted, result.manufacturer_id, result.caliber_id)
+            result.methods_tried = result.match.methods_tried
             # Also try to resolve bullet FK for cartridges
             bullet_name = _get_value(extracted, "bullet_name")
             if bullet_name and result.caliber_id:
@@ -718,6 +799,7 @@ class EntityResolver:
                     result.unresolved_refs.append(f"bullet: {bullet_name}")
         elif entity_type == "rifle":
             result.match = self.match_rifle(extracted, result.manufacturer_id, result.chamber_id)
+            result.methods_tried = result.match.methods_tried
         else:
             result.match = MatchResult(matched=False, details=f"unknown entity type: {entity_type}")
             result.warnings.append(f"Unknown entity type: {entity_type}")

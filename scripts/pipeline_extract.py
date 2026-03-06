@@ -59,7 +59,7 @@ def _infer_provider_from_model(model: str | None) -> str | None:
     return None
 
 
-def _load_pending_items(
+def _load_pending_items(  # noqa: C901
     manifest_path: Path,
     limit: int,
     reextract: bool,
@@ -89,10 +89,17 @@ def _load_pending_items(
     for reduced_json_path in entries:
         uhash = reduced_json_path.stem
 
-        # Check cache
+        # Check cache — re-extract if previous run returned 0 entities
         extracted_cache = EXTRACTED_DIR / f"{uhash}.json"
         if extracted_cache.exists() and not reextract:
-            continue
+            try:
+                cached = json.loads(extracted_cache.read_text(encoding="utf-8"))
+                if cached.get("entity_count", 0) == 0:
+                    logger.info("Re-extracting %s (previous run returned 0 entities)", uhash)
+                else:
+                    continue
+            except (json.JSONDecodeError, KeyError):
+                continue
 
         # Load metadata
         reduced_meta = json.loads(reduced_json_path.read_text(encoding="utf-8"))
@@ -140,6 +147,9 @@ def _save_extraction(uhash: str, url: str, entity_type: str, result, flagged_ite
 
     extracted_cache = EXTRACTED_DIR / f"{uhash}.json"
     extracted_cache.write_text(json.dumps(extraction_data, indent=2), encoding="utf-8")
+
+    if len(result.entities) == 0:
+        logger.warning("Saved 0-entity extraction for %s (%s) — will be re-extracted on next run", uhash, url)
 
     if result.warnings:
         flagged_items.append(
