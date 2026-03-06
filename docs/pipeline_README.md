@@ -134,7 +134,14 @@ make pipeline-store
 make pipeline-store-commit
 ```
 
-Stores extracted entities in the database.
+Stores extracted entities in the database. Each new record gets a `data_source` tag ("pipeline", "cowork", or "manual") for provenance tracking. Records with `is_locked = 1` are skipped entirely — the store report shows these as "skipped (locked)".
+
+**Locking manually curated records:**
+```sql
+UPDATE bullet SET is_locked = 1, data_source = 'manual', last_verified_at = datetime('now') WHERE id = '...';
+```
+
+This prevents pipeline re-runs from overwriting your corrections.
 
 ## File Structure
 
@@ -199,6 +206,11 @@ data/pipeline/
 - Extraction handles missing fields gracefully (sets to null)
 - Items with warnings are flagged for review
 - Example: Nosler BCs are in load data section, not product pages → flagged with null BC values
+
+### Data Provenance & Curation
+- `data_source` on bullet/cartridge/rifle_model tracks where data came from: "pipeline" (API extraction), "cowork" (CoWork agent), or "manual" (human edit)
+- `is_locked` prevents the pipeline store from modifying a record — use this after manual corrections
+- Extraction JSON can include `"data_source": "cowork"` in the top-level envelope to tag CoWork-sourced entities
 
 ## Troubleshooting
 

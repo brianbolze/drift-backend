@@ -102,6 +102,17 @@ The resolver (`src/drift/pipeline/resolution/resolver.py`) has a tiered matching
 - **99 existing cartridges with wrong `bullet_id`**: From earlier pipeline commits before abbreviation expansion. Re-running `pipeline_store.py --commit` would fix these via the update path, but the correct bullets need to exist in DB first.
 - **7 zero-velocity cartridges**: Hornady International product pages don't publish muzzle velocity. Not fixable at extraction level — need supplementary data source.
 
+### Curation & Locking (March 2026)
+
+Bullet, cartridge, and rifle_model tables now have `data_source` and `is_locked` columns (migration `d4e5f6a7b8c9`).
+
+- `data_source` (str): "pipeline" (default), "cowork", or "manual" — tracks provenance
+- `is_locked` (bool): when True, `pipeline_store.py` skips the record entirely (no updates)
+- Extraction JSON envelope supports `"data_source": "cowork"` to tag CoWork-sourced entities
+- All existing rows backfilled as `data_source='pipeline', is_locked=0`
+
+Workflow: fix a record manually → set `is_locked = 1, data_source = 'manual'` → pipeline won't touch it again.
+
 ### Useful commands
 
 ```bash

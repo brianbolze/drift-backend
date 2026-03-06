@@ -47,7 +47,7 @@ Lightweight tech debt and engineering improvement tracker. Agents and humans app
 - [ ] `EntityAlias` re-queried from DB on every `resolve_caliber()` call — other lookups are cached, this one isn't (source: code review, 2026-03-06)
 - [ ] Zero-entity extractions cached and silently skipped on re-run — should flag or force re-extract (source: code review, 2026-03-06)
 - [ ] Stale flagged entries persist on re-extraction — `_write_flagged` deduplicates by hash, so old warnings stick around (source: code review, 2026-03-06)
-- [ ] Duplicate rule number 7 in extraction system prompt — second occurrence shadows the first (source: code review, 2026-03-06)
+- [x] Duplicate rule number 7 in extraction system prompt — second occurrence shadows the first (source: code review, 2026-03-06)
 
 ## Code / Tooling
 
@@ -58,14 +58,14 @@ Lightweight tech debt and engineering improvement tracker. Agents and humans app
 - [ ] Missing indexes on FK columns used by resolver — `bullet.manufacturer_id`, `bullet.bullet_diameter_inches`, `cartridge.caliber_id`, etc. (source: code review, 2026-03-06)
 - [ ] Missing composite unique constraints on natural keys — `Bullet(manufacturer_id, name, weight_grains, diameter)` and `Cartridge(manufacturer_id, name, caliber_id)` (source: code review, 2026-03-06)
 - [ ] `Optic.reticle_id` non-nullable — blocks storing optics with unknown/custom reticles (source: code review, 2026-03-06)
-- [ ] `bc_type` and `source` in `ExtractedBCSource` are unconstrained strings — should use `Literal["g1","g7"]` and validate against `BC_SOURCE_TYPES` (source: code review, 2026-03-06)
+- [x] `bc_type` and `source` in `ExtractedBCSource` are unconstrained strings — should use `Literal["g1","g7"]` and validate against `BC_SOURCE_TYPES` (source: code review, 2026-03-06)
 - [ ] No controlled-vocabulary validation on `base_type`, `tip_type`, `type_tags`, `used_for` in extraction schemas — config defines valid values but Pydantic doesn't enforce them (source: code review, 2026-03-06)
 - [ ] Duplicate `url_hash()` implementations in `pipeline_fetch.py` and `pipeline_extract.py` — should be a shared util (source: code review, 2026-03-06)
 - [ ] Confusing script names: `validate_manifest.py` (JSON format) vs `manifest_validate.py` (DB cross-check) (source: code review, 2026-03-06)
-- [ ] `pipeline-clean` Makefile target cleans non-existent dirs (`cache/`, `tmp/`) instead of real pipeline dirs (source: code review, 2026-03-06)
+- [x] `pipeline-clean` Makefile target cleans non-existent dirs (`cache/`, `tmp/`) instead of real pipeline dirs (source: code review, 2026-03-06)
 - [ ] `openai` extras not included in any install target — `make pipeline-install` installs `[dev,pipeline]` but not `[openai]`, provider tests fail on fresh install (source: code review, 2026-03-06)
 - [ ] Session created outside try block in `pipeline_store.py` — leaks if exception occurs before try (source: code review, 2026-03-06)
-- [ ] Duplicate `db` fixture in `test_resolver.py` shadows `conftest.py` (source: code review, 2026-03-06)
+- [x] Duplicate `db` fixture in `test_resolver.py` shadows `conftest.py` (source: code review, 2026-03-06)
 - [ ] Legacy `session.query()` API used throughout resolver — inconsistent with SQLAlchemy 2.0 model style (source: code review, 2026-03-06)
 
 ## Documentation

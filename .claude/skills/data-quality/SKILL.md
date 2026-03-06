@@ -204,6 +204,28 @@ WHERE b.bc_g7_published IS NOT NULL
   AND b.id NOT IN (SELECT bullet_id FROM bullet_bc_source WHERE bc_type = 'g7');
 ```
 
+### Curation & Provenance
+```sql
+-- All locked (manually curated) records
+SELECT 'bullet' AS type, id, name, data_source FROM bullet WHERE is_locked = 1
+UNION ALL
+SELECT 'cartridge', id, name, data_source FROM cartridge WHERE is_locked = 1
+UNION ALL
+SELECT 'rifle', id, model, data_source FROM rifle_model WHERE is_locked = 1;
+
+-- Records by data_source
+SELECT 'bullet' AS type, data_source, COUNT(*) AS cnt FROM bullet GROUP BY data_source
+UNION ALL
+SELECT 'cartridge', data_source, COUNT(*) FROM cartridge GROUP BY data_source
+UNION ALL
+SELECT 'rifle', data_source, COUNT(*) FROM rifle_model GROUP BY data_source;
+
+-- Manual records that forgot to lock
+SELECT 'bullet' AS type, id, name FROM bullet WHERE data_source = 'manual' AND is_locked = 0
+UNION ALL
+SELECT 'cartridge', id, name FROM cartridge WHERE data_source = 'manual' AND is_locked = 0;
+```
+
 ## Manufacturer Resolution
 
 ### EntityAlias Table

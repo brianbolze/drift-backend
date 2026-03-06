@@ -58,6 +58,24 @@ ALWAYS dry-run first:
 2. Review the output: check created vs flagged counts
 3. `make pipeline-store-commit` -- commit to DB
 
+## Curation & Locking
+
+Records have `data_source` ("pipeline", "cowork", "manual") and `is_locked` (bool) columns. The store script skips locked records entirely — they won't be modified by pipeline re-runs.
+
+**Lock a manually corrected record:**
+```sql
+UPDATE bullet SET is_locked = 1, data_source = 'manual', last_verified_at = datetime('now') WHERE id = '...';
+```
+
+**Unlock to allow pipeline updates:**
+```sql
+UPDATE bullet SET is_locked = 0 WHERE id = '...';
+```
+
+The store report shows `skipped (locked)` counts so you can see what was preserved.
+
+Extraction JSON can set `"data_source": "cowork"` in the envelope to tag CoWork-sourced entities.
+
 ## Resolution Strategy
 
 The resolver (`src/drift/pipeline/resolution/resolver.py`) matches extracted data to DB entities:
@@ -75,6 +93,7 @@ The resolver (`src/drift/pipeline/resolution/resolver.py`) matches extracted dat
 | Extraction JSON parse error | LLM copied raw JSON-LD | Check extraction prompt constraints |
 | Caliber not found | Missing from seed data | Add to `data/seed.sql` and run `make seed` |
 | Wrong bullet_id on cartridge | Name match below threshold | Check abbreviation map in resolver.py |
+| Manual fix overwritten | Record not locked | Set `is_locked = 1` after manual edits |
 
 ## File Structure
 
