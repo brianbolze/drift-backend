@@ -39,3 +39,6 @@ logs/
 tmp/
 temp/
 data/pipeline/
+
+# AI tools
+.claude/settings.local.json
