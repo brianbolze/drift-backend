@@ -28,6 +28,7 @@ PIPELINE_LIMIT ?= 0
 .PHONY: pipeline-extract-parallel pipeline-extract-poll pipeline-env-check
 .PHONY: pipeline-store pipeline-store-commit pipeline-review
 .PHONY: pipeline-status pipeline-all pipeline-clean
+.PHONY: curate curate-commit
 
 # ═══════════════════════════════════════════════════════════════════════════
 # Help & Documentation
@@ -56,6 +57,9 @@ help: ## Show this help message
 	@echo ""
 	@echo "Database Management:"
 	@grep -E '^(migrate|new-migration|seed|reset-seed|describe-db):.*##' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*## "}; {printf "  %-20s %s\n", $$1, $$2}'
+	@echo ""
+	@echo "Data Curation:"
+	@grep -E '^curate[a-z-]*:.*##' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*## "}; {printf "  %-20s %s\n", $$1, $$2}'
 	@echo ""
 	@echo "Data Pipeline:"
 	@grep -E '^pipeline-[a-z0-9-]+:.*##' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*## "}; {printf "  %-20s %s\n", $$1, $$2}'
@@ -238,3 +242,13 @@ pipeline-clean: ## Clean pipeline temporary files and cache
 	rm -rf data/pipeline/review/*
 	rm -rf data/pipeline/batches/*
 	@echo "✓ Pipeline cache cleaned"
+
+# ═══════════════════════════════════════════════════════════════════════════
+# Data Curation
+# ═══════════════════════════════════════════════════════════════════════════
+
+curate: ## Preview curation patches (dry-run)
+	$(VENV)/python scripts/curate.py
+
+curate-commit: ## Apply curation patches to database
+	$(VENV)/python scripts/curate.py --commit

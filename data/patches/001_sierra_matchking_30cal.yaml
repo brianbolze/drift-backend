@@ -1,0 +1,60 @@
+patch:
+  id: "001_sierra_matchking_30cal"
+  author: "Brian Bolze"
+  date: "2026-03-06"
+  description: "Add missing Sierra MatchKing 30 Cal bullets (150gr, 155gr, 190gr)"
+
+operations:
+  - action: create_bullet
+    manufacturer: "Sierra Bullets"
+    name: "30 CAL 150 GR HPBT MATCHKING (SMK)"
+    sku: "2190"
+    weight_grains: 150.0
+    bullet_diameter_inches: 0.308
+    bc_g1: 0.417
+    bc_g7: 0.199
+    source_url: "https://sierrabullets.com/30-cal-150-gr-hpbt-matchking-smk/"
+    base_type: "boat_tail"
+    tip_type: "hollow_point"
+    construction: "lead_core"
+    type_tags: ["match"]
+    used_for: ["competition", "precision"]
+    bc_source: "manufacturer"
+    bc_source_methodology: "published"
+    bc_source_notes: "Sierra product page, March 2026"
+
+  - action: create_bullet
+    manufacturer: "Sierra Bullets"
+    name: "30 CAL 155 GR HPBT MATCHKING (SMK)"
+    sku: "2155"
+    weight_grains: 155.0
+    bullet_diameter_inches: 0.308
+    bc_g1: 0.450
+    bc_g7: 0.221
+    source_url: "https://sierrabullets.com/30-cal-155-gr-hpbt-matchking-smk/"
+    base_type: "boat_tail"
+    tip_type: "hollow_point"
+    construction: "lead_core"
+    type_tags: ["match"]
+    used_for: ["competition", "precision"]
+    bc_source: "manufacturer"
+    bc_source_methodology: "published"
+    bc_source_notes: "Sierra product page, March 2026"
+
+  - action: create_bullet
+    manufacturer: "Sierra Bullets"
+    name: "30 CAL 190 GR HPBT MATCHKING (SMK)"
+    sku: "2210"
+    weight_grains: 190.0
+    bullet_diameter_inches: 0.308
+    bc_g1: 0.533
+    bc_g7: 0.265
+    source_url: "https://sierrabullets.com/30-cal-190-gr-hpbt-matchking-smk/"
+    base_type: "boat_tail"
+    tip_type: "hollow_point"
+    construction: "lead_core"
+    type_tags: ["match"]
+    used_for: ["competition", "precision"]
+    bc_source: "manufacturer"
+    bc_source_methodology: "published"
+    bc_source_notes: "Sierra product page, March 2026"
