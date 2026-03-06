@@ -21,12 +21,14 @@ Lightweight tech debt and engineering improvement tracker. Agents and humans app
 
 - [ ] Populate cartridge.bc_g1, bc_g7, bullet_length_inches — columns added via migration but not yet extracted/populated from manufacturer pages (source: human, 2026-03-06)
 
-- [ ] 70+ cartridge-bullet weight mismatches (30% of cartridges) — likely wrong bullet_id linkages from pre-abbreviation-expansion pipeline runs (source: QA report, 2026-03-06)
+- [ ] 67 cartridge-bullet weight mismatches (30% of cartridges) — likely wrong bullet_id linkages from pre-abbreviation-expansion pipeline runs (source: QA report, 2026-03-06)
 - [ ] 99 existing cartridges with wrong bullet_id — re-run pipeline-store-commit after ensuring correct bullets exist in DB (source: pipeline working notes)
 - [ ] 7 Hornady International cartridges with zero velocity — pages don't publish MV, need supplementary data source (source: QA report, 2026-03-06)
 - [ ] 4 MatchKing->Nosler HPBT false matches — Sierra MatchKing bullets missing at certain weights, causing cross-manufacturer false positives (source: pipeline working notes)
 - [ ] 22 bullets missing BC data entirely — no BulletBCSource records (source: QA report, 2026-03-06)
 - [ ] Hornady .300 WM Custom International metric conversion — barrel=9.45" (from 24cm), MV=2961 (from 902 m/s). Fix via curation patch. Audit remaining Hornady International cartridges for same pattern. (source: QA report, 2026-03-06)
+- [ ] Sierra 22 CAL 60gr TMK (b137e0fa) — wrong diameter (0.220→0.224), wrong source_url (points to 30-cal page), missing BCs. Surviving record from W4 duplicate cleanup needs curation patch. (source: QA report, 2026-03-06)
+- [ ] Hornady .308 220gr RN Custom International — barrel=9.45" (from "24cm" mislabel), should be 24". Same Hornady Intl metric pattern as C5. Fix via curation patch. (source: QA report, 2026-03-06)
 
 ## Pipeline Improvements
 

@@ -638,5 +638,165 @@
     "verified": "2026-03-06",
     "status": "pass",
     "notes": "MV=3000, wt=130 match"
+  },
+  {
+    "entity": "bullet",
+    "id": "fa7f3a60-42a4-412a-808b-7505012d5393",
+    "name": "Sierra 6.5mm 120gr SPT Pro-Hunter",
+    "verified": "2026-03-06",
+    "status": "pass",
+    "notes": "G1=0.356 exact match, G7 not published"
+  },
+  {
+    "entity": "bullet",
+    "id": "564ed997-1bcd-4cc5-bc84-c5b564a84fd8",
+    "name": "Sierra 7mm 175gr SBT GameKing",
+    "verified": "2026-03-06",
+    "status": "pass",
+    "notes": "G1=0.533, G7=0.271 exact match"
+  },
+  {
+    "entity": "bullet",
+    "id": "263697a0-7d67-4f77-bc8f-50df0e897b6c",
+    "name": "Berger 30cal 215gr Hybrid Target",
+    "verified": "2026-03-06",
+    "status": "pass",
+    "notes": "G1=0.691, G7=0.354 exact match"
+  },
+  {
+    "entity": "bullet",
+    "id": "0d22e912-422e-4499-9464-fa4094ca5609",
+    "name": "Berger 6.5mm 156gr Elite Hunter",
+    "verified": "2026-03-06",
+    "status": "pass",
+    "notes": "G1=0.679, G7=0.347 exact match"
+  },
+  {
+    "entity": "bullet",
+    "id": "f9aa06ae-7944-4d8e-8dd3-a809548d4d59",
+    "name": "Speer .264 140gr Hot-Cor",
+    "verified": "2026-03-06",
+    "status": "pass",
+    "notes": "G1=0.498 exact match, G7 not published"
+  },
+  {
+    "entity": "bullet",
+    "id": "00094a3b-478c-4eca-a410-5f3e4e9371ca",
+    "name": "Speer .264 90gr TNT",
+    "verified": "2026-03-06",
+    "status": "pass",
+    "notes": "G1=0.281 exact match, G7 not published"
+  },
+  {
+    "entity": "bullet",
+    "id": "5172b830-356e-4c9a-9194-2e74441b331a",
+    "name": "Hornady 30cal 125gr ECX",
+    "verified": "2026-03-06",
+    "status": "pass",
+    "notes": "G1=0.181 exact match, G7 not published"
+  },
+  {
+    "entity": "bullet",
+    "id": "d3599517-c60c-4a9c-abc1-1b6663ada658",
+    "name": "Hornady 6.5mm 123gr SST Grendel",
+    "verified": "2026-03-06",
+    "status": "pass",
+    "notes": "G1=0.510 exact match, G7 not published"
+  },
+  {
+    "entity": "bullet",
+    "id": "9feef91b-a314-46b7-8f53-6e789e369a69",
+    "name": "Lapua .308 200gr Subsonic B416",
+    "verified": "2026-03-06",
+    "status": "pass",
+    "notes": "G1=0.518, G7=0.235 exact match"
+  },
+  {
+    "entity": "bullet",
+    "id": "f7759898-d72e-4cde-b036-ba721f86eddf",
+    "name": "Lapua .308 123gr FMJ S374",
+    "verified": "2026-03-06",
+    "status": "pass",
+    "notes": "G1=0.270 exact match, G7 not published"
+  },
+  {
+    "entity": "cartridge",
+    "id": "d807d1c9-8823-4e7c-a397-23ce8a45f074",
+    "name": "Federal .308 175gr Terminal Ascent",
+    "verified": "2026-03-06",
+    "status": "pass",
+    "notes": "MV=2600, wt=175 match. Bullet linkage shared with .300WM 200gr (resolver issue, not extraction)"
+  },
+  {
+    "entity": "cartridge",
+    "id": "c375839f-aea9-44f3-a5cc-201ff98b24da",
+    "name": "Federal .300WM 200gr Terminal Ascent",
+    "verified": "2026-03-06",
+    "status": "fail",
+    "notes": "MV=2810, wt=200 match but linked to 175gr bullet. Missing 200gr .308 Terminal Ascent bullet in DB."
+  },
+  {
+    "entity": "cartridge",
+    "id": "aa9c8dc1-dda5-4731-be9b-07a7260fc3f9",
+    "name": "Federal 6.5CM 143gr ELD-X",
+    "verified": "2026-03-06",
+    "status": "pass",
+    "notes": "MV=2700, wt=143, G1=0.625 match"
+  },
+  {
+    "entity": "cartridge",
+    "id": "e03a111c-15bd-431c-bf3e-ebfca58d41ab",
+    "name": "Federal 7mm PRC 170gr Terminal Ascent",
+    "verified": "2026-03-06",
+    "status": "fail",
+    "notes": "MV=2950, wt=170 match but linked to 155gr bullet. Missing 170gr .284 Terminal Ascent bullet in DB."
+  },
+  {
+    "entity": "cartridge",
+    "id": "c1057391-46e9-496e-8979-b2c2777a30ae",
+    "name": "Hornady .300WM 165gr CX Superformance",
+    "verified": "2026-03-06",
+    "status": "pass",
+    "notes": "MV=3260, wt=165, barrel=24 match. Linked to SST instead of CX (resolver mismatch, BC differs: 0.447 vs 0.440)"
+  },
+  {
+    "entity": "cartridge",
+    "id": "8151532a-a83e-4b78-975f-3ca3eb0183e9",
+    "name": "Federal .308 175gr GM SMK 7.62",
+    "verified": "2026-03-06",
+    "status": "pass",
+    "notes": "MV=2600, wt=175, G1=0.505, G7=0.250 match"
+  },
+  {
+    "entity": "cartridge",
+    "id": "78277a1f-2aad-45f6-8c85-d4716c4c4a9b",
+    "name": "Hornady .308 150gr InterLock SP AW",
+    "verified": "2026-03-06",
+    "status": "pass",
+    "notes": "MV=2820, wt=150, barrel=24 match. Linked to Lapua Mega instead of Hornady InterLock (resolver mismatch, BC differs: 0.33 vs 0.338)"
+  },
+  {
+    "entity": "cartridge",
+    "id": "d1c6fe07-ca48-4748-85d9-cfe283f8e44b",
+    "name": "Hornady .308 220gr RN Custom Intl",
+    "verified": "2026-03-06",
+    "status": "fail",
+    "notes": "MV=2310 correct (704 m/s), wt=220 match. Barrel=9.45\" WRONG (from \"24cm\" mislabel, should be 24\"). See C7."
+  },
+  {
+    "entity": "cartridge",
+    "id": "13671eab-0701-4c46-94b9-e437a43933c0",
+    "name": "Hornady 6.5CM 140gr BTHP Am. Gunner",
+    "verified": "2026-03-06",
+    "status": "pass",
+    "notes": "MV=2690, wt=140, barrel=24, G1=0.580 match"
+  },
+  {
+    "entity": "cartridge",
+    "id": "7ee3bb24-c950-4614-92f5-b762522b697e",
+    "name": "Federal 6.5CM 130gr Terminal Ascent",
+    "verified": "2026-03-06",
+    "status": "pass",
+    "notes": "MV=2800, wt=130 match. Federal publishes G1=0.532, G7=0.263 (not stored in DB)"
   }
 ]

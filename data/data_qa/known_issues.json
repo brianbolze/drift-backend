@@ -2,10 +2,10 @@
   {
     "id": "C1-cartridge-bullet-weight-mismatches",
     "severity": "critical",
-    "summary": "68 cartridge-bullet weight mismatches from resolver bug (was 70, improved by 2)",
+    "summary": "67 cartridge-bullet weight mismatches from resolver bug (was 70, improved by 3 total)",
     "first_seen": "2026-03-06",
     "last_seen": "2026-03-06",
-    "count": 68,
+    "count": 67,
     "status": "open"
   },
   {
@@ -51,6 +51,24 @@
     "status": "open"
   },
   {
+    "id": "C6-sierra-tmk-22cal-data-errors",
+    "severity": "critical",
+    "summary": "Sierra 22 CAL 60gr TMK (b137e0fa): wrong diameter (0.220, should be 0.224), wrong source_url (points to 30-cal page), missing BCs. Surviving record from W4 duplicate cleanup.",
+    "first_seen": "2026-03-06",
+    "last_seen": "2026-03-06",
+    "count": 1,
+    "status": "open"
+  },
+  {
+    "id": "C7-hornady-308-220gr-intl-metric-barrel",
+    "severity": "critical",
+    "summary": "Hornady .308 220gr RN Custom International: barrel stored as 9.45\" (from '24cm' mislabel on Hornady International page, should be 24\"). MV=2310 fps is correct (704 m/s conversion).",
+    "first_seen": "2026-03-06",
+    "last_seen": "2026-03-06",
+    "count": 1,
+    "status": "open"
+  },
+  {
     "id": "W1-hornady-zero-mv",
     "severity": "warning",
     "summary": "7 cartridges with muzzle_velocity_fps = 0: 6 ECX/Hornady International + 1 .22 Creedmoor CX Superformance (all confirmed unpublished on manufacturer sites)",
@@ -62,10 +80,10 @@
   {
     "id": "W2-missing-bc-rifle-bullets",
     "severity": "warning",
-    "summary": "22 rifle bullets (diameter <= .375) missing all BC fields, excluding Cutting Edge and Nosler. Federal 15, Lapua 5, Lehigh Defense 2 (improved from 27).",
+    "summary": "23 rifle bullets (diameter <= .375) missing all BC fields, excluding Cutting Edge and Nosler. Federal 15, Lapua 5, Lehigh Defense 2, Sierra 1 (worsened from 22 due to Sierra TMK at wrong diameter).",
     "first_seen": "2026-03-06",
     "last_seen": "2026-03-06",
-    "count": 22,
+    "count": 23,
     "status": "open"
   },
   {
