@@ -62,10 +62,7 @@ ALWAYS dry-run first:
 
 Records have `data_source` ("pipeline", "cowork", "manual") and `is_locked` (bool) columns. The store script skips locked records entirely — they won't be modified by pipeline re-runs.
 
-**Lock a manually corrected record:**
-```sql
-UPDATE bullet SET is_locked = 1, data_source = 'manual', last_verified_at = datetime('now') WHERE id = '...';
-```
+**Manual data fixes** (missing bullets, BC corrections, aliases) should use the **curation system** — numbered YAML patches in `data/patches/`, applied via `make curate` / `make curate-commit`. All curated records automatically get `data_source="manual"` + `is_locked=True`. See `curation_plan.md` for YAML format and `src/drift/curation.py` for implementation.
 
 **Unlock to allow pipeline updates:**
 ```sql
