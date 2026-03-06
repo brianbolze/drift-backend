@@ -35,6 +35,15 @@ def get_engine(url: str = DATABASE_URL):
             cursor = dbapi_connection.cursor()
             cursor.execute("PRAGMA foreign_keys=ON")
             cursor.close()
+            # Disable pysqlite's implicit transaction management so that SQLAlchemy
+            # controls BEGIN/COMMIT/ROLLBACK via explicit SQL. Without this, pysqlite
+            # can RELEASE SAVEPOINTs in a way that commits changes to disk, bypassing
+            # an outer session.rollback() (e.g. curation dry-run mode).
+            dbapi_connection.isolation_level = None
+
+        @event.listens_for(engine, "begin")
+        def _emit_begin(conn):
+            conn.exec_driver_sql("BEGIN")
 
     return engine
 
