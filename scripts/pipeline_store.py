@@ -98,6 +98,9 @@ def _make_cartridge(
         name=_get_value(entity, "name", ""),
         sku=_get_value(entity, "sku"),
         bullet_weight_grains=_safe_float(_get_value(entity, "bullet_weight_grains")) or 0.0,
+        bc_g1=_safe_float(_get_value(entity, "bc_g1")),
+        bc_g7=_safe_float(_get_value(entity, "bc_g7")),
+        bullet_length_inches=_safe_float(_get_value(entity, "bullet_length_inches")),
         muzzle_velocity_fps=_safe_int(_get_value(entity, "muzzle_velocity_fps")) or 0,
         test_barrel_length_inches=_safe_float(_get_value(entity, "test_barrel_length_inches")),
         round_count=_safe_int(_get_value(entity, "round_count")),
@@ -345,6 +348,19 @@ def main() -> None:  # noqa: C901
                                 )
                                 session.add(obj)
                                 entry["created_id"] = obj.id
+                                # Create BulletBCSource rows for cartridge-sourced BC data
+                                if resolution.bullet_id:
+                                    cart_bc_sources = [
+                                        bc for bc in bc_sources if bc.get("source") == "cartridge_page"
+                                    ]
+                                    for bc_obj in _make_bc_sources(
+                                        resolution.bullet_id, cart_bc_sources, url
+                                    ):
+                                        bc_obj.notes = (
+                                            f"from cartridge: {_get_value(entity, 'name', '')} "
+                                            f"(SKU: {_get_value(entity, 'sku', 'N/A')})"
+                                        )
+                                        session.add(bc_obj)
                             elif entity_type == "rifle":
                                 obj = _make_rifle(entity, resolution.manufacturer_id, resolution.chamber_id, url)
                                 session.add(obj)

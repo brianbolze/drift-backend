@@ -31,6 +31,22 @@ def _make_mock_provider(response_json: list[dict] | None = None) -> BaseLLMProvi
     return provider
 
 
+MINIMAL_CARTRIDGE = {
+    "name": {"value": "Hornady Precision Hunter 6.5 CM 143gr ELD-X", "source_text": "Precision Hunter", "confidence": 0.9},
+    "manufacturer": {"value": "Hornady", "source_text": "Hornady", "confidence": 1.0},
+    "caliber": {"value": "6.5 Creedmoor", "source_text": "6.5 Creedmoor", "confidence": 0.95},
+    "bullet_name": {"value": "ELD-X", "source_text": "ELD-X", "confidence": 0.9},
+    "bullet_weight_grains": {"value": 143, "source_text": "143 gr", "confidence": 1.0},
+    "bc_g1": {"value": 0.625, "source_text": ".625 G1", "confidence": 0.9},
+    "bc_g7": {"value": 0.315, "source_text": ".315 G7", "confidence": 0.9},
+    "bullet_length_inches": {"value": None, "source_text": "", "confidence": 0.0},
+    "muzzle_velocity_fps": {"value": 2700, "source_text": "2700 fps", "confidence": 0.95},
+    "test_barrel_length_inches": {"value": 24, "source_text": '24"', "confidence": 0.9},
+    "round_count": {"value": 20, "source_text": "20 rounds", "confidence": 0.95},
+    "product_line": {"value": "Precision Hunter", "source_text": "Precision Hunter", "confidence": 0.9},
+    "sku": {"value": "81499", "source_text": "81499", "confidence": 1.0},
+}
+
 MINIMAL_BULLET = {
     "name": {"value": "Test Bullet", "source_text": "Test Bullet", "confidence": 0.9},
     "manufacturer": {"value": "Acme", "source_text": "Acme", "confidence": 0.9},
@@ -103,6 +119,22 @@ class TestParseResponse:
         engine = ExtractionEngine(provider=_make_mock_provider())
         result = engine.parse_response(json.dumps([bullet_with_bad_bc]), "bullet")
         assert any("bc_g1" in w for w in result.warnings)
+
+    def test_parses_cartridge_with_bc(self):
+        engine = ExtractionEngine(provider=_make_mock_provider())
+        result = engine.parse_response(json.dumps([MINIMAL_CARTRIDGE]), "cartridge")
+        assert len(result.entities) == 1
+        assert result.entities[0].bc_g1.value == 0.625
+        assert result.entities[0].bc_g7.value == 0.315
+
+    def test_cartridge_produces_bc_sources(self):
+        engine = ExtractionEngine(provider=_make_mock_provider())
+        result = engine.parse_response(json.dumps([MINIMAL_CARTRIDGE]), "cartridge")
+        assert len(result.bc_sources) == 2
+        assert result.bc_sources[0].source == "cartridge_page"
+        assert result.bc_sources[0].bullet_name == "ELD-X"
+        types = {s.bc_type for s in result.bc_sources}
+        assert types == {"g1", "g7"}
 
 
 # ── Retry logic in extract() ──────────────────────────────────────────────

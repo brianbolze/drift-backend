@@ -234,11 +234,13 @@ def build_summary(conn: sqlite3.Connection) -> str:
 
     w("### Sample Factory Loads (Top LR Calibers)")
     w("")
-    w("| Caliber | Manufacturer | Load | Bullet Weight (gr) | MV (fps) | Barrel (in) |")
-    w("|---------|--------------|------|-------------------:|---------:|------------:|")
+    w("| Caliber | Manufacturer | Load | Weight (gr) | MV (fps) | Barrel (in) | G1 BC | G7 BC |")
+    w("|---------|--------------|------|------------:|---------:|------------:|------:|------:|")
     for row in _q(
         conn,
-        """SELECT c.name, m.name, ct.name, ct.bullet_weight_grains, ct.muzzle_velocity_fps, ct.test_barrel_length_inches
+        """SELECT c.name, m.name, ct.name, ct.bullet_weight_grains,
+                  ct.muzzle_velocity_fps, ct.test_barrel_length_inches,
+                  ct.bc_g1, ct.bc_g7
            FROM cartridge ct
            JOIN caliber c ON ct.caliber_id = c.id
            LEFT JOIN manufacturer m ON ct.manufacturer_id = m.id
@@ -246,11 +248,13 @@ def build_summary(conn: sqlite3.Connection) -> str:
            ORDER BY c.lr_popularity_rank, ct.bullet_weight_grains
            LIMIT 20""",
     ):
-        caliber, mfr, name, weight, mv, barrel = row
-        weight_str = f"{weight:.0f}" if weight else "—"
-        mv_str = f"{mv:.0f}" if mv else "—"
-        barrel_str = f"{barrel:.0f}" if barrel else "—"
-        w(f"| {caliber} | {mfr or '—'} | {name} | {weight_str} | {mv_str} | {barrel_str} |")
+        caliber, mfr, name, weight, mv, barrel, g1, g7 = row
+        weight_str = f"{weight:.0f}" if weight is not None else "—"
+        mv_str = f"{mv:.0f}" if mv is not None else "—"
+        barrel_str = f"{barrel:.0f}" if barrel is not None else "—"
+        g1_str = f"{g1:.3f}" if g1 is not None else "—"
+        g7_str = f"{g7:.3f}" if g7 is not None else "—"
+        w(f"| {caliber} | {mfr or '—'} | {name} | {weight_str} | {mv_str} | {barrel_str} | {g1_str} | {g7_str} |")
     w("")
 
     # ── Rifle Models ────────────────────────────────────────────

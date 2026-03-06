@@ -70,12 +70,20 @@ Extract ALL factory-loaded cartridge/ammunition products from this page. For eac
   "caliber": {"value": "string — e.g. '6.5 Creedmoor'", "source_text": "...", "confidence": ...},
   "bullet_name": {"value": "string — name of the bullet used", "source_text": "...", "confidence": ...},
   "bullet_weight_grains": {"value": number, "source_text": "...", "confidence": ...},
+  "bc_g1": {"value": number or null, "source_text": "...", "confidence": ...},
+  "bc_g7": {"value": number or null, "source_text": "...", "confidence": ...},
+  "bullet_length_inches": {"value": number or null, "source_text": "...", "confidence": ...},  // BULLET LENGTH ONLY — the projectile's tip-to-base length. Do NOT extract cartridge OAL (overall length) here.
   "muzzle_velocity_fps": {"value": integer, "source_text": "...", "confidence": ...},
   "test_barrel_length_inches": {"value": number or null, "source_text": "...", "confidence": ...},
   "round_count": {"value": integer or null — rounds per box, "source_text": "...", "confidence": ...},
   "product_line": {"value": "string or null — e.g. 'Precision Hunter', 'Match'", "source_text": "...", "confidence": ...},
   "sku": {"value": "string or null", "source_text": "...", "confidence": ...}
 }
+
+IMPORTANT: "bullet_length_inches" is the BULLET (projectile) length — the physical tip-to-base measurement of \
+the projectile itself, typically 0.5–1.8 inches. Do NOT confuse this with cartridge OAL (overall length), \
+which is the full assembled round length (bullet seated in the case) and is typically 2.0–3.7 inches. \
+If the page only lists OAL/COAL and not the standalone bullet length, set bullet_length_inches to null.
 
 Return a JSON array of extracted cartridges. If a field is not found on the page, set value to null with confidence 0.0.
 """
@@ -171,11 +179,28 @@ def validate_ranges(entities: list[dict]) -> list[str]:
     return warnings
 
 
-def _extract_bc_sources(entity: dict) -> list[ExtractedBCSource]:
-    """Extract ExtractedBCSource entries from a bullet entity's BC fields."""
+def _extract_bc_sources(entity: dict, *, entity_type: str = "bullet") -> list[ExtractedBCSource]:
+    """Extract ExtractedBCSource entries from a bullet or cartridge entity's BC fields.
+
+    For bullet entities, uses the entity's ``name`` as the bullet_name.
+    For cartridge entities, prefers ``bullet_name`` (the loaded projectile) and
+    sets source to ``"cartridge_page"`` to distinguish from the bullet's own page.
+    """
     sources = []
-    name = entity.get("name", {})
-    bullet_name = name.get("value", "") if isinstance(name, dict) else str(name)
+
+    # Determine the bullet name to attribute the BC to
+    if entity_type == "cartridge":
+        bn = entity.get("bullet_name", {})
+        bullet_name = bn.get("value", "") if isinstance(bn, dict) else str(bn) if bn else ""
+        # Fall back to cartridge name if bullet_name is empty
+        if not bullet_name:
+            n = entity.get("name", {})
+            bullet_name = n.get("value", "") if isinstance(n, dict) else str(n)
+        source = "cartridge_page"
+    else:
+        n = entity.get("name", {})
+        bullet_name = n.get("value", "") if isinstance(n, dict) else str(n)
+        source = "manufacturer"
 
     for bc_field, bc_type in [("bc_g1", "g1"), ("bc_g7", "g7")]:
         if bc_field not in entity:
@@ -194,7 +219,7 @@ def _extract_bc_sources(entity: dict) -> list[ExtractedBCSource]:
                 bullet_name=bullet_name,
                 bc_type=bc_type,
                 bc_value=bc_val,
-                source="manufacturer",
+                source=source,
             )
         )
     return sources
@@ -288,9 +313,9 @@ class ExtractionEngine:
                 warnings.append(f"Parse error: {e}")
 
         bc_sources: list[ExtractedBCSource] = []
-        if entity_type == "bullet":
+        if entity_type in ("bullet", "cartridge"):
             for raw in raw_entities:
-                bc_sources.extend(_extract_bc_sources(raw))
+                bc_sources.extend(_extract_bc_sources(raw, entity_type=entity_type))
 
         return ExtractionResult(
             entities=entities,

@@ -700,6 +700,12 @@ class EntityResolver:
                 # fuzzy matches (e.g. weight-mismatched Tier 3) should be flagged, not assigned.
                 if bullet_match.matched and bullet_match.confidence >= 0.5:
                     result.bullet_id = bullet_match.entity_id
+                    # Boost confidence when cartridge BC/weight exactly match the bullet
+                    boost, bc_warnings = _bc_weight_confidence_boost(
+                        extracted, bullet_match.entity_id, self._session
+                    )
+                    bullet_match.confidence = min(bullet_match.confidence + boost, 1.0)
+                    result.warnings.extend(bc_warnings)
                 elif bullet_match.matched:
                     result.unresolved_refs.append(
                         f"bullet: {bullet_name} (low confidence {bullet_match.confidence:.0%}: {bullet_match.details})"
@@ -713,6 +719,62 @@ class EntityResolver:
             result.warnings.append(f"Unknown entity type: {entity_type}")
 
         return result
+
+
+def _bc_weight_confidence_boost(
+    extracted: dict, bullet_id: str, session: Session
+) -> tuple[float, list[str]]:
+    """Compare cartridge-extracted BC/weight against the matched bullet's published values.
+
+    Returns a (boost, warnings) tuple:
+      - boost: additive confidence increase (0.0–0.15) for exact matches
+      - warnings: list of disagreement warnings (informational, not disqualifying)
+
+    Exact match = values are identical (float equality). Weight uses ±0.5 gr tolerance
+    (same as composite key matching).
+    """
+    boost = 0.0
+    warnings: list[str] = []
+    bullet = session.get(Bullet, bullet_id)
+    if bullet is None:
+        return boost, warnings
+
+    # Weight agreement (±0.5 gr — same tolerance as composite key matching)
+    cart_weight = _get_value(extracted, "bullet_weight_grains")
+    if cart_weight is not None and bullet.weight_grains is not None:
+        try:
+            if abs(float(cart_weight) - bullet.weight_grains) <= 0.5:
+                boost += 0.05
+        except (ValueError, TypeError):
+            pass
+
+    # BC G1 exact match
+    cart_g1 = _get_value(extracted, "bc_g1")
+    if cart_g1 is not None and bullet.bc_g1_published is not None:
+        try:
+            if float(cart_g1) == bullet.bc_g1_published:
+                boost += 0.05
+            else:
+                warnings.append(
+                    f"bc_g1 mismatch: cartridge={cart_g1}, bullet={bullet.bc_g1_published}"
+                )
+        except (ValueError, TypeError):
+            pass
+
+    # BC G7 exact match
+    cart_g7 = _get_value(extracted, "bc_g7")
+    if cart_g7 is not None and bullet.bc_g7_published is not None:
+        try:
+            if float(cart_g7) == bullet.bc_g7_published:
+                boost += 0.05
+            else:
+                warnings.append(
+                    f"bc_g7 mismatch: cartridge={cart_g7}, bullet={bullet.bc_g7_published}"
+                )
+        except (ValueError, TypeError):
+            pass
+
+    return boost, warnings
 
 
 def _get_value(entity: dict, field_name: str, default=None):

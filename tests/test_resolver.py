@@ -14,6 +14,7 @@ from drift.models import Base, Bullet, Caliber, Cartridge, Manufacturer
 from drift.pipeline.resolution.resolver import (
     EntityResolver,
     ResolutionResult,
+    _bc_weight_confidence_boost,
     _bullet_name_score,
     _expand_abbreviations,
     _name_similarity,
@@ -686,6 +687,104 @@ class TestAsymmetricBulletMatching:
             bullet_diameter_inches=0.277,
         )
         assert result.matched is False
+
+
+# ---------------------------------------------------------------------------
+# BC/weight confidence boost for cartridge → bullet matching
+# ---------------------------------------------------------------------------
+
+
+class TestBCWeightConfidenceBoost:
+    """Tests for _bc_weight_confidence_boost when matching cartridge BC/weight to bullet."""
+
+    def test_exact_weight_match_boosts(self, seeded, db):
+        """Exact weight agreement (±0.5 gr) should boost confidence."""
+        b1 = seeded["b1"]  # weight=140.0, bc_g7_published=0.326
+        extracted = {"bullet_weight_grains": {"value": 140.0}}
+        boost, warnings = _bc_weight_confidence_boost(extracted, b1.id, db)
+        assert boost == 0.05
+        assert warnings == []
+
+    def test_exact_bc_g7_match_boosts(self, seeded, db):
+        """Exact BC G7 match should boost confidence by 0.05."""
+        b1 = seeded["b1"]  # bc_g7_published=0.326
+        extracted = {"bc_g7": {"value": 0.326}}
+        boost, warnings = _bc_weight_confidence_boost(extracted, b1.id, db)
+        assert boost == 0.05
+        assert warnings == []
+
+    def test_bc_g7_disagreement_warns(self, seeded, db):
+        """BC G7 mismatch should produce a warning but no boost."""
+        b1 = seeded["b1"]  # bc_g7_published=0.326
+        extracted = {"bc_g7": {"value": 0.310}}
+        boost, warnings = _bc_weight_confidence_boost(extracted, b1.id, db)
+        assert boost == 0.0
+        assert len(warnings) == 1
+        assert "bc_g7 mismatch" in warnings[0]
+
+    def test_all_signals_match_cumulative_boost(self, seeded, db):
+        """Weight + BC G7 agreement should stack boosts."""
+        b1 = seeded["b1"]  # weight=140.0, bc_g7_published=0.326
+        extracted = {
+            "bullet_weight_grains": {"value": 140.0},
+            "bc_g7": {"value": 0.326},
+        }
+        boost, warnings = _bc_weight_confidence_boost(extracted, b1.id, db)
+        assert boost == 0.10  # 0.05 (weight) + 0.05 (g7)
+        assert warnings == []
+
+    def test_no_bc_on_bullet_no_boost(self, seeded, db):
+        """If bullet has no published BC, no boost or warning for BC fields."""
+        b1 = seeded["b1"]
+        # b1 has bc_g7_published=0.326 but no bc_g1_published
+        extracted = {"bc_g1": {"value": 0.500}}
+        boost, warnings = _bc_weight_confidence_boost(extracted, b1.id, db)
+        assert boost == 0.0
+        assert warnings == []
+
+    def test_missing_bullet_returns_zero(self, db):
+        """Non-existent bullet_id should return zero boost."""
+        extracted = {"bullet_weight_grains": {"value": 140.0}}
+        boost, warnings = _bc_weight_confidence_boost(extracted, "nonexistent-id", db)
+        assert boost == 0.0
+        assert warnings == []
+
+
+class TestResolveCartridgeBCBoost:
+    """Integration: resolve('cartridge') applies BC/weight boost to bullet match confidence."""
+
+    def test_resolve_cartridge_bc_match_boosts_bullet_confidence(self, seeded, db):
+        """When cartridge BC matches bullet BC, bullet match confidence gets boosted."""
+        resolver = EntityResolver(db)
+        extracted = {
+            "name": {"value": "Hornady 6.5 CM 140gr ELD Match"},
+            "manufacturer": {"value": "Hornady"},
+            "caliber": {"value": "6.5 Creedmoor"},
+            "bullet_name": {"value": "140 ELD Match"},
+            "bullet_weight_grains": {"value": 140.0},
+            "bc_g7": {"value": 0.326},
+            "sku": {"value": "81500"},
+        }
+        result = resolver.resolve(extracted, "cartridge")
+        assert result.bullet_id == seeded["b1"].id
+        # Should have no BC warnings since G7 matches exactly
+        assert not any("bc_g7 mismatch" in w for w in result.warnings)
+
+    def test_resolve_cartridge_bc_mismatch_adds_warning(self, seeded, db):
+        """When cartridge BC disagrees with bullet BC, a warning is added."""
+        resolver = EntityResolver(db)
+        extracted = {
+            "name": {"value": "Hornady 6.5 CM 140gr ELD Match"},
+            "manufacturer": {"value": "Hornady"},
+            "caliber": {"value": "6.5 Creedmoor"},
+            "bullet_name": {"value": "140 ELD Match"},
+            "bullet_weight_grains": {"value": 140.0},
+            "bc_g7": {"value": 0.999},  # Clearly wrong
+            "sku": {"value": "81500"},
+        }
+        result = resolver.resolve(extracted, "cartridge")
+        assert result.bullet_id == seeded["b1"].id
+        assert any("bc_g7 mismatch" in w for w in result.warnings)
 
     def test_ftx_matches_with_weight(self, cartridge_bullets, db):
         """'FTX®' + weight=160 should match '30 Cal .308 160 gr FTX® (30-30 Win)'."""

@@ -66,6 +66,9 @@ def _seed(db):
         caliber_id=cal.id,
         bullet_id=bullet.id,
         bullet_weight_grains=140.0,
+        bc_g1=0.585,
+        bc_g7=0.326,
+        bullet_length_inches=1.383,
         muzzle_velocity_fps=2710,
         test_barrel_length_inches=24.0,
         bullet_match_confidence=0.98,
@@ -119,10 +122,13 @@ def test_full_graph(db):
     assert len(bullet.bc_sources) == 1
     assert bullet.bc_sources[0].bc_value == 0.326
 
-    # Cartridge → Bullet back-reference
+    # Cartridge → Bullet back-reference + BC fields
     db.refresh(cart)
     assert cart.bullet.name == "ELD Match"
     assert cart.caliber.name == "6.5 Creedmoor"
+    assert cart.bc_g1 == 0.585
+    assert cart.bc_g7 == 0.326
+    assert cart.bullet_length_inches == 1.383
 
     # RifleModel → Chamber
     db.refresh(rifle)

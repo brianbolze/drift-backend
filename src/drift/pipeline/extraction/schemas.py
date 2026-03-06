@@ -83,6 +83,13 @@ class ExtractedCartridge(BaseModel):
     caliber: ExtractedValue[str | None]
     bullet_name: ExtractedValue[str | None]
     bullet_weight_grains: ExtractedValue[float | None]
+    bc_g1: ExtractedValue[float | None]
+    bc_g7: ExtractedValue[float | None]
+    bullet_length_inches: ExtractedValue[float | None] = Field(
+        ...,
+        description="Bullet (projectile) tip-to-base length in inches. "
+        "NOT cartridge OAL/COAL. Typically 0.5–1.8 inches.",
+    )
     muzzle_velocity_fps: ExtractedValue[int | None]
     test_barrel_length_inches: ExtractedValue[float | None]
     round_count: ExtractedValue[int | None]

@@ -27,6 +27,13 @@ class Cartridge(TimestampMixin, Base):
     # Denormalized for search/display convenience
     bullet_weight_grains: Mapped[float] = mapped_column(Float, nullable=False)
 
+    # Bullet BC values as published on the cartridge product page
+    bc_g1: Mapped[float | None] = mapped_column(Float, nullable=True)
+    bc_g7: Mapped[float | None] = mapped_column(Float, nullable=True)
+
+    # Bullet physical specs as published on the cartridge product page
+    bullet_length_inches: Mapped[float | None] = mapped_column(Float, nullable=True)
+
     # Velocity data
     muzzle_velocity_fps: Mapped[int] = mapped_column(Integer, nullable=False)
     test_barrel_length_inches: Mapped[float | None] = mapped_column(Float, nullable=True)

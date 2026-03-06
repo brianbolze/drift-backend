@@ -124,6 +124,9 @@ class TestExtractionSchemas:
             "caliber": {"value": ".308 Winchester", "source_text": ".308 Win", "confidence": 0.9},
             "bullet_name": {"value": "Sierra MatchKing", "source_text": "Sierra", "confidence": 0.8},
             "bullet_weight_grains": {"value": 175, "source_text": "175 gr", "confidence": 1.0},
+            "bc_g1": {"value": 0.505, "source_text": ".505 G1", "confidence": 0.9},
+            "bc_g7": {"value": 0.253, "source_text": ".253 G7", "confidence": 0.9},
+            "bullet_length_inches": {"value": 1.24, "source_text": "1.24 in", "confidence": 0.8},
             "muzzle_velocity_fps": {"value": 2600, "source_text": "2600 fps", "confidence": 0.95},
             "test_barrel_length_inches": {"value": 24, "source_text": "24 in", "confidence": 0.9},
             "round_count": {"value": 20, "source_text": "20 rounds", "confidence": 0.95},
@@ -133,6 +136,9 @@ class TestExtractionSchemas:
         cart = ExtractedCartridge.model_validate(data)
         assert cart.muzzle_velocity_fps.value == 2600
         assert cart.round_count.value == 20
+        assert cart.bc_g1.value == 0.505
+        assert cart.bc_g7.value == 0.253
+        assert cart.bullet_length_inches.value == 1.24
 
     def test_extracted_rifle_model(self):
         data = {
@@ -335,6 +341,30 @@ class TestExtractBCSources:
         assert len(sources) == 1
         assert sources[0].bc_value == 0.450
         assert sources[0].bullet_name == "Plain Name"
+
+    def test_cartridge_uses_bullet_name(self):
+        entity = {
+            "name": {"value": "Hornady Precision Hunter 6.5 CM"},
+            "bullet_name": {"value": "ELD-X"},
+            "bc_g1": {"value": 0.625},
+            "bc_g7": {"value": 0.315},
+        }
+        sources = _extract_bc_sources(entity, entity_type="cartridge")
+        assert len(sources) == 2
+        assert sources[0].bullet_name == "ELD-X"
+        assert sources[0].source == "cartridge_page"
+        assert sources[1].bullet_name == "ELD-X"
+        assert sources[1].source == "cartridge_page"
+
+    def test_cartridge_falls_back_to_cartridge_name(self):
+        entity = {
+            "name": {"value": "Some Cartridge"},
+            "bc_g1": {"value": 0.5},
+        }
+        sources = _extract_bc_sources(entity, entity_type="cartridge")
+        assert len(sources) == 1
+        assert sources[0].bullet_name == "Some Cartridge"
+        assert sources[0].source == "cartridge_page"
 
 
 # ── Store script helpers ─────────────────────────────────────────────────────

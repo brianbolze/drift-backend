@@ -50,6 +50,7 @@ VALIDATION_RANGES: dict[str, tuple[float, float]] = {
     "test_barrel_length_inches": (10, 34),
     "sectional_density": (0.05, 0.500),
     "length_inches": (0.2, 3.0),
+    "bullet_length_inches": (0.2, 3.0),
     "weight_lbs": (2, 20),
 }
 
