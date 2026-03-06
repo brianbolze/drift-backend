@@ -1,0 +1,84 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(make *)",
+      "Bash(.venv/bin/pytest *)",
+      "Bash(python scripts/describe_db.py)",
+      "Bash(python scripts/pipeline_status.py *)",
+      "Bash(python scripts/manifest_validate.py *)",
+      "Bash(git status *)",
+      "Bash(git diff *)",
+      "Bash(git log *)",
+      "Bash(git branch *)",
+      "Bash(sqlite3 data/drift.db 'SELECT *')",
+      "Bash(sqlite3 -header * data/drift.db 'SELECT *')",
+      "Bash(gh repo view *)",
+      "Bash(gh pr *)",
+      "Bash(gh issue *)",
+      "mcp__filesystem__directory_tree"
+    ],
+    "deny": []
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "INPUT=$(cat); CMD=$(echo \"$INPUT\" | jq -r '.tool_input.command // empty'); if echo \"$CMD\" | grep -qiE 'git\\s+push\\s+.*--force|git\\s+push\\s+-f\\b'; then echo 'BLOCKED: Force push is not allowed. Push normally or ask the user first.' >&2; exit 2; fi; exit 0"
+          }
+        ]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "INPUT=$(cat); CMD=$(echo \"$INPUT\" | jq -r '.tool_input.command // empty'); if echo \"$CMD\" | grep -qiE 'sqlite3\\s+data/drift\\.db.*(DELETE|UPDATE|INSERT|DROP|ALTER)'; then echo 'BLOCKED: Direct DB writes via sqlite3 are not allowed. Use pipeline scripts or Alembic migrations.' >&2; exit 2; fi; exit 0"
+          }
+        ]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "INPUT=$(cat); CMD=$(echo \"$INPUT\" | jq -r '.tool_input.command // empty'); if echo \"$CMD\" | grep -qE 'rm\\s+-rf\\s+[^d]' | grep -qvE 'data/pipeline/(cache|tmp)'; then echo 'BLOCKED: rm -rf outside pipeline cache dirs. Use a safer approach or ask the user.' >&2; exit 2; fi; exit 0"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "INPUT=$(cat); FILE=$(echo \"$INPUT\" | jq -r '.tool_input.file_path // empty'); if echo \"$FILE\" | grep -qE '\\.(py)$'; then if echo \"$FILE\" | grep -qE '(src/|tests/|scripts/)'; then cd /Users/brianbolze/Development/software/shooting && .venv/bin/black --quiet \"$FILE\" 2>/dev/null && .venv/bin/isort --quiet \"$FILE\" 2>/dev/null; fi; fi; exit 0"
+          }
+        ]
+      },
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "INPUT=$(cat); FILE=$(echo \"$INPUT\" | jq -r '.tool_input.file_path // empty'); if echo \"$FILE\" | grep -qE 'src/drift/models/|src/drift/schemas/|alembic/versions/'; then echo 'You edited a model, schema, or migration file. Check if .claude/skills/ docs (SQL queries, column names, table references) or TODO.md need updating.'; fi; exit 0"
+          }
+        ]
+      }
+    ],
+    "Notification": [
+      {
+        "matcher": "compact",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo 'Context was compacted. Reminders: (1) Run make format && make lint && make test before committing. (2) Use make pipeline-store for dry-run before make pipeline-store-commit. (3) Manufacturer names need EntityAlias, never raw string match. (4) bullet_diameter_inches is a float, not an FK. (5) Log tech debt discoveries to TODO.md.'"
+          }
+        ]
+      }
+    ]
+  }
+}

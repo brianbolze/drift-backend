@@ -1,9 +1,0 @@
-{
-  "permissions": {
-    "allow": [
-      "Bash(python scripts/describe_db.py)"
-    ],
-    "deny": [],
-    "ask": []
-  }
-}

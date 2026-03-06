@@ -1,0 +1,65 @@
+[
+  {
+    "id": "C1-cartridge-bullet-weight-mismatches",
+    "severity": "critical",
+    "summary": "70 cartridge-bullet weight mismatches from resolver bug",
+    "first_seen": "2026-03-06",
+    "last_seen": "2026-03-06",
+    "count": 70,
+    "status": "open"
+  },
+  {
+    "id": "C2-lapua-g573-weight-error",
+    "severity": "critical",
+    "summary": "Lapua G573 weight stored as 180gr, should be 120gr",
+    "first_seen": "2026-03-06",
+    "last_seen": "2026-03-06",
+    "count": 1,
+    "status": "open"
+  },
+  {
+    "id": "C3-hornady-international-unit-confusion",
+    "severity": "critical",
+    "summary": "Hornady International cartridges with metric units stored as imperial (barrel 61cm→61in, velocity 721 m/s→721 fps, barrel 9.45 unexplained)",
+    "first_seen": "2026-03-06",
+    "last_seen": "2026-03-06",
+    "count": 4,
+    "status": "open"
+  },
+  {
+    "id": "W1-hornady-international-zero-mv",
+    "severity": "warning",
+    "summary": "7 Hornady International/ECX cartridges with muzzle_velocity_fps = 0 (pages don't publish velocity)",
+    "first_seen": "2026-03-06",
+    "last_seen": "2026-03-06",
+    "count": 7,
+    "status": "open"
+  },
+  {
+    "id": "W2-missing-bc-rifle-bullets",
+    "severity": "warning",
+    "summary": "28 rifle bullets (diameter <= .375) missing all BC fields, excluding Cutting Edge and Nosler",
+    "first_seen": "2026-03-06",
+    "last_seen": "2026-03-06",
+    "count": 28,
+    "status": "open"
+  },
+  {
+    "id": "W3-204-ruger-4400fps",
+    "severity": "warning",
+    "summary": ".204 Ruger 24gr NTX at 4400 fps exceeds 4200 fps threshold (plausible for 24gr Superformance)",
+    "first_seen": "2026-03-06",
+    "last_seen": "2026-03-06",
+    "count": 1,
+    "status": "open"
+  },
+  {
+    "id": "W4-sierra-tmk-duplicate",
+    "severity": "warning",
+    "summary": "Sierra 22 CAL 60 GR TMK appears twice — identical name, one missing BC data",
+    "first_seen": "2026-03-06",
+    "last_seen": "2026-03-06",
+    "count": 1,
+    "status": "open"
+  }
+]
