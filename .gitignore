@@ -35,10 +35,6 @@ htmlcov/
 *.log
 logs/
 
-# Database
-*.db
-*.sqlite3
-
 # Temporary files
 tmp/
 temp/

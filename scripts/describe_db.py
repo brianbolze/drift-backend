@@ -194,24 +194,23 @@ def build_summary(conn: sqlite3.Connection) -> str:
         w(f"| {row[0]} | {row[1]} | {row[2]} | {row[3]} |")
     w("")
 
-    # Bullet detail
-    w("### Full Bullet List")
+    w("### Sample Bullets (Top LR Calibers)")
     w("")
-    w("| Bullet | Diameter (in) | Weight (gr) | G1 BC | G7 BC | Manufacturer |")
-    w("|--------|---------------|------------:|------:|------:|--------------|")
+    w("| Caliber | Manufacturer | Bullet | Weight (gr) | BC G7 |")
+    w("|---------|--------------|--------|------------:|------:|")
     for row in _q(
         conn,
-        """SELECT b.name, PRINTF('%.3f', b.bullet_diameter_inches), b.weight_grains,
-                  b.bc_g1_published, b.bc_g7_published, m.name
+        """SELECT c.name, m.name, b.name, b.weight_grains, b.bc_g7_published
            FROM bullet b
            LEFT JOIN manufacturer m ON b.manufacturer_id = m.id
-           ORDER BY b.bullet_diameter_inches, b.weight_grains""",
+           LEFT JOIN caliber c ON ABS(b.bullet_diameter_inches - c.bullet_diameter_inches) < 0.001
+           WHERE c.lr_popularity_rank IS NOT NULL
+           ORDER BY c.lr_popularity_rank, b.weight_grains
+           LIMIT 15""",
     ):
-        name, dia, wt, g1, g7, mfr = row
-        g1_str = f"{g1:.3f}" if g1 else "—"
-        g7_str = f"{g7:.3f}" if g7 else "—"
-        wt_str = f"{wt:.0f}" if wt else "—"
-        w(f"| {name} | {dia} | {wt_str} | {g1_str} | {g7_str} | {mfr or '—'} |")
+        caliber, mfr, name, weight, bc_g7 = row
+        bc_str = f"{bc_g7:.3f}" if bc_g7 else "—"
+        w(f"| {caliber or '—'} | {mfr or '—'} | {name} | {weight:.1f} | {bc_str} |")
     w("")
 
     # ── Cartridges ──────────────────────────────────────────────
@@ -233,23 +232,25 @@ def build_summary(conn: sqlite3.Connection) -> str:
         w(f"| {row[0]} | {row[1]} | {row[2]} |")
     w("")
 
-    w("### Full Cartridge List")
+    w("### Sample Factory Loads (Top LR Calibers)")
     w("")
-    w("| Cartridge | Caliber | Weight (gr) | MV (fps) | Manufacturer |")
-    w("|-----------|---------|------------:|---------:|--------------|")
+    w("| Caliber | Manufacturer | Load | Bullet Weight (gr) | MV (fps) | Barrel (in) |")
+    w("|---------|--------------|------|-------------------:|---------:|------------:|")
     for row in _q(
         conn,
-        """SELECT ct.name, c.name, ct.bullet_weight_grains,
-                  ct.muzzle_velocity_fps, m.name
+        """SELECT c.name, m.name, ct.name, ct.bullet_weight_grains, ct.muzzle_velocity_fps, ct.test_barrel_length_inches
            FROM cartridge ct
            JOIN caliber c ON ct.caliber_id = c.id
            LEFT JOIN manufacturer m ON ct.manufacturer_id = m.id
-           ORDER BY c.lr_popularity_rank, ct.bullet_weight_grains""",
+           WHERE c.lr_popularity_rank IS NOT NULL
+           ORDER BY c.lr_popularity_rank, ct.bullet_weight_grains
+           LIMIT 20""",
     ):
-        name, cal, wt, mv, mfr = row
-        wt_str = f"{wt:.0f}" if wt else "—"
-        mv_str = str(mv) if mv else "—"
-        w(f"| {name} | {cal} | {wt_str} | {mv_str} | {mfr or '—'} |")
+        caliber, mfr, name, weight, mv, barrel = row
+        weight_str = f"{weight:.0f}" if weight else "—"
+        mv_str = f"{mv:.0f}" if mv else "—"
+        barrel_str = f"{barrel:.0f}" if barrel else "—"
+        w(f"| {caliber} | {mfr or '—'} | {name} | {weight_str} | {mv_str} | {barrel_str} |")
     w("")
 
     # ── Rifle Models ────────────────────────────────────────────
