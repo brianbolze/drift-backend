@@ -232,9 +232,6 @@ def main() -> None:  # noqa: C901
         raise SystemExit(f"No extracted files found in {EXTRACTED_DIR}\nRun pipeline_extract.py first.")
 
     SessionFactory = get_session_factory()
-    session = SessionFactory()
-
-    resolver = EntityResolver(session)
 
     rejected_calibers = _load_rejected_calibers()
     if rejected_calibers:
@@ -249,7 +246,10 @@ def main() -> None:  # noqa: C901
 
     entries = extracted_files[: args.limit] if args.limit > 0 else extracted_files
 
+    session = None
     try:
+        session = SessionFactory()
+        resolver = EntityResolver(session)
         for i, extracted_path in enumerate(entries):
             uhash = extracted_path.stem
             extraction_data = json.loads(extracted_path.read_text(encoding="utf-8"))
@@ -442,10 +442,12 @@ def main() -> None:  # noqa: C901
             logger.info("Dry-run complete — no changes written")
 
     except Exception:
-        session.rollback()
+        if session is not None:
+            session.rollback()
         raise
     finally:
-        session.close()
+        if session is not None:
+            session.close()
 
     # Write report
     report = {
