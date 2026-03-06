@@ -43,7 +43,7 @@ Lightweight tech debt and engineering improvement tracker. Agents and humans app
 
 ## Code / Tooling
 
-- [ ] Curation dry-run leaks savepoint commits — `session.begin_nested()` + `sp.commit()` persists through outer `session.rollback()` on SQLite. Deletes and creates in dry-run mode actually modify the DB (source: agent, 2026-03-06)
+- [x] Curation dry-run leaks savepoint commits — `session.begin_nested()` + `sp.commit()` persists through outer `session.rollback()` on SQLite. Deletes and creates in dry-run mode actually modify the DB (source: agent, 2026-03-06)
 - [ ] No `ondelete` cascade on any FK relationship — `BulletBCSource.bullet_id` especially needs `ondelete="CASCADE"` (source: code review, 2026-03-06)
 - [ ] Missing indexes on FK columns used by resolver — `bullet.manufacturer_id`, `bullet.bullet_diameter_inches`, `cartridge.caliber_id`, etc. (source: code review, 2026-03-06)
 - [ ] Missing composite unique constraints on natural keys — `Bullet(manufacturer_id, name, weight_grains, diameter)` and `Cartridge(manufacturer_id, name, caliber_id)` (source: code review, 2026-03-06)
