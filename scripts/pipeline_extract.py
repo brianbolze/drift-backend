@@ -98,8 +98,9 @@ def _load_pending_items(  # noqa: C901
                     logger.info("Re-extracting %s (previous run returned 0 entities)", uhash)
                 else:
                     continue
-            except (json.JSONDecodeError, KeyError):
-                continue
+            except json.JSONDecodeError:
+                logger.warning("Corrupt cache file %s — re-extracting", extracted_cache)
+                # Fall through to re-extract
 
         # Load metadata
         reduced_meta = json.loads(reduced_json_path.read_text(encoding="utf-8"))

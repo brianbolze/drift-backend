@@ -624,7 +624,9 @@ class EntityResolver:
         if name:
             methods_tried.append("fuzzy_name")
             for cart in candidates:
-                score = _name_similarity(name, cart.name)
+                jaccard = _name_similarity(name, cart.name)
+                containment = _bullet_name_score(name, cart.name)
+                score = max(jaccard, containment)
                 if score > 0.5:
                     if weight is not None:
                         try:

@@ -79,13 +79,14 @@ def _has_rejected_caliber(resolution, rejected_calibers: set[str]) -> bool:
 
 
 def _bc_source_exists(session, bullet_id: str, bc_type: str, bc_value: float, source: str) -> bool:
-    """Check if a BulletBCSource row already exists with these exact values."""
+    """Check if a BulletBCSource row already exists with these values (epsilon tolerance on bc_value)."""
+    eps = 1e-9
     return (
         session.scalars(
             select(BulletBCSource).where(
                 BulletBCSource.bullet_id == bullet_id,
                 BulletBCSource.bc_type == bc_type,
-                BulletBCSource.bc_value == bc_value,
+                BulletBCSource.bc_value.between(bc_value - eps, bc_value + eps),
                 BulletBCSource.source == source,
             )
         ).first()

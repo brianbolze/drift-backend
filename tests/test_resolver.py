@@ -1157,9 +1157,7 @@ class TestAlternativesPopulated:
         db.add(mfr)
         db.flush()
         # Two bullets with same weight, both matching "Match" in name
-        b1 = Bullet(
-            manufacturer_id=mfr.id, name="308 Match Target", bullet_diameter_inches=0.308, weight_grains=175.0
-        )
+        b1 = Bullet(manufacturer_id=mfr.id, name="308 Match Target", bullet_diameter_inches=0.308, weight_grains=175.0)
         b2 = Bullet(
             manufacturer_id=mfr.id, name="308 Match Competition", bullet_diameter_inches=0.308, weight_grains=175.0
         )
