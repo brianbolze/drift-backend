@@ -42,6 +42,15 @@
     "resolution": "Fixed via curation patch 002_data_qa_fixes (source_url, bc_g1_published, bc_g7_published) + BulletBCSource records"
   },
   {
+    "id": "C5-hornady-300wm-intl-metric-conversion",
+    "severity": "critical",
+    "summary": "Hornady .300 Win Mag 180gr SP Custom International: barrel stored as 9.45\" (from 24cm metric), MV stored as 2961 fps (from 902 m/s, ~2fps rounding error). Same bug pattern as resolved C3.",
+    "first_seen": "2026-03-06",
+    "last_seen": "2026-03-06",
+    "count": 1,
+    "status": "open"
+  },
+  {
     "id": "W1-hornady-zero-mv",
     "severity": "warning",
     "summary": "7 cartridges with muzzle_velocity_fps = 0: 6 ECX/Hornady International + 1 .22 Creedmoor CX Superformance (all confirmed unpublished on manufacturer sites)",
@@ -53,10 +62,10 @@
   {
     "id": "W2-missing-bc-rifle-bullets",
     "severity": "warning",
-    "summary": "27 rifle bullets (diameter <= .375) missing all BC fields, excluding Cutting Edge and Nosler. Federal 15, Lapua 5, Lehigh 3, Speer 2, Sierra 1, Berger 0 (was 28, Berger 245gr fixed).",
+    "summary": "22 rifle bullets (diameter <= .375) missing all BC fields, excluding Cutting Edge and Nosler. Federal 15, Lapua 5, Lehigh Defense 2 (improved from 27).",
     "first_seen": "2026-03-06",
     "last_seen": "2026-03-06",
-    "count": 27,
+    "count": 22,
     "status": "open"
   },
   {

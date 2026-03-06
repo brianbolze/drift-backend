@@ -26,6 +26,7 @@ Lightweight tech debt and engineering improvement tracker. Agents and humans app
 - [ ] 7 Hornady International cartridges with zero velocity — pages don't publish MV, need supplementary data source (source: QA report, 2026-03-06)
 - [ ] 4 MatchKing->Nosler HPBT false matches — Sierra MatchKing bullets missing at certain weights, causing cross-manufacturer false positives (source: pipeline working notes)
 - [ ] 22 bullets missing BC data entirely — no BulletBCSource records (source: QA report, 2026-03-06)
+- [ ] Hornady .300 WM Custom International metric conversion — barrel=9.45" (from 24cm), MV=2961 (from 902 m/s). Fix via curation patch. Audit remaining Hornady International cartridges for same pattern. (source: QA report, 2026-03-06)
 
 ## Pipeline Improvements
 

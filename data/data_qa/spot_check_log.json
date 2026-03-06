@@ -1,62 +1,642 @@
 [
-  {"entity": "bullet", "id": "e91ccc96-a5d2-447f-bfbc-3706f217627c", "name": "Hornady 6.5mm 95gr V-MAX", "verified": "2026-03-06", "status": "pass", "notes": "G1=0.365 matches"},
-  {"entity": "bullet", "id": "c8c50ad9-dc38-4728-830c-09f27759c5d7", "name": "Hornady 6.5mm 100gr ELD-VT", "verified": "2026-03-06", "status": "pass", "notes": "G1=0.448, G7=0.226 match"},
-  {"entity": "bullet", "id": "f1aeaccb-763c-46f1-8e14-aa3624793bf3", "name": "Hornady 6.5mm 120gr ECX", "verified": "2026-03-06", "status": "pass", "notes": "G1=0.360 matches"},
-  {"entity": "bullet", "id": "1ddcec93-e3c0-49f5-b69b-8e656221befb", "name": "Berger 30cal 168gr VLD Target", "verified": "2026-03-06", "status": "pass", "notes": "G1=0.507, G7=0.260 match"},
-  {"entity": "bullet", "id": "a7762732-03f6-4d6d-858b-d3dc054f57bd", "name": "Berger 30cal 175gr OTM Tactical", "verified": "2026-03-06", "status": "pass", "notes": "G1=0.512, G7=0.263 match"},
-  {"entity": "bullet", "id": "a45bbd49-3b0a-42a1-94d9-1a83d8102e06", "name": "Berger 30cal 185gr Juggernaut", "verified": "2026-03-06", "status": "pass", "notes": "G1=0.555, G7=0.284 match"},
-  {"entity": "bullet", "id": "17abe9bd-0ca2-4716-bf94-381542540887", "name": "Sierra 7mm 100gr VarmintKing", "verified": "2026-03-06", "status": "pass", "notes": "G1=0.209 matches"},
-  {"entity": "bullet", "id": "0fa95066-122d-4aee-80ea-8c44291baf13", "name": "Sierra 7mm 140gr Pro-Hunter", "verified": "2026-03-06", "status": "pass", "notes": "G1=0.377 matches"},
-  {"entity": "bullet", "id": "555085a4-0f7f-419c-9bbf-c26b5d048198", "name": "Lapua 6.5mm MaxRange GB582", "verified": "2026-03-06", "status": "pass", "notes": "G1=0.670, G7=0.335 match"},
-  {"entity": "bullet", "id": "4b359a43-da61-49e5-a5d3-94366498bec7", "name": "Lapua 8mm G573 120gr Open Tip", "verified": "2026-03-06", "status": "fail", "notes": "Weight 180 in DB, 120 on website"},
-  {"entity": "bullet", "id": "09c96f7b-fb28-48e6-9327-b08a80814f89", "name": "Sierra 30cal 168gr TMK", "verified": "2026-03-06", "status": "pass", "notes": "G1=0.535, G7=0.267 match"},
-  {"entity": "bullet", "id": "513829e0-bec7-4cb2-bc2c-65eb7f3037df", "name": "Sierra 30cal 175gr HPBT SMK", "verified": "2026-03-06", "status": "pass", "notes": "G1=0.505, G7=0.250 match"},
-  {"entity": "bullet", "id": "e5cf06a9-08db-4055-a9dd-b57c6eb5218a", "name": "Sierra 30cal 165gr TGK", "verified": "2026-03-06", "status": "pass", "notes": "G1=0.530, G7=0.234 match"},
-  {"entity": "bullet", "id": "91192631-3133-4f85-b042-f061e5374ab3", "name": "Hornady 6.5mm 140gr BTHP Match", "verified": "2026-03-06", "status": "pass", "notes": "G1=0.580 matches, G7 not published"},
-  {"entity": "bullet", "id": "0538cb9d-0c6c-44ab-953a-215c46864fad", "name": "Lapua 6.5mm 139gr Scenar GB458", "verified": "2026-03-06", "status": "pass", "notes": "G1=0.578, G7=0.290 match"},
-  {"entity": "bullet", "id": "0836d953-eb5f-4734-bcaf-22e3ba38c921", "name": "Lapua .308 185gr Scenar GB432", "verified": "2026-03-06", "status": "pass", "notes": "G1=0.482, G7=0.242 match"},
-  {"entity": "bullet", "id": "6b442d7e-24c9-42dd-8ab6-cd849a193cf5", "name": "Lapua .308 170gr Lock Base B476", "verified": "2026-03-06", "status": "pass", "notes": "G1=0.498, G7=0.249 match"},
-  {"entity": "bullet", "id": "f71879e4-cec2-4073-a53d-c301433d4026", "name": "Berger 7mm 195gr Elite Hunter", "verified": "2026-03-06", "status": "pass", "notes": "G1=0.755, G7=0.387 match"},
-  {"entity": "bullet", "id": "5a0d0396-8e7f-4c96-bd53-e8d8893363fc", "name": "Berger 6mm 88gr High BC FB Varmint", "verified": "2026-03-06", "status": "pass", "notes": "G1=0.380 matches, G7 not published"},
-  {"entity": "bullet", "id": "2d581c39-2a1e-41aa-8bfe-6d267e2f2617", "name": "Speer .308 168gr Target Match", "verified": "2026-03-06", "status": "pass", "notes": "G1=0.534 matches, G7 not published"},
-  {"entity": "cartridge", "id": "d20f91bb-ac11-4eb7-9188-77e5c49f0802", "name": "Hornady 6.5CM 95gr V-MAX", "verified": "2026-03-06", "status": "pass", "notes": "MV=3300, wt=95, barrel=24 match"},
-  {"entity": "cartridge", "id": "e859b9b1-a729-4044-b95e-47d342b97577", "name": "Federal 6.5CM 95gr V-Max", "verified": "2026-03-06", "status": "pass", "notes": "MV=3300, wt=95 match"},
-  {"entity": "cartridge", "id": "886ced98-3ab8-4600-a14c-d2c8d06ef56c", "name": "Hornady 6.5CM 120gr CX Outfitter", "verified": "2026-03-06", "status": "pass", "notes": "MV=2925, wt=120, barrel=24 match"},
-  {"entity": "cartridge", "id": "508d6adb-fdb9-42aa-bd86-b51e698492df", "name": "Hornady .308 125gr ECX Intl", "verified": "2026-03-06", "status": "pass", "notes": "MV=0, no velocity on Hornady International page"},
-  {"entity": "cartridge", "id": "bcfda2b9-d2be-40a7-a6a8-b84eb2c42c68", "name": "Hornady .308 150gr CX Outfitter", "verified": "2026-03-06", "status": "pass", "notes": "MV=2800, wt=150, barrel=24 match"},
-  {"entity": "cartridge", "id": "20257d75-4ca7-47ab-9b57-7811dc41e8f5", "name": "Federal .308 150gr Fusion", "verified": "2026-03-06", "status": "pass", "notes": "MV=2820, wt=150 match"},
-  {"entity": "cartridge", "id": "02496c02-428d-4b07-98cd-bebe6cad341c", "name": "Hornady 6.5 PRC 100gr ELD-VT", "verified": "2026-03-06", "status": "pass", "notes": "MV=3450, wt=100, barrel=24 match"},
-  {"entity": "cartridge", "id": "85318712-2367-427c-bd1e-2e0b5f162772", "name": "Hornady 6.5 PRC 129gr SST AW", "verified": "2026-03-06", "status": "pass", "notes": "MV=3120, wt=129, barrel=24 match"},
-  {"entity": "cartridge", "id": "402dfa01-b330-4236-b5dc-089393435a7d", "name": "Hornady 7mm PRC 180gr ELD Match", "verified": "2026-03-06", "status": "pass", "notes": "MV=2975, wt=180, barrel=24 match"},
-  {"entity": "cartridge", "id": "fca5f12e-6582-4fca-a10b-d231070dc862", "name": "Hornady .300 PRC 190gr CX Outfitter", "verified": "2026-03-06", "status": "pass", "notes": "MV=3000, wt=190, barrel=24 match"},
-  {"entity": "cartridge", "id": "7672bad5-3f19-4c99-88b1-00b8897baddc", "name": "Hornady 7mm PRC 175gr ELD-X PH", "verified": "2026-03-06", "status": "pass", "notes": "MV=3000, wt=175, barrel=24 match"},
-  {"entity": "cartridge", "id": "7d4bd4fe-c669-4f85-bd7b-7307c8be7691", "name": "Hornady .300WM 195gr ELD Match", "verified": "2026-03-06", "status": "pass", "notes": "MV=2930, wt=195, barrel=24 match"},
-  {"entity": "cartridge", "id": "6b66c6e0-0473-46d7-ae99-0c7b10642f29", "name": "Hornady .308 168gr ELD Match", "verified": "2026-03-06", "status": "pass", "notes": "MV=2700, wt=168, barrel=24 match"},
-  {"entity": "cartridge", "id": "436f099f-ac08-4460-a060-aea6f4f08274", "name": "Hornady 6.5 PRC 147gr ELD Match", "verified": "2026-03-06", "status": "pass", "notes": "MV=2910, wt=147, barrel=24 match"},
-  {"entity": "cartridge", "id": "8c2a95ea-40c1-4f10-81d4-61ed7e011dc9", "name": "Hornady 6mm CM 108gr ELD Match", "verified": "2026-03-06", "status": "pass", "notes": "MV=2960, wt=108, barrel=24 match"},
-  {"entity": "cartridge", "id": "69f65182-7b91-4a04-adfd-40656e0768ea", "name": "Hornady .300WM 150gr InterLock AW", "verified": "2026-03-06", "status": "pass", "notes": "MV=3275, wt=150, barrel=24 match"},
-  {"entity": "cartridge", "id": "3129656e-4c09-45a8-b40d-b91665246323", "name": "Hornady .338 Lapua 240gr CX Custom", "verified": "2026-03-06", "status": "pass", "notes": "MV=2900, wt=240, barrel=24 match"},
-  {"entity": "cartridge", "id": "14641a65-9709-47a8-9413-9f054012b340", "name": "Hornady .308 165gr CX Superformance", "verified": "2026-03-06", "status": "pass", "notes": "MV=2750, wt=165, barrel=24 match"},
-  {"entity": "cartridge", "id": "b27ebdb5-ef5e-49e1-9f48-d199a5ec503e", "name": "Federal 6.5CM 130gr Gold Medal Berger", "verified": "2026-03-06", "status": "pass", "notes": "MV=2875, wt=130 match"},
-  {"entity": "cartridge", "id": "06f71b32-f75f-412a-a638-3acb0761dad8", "name": "Federal .308 185gr Gold Medal Berger", "verified": "2026-03-06", "status": "pass", "notes": "MV=2600, wt=185 match"},
-  {"entity": "bullet", "id": "90fddba3-a8bc-405b-b75a-cfda789d8e34", "name": "Berger 6.5mm 140gr Hybrid Target", "verified": "2026-03-06", "status": "pass", "notes": "G1=0.607, G7=0.311 exact match"},
-  {"entity": "bullet", "id": "f6a1a0cc-b0a4-47de-8b31-7e8be03d8d7a", "name": "Berger 7mm 190gr LR Hybrid Target", "verified": "2026-03-06", "status": "pass", "notes": "G1=0.751, G7=0.384 exact match"},
-  {"entity": "bullet", "id": "68949a76-e398-4c9c-bd35-20108d5eca62", "name": "Berger 30cal 245gr Elite Hunter", "verified": "2026-03-06", "status": "fail", "notes": "Missing BCs (should be G1=0.807, G7=0.413), wrong source_url points to 338-cal page"},
-  {"entity": "bullet", "id": "b9b3cb5c-8258-457d-a487-02fec97c8799", "name": "Hornady 6.5mm 143gr ELD-X", "verified": "2026-03-06", "status": "pass", "notes": "G1=0.625, G7=0.315 exact match (verified against cached pipeline data)"},
-  {"entity": "bullet", "id": "3e33707d-de25-44f0-990a-d596dc73b4d7", "name": "Hornady 6.5mm 147gr ELD Match", "verified": "2026-03-06", "status": "pass", "notes": "G1=0.697, G7=0.351 exact match"},
-  {"entity": "bullet", "id": "521f2837-7c5f-45dd-895a-aae9f95932ad", "name": "Hornady 30cal 178gr ELD Match", "verified": "2026-03-06", "status": "pass", "notes": "G1=0.547, G7=0.275 exact match"},
-  {"entity": "bullet", "id": "57ea93a0-eda0-4dc0-a327-5cec15636c5f", "name": "Hornady 6.5mm 135gr A-Tip Match", "verified": "2026-03-06", "status": "pass", "notes": "G1=0.637, G7=0.321 exact match"},
-  {"entity": "bullet", "id": "36413c0a-140a-4d6a-96b6-c71bb7767ffe", "name": "Hornady 7mm 175gr ELD-X", "verified": "2026-03-06", "status": "pass", "notes": "G1=0.689, G7=0.347 exact match"},
-  {"entity": "bullet", "id": "e26170d7-56b6-43af-a5fc-f05ecb18b75a", "name": "Sierra 6.5mm 130gr TMK", "verified": "2026-03-06", "status": "pass", "notes": "G1=0.518, G7=0.262 exact match"},
-  {"entity": "bullet", "id": "67462c21-c99f-470f-852e-d6d179c83eb0", "name": "Lapua 6.5mm 136gr Scenar-L GB546", "verified": "2026-03-06", "status": "pass", "notes": "G1=0.545, G7=0.274 exact match"},
-  {"entity": "cartridge", "id": "ec2e224d-62f8-4a16-84a2-737f05639855", "name": "Hornady 6.5 CM 143gr ELD-X PH", "verified": "2026-03-06", "status": "pass", "notes": "MV=2700, wt=143, barrel=24 match"},
-  {"entity": "cartridge", "id": "68742eb5-fdd8-4504-9460-cafdf1038b84", "name": "Hornady 6.5 CM 147gr ELD Match", "verified": "2026-03-06", "status": "pass", "notes": "MV=2695, wt=147, barrel=24 match"},
-  {"entity": "cartridge", "id": "0595f0bb-b966-4e57-ba5a-601e94f073ef", "name": "Hornady .308 178gr BTHP Match", "verified": "2026-03-06", "status": "pass", "notes": "MV=2600, wt=178, barrel=24 match"},
-  {"entity": "cartridge", "id": "697be00f-97f9-419d-a862-12100539d58c", "name": "Hornady 6.5 PRC 143gr ELD-X PH", "verified": "2026-03-06", "status": "pass", "notes": "MV=2960, wt=143, barrel=24 match"},
-  {"entity": "cartridge", "id": "ac376603-d2f8-4995-b128-b46c973a60cb", "name": "Hornady .300WM 178gr ELD-X PH", "verified": "2026-03-06", "status": "pass", "notes": "MV=2960, wt=178, barrel=26 match"},
-  {"entity": "cartridge", "id": "698c8358-f80b-49d6-bb48-410530c8118b", "name": "Hornady .22 CM 65gr CX Superformance", "verified": "2026-03-06", "status": "pass", "notes": "MV=0, velocity not published on Hornady website — expected gap"},
-  {"entity": "cartridge", "id": "6166de47-8f29-4049-920f-9ff77f665f36", "name": "Federal .308 178gr ELD-X", "verified": "2026-03-06", "status": "pass", "notes": "MV=2610, wt=178 match"},
-  {"entity": "cartridge", "id": "0eac1260-366e-4c61-85d7-dc1732ee995d", "name": "Federal 6.5 PRC 143gr ELD-X", "verified": "2026-03-06", "status": "pass", "notes": "MV=2900, wt=143 match"},
-  {"entity": "cartridge", "id": "61135362-bcfc-49f1-90ed-317e217ac047", "name": "Federal 7mm PRC 175gr ELD-X", "verified": "2026-03-06", "status": "pass", "notes": "MV=3000, wt=175 match"},
-  {"entity": "cartridge", "id": "019d63f5-47fe-4b9c-8a05-2660841018bb", "name": "Hornady .308 155gr BTHP American Gunner", "verified": "2026-03-06", "status": "pass", "notes": "MV=2700, wt=155, barrel=24 match"}
+  {
+    "entity": "bullet",
+    "id": "e91ccc96-a5d2-447f-bfbc-3706f217627c",
+    "name": "Hornady 6.5mm 95gr V-MAX",
+    "verified": "2026-03-06",
+    "status": "pass",
+    "notes": "G1=0.365 matches"
+  },
+  {
+    "entity": "bullet",
+    "id": "c8c50ad9-dc38-4728-830c-09f27759c5d7",
+    "name": "Hornady 6.5mm 100gr ELD-VT",
+    "verified": "2026-03-06",
+    "status": "pass",
+    "notes": "G1=0.448, G7=0.226 match"
+  },
+  {
+    "entity": "bullet",
+    "id": "f1aeaccb-763c-46f1-8e14-aa3624793bf3",
+    "name": "Hornady 6.5mm 120gr ECX",
+    "verified": "2026-03-06",
+    "status": "pass",
+    "notes": "G1=0.360 matches"
+  },
+  {
+    "entity": "bullet",
+    "id": "1ddcec93-e3c0-49f5-b69b-8e656221befb",
+    "name": "Berger 30cal 168gr VLD Target",
+    "verified": "2026-03-06",
+    "status": "pass",
+    "notes": "G1=0.507, G7=0.260 match"
+  },
+  {
+    "entity": "bullet",
+    "id": "a7762732-03f6-4d6d-858b-d3dc054f57bd",
+    "name": "Berger 30cal 175gr OTM Tactical",
+    "verified": "2026-03-06",
+    "status": "pass",
+    "notes": "G1=0.512, G7=0.263 match"
+  },
+  {
+    "entity": "bullet",
+    "id": "a45bbd49-3b0a-42a1-94d9-1a83d8102e06",
+    "name": "Berger 30cal 185gr Juggernaut",
+    "verified": "2026-03-06",
+    "status": "pass",
+    "notes": "G1=0.555, G7=0.284 match"
+  },
+  {
+    "entity": "bullet",
+    "id": "17abe9bd-0ca2-4716-bf94-381542540887",
+    "name": "Sierra 7mm 100gr VarmintKing",
+    "verified": "2026-03-06",
+    "status": "pass",
+    "notes": "G1=0.209 matches"
+  },
+  {
+    "entity": "bullet",
+    "id": "0fa95066-122d-4aee-80ea-8c44291baf13",
+    "name": "Sierra 7mm 140gr Pro-Hunter",
+    "verified": "2026-03-06",
+    "status": "pass",
+    "notes": "G1=0.377 matches"
+  },
+  {
+    "entity": "bullet",
+    "id": "555085a4-0f7f-419c-9bbf-c26b5d048198",
+    "name": "Lapua 6.5mm MaxRange GB582",
+    "verified": "2026-03-06",
+    "status": "pass",
+    "notes": "G1=0.670, G7=0.335 match"
+  },
+  {
+    "entity": "bullet",
+    "id": "4b359a43-da61-49e5-a5d3-94366498bec7",
+    "name": "Lapua 8mm G573 120gr Open Tip",
+    "verified": "2026-03-06",
+    "status": "fail",
+    "notes": "Weight 180 in DB, 120 on website"
+  },
+  {
+    "entity": "bullet",
+    "id": "09c96f7b-fb28-48e6-9327-b08a80814f89",
+    "name": "Sierra 30cal 168gr TMK",
+    "verified": "2026-03-06",
+    "status": "pass",
+    "notes": "G1=0.535, G7=0.267 match"
+  },
+  {
+    "entity": "bullet",
+    "id": "513829e0-bec7-4cb2-bc2c-65eb7f3037df",
+    "name": "Sierra 30cal 175gr HPBT SMK",
+    "verified": "2026-03-06",
+    "status": "pass",
+    "notes": "G1=0.505, G7=0.250 match"
+  },
+  {
+    "entity": "bullet",
+    "id": "e5cf06a9-08db-4055-a9dd-b57c6eb5218a",
+    "name": "Sierra 30cal 165gr TGK",
+    "verified": "2026-03-06",
+    "status": "pass",
+    "notes": "G1=0.530, G7=0.234 match"
+  },
+  {
+    "entity": "bullet",
+    "id": "91192631-3133-4f85-b042-f061e5374ab3",
+    "name": "Hornady 6.5mm 140gr BTHP Match",
+    "verified": "2026-03-06",
+    "status": "pass",
+    "notes": "G1=0.580 matches, G7 not published"
+  },
+  {
+    "entity": "bullet",
+    "id": "0538cb9d-0c6c-44ab-953a-215c46864fad",
+    "name": "Lapua 6.5mm 139gr Scenar GB458",
+    "verified": "2026-03-06",
+    "status": "pass",
+    "notes": "G1=0.578, G7=0.290 match"
+  },
+  {
+    "entity": "bullet",
+    "id": "0836d953-eb5f-4734-bcaf-22e3ba38c921",
+    "name": "Lapua .308 185gr Scenar GB432",
+    "verified": "2026-03-06",
+    "status": "pass",
+    "notes": "G1=0.482, G7=0.242 match"
+  },
+  {
+    "entity": "bullet",
+    "id": "6b442d7e-24c9-42dd-8ab6-cd849a193cf5",
+    "name": "Lapua .308 170gr Lock Base B476",
+    "verified": "2026-03-06",
+    "status": "pass",
+    "notes": "G1=0.498, G7=0.249 match"
+  },
+  {
+    "entity": "bullet",
+    "id": "f71879e4-cec2-4073-a53d-c301433d4026",
+    "name": "Berger 7mm 195gr Elite Hunter",
+    "verified": "2026-03-06",
+    "status": "pass",
+    "notes": "G1=0.755, G7=0.387 match"
+  },
+  {
+    "entity": "bullet",
+    "id": "5a0d0396-8e7f-4c96-bd53-e8d8893363fc",
+    "name": "Berger 6mm 88gr High BC FB Varmint",
+    "verified": "2026-03-06",
+    "status": "pass",
+    "notes": "G1=0.380 matches, G7 not published"
+  },
+  {
+    "entity": "bullet",
+    "id": "2d581c39-2a1e-41aa-8bfe-6d267e2f2617",
+    "name": "Speer .308 168gr Target Match",
+    "verified": "2026-03-06",
+    "status": "pass",
+    "notes": "G1=0.534 matches, G7 not published"
+  },
+  {
+    "entity": "cartridge",
+    "id": "d20f91bb-ac11-4eb7-9188-77e5c49f0802",
+    "name": "Hornady 6.5CM 95gr V-MAX",
+    "verified": "2026-03-06",
+    "status": "pass",
+    "notes": "MV=3300, wt=95, barrel=24 match"
+  },
+  {
+    "entity": "cartridge",
+    "id": "e859b9b1-a729-4044-b95e-47d342b97577",
+    "name": "Federal 6.5CM 95gr V-Max",
+    "verified": "2026-03-06",
+    "status": "pass",
+    "notes": "MV=3300, wt=95 match"
+  },
+  {
+    "entity": "cartridge",
+    "id": "886ced98-3ab8-4600-a14c-d2c8d06ef56c",
+    "name": "Hornady 6.5CM 120gr CX Outfitter",
+    "verified": "2026-03-06",
+    "status": "pass",
+    "notes": "MV=2925, wt=120, barrel=24 match"
+  },
+  {
+    "entity": "cartridge",
+    "id": "508d6adb-fdb9-42aa-bd86-b51e698492df",
+    "name": "Hornady .308 125gr ECX Intl",
+    "verified": "2026-03-06",
+    "status": "pass",
+    "notes": "MV=0, no velocity on Hornady International page"
+  },
+  {
+    "entity": "cartridge",
+    "id": "bcfda2b9-d2be-40a7-a6a8-b84eb2c42c68",
+    "name": "Hornady .308 150gr CX Outfitter",
+    "verified": "2026-03-06",
+    "status": "pass",
+    "notes": "MV=2800, wt=150, barrel=24 match"
+  },
+  {
+    "entity": "cartridge",
+    "id": "20257d75-4ca7-47ab-9b57-7811dc41e8f5",
+    "name": "Federal .308 150gr Fusion",
+    "verified": "2026-03-06",
+    "status": "pass",
+    "notes": "MV=2820, wt=150 match"
+  },
+  {
+    "entity": "cartridge",
+    "id": "02496c02-428d-4b07-98cd-bebe6cad341c",
+    "name": "Hornady 6.5 PRC 100gr ELD-VT",
+    "verified": "2026-03-06",
+    "status": "pass",
+    "notes": "MV=3450, wt=100, barrel=24 match"
+  },
+  {
+    "entity": "cartridge",
+    "id": "85318712-2367-427c-bd1e-2e0b5f162772",
+    "name": "Hornady 6.5 PRC 129gr SST AW",
+    "verified": "2026-03-06",
+    "status": "pass",
+    "notes": "MV=3120, wt=129, barrel=24 match"
+  },
+  {
+    "entity": "cartridge",
+    "id": "402dfa01-b330-4236-b5dc-089393435a7d",
+    "name": "Hornady 7mm PRC 180gr ELD Match",
+    "verified": "2026-03-06",
+    "status": "pass",
+    "notes": "MV=2975, wt=180, barrel=24 match"
+  },
+  {
+    "entity": "cartridge",
+    "id": "fca5f12e-6582-4fca-a10b-d231070dc862",
+    "name": "Hornady .300 PRC 190gr CX Outfitter",
+    "verified": "2026-03-06",
+    "status": "pass",
+    "notes": "MV=3000, wt=190, barrel=24 match"
+  },
+  {
+    "entity": "cartridge",
+    "id": "7672bad5-3f19-4c99-88b1-00b8897baddc",
+    "name": "Hornady 7mm PRC 175gr ELD-X PH",
+    "verified": "2026-03-06",
+    "status": "pass",
+    "notes": "MV=3000, wt=175, barrel=24 match"
+  },
+  {
+    "entity": "cartridge",
+    "id": "7d4bd4fe-c669-4f85-bd7b-7307c8be7691",
+    "name": "Hornady .300WM 195gr ELD Match",
+    "verified": "2026-03-06",
+    "status": "pass",
+    "notes": "MV=2930, wt=195, barrel=24 match"
+  },
+  {
+    "entity": "cartridge",
+    "id": "6b66c6e0-0473-46d7-ae99-0c7b10642f29",
+    "name": "Hornady .308 168gr ELD Match",
+    "verified": "2026-03-06",
+    "status": "pass",
+    "notes": "MV=2700, wt=168, barrel=24 match"
+  },
+  {
+    "entity": "cartridge",
+    "id": "436f099f-ac08-4460-a060-aea6f4f08274",
+    "name": "Hornady 6.5 PRC 147gr ELD Match",
+    "verified": "2026-03-06",
+    "status": "pass",
+    "notes": "MV=2910, wt=147, barrel=24 match"
+  },
+  {
+    "entity": "cartridge",
+    "id": "8c2a95ea-40c1-4f10-81d4-61ed7e011dc9",
+    "name": "Hornady 6mm CM 108gr ELD Match",
+    "verified": "2026-03-06",
+    "status": "pass",
+    "notes": "MV=2960, wt=108, barrel=24 match"
+  },
+  {
+    "entity": "cartridge",
+    "id": "69f65182-7b91-4a04-adfd-40656e0768ea",
+    "name": "Hornady .300WM 150gr InterLock AW",
+    "verified": "2026-03-06",
+    "status": "pass",
+    "notes": "MV=3275, wt=150, barrel=24 match"
+  },
+  {
+    "entity": "cartridge",
+    "id": "3129656e-4c09-45a8-b40d-b91665246323",
+    "name": "Hornady .338 Lapua 240gr CX Custom",
+    "verified": "2026-03-06",
+    "status": "pass",
+    "notes": "MV=2900, wt=240, barrel=24 match"
+  },
+  {
+    "entity": "cartridge",
+    "id": "14641a65-9709-47a8-9413-9f054012b340",
+    "name": "Hornady .308 165gr CX Superformance",
+    "verified": "2026-03-06",
+    "status": "pass",
+    "notes": "MV=2750, wt=165, barrel=24 match"
+  },
+  {
+    "entity": "cartridge",
+    "id": "b27ebdb5-ef5e-49e1-9f48-d199a5ec503e",
+    "name": "Federal 6.5CM 130gr Gold Medal Berger",
+    "verified": "2026-03-06",
+    "status": "pass",
+    "notes": "MV=2875, wt=130 match"
+  },
+  {
+    "entity": "cartridge",
+    "id": "06f71b32-f75f-412a-a638-3acb0761dad8",
+    "name": "Federal .308 185gr Gold Medal Berger",
+    "verified": "2026-03-06",
+    "status": "pass",
+    "notes": "MV=2600, wt=185 match"
+  },
+  {
+    "entity": "bullet",
+    "id": "90fddba3-a8bc-405b-b75a-cfda789d8e34",
+    "name": "Berger 6.5mm 140gr Hybrid Target",
+    "verified": "2026-03-06",
+    "status": "pass",
+    "notes": "G1=0.607, G7=0.311 exact match"
+  },
+  {
+    "entity": "bullet",
+    "id": "f6a1a0cc-b0a4-47de-8b31-7e8be03d8d7a",
+    "name": "Berger 7mm 190gr LR Hybrid Target",
+    "verified": "2026-03-06",
+    "status": "pass",
+    "notes": "G1=0.751, G7=0.384 exact match"
+  },
+  {
+    "entity": "bullet",
+    "id": "68949a76-e398-4c9c-bd35-20108d5eca62",
+    "name": "Berger 30cal 245gr Elite Hunter",
+    "verified": "2026-03-06",
+    "status": "fail",
+    "notes": "Missing BCs (should be G1=0.807, G7=0.413), wrong source_url points to 338-cal page"
+  },
+  {
+    "entity": "bullet",
+    "id": "b9b3cb5c-8258-457d-a487-02fec97c8799",
+    "name": "Hornady 6.5mm 143gr ELD-X",
+    "verified": "2026-03-06",
+    "status": "pass",
+    "notes": "G1=0.625, G7=0.315 exact match (verified against cached pipeline data)"
+  },
+  {
+    "entity": "bullet",
+    "id": "3e33707d-de25-44f0-990a-d596dc73b4d7",
+    "name": "Hornady 6.5mm 147gr ELD Match",
+    "verified": "2026-03-06",
+    "status": "pass",
+    "notes": "G1=0.697, G7=0.351 exact match"
+  },
+  {
+    "entity": "bullet",
+    "id": "521f2837-7c5f-45dd-895a-aae9f95932ad",
+    "name": "Hornady 30cal 178gr ELD Match",
+    "verified": "2026-03-06",
+    "status": "pass",
+    "notes": "G1=0.547, G7=0.275 exact match"
+  },
+  {
+    "entity": "bullet",
+    "id": "57ea93a0-eda0-4dc0-a327-5cec15636c5f",
+    "name": "Hornady 6.5mm 135gr A-Tip Match",
+    "verified": "2026-03-06",
+    "status": "pass",
+    "notes": "G1=0.637, G7=0.321 exact match"
+  },
+  {
+    "entity": "bullet",
+    "id": "36413c0a-140a-4d6a-96b6-c71bb7767ffe",
+    "name": "Hornady 7mm 175gr ELD-X",
+    "verified": "2026-03-06",
+    "status": "pass",
+    "notes": "G1=0.689, G7=0.347 exact match"
+  },
+  {
+    "entity": "bullet",
+    "id": "e26170d7-56b6-43af-a5fc-f05ecb18b75a",
+    "name": "Sierra 6.5mm 130gr TMK",
+    "verified": "2026-03-06",
+    "status": "pass",
+    "notes": "G1=0.518, G7=0.262 exact match"
+  },
+  {
+    "entity": "bullet",
+    "id": "67462c21-c99f-470f-852e-d6d179c83eb0",
+    "name": "Lapua 6.5mm 136gr Scenar-L GB546",
+    "verified": "2026-03-06",
+    "status": "pass",
+    "notes": "G1=0.545, G7=0.274 exact match"
+  },
+  {
+    "entity": "cartridge",
+    "id": "ec2e224d-62f8-4a16-84a2-737f05639855",
+    "name": "Hornady 6.5 CM 143gr ELD-X PH",
+    "verified": "2026-03-06",
+    "status": "pass",
+    "notes": "MV=2700, wt=143, barrel=24 match"
+  },
+  {
+    "entity": "cartridge",
+    "id": "68742eb5-fdd8-4504-9460-cafdf1038b84",
+    "name": "Hornady 6.5 CM 147gr ELD Match",
+    "verified": "2026-03-06",
+    "status": "pass",
+    "notes": "MV=2695, wt=147, barrel=24 match"
+  },
+  {
+    "entity": "cartridge",
+    "id": "0595f0bb-b966-4e57-ba5a-601e94f073ef",
+    "name": "Hornady .308 178gr BTHP Match",
+    "verified": "2026-03-06",
+    "status": "pass",
+    "notes": "MV=2600, wt=178, barrel=24 match"
+  },
+  {
+    "entity": "cartridge",
+    "id": "697be00f-97f9-419d-a862-12100539d58c",
+    "name": "Hornady 6.5 PRC 143gr ELD-X PH",
+    "verified": "2026-03-06",
+    "status": "pass",
+    "notes": "MV=2960, wt=143, barrel=24 match"
+  },
+  {
+    "entity": "cartridge",
+    "id": "ac376603-d2f8-4995-b128-b46c973a60cb",
+    "name": "Hornady .300WM 178gr ELD-X PH",
+    "verified": "2026-03-06",
+    "status": "pass",
+    "notes": "MV=2960, wt=178, barrel=26 match"
+  },
+  {
+    "entity": "cartridge",
+    "id": "698c8358-f80b-49d6-bb48-410530c8118b",
+    "name": "Hornady .22 CM 65gr CX Superformance",
+    "verified": "2026-03-06",
+    "status": "pass",
+    "notes": "MV=0, velocity not published on Hornady website \u2014 expected gap"
+  },
+  {
+    "entity": "cartridge",
+    "id": "6166de47-8f29-4049-920f-9ff77f665f36",
+    "name": "Federal .308 178gr ELD-X",
+    "verified": "2026-03-06",
+    "status": "pass",
+    "notes": "MV=2610, wt=178 match"
+  },
+  {
+    "entity": "cartridge",
+    "id": "0eac1260-366e-4c61-85d7-dc1732ee995d",
+    "name": "Federal 6.5 PRC 143gr ELD-X",
+    "verified": "2026-03-06",
+    "status": "pass",
+    "notes": "MV=2900, wt=143 match"
+  },
+  {
+    "entity": "cartridge",
+    "id": "61135362-bcfc-49f1-90ed-317e217ac047",
+    "name": "Federal 7mm PRC 175gr ELD-X",
+    "verified": "2026-03-06",
+    "status": "pass",
+    "notes": "MV=3000, wt=175 match"
+  },
+  {
+    "entity": "cartridge",
+    "id": "019d63f5-47fe-4b9c-8a05-2660841018bb",
+    "name": "Hornady .308 155gr BTHP American Gunner",
+    "verified": "2026-03-06",
+    "status": "pass",
+    "notes": "MV=2700, wt=155, barrel=24 match"
+  },
+  {
+    "entity": "bullet",
+    "id": "19290b84-7146-47e8-a46a-07b1993e6abd",
+    "name": "Berger 30cal 200.20x Hybrid Target",
+    "verified": "2026-03-06",
+    "status": "pass",
+    "notes": "G1=0.640, G7=0.328 exact match"
+  },
+  {
+    "entity": "bullet",
+    "id": "1fa0a6cd-23fd-49c0-94f5-6a17cf92f6f9",
+    "name": "Berger 6.5mm 130gr VLD Hunting",
+    "verified": "2026-03-06",
+    "status": "pass",
+    "notes": "G1=0.562, G7=0.288 exact match"
+  },
+  {
+    "entity": "bullet",
+    "id": "78255756-f9d8-437c-99a4-023d90ba0237",
+    "name": "Berger 7mm 168gr VLD Target",
+    "verified": "2026-03-06",
+    "status": "pass",
+    "notes": "G1=0.628, G7=0.322 exact match"
+  },
+  {
+    "entity": "bullet",
+    "id": "8c655bdc-d981-4d1c-bbcc-9f30883bae9c",
+    "name": "Sierra 30cal 150gr HPBT MatchKing",
+    "verified": "2026-03-06",
+    "status": "pass",
+    "notes": "G1=0.417, G7=0.199 exact match"
+  },
+  {
+    "entity": "bullet",
+    "id": "a6f4e237-93b9-4cb2-b6af-548f7376dfed",
+    "name": "Sierra 30cal 170gr FN Pro-Hunter",
+    "verified": "2026-03-06",
+    "status": "pass",
+    "notes": "G1=0.205 exact match, G7 not published"
+  },
+  {
+    "entity": "bullet",
+    "id": "0035a22a-eff1-4968-864f-05273fe470e4",
+    "name": "Lapua .308 150gr TRX N585",
+    "verified": "2026-03-06",
+    "status": "pass",
+    "notes": "G1=0.384, G7=0.190 exact match"
+  },
+  {
+    "entity": "bullet",
+    "id": "f51da6ab-99c7-487f-b3eb-e045aed57c28",
+    "name": "Lapua 7mm 156gr Naturalis N564",
+    "verified": "2026-03-06",
+    "status": "pass",
+    "notes": "G1=0.280 exact match, G7 not published"
+  },
+  {
+    "entity": "bullet",
+    "id": "4455febe-c5b5-4542-a96d-7654272130ab",
+    "name": "Hornady 30cal 175gr HPBT AEROMATCH",
+    "verified": "2026-03-06",
+    "status": "pass",
+    "notes": "G1=0.485 exact match, G7 not published"
+  },
+  {
+    "entity": "bullet",
+    "id": "1297f837-e51e-4d94-95c3-520c8b0c86c2",
+    "name": "Hornady 6.5mm 160gr InterLock RN",
+    "verified": "2026-03-06",
+    "status": "pass",
+    "notes": "G1=0.283 exact match, G7 not published"
+  },
+  {
+    "entity": "bullet",
+    "id": "879c4d27-4a7a-420b-a910-6ed1e163adaf",
+    "name": "Hornady 7mm 162gr InterLock BTSP",
+    "verified": "2026-03-06",
+    "status": "pass",
+    "notes": "G1=0.514 exact match, G7 not published"
+  },
+  {
+    "entity": "cartridge",
+    "id": "ef432781-d9a9-450f-b7c0-60d461854cf0",
+    "name": "Hornady 6.5 PRC 130gr CX Outfitter",
+    "verified": "2026-03-06",
+    "status": "pass",
+    "notes": "MV=2975, wt=130, barrel=24 match"
+  },
+  {
+    "entity": "cartridge",
+    "id": "689ffd0e-13d9-43ba-bdb8-a2f09d21aaa9",
+    "name": "Hornady 6mm CM 90gr CX Superformance",
+    "verified": "2026-03-06",
+    "status": "pass",
+    "notes": "MV=3325, wt=90, barrel=24 match"
+  },
+  {
+    "entity": "cartridge",
+    "id": "59cf6217-b9fd-40a8-8745-da283a127b66",
+    "name": "Hornady .300WM 180gr SP Custom Intl",
+    "verified": "2026-03-06",
+    "status": "fail",
+    "notes": "Barrel stored as 9.45\" (from 24cm metric), MV stored as 2961 (from 902 m/s, ~2fps rounding). Same bug as C3."
+  },
+  {
+    "entity": "cartridge",
+    "id": "834193d1-7016-4c25-be39-6a2dc59e0b33",
+    "name": "Hornady .300 PRC 165gr SST AW Tipped",
+    "verified": "2026-03-06",
+    "status": "pass",
+    "notes": "MV=3200, wt=165, barrel=24 match"
+  },
+  {
+    "entity": "cartridge",
+    "id": "13d887b4-deed-40ec-9bf7-d9594639cb40",
+    "name": "Hornady 7mm PRC 160gr CX Outfitter",
+    "verified": "2026-03-06",
+    "status": "pass",
+    "notes": "MV=3000, wt=160, barrel=24 match"
+  },
+  {
+    "entity": "cartridge",
+    "id": "0f68933f-a8e3-40a2-895c-7f0e1d9c323c",
+    "name": "Hornady 6mm CM 87gr V-MAX",
+    "verified": "2026-03-06",
+    "status": "pass",
+    "notes": "MV=3210, wt=87, barrel=24 match"
+  },
+  {
+    "entity": "cartridge",
+    "id": "6dbcee70-65d0-401c-ace7-49a6ef04703f",
+    "name": "Federal 6.5CM 140gr Fusion Tipped",
+    "verified": "2026-03-06",
+    "status": "pass",
+    "notes": "MV=2715, wt=140 match"
+  },
+  {
+    "entity": "cartridge",
+    "id": "f34f4817-b57d-4b3a-bfe7-62ada7d13743",
+    "name": "Federal .308 180gr Fusion Tipped",
+    "verified": "2026-03-06",
+    "status": "pass",
+    "notes": "MV=2600, wt=180 match"
+  },
+  {
+    "entity": "cartridge",
+    "id": "a8f73f8c-78ce-409c-8bc2-642235167f90",
+    "name": "Federal .338LM 300gr Gold Medal SMK",
+    "verified": "2026-03-06",
+    "status": "pass",
+    "notes": "MV=2580, wt=300 match"
+  },
+  {
+    "entity": "cartridge",
+    "id": "5791b390-60b0-4eb2-bf20-862659e8361a",
+    "name": "Federal 6.5 PRC 130gr Terminal Ascent",
+    "verified": "2026-03-06",
+    "status": "pass",
+    "notes": "MV=3000, wt=130 match"
+  }
 ]
