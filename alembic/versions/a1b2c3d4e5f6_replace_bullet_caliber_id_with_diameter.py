@@ -14,15 +14,15 @@ Revises: e015cb9c96e8
 Create Date: 2026-03-05 12:00:00.000000
 
 """
+
 from typing import Sequence, Union
 
 from alembic import op
 import sqlalchemy as sa
 
-
 # revision identifiers, used by Alembic.
-revision: str = 'a1b2c3d4e5f6'
-down_revision: Union[str, Sequence[str], None] = 'e015cb9c96e8'
+revision: str = "a1b2c3d4e5f6"
+down_revision: Union[str, Sequence[str], None] = "e015cb9c96e8"
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
 
@@ -32,11 +32,11 @@ def upgrade() -> None:
     # Check if column already exists (in case of partial migration run)
     conn = op.get_bind()
     inspector = sa.inspect(conn)
-    columns = [col['name'] for col in inspector.get_columns('bullet')]
+    columns = [col["name"] for col in inspector.get_columns("bullet")]
 
-    if 'bullet_diameter_inches' not in columns:
-        with op.batch_alter_table('bullet', schema=None) as batch_op:
-            batch_op.add_column(sa.Column('bullet_diameter_inches', sa.Float(), nullable=True))
+    if "bullet_diameter_inches" not in columns:
+        with op.batch_alter_table("bullet", schema=None) as batch_op:
+            batch_op.add_column(sa.Column("bullet_diameter_inches", sa.Float(), nullable=True))
 
     # Step 2: Pre-flight check — abort if any bullets have orphaned caliber refs
     # or calibers with NULL diameter (would produce NULLs that fail NOT NULL enforcement).
@@ -50,8 +50,7 @@ def upgrade() -> None:
     if orphans:
         details = "; ".join(f"bullet.id={r[0]} name={r[1]}" for r in orphans[:10])
         raise RuntimeError(
-            f"Cannot migrate: {len(orphans)} bullet(s) have missing/NULL-diameter "
-            f"caliber refs: {details}"
+            f"Cannot migrate: {len(orphans)} bullet(s) have missing/NULL-diameter " f"caliber refs: {details}"
         )
 
     # Step 3: Populate from caliber table
@@ -64,19 +63,19 @@ def upgrade() -> None:
     # SQLite requires batch mode to drop columns and alter nullability.
     # Note: In SQLite with batch operations, foreign keys are automatically handled
     # when dropping the column, so we don't need to explicitly drop the constraint.
-    with op.batch_alter_table('bullet', schema=None) as batch_op:
-        batch_op.alter_column('bullet_diameter_inches', nullable=False)
+    with op.batch_alter_table("bullet", schema=None) as batch_op:
+        batch_op.alter_column("bullet_diameter_inches", nullable=False)
         # Skip the explicit drop_constraint for SQLite - it will be handled automatically
         # when we drop the column
-        batch_op.drop_column('caliber_id')
+        batch_op.drop_column("caliber_id")
 
 
 def downgrade() -> None:
     # Re-add caliber_id as nullable (data link is lost — manual re-assignment needed)
-    with op.batch_alter_table('bullet', schema=None) as batch_op:
-        batch_op.add_column(sa.Column('caliber_id', sa.String(length=36), nullable=True))
+    with op.batch_alter_table("bullet", schema=None) as batch_op:
+        batch_op.add_column(sa.Column("caliber_id", sa.String(length=36), nullable=True))
         # For SQLite, the foreign key name isn't critical - just ensure it's created
-        batch_op.create_foreign_key(None, 'caliber', ['caliber_id'], ['id'])
+        batch_op.create_foreign_key(None, "caliber", ["caliber_id"], ["id"])
 
     # Best-effort: assign each bullet to the first caliber with matching diameter.
     # Uses ABS() tolerance to avoid exact float comparison issues.
@@ -99,6 +98,6 @@ def downgrade() -> None:
             f"caliber by diameter: {details}. Manually assign caliber_id before retrying."
         )
 
-    with op.batch_alter_table('bullet', schema=None) as batch_op:
-        batch_op.alter_column('caliber_id', nullable=False)
-        batch_op.drop_column('bullet_diameter_inches')
+    with op.batch_alter_table("bullet", schema=None) as batch_op:
+        batch_op.alter_column("caliber_id", nullable=False)
+        batch_op.drop_column("bullet_diameter_inches")
