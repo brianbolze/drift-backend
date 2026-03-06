@@ -376,7 +376,6 @@ def main() -> None:  # noqa: C901
                 else:
                     # New entity — create it
                     entry["action"] = "created"
-                    stats[entity_type]["created"] += 1
 
                     if args.commit:
                         savepoint = session.begin_nested()
@@ -423,6 +422,7 @@ def main() -> None:  # noqa: C901
                                 session.add(obj)
                                 entry["created_id"] = obj.id
                             savepoint.commit()
+                            stats[entity_type]["created"] += 1
                         except (IntegrityError, DataError) as e:
                             savepoint.rollback()
                             logger.exception("  [%d] CREATE FAILED: %s — %s", j + 1, name, e)
@@ -430,6 +430,7 @@ def main() -> None:  # noqa: C901
                             entry["error"] = str(e)
                             stats[entity_type]["flagged"] += 1
                     else:
+                        stats[entity_type]["created"] += 1
                         logger.info("  [%d] WOULD CREATE: %s", j + 1, name)
 
                 report_entries.append(entry)
