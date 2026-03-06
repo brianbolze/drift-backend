@@ -40,6 +40,11 @@ logger = logging.getLogger(__name__)
 
 _BULLET_UPDATE_FIELDS = frozenset(
     {
+        "name",
+        "alt_names",
+        "sku",
+        "weight_grains",
+        "bullet_diameter_inches",
         "bc_g1_published",
         "bc_g7_published",
         "bc_g1_estimated",
@@ -53,7 +58,6 @@ _BULLET_UPDATE_FIELDS = frozenset(
         "used_for",
         "is_lead_free",
         "source_url",
-        "sku",
     }
 )
 
@@ -82,6 +86,23 @@ class PatchMetadata(BaseModel):
     author: str = Field(..., min_length=1)
     date: str = Field(..., pattern=r"^\d{4}-\d{2}-\d{2}$")
     description: str = Field(..., min_length=1, max_length=500)
+
+
+class CreateCaliberOp(BaseModel):
+    model_config = ConfigDict(str_strip_whitespace=True)
+
+    action: Literal["create_caliber"]
+    name: str = Field(..., min_length=1, max_length=255)
+    bullet_diameter_inches: float = Field(..., ge=0.172, le=0.700)
+    alt_names: list[str] | None = None
+    case_length_inches: float | None = Field(None, ge=0.5, le=5.0)
+    coal_inches: float | None = Field(None, ge=0.5, le=6.0)
+    max_pressure_psi: int | None = Field(None, ge=10000, le=100000)
+    rim_type: str | None = None
+    action_length: str | None = None
+    year_introduced: int | None = Field(None, ge=1800, le=2030)
+    is_common_lr: bool = False
+    source_url: str | None = Field(None, max_length=500)
 
 
 class CreateBulletOp(BaseModel):
@@ -193,6 +214,30 @@ class AddBCSourceOp(BaseModel):
     notes: str | None = None
 
 
+class DeleteBulletOp(BaseModel):
+    model_config = ConfigDict(str_strip_whitespace=True)
+
+    action: Literal["delete_bullet"]
+    manufacturer: str = Field(..., min_length=1)
+    name: str = Field(..., min_length=1)
+    id: str | None = Field(
+        None, description="Exact bullet ID for disambiguation when multiple bullets share the same name"
+    )
+    reason: str = Field(..., min_length=1, max_length=500)
+
+
+class DeleteCartridgeOp(BaseModel):
+    model_config = ConfigDict(str_strip_whitespace=True)
+
+    action: Literal["delete_cartridge"]
+    manufacturer: str = Field(..., min_length=1)
+    name: str = Field(..., min_length=1)
+    id: str | None = Field(
+        None, description="Exact cartridge ID for disambiguation when multiple cartridges share the same name"
+    )
+    reason: str = Field(..., min_length=1, max_length=500)
+
+
 class AddEntityAliasOp(BaseModel):
     model_config = ConfigDict(str_strip_whitespace=True)
 
@@ -205,11 +250,14 @@ class AddEntityAliasOp(BaseModel):
 
 Operation = Annotated[
     Union[
+        CreateCaliberOp,
         CreateBulletOp,
         CreateCartridgeOp,
         CreateRifleOp,
         UpdateBulletOp,
         UpdateCartridgeOp,
+        DeleteBulletOp,
+        DeleteCartridgeOp,
         AddBCSourceOp,
         AddEntityAliasOp,
     ],
@@ -290,6 +338,10 @@ def _resolve_bullet(session: Session, manufacturer_id: str, name: str) -> str:
 # ── Idempotency Checks ──────────────────────────────────────────────────────
 
 
+def _caliber_exists(session: Session, name: str) -> Caliber | None:
+    return session.query(Caliber).filter(func.lower(Caliber.name) == name.lower()).first()
+
+
 def _bullet_exists(session: Session, manufacturer_id: str, name: str, sku: str | None) -> Bullet | None:
     if sku:
         existing = session.query(Bullet).filter(func.lower(Bullet.sku) == sku.lower()).first()
@@ -349,6 +401,33 @@ class ApplyStats:
 
 
 # ── Operation Handlers ───────────────────────────────────────────────────────
+
+
+def _apply_create_caliber(session: Session, op: CreateCaliberOp, stats: ApplyStats, index: int) -> None:
+    existing = _caliber_exists(session, op.name)
+    if existing:
+        stats.skipped += 1
+        stats.details.append(f"  [{index}] SKIP create_caliber: {op.name!r} (id={existing.id})")
+        return
+
+    caliber = Caliber(
+        id=str(uuid.uuid4()),
+        name=op.name,
+        bullet_diameter_inches=op.bullet_diameter_inches,
+        alt_names=op.alt_names,
+        case_length_inches=op.case_length_inches,
+        coal_inches=op.coal_inches,
+        max_pressure_psi=op.max_pressure_psi,
+        rim_type=op.rim_type,
+        action_length=op.action_length,
+        year_introduced=op.year_introduced,
+        is_common_lr=op.is_common_lr,
+        source_url=op.source_url,
+    )
+    session.add(caliber)
+    session.flush()
+    stats.created += 1
+    stats.details.append(f"  [{index}] CREATE caliber: {op.name!r} (id={caliber.id})")
 
 
 def _apply_create_bullet(session: Session, op: CreateBulletOp, stats: ApplyStats, index: int) -> None:
@@ -480,11 +559,17 @@ def _apply_update_bullet(session: Session, op: UpdateBulletOp, stats: ApplyStats
     if not bullet:
         raise ValueError(f"Bullet not found: {op.name!r} (manufacturer={op.manufacturer})")
 
-    for key, value in op.set.items():
+    changed = {k: v for k, v in op.set.items() if getattr(bullet, k) != v}
+    if not changed:
+        stats.skipped += 1
+        stats.details.append(f"  [{index}] SKIP update_bullet: {op.name!r} (already up to date)")
+        return
+
+    for key, value in changed.items():
         setattr(bullet, key, value)
     session.flush()
     stats.updated += 1
-    stats.details.append(f"  [{index}] UPDATE bullet: {op.name!r} — {list(op.set.keys())}")
+    stats.details.append(f"  [{index}] UPDATE bullet: {op.name!r} — {list(changed.keys())}")
 
 
 def _apply_update_cartridge(session: Session, op: UpdateCartridgeOp, stats: ApplyStats, index: int) -> None:
@@ -497,11 +582,72 @@ def _apply_update_cartridge(session: Session, op: UpdateCartridgeOp, stats: Appl
     if not cartridge:
         raise ValueError(f"Cartridge not found: {op.name!r} (manufacturer={op.manufacturer})")
 
-    for key, value in op.set.items():
+    changed = {k: v for k, v in op.set.items() if getattr(cartridge, k) != v}
+    if not changed:
+        stats.skipped += 1
+        stats.details.append(f"  [{index}] SKIP update_cartridge: {op.name!r} (already up to date)")
+        return
+
+    for key, value in changed.items():
         setattr(cartridge, key, value)
     session.flush()
     stats.updated += 1
-    stats.details.append(f"  [{index}] UPDATE cartridge: {op.name!r} — {list(op.set.keys())}")
+    stats.details.append(f"  [{index}] UPDATE cartridge: {op.name!r} — {list(changed.keys())}")
+
+
+def _apply_delete_bullet(session: Session, op: DeleteBulletOp, stats: ApplyStats, index: int) -> None:
+    mfr_id = _resolve_manufacturer(session, op.manufacturer)
+    if op.id:
+        bullet = session.query(Bullet).filter(Bullet.id == op.id, Bullet.manufacturer_id == mfr_id).first()
+    else:
+        bullet = (
+            session.query(Bullet)
+            .filter(Bullet.manufacturer_id == mfr_id, func.lower(Bullet.name) == op.name.lower())
+            .first()
+        )
+    if not bullet:
+        stats.skipped += 1
+        stats.details.append(f"  [{index}] SKIP delete_bullet: {op.name!r} not found")
+        return
+
+    # Refuse to delete if cartridges reference this bullet
+    cartridge_refs = session.query(Cartridge).filter(Cartridge.bullet_id == bullet.id).count()
+    if cartridge_refs > 0:
+        raise ValueError(
+            f"Cannot delete bullet {op.name!r}: {cartridge_refs} cartridge(s) reference it. "
+            "Delete or re-link cartridges first."
+        )
+
+    # Cascade to BulletBCSource (no ondelete cascade in schema yet)
+    bc_deleted = session.query(BulletBCSource).filter(BulletBCSource.bullet_id == bullet.id).delete()
+    session.delete(bullet)
+    session.flush()
+    stats.updated += 1  # "updated" in the sense of a destructive change
+    stats.details.append(
+        f"  [{index}] DELETE bullet: {op.name!r} (id={bullet.id}, {bc_deleted} BC sources removed). "
+        f"Reason: {op.reason}"
+    )
+
+
+def _apply_delete_cartridge(session: Session, op: DeleteCartridgeOp, stats: ApplyStats, index: int) -> None:
+    mfr_id = _resolve_manufacturer(session, op.manufacturer)
+    if op.id:
+        cartridge = session.query(Cartridge).filter(Cartridge.id == op.id, Cartridge.manufacturer_id == mfr_id).first()
+    else:
+        cartridge = (
+            session.query(Cartridge)
+            .filter(Cartridge.manufacturer_id == mfr_id, func.lower(Cartridge.name) == op.name.lower())
+            .first()
+        )
+    if not cartridge:
+        stats.skipped += 1
+        stats.details.append(f"  [{index}] SKIP delete_cartridge: {op.name!r} not found")
+        return
+
+    session.delete(cartridge)
+    session.flush()
+    stats.updated += 1
+    stats.details.append(f"  [{index}] DELETE cartridge: {op.name!r} (id={cartridge.id}). Reason: {op.reason}")
 
 
 def _apply_add_bc_source(session: Session, op: AddBCSourceOp, stats: ApplyStats, index: int) -> None:
@@ -553,11 +699,14 @@ def _apply_add_entity_alias(session: Session, op: AddEntityAliasOp, stats: Apply
 
 
 _HANDLERS = {
+    "create_caliber": _apply_create_caliber,
     "create_bullet": _apply_create_bullet,
     "create_cartridge": _apply_create_cartridge,
     "create_rifle": _apply_create_rifle,
     "update_bullet": _apply_update_bullet,
     "update_cartridge": _apply_update_cartridge,
+    "delete_bullet": _apply_delete_bullet,
+    "delete_cartridge": _apply_delete_cartridge,
     "add_bc_source": _apply_add_bc_source,
     "add_entity_alias": _apply_add_entity_alias,
 }
