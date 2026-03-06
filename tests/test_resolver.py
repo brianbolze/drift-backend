@@ -767,8 +767,11 @@ class TestResolveCartridgeBCBoost:
         }
         result = resolver.resolve(extracted, "cartridge")
         assert result.bullet_id == seeded["b1"].id
-        # Should have no BC warnings since G7 matches exactly
+        # Should have no BC warnings since G7 matches within tolerance
         assert not any("bc_g7 mismatch" in w for w in result.warnings)
+        # Boosted confidence should be persisted on result (weight + G7 = +0.10)
+        assert result.bullet_match_confidence is not None
+        assert result.bullet_match_confidence > 0.5
 
     def test_resolve_cartridge_bc_mismatch_adds_warning(self, seeded, db):
         """When cartridge BC disagrees with bullet BC, a warning is added."""

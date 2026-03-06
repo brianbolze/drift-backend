@@ -54,6 +54,7 @@ class ResolutionResult:
     caliber_id: str | None = None
     chamber_id: str | None = None
     bullet_id: str | None = None
+    bullet_match_confidence: float | None = None
     bullet_diameter_inches: float | None = None
     unresolved_refs: list[str] = field(default_factory=list)
     warnings: list[str] = field(default_factory=list)
@@ -701,10 +702,8 @@ class EntityResolver:
                 if bullet_match.matched and bullet_match.confidence >= 0.5:
                     result.bullet_id = bullet_match.entity_id
                     # Boost confidence when cartridge BC/weight exactly match the bullet
-                    boost, bc_warnings = _bc_weight_confidence_boost(
-                        extracted, bullet_match.entity_id, self._session
-                    )
-                    bullet_match.confidence = min(bullet_match.confidence + boost, 1.0)
+                    boost, bc_warnings = _bc_weight_confidence_boost(extracted, bullet_match.entity_id, self._session)
+                    result.bullet_match_confidence = min(bullet_match.confidence + boost, 1.0)
                     result.warnings.extend(bc_warnings)
                 elif bullet_match.matched:
                     result.unresolved_refs.append(
@@ -721,58 +720,56 @@ class EntityResolver:
         return result
 
 
-def _bc_weight_confidence_boost(
-    extracted: dict, bullet_id: str, session: Session
-) -> tuple[float, list[str]]:
+_BC_TOLERANCE = 1e-4  # Covers manufacturer rounding at 3 decimal places
+
+
+def _bc_weight_confidence_boost(extracted: dict, bullet_id: str, session: Session) -> tuple[float, list[str]]:
     """Compare cartridge-extracted BC/weight against the matched bullet's published values.
 
     Returns a (boost, warnings) tuple:
-      - boost: additive confidence increase (0.0–0.15) for exact matches
+      - boost: additive confidence increase (0.0–0.15) for matching signals
       - warnings: list of disagreement warnings (informational, not disqualifying)
 
-    Exact match = values are identical (float equality). Weight uses ±0.5 gr tolerance
-    (same as composite key matching).
+    Weight uses ±0.5 gr tolerance (same as composite key matching).
+    BC uses ±1e-4 tolerance to absorb manufacturer rounding at 3 decimal places.
     """
     boost = 0.0
     warnings: list[str] = []
     bullet = session.get(Bullet, bullet_id)
     if bullet is None:
+        logger.warning("Bullet %s referenced by BC/weight boost not found in DB", bullet_id)
         return boost, warnings
 
-    # Weight agreement (±0.5 gr — same tolerance as composite key matching)
+    # Weight agreement (±0.5 gr — same tolerance as match_bullet composite key)
     cart_weight = _get_value(extracted, "bullet_weight_grains")
     if cart_weight is not None and bullet.weight_grains is not None:
         try:
             if abs(float(cart_weight) - bullet.weight_grains) <= 0.5:
                 boost += 0.05
         except (ValueError, TypeError):
-            pass
+            logger.warning("Cannot compare weight for bullet %s: cart_weight=%r is not numeric", bullet_id, cart_weight)
 
-    # BC G1 exact match
+    # BC G1 match (±1e-4 tolerance)
     cart_g1 = _get_value(extracted, "bc_g1")
     if cart_g1 is not None and bullet.bc_g1_published is not None:
         try:
-            if float(cart_g1) == bullet.bc_g1_published:
+            if abs(float(cart_g1) - bullet.bc_g1_published) < _BC_TOLERANCE:
                 boost += 0.05
             else:
-                warnings.append(
-                    f"bc_g1 mismatch: cartridge={cart_g1}, bullet={bullet.bc_g1_published}"
-                )
+                warnings.append(f"bc_g1 mismatch: cartridge={cart_g1}, bullet={bullet.bc_g1_published}")
         except (ValueError, TypeError):
-            pass
+            logger.warning("Cannot compare bc_g1 for bullet %s: cart_g1=%r is not numeric", bullet_id, cart_g1)
 
-    # BC G7 exact match
+    # BC G7 match (±1e-4 tolerance)
     cart_g7 = _get_value(extracted, "bc_g7")
     if cart_g7 is not None and bullet.bc_g7_published is not None:
         try:
-            if float(cart_g7) == bullet.bc_g7_published:
+            if abs(float(cart_g7) - bullet.bc_g7_published) < _BC_TOLERANCE:
                 boost += 0.05
             else:
-                warnings.append(
-                    f"bc_g7 mismatch: cartridge={cart_g7}, bullet={bullet.bc_g7_published}"
-                )
+                warnings.append(f"bc_g7 mismatch: cartridge={cart_g7}, bullet={bullet.bc_g7_published}")
         except (ValueError, TypeError):
-            pass
+            logger.warning("Cannot compare bc_g7 for bullet %s: cart_g7=%r is not numeric", bullet_id, cart_g7)
 
     return boost, warnings
 

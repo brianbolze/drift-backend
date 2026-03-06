@@ -182,9 +182,11 @@ def validate_ranges(entities: list[dict]) -> list[str]:
 def _extract_bc_sources(entity: dict, *, entity_type: str = "bullet") -> list[ExtractedBCSource]:
     """Extract ExtractedBCSource entries from a bullet or cartridge entity's BC fields.
 
-    For bullet entities, uses the entity's ``name`` as the bullet_name.
-    For cartridge entities, prefers ``bullet_name`` (the loaded projectile) and
-    sets source to ``"cartridge_page"`` to distinguish from the bullet's own page.
+    For bullet entities, uses the entity's ``name`` as the bullet_name and sets
+    source to ``"manufacturer"``.
+    For cartridge entities, prefers ``bullet_name`` (the loaded projectile),
+    falling back to the cartridge ``name`` if bullet_name is absent or empty.
+    Sets source to ``"cartridge_page"`` to distinguish from the bullet's own page.
     """
     sources = []
 
@@ -196,6 +198,9 @@ def _extract_bc_sources(entity: dict, *, entity_type: str = "bullet") -> list[Ex
         if not bullet_name:
             n = entity.get("name", {})
             bullet_name = n.get("value", "") if isinstance(n, dict) else str(n)
+        if not bullet_name:
+            logger.warning("Cartridge entity has BC data but no bullet_name or name — skipping BC source extraction")
+            return sources
         source = "cartridge_page"
     else:
         n = entity.get("name", {})

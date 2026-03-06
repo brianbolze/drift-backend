@@ -131,12 +131,18 @@ def _make_bc_sources(bullet_id: str, bc_sources: list[dict], source_url: str) ->
     """Create BulletBCSource ORM instances from extracted BC source dicts."""
     results = []
     for bc in bc_sources:
+        bc_val = _safe_float(bc.get("bc_value"))
+        if bc_val is None:
+            logger.warning(
+                "Skipping BC source with unparseable bc_value=%r for bullet %s", bc.get("bc_value"), bullet_id
+            )
+            continue
         results.append(
             BulletBCSource(
                 id=str(uuid.uuid4()),
                 bullet_id=bullet_id,
                 bc_type=bc.get("bc_type", ""),
-                bc_value=float(bc.get("bc_value", 0)),
+                bc_value=bc_val,
                 source=bc.get("source", "manufacturer"),
                 source_url=source_url,
                 source_methodology=bc.get("source_methodology"),
@@ -153,6 +159,20 @@ def _safe_float(val) -> float | None:
     except (ValueError, TypeError):
         logger.debug("Could not convert %r to float", val)
         return None
+
+
+def _add_cartridge_bc_sources(session, bullet_id: str, bc_sources: list[dict], entity: dict, url: str) -> None:
+    """Create BulletBCSource rows for cartridge-sourced BC data, if any."""
+    if not bullet_id:
+        return
+    cart_bc_sources = [bc for bc in bc_sources if bc.get("source") == "cartridge_page"]
+    if not cart_bc_sources:
+        return
+    cart_name = _get_value(entity, "name", "")
+    cart_sku = _get_value(entity, "sku", "N/A")
+    for bc_obj in _make_bc_sources(bullet_id, cart_bc_sources, url):
+        bc_obj.notes = f"from cartridge: {cart_name} (SKU: {cart_sku})"
+        session.add(bc_obj)
 
 
 def _safe_int(val) -> int | None:
@@ -294,6 +314,9 @@ def main() -> None:  # noqa: C901
                             )
                             if args.commit:
                                 existing_cart.bullet_id = resolution.bullet_id
+                        # Also create BulletBCSource rows for matched cartridges with BC data
+                        if args.commit and resolution.bullet_id:
+                            _add_cartridge_bc_sources(session, resolution.bullet_id, bc_sources, entity, url)
                 elif resolution.match.matched:
                     # Low-confidence match — flag for review instead of auto-skipping
                     entry["action"] = "flagged_low_confidence"
@@ -348,19 +371,7 @@ def main() -> None:  # noqa: C901
                                 )
                                 session.add(obj)
                                 entry["created_id"] = obj.id
-                                # Create BulletBCSource rows for cartridge-sourced BC data
-                                if resolution.bullet_id:
-                                    cart_bc_sources = [
-                                        bc for bc in bc_sources if bc.get("source") == "cartridge_page"
-                                    ]
-                                    for bc_obj in _make_bc_sources(
-                                        resolution.bullet_id, cart_bc_sources, url
-                                    ):
-                                        bc_obj.notes = (
-                                            f"from cartridge: {_get_value(entity, 'name', '')} "
-                                            f"(SKU: {_get_value(entity, 'sku', 'N/A')})"
-                                        )
-                                        session.add(bc_obj)
+                                _add_cartridge_bc_sources(session, resolution.bullet_id, bc_sources, entity, url)
                             elif entity_type == "rifle":
                                 obj = _make_rifle(entity, resolution.manufacturer_id, resolution.chamber_id, url)
                                 session.add(obj)

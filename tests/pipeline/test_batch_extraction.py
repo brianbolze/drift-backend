@@ -32,7 +32,11 @@ def _make_mock_provider(response_json: list[dict] | None = None) -> BaseLLMProvi
 
 
 MINIMAL_CARTRIDGE = {
-    "name": {"value": "Hornady Precision Hunter 6.5 CM 143gr ELD-X", "source_text": "Precision Hunter", "confidence": 0.9},
+    "name": {
+        "value": "Hornady Precision Hunter 6.5 CM 143gr ELD-X",
+        "source_text": "Precision Hunter",
+        "confidence": 0.9,
+    },
     "manufacturer": {"value": "Hornady", "source_text": "Hornady", "confidence": 1.0},
     "caliber": {"value": "6.5 Creedmoor", "source_text": "6.5 Creedmoor", "confidence": 0.95},
     "bullet_name": {"value": "ELD-X", "source_text": "ELD-X", "confidence": 0.9},

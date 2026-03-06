@@ -209,7 +209,7 @@ def build_summary(conn: sqlite3.Connection) -> str:
            LIMIT 15""",
     ):
         caliber, mfr, name, weight, bc_g7 = row
-        bc_str = f"{bc_g7:.3f}" if bc_g7 else "—"
+        bc_str = f"{bc_g7:.3f}" if bc_g7 is not None else "—"
         w(f"| {caliber or '—'} | {mfr or '—'} | {name} | {weight:.1f} | {bc_str} |")
     w("")
 
@@ -274,7 +274,7 @@ def build_summary(conn: sqlite3.Connection) -> str:
            ORDER BY ch.name, r.barrel_length_inches""",
     ):
         model, mfr, chamber, bbl, twist = row
-        bbl_str = f"{bbl:.0f}" if bbl else "—"
+        bbl_str = f"{bbl:.0f}" if bbl is not None else "—"
         w(f"| {model} | {mfr or '—'} | {chamber or '—'} | {bbl_str} | {twist or '—'} |")
     w("")
 
