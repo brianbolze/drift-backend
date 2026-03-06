@@ -230,6 +230,7 @@ class EntityResolver:
         self._manufacturers: list[Manufacturer] | None = None
         self._calibers: list[Caliber] | None = None
         self._chambers: list[Chamber] | None = None
+        self._caliber_aliases: list[EntityAlias] | None = None
 
     # ── FK resolution helpers ────────────────────────────────────────────────
 
@@ -247,6 +248,11 @@ class EntityResolver:
         if self._chambers is None:
             self._chambers = self._session.query(Chamber).all()
         return self._chambers
+
+    def _get_caliber_aliases(self) -> list[EntityAlias]:
+        if self._caliber_aliases is None:
+            self._caliber_aliases = self._session.query(EntityAlias).filter(EntityAlias.entity_type == "caliber").all()
+        return self._caliber_aliases
 
     def resolve_manufacturer(self, name: str) -> MatchResult:
         """Resolve a manufacturer name to an existing DB record."""
@@ -328,8 +334,7 @@ class EntityResolver:
                         )
 
         # Tier 3: EntityAlias table lookup
-        aliases = self._session.query(EntityAlias).filter(EntityAlias.entity_type == "caliber").all()
-        for alias in aliases:
+        for alias in self._get_caliber_aliases():
             if _normalize(alias.alias) == norm_name or _normalize_caliber(alias.alias) == cal_norm_name:
                 # Verify the referenced caliber exists
                 cal = self._session.get(Caliber, alias.entity_id)
@@ -720,7 +725,7 @@ class EntityResolver:
         return result
 
 
-_BC_TOLERANCE = 1e-4  # Covers manufacturer rounding at 3 decimal places
+_BC_TOLERANCE = 5e-4  # Covers manufacturer rounding at 3 decimal places (max rounding error = 0.0005)
 
 
 def _bc_weight_confidence_boost(extracted: dict, bullet_id: str, session: Session) -> tuple[float, list[str]]:
@@ -731,7 +736,7 @@ def _bc_weight_confidence_boost(extracted: dict, bullet_id: str, session: Sessio
       - warnings: list of disagreement warnings (informational, not disqualifying)
 
     Weight uses ±0.5 gr tolerance (same as composite key matching).
-    BC uses ±1e-4 tolerance to absorb manufacturer rounding at 3 decimal places.
+    BC uses ±5e-4 tolerance to absorb manufacturer rounding at 3 decimal places.
     """
     boost = 0.0
     warnings: list[str] = []
@@ -749,7 +754,7 @@ def _bc_weight_confidence_boost(extracted: dict, bullet_id: str, session: Sessio
         except (ValueError, TypeError):
             logger.warning("Cannot compare weight for bullet %s: cart_weight=%r is not numeric", bullet_id, cart_weight)
 
-    # BC G1 match (±1e-4 tolerance)
+    # BC G1 match (±5e-4 tolerance)
     cart_g1 = _get_value(extracted, "bc_g1")
     if cart_g1 is not None and bullet.bc_g1_published is not None:
         try:
@@ -760,7 +765,7 @@ def _bc_weight_confidence_boost(extracted: dict, bullet_id: str, session: Sessio
         except (ValueError, TypeError):
             logger.warning("Cannot compare bc_g1 for bullet %s: cart_g1=%r is not numeric", bullet_id, cart_g1)
 
-    # BC G7 match (±1e-4 tolerance)
+    # BC G7 match (±5e-4 tolerance)
     cart_g7 = _get_value(extracted, "bc_g7")
     if cart_g7 is not None and bullet.bc_g7_published is not None:
         try:

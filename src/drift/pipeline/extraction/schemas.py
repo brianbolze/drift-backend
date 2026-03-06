@@ -121,7 +121,7 @@ class ExtractedBCSource(BaseModel):
     bullet_name: str
     bc_type: Literal["g1", "g7"]
     bc_value: float
-    source: Literal["manufacturer", "cartridge_page", "applied_ballistics", "doppler_radar", "independent_test", "estimated"] = (
-        "manufacturer"
-    )
+    source: Literal[
+        "manufacturer", "cartridge_page", "applied_ballistics", "doppler_radar", "independent_test", "estimated"
+    ] = "manufacturer"
     source_methodology: str | None = None

@@ -27,7 +27,7 @@ Lightweight tech debt and engineering improvement tracker. Agents and humans app
 - [ ] 4 MatchKing->Nosler HPBT false matches — Sierra MatchKing bullets missing at certain weights, causing cross-manufacturer false positives (source: pipeline working notes)
 - [ ] 22 bullets missing BC data entirely — no BulletBCSource records (source: QA report, 2026-03-06)
 - [ ] BulletBCSource rows never deduplicated on re-runs — no unique constraint on `(bullet_id, bc_type, bc_value, source_url)` and no existence check before insert (source: code review, 2026-03-06)
-- [ ] BC tolerance `_BC_TOLERANCE = 1e-4` too tight for 3-decimal-place values — should be `5e-4` or `1e-3`, BC confidence boost almost never fires (source: code review, 2026-03-06)
+- [x] BC tolerance `_BC_TOLERANCE = 1e-4` too tight for 3-decimal-place values — should be `5e-4` or `1e-3`, BC confidence boost almost never fires (source: code review, 2026-03-06)
 
 ## Pipeline Improvements
 
@@ -44,7 +44,7 @@ Lightweight tech debt and engineering improvement tracker. Agents and humans app
 - [ ] `FirecrawlFetcher` has no timeout — `asyncio.to_thread` call blocks indefinitely if Firecrawl is down (source: code review, 2026-03-06)
 - [ ] Batch poll doesn't catch `anthropic.RateLimitError` — only catches `APIConnectionError`/`InternalServerError` (source: code review, 2026-03-06)
 - [ ] `--limit` applies to file count, not pending count — `--limit 10` slices first 10 reduced files; if all cached, nothing runs (source: code review, 2026-03-06)
-- [ ] `EntityAlias` re-queried from DB on every `resolve_caliber()` call — other lookups are cached, this one isn't (source: code review, 2026-03-06)
+- [x] `EntityAlias` re-queried from DB on every `resolve_caliber()` call — other lookups are cached, this one isn't (source: code review, 2026-03-06)
 - [ ] Zero-entity extractions cached and silently skipped on re-run — should flag or force re-extract (source: code review, 2026-03-06)
 - [ ] Stale flagged entries persist on re-extraction — `_write_flagged` deduplicates by hash, so old warnings stick around (source: code review, 2026-03-06)
 - [x] Duplicate rule number 7 in extraction system prompt — second occurrence shadows the first (source: code review, 2026-03-06)
