@@ -1,6 +1,11 @@
 # flake8: noqa: E501
 """Tests for the EntityResolver — bullet/cartridge/rifle resolution paths."""
 
+# Import store-level rejection helper (script, but importable)
+import importlib
+import sys
+from pathlib import Path
+
 import pytest
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
@@ -10,10 +15,17 @@ from drift.pipeline.resolution.resolver import (
     EntityResolver,
     ResolutionResult,
     _bullet_name_score,
+    _expand_abbreviations,
     _name_similarity,
     _normalize,
     _normalize_caliber,
 )
+
+_SCRIPTS_DIR = Path(__file__).resolve().parent.parent / "scripts"
+sys.path.insert(0, str(_SCRIPTS_DIR))
+_store_mod = importlib.import_module("pipeline_store")
+_has_rejected_caliber = _store_mod._has_rejected_caliber
+_load_rejected_calibers = _store_mod._load_rejected_calibers
 
 
 @pytest.fixture()
@@ -371,11 +383,11 @@ class TestBulletNameScore:
         assert _bullet_name_score("", "some bullet") == 0.0
         assert _bullet_name_score("ELD-X", "") == 0.0
 
-    def test_pure_generic_name_vs_specific(self):
-        """Generic names like 'Soft Point' should have low scores (noise words stripped)."""
+    def test_abbreviation_expansion_sp_matches_soft_point(self):
+        """SP in DB name should match 'Soft Point' via abbreviation expansion."""
         score = _bullet_name_score("Soft Point", "30 Cal .308 150 gr InterLock® SP")
-        # "soft" and "point" are not in the DB name; should be low/zero
-        assert score < 0.3
+        # SP expands to {soft, point} so this is a valid match
+        assert score > 0.3
 
     def test_trademark_symbols_stripped(self):
         """Trademark symbols (®, ™) should not affect matching."""
@@ -601,11 +613,11 @@ class TestAsymmetricBulletMatching:
         assert result.matched is True
         assert result.entity_id == cartridge_bullets["bullets"]["30 CAL 175 GR HPBT MATCHKING (SMK)"].id
 
-    def test_matchking_verbose_name_is_hard(self, cartridge_bullets, db):
-        """Verbose expanded name vs abbreviated DB name is a known limitation.
+    def test_matchking_verbose_name_matches_via_abbreviation(self, cartridge_bullets, db):
+        """Verbose expanded name now matches abbreviated DB name via abbreviation expansion.
 
-        'Sierra Matchking Boat-Tail Hollow Point' vs 'HPBT MATCHKING (SMK)' — only
-        'matchking' overlaps; 'Boat-Tail Hollow Point' ≠ 'HPBT' (abbreviation gap).
+        'Sierra Matchking Boat-Tail Hollow Point' has HPBT/BTHP/SMK abbreviations
+        auto-expanded, matching 'HPBT MATCHKING (SMK)' with high confidence.
         """
         resolver = EntityResolver(db)
         result = resolver.match_bullet(
@@ -613,10 +625,8 @@ class TestAsymmetricBulletMatching:
             manufacturer_id=None,
             bullet_diameter_inches=0.308,
         )
-        # Currently does NOT match due to abbreviation mismatch — document this.
-        # If this starts passing in the future (e.g. abbreviation expansion), great.
-        if result.matched:
-            assert result.entity_id == cartridge_bullets["bullets"]["30 CAL 175 GR HPBT MATCHKING (SMK)"].id
+        assert result.matched
+        assert result.entity_id == cartridge_bullets["bullets"]["30 CAL 175 GR HPBT MATCHKING (SMK)"].id
 
     def test_partition_matches_with_weight(self, cartridge_bullets, db):
         """'Nosler Partition' + weight=200 should match Nosler Partition."""
@@ -699,3 +709,221 @@ class TestAsymmetricBulletMatching:
         )
         assert result.matched is True
         assert result.entity_id == cartridge_bullets["bullets"]["270 Caliber 150gr Ballistic Tip Hunting (50ct)"].id
+
+    def test_eldx_does_not_match_eld_match_at_same_weight(self, cartridge_bullets, db):
+        """ELD-X should NOT fuzzy-match ELD Match when both exist at .308 178gr.
+
+        Both share 'eld' keyword but 'x' vs 'match' should differentiate them.
+        With the 0.55 Tier 2 threshold, 'ELD-X' scores 1.0 against ELD-X® but
+        only 0.5 against ELD® Match (below threshold).
+        """
+        resolver = EntityResolver(db)
+        result = resolver.match_bullet(
+            {"name": {"value": "ELD-X"}, "weight_grains": {"value": 178.0}},
+            manufacturer_id=None,
+            bullet_diameter_inches=0.308,
+        )
+        assert result.matched is True
+        # Should match the actual ELD-X, not the ELD Match
+        assert result.entity_id == cartridge_bullets["bullets"]["30 Cal .308 178 gr ELD-X®"].id
+
+    def test_eld_match_does_not_match_eldx_at_same_weight(self, cartridge_bullets, db):
+        """ELD Match should NOT fuzzy-match ELD-X when both exist at .308 178gr."""
+        resolver = EntityResolver(db)
+        result = resolver.match_bullet(
+            {"name": {"value": "ELD Match"}, "weight_grains": {"value": 178.0}},
+            manufacturer_id=None,
+            bullet_diameter_inches=0.308,
+        )
+        assert result.matched is True
+        assert result.entity_id == cartridge_bullets["bullets"]["30 Cal .308 178 gr ELD® Match"].id
+
+
+class TestAbbreviationExpansion:
+    """Tests for _expand_abbreviations and its integration with _bullet_name_score."""
+
+    def test_hpbt_expands_to_hollow_point_boat_tail(self):
+        assert {"hollow", "point", "boat", "tail"} <= _expand_abbreviations({"hpbt"})
+
+    def test_reverse_expansion_adds_abbreviation(self):
+        """If all expansion words present, abbreviation is added."""
+        expanded = _expand_abbreviations({"hollow", "point", "boat", "tail"})
+        assert "hpbt" in expanded
+        assert "bthp" in expanded  # same expansion
+        assert "hp" in expanded
+        assert "bt" in expanded
+
+    def test_smk_expands_to_sierra_matchking(self):
+        expanded = _expand_abbreviations({"smk"})
+        assert "sierra" in expanded
+        assert "matchking" in expanded
+
+    def test_fmj_expands_to_full_metal_jacket(self):
+        expanded = _expand_abbreviations({"fmj"})
+        assert {"full", "metal", "jacket"} <= expanded
+
+    def test_no_expansion_for_unknown(self):
+        """Words without known abbreviations pass through unchanged."""
+        expanded = _expand_abbreviations({"eld", "match"})
+        assert expanded == {"eld", "match"}
+
+    def test_hpbt_matchking_vs_verbose_name(self):
+        """The key case: 'HPBT MatchKing (SMK)' should match 'Sierra Matchking Boat-Tail Hollow Point'."""
+        score = _bullet_name_score("Sierra Matchking Boat-Tail Hollow Point", "30 CAL 175 GR HPBT MATCHKING (SMK)")
+        assert score > 0.8
+
+    def test_hpbt_vs_hollow_point_boat_tail(self):
+        """'Hollow Point Boat Tail' should match 'HPBT' via expansion."""
+        score = _bullet_name_score("Hollow Point Boat Tail", "6.5mm 140 gr HPBT Custom Competition")
+        assert score > 0.3
+
+    def test_abbreviation_doesnt_cause_false_positives(self):
+        """Abbreviation expansion shouldn't make unrelated bullets match."""
+        # "Sierra Matchking Boat-Tail Hollow Point" should NOT match a Cutting Edge bullet
+        score = _bullet_name_score(
+            "Sierra Matchking Boat-Tail Hollow Point",
+            ".264/6.5 140gr SINGLE FEED-Tipped Hollow Point - 50ct",
+        )
+        assert score < 0.35  # some overlap (hollow, point) but much less than correct match
+
+    def test_otm_expands_to_open_tip_match(self):
+        """OTM abbreviation should match 'Open Tip Match'."""
+        score = _bullet_name_score("Open Tip Match", "6.5mm 140gr OTM Tactical")
+        assert score > 0.3
+
+
+class TestBulletFKConfidenceThreshold:
+    """Tests for the bullet FK confidence threshold in cartridge resolution."""
+
+    @pytest.fixture()
+    def setup_db(self):
+        engine = create_engine("sqlite:///:memory:")
+        Base.metadata.create_all(engine)
+        session = Session(engine)
+
+        mfr = Manufacturer(name="Hornady")
+        session.add(mfr)
+        session.flush()
+
+        cal = Caliber(name=".308 Winchester", alt_names=[".308 Win"], bullet_diameter_inches=0.308)
+        session.add(cal)
+        session.flush()
+
+        # Only a 165gr SST — no 150gr SST in DB
+        bullet = Bullet(
+            manufacturer_id=mfr.id,
+            name="30 Cal .308 165 gr SST®",
+            bullet_diameter_inches=0.308,
+            weight_grains=165.0,
+        )
+        session.add(bullet)
+        session.flush()
+
+        yield {"session": session, "mfr": mfr, "cal": cal, "bullet": bullet}
+        session.close()
+
+    def test_weight_mismatch_bullet_not_assigned(self, setup_db):
+        """A weight-mismatched fuzzy bullet match (low confidence) should NOT be assigned."""
+        resolver = EntityResolver(setup_db["session"])
+        # Cartridge has weight=150 but DB only has 165gr SST → fuzzy match with weight_agrees=False
+        result = resolver.resolve(
+            {
+                "manufacturer": {"value": "Hornady"},
+                "name": {"value": "308 Win 150 gr SST®"},
+                "caliber": {"value": ".308 Winchester"},
+                "bullet_name": {"value": "SST"},
+                "bullet_weight_grains": {"value": 150.0},
+                "muzzle_velocity_fps": {"value": 2820},
+            },
+            "cartridge",
+        )
+        # bullet_id should be None — the only SST is 165gr, confidence should be below threshold
+        assert result.bullet_id is None
+        assert any("bullet" in ref.lower() for ref in result.unresolved_refs)
+
+    def test_weight_match_bullet_assigned(self, setup_db):
+        """A weight-matched bullet should be assigned normally."""
+        resolver = EntityResolver(setup_db["session"])
+        result = resolver.resolve(
+            {
+                "manufacturer": {"value": "Hornady"},
+                "name": {"value": "308 Win 165 gr SST®"},
+                "caliber": {"value": ".308 Winchester"},
+                "bullet_name": {"value": "SST"},
+                "bullet_weight_grains": {"value": 165.0},
+                "muzzle_velocity_fps": {"value": 2700},
+            },
+            "cartridge",
+        )
+        assert result.bullet_id == setup_db["bullet"].id
+
+
+# ---------------------------------------------------------------------------
+# Caliber rejection — pipeline_store helpers
+# ---------------------------------------------------------------------------
+
+
+class TestCalibreRejection:
+    """Tests for _has_rejected_caliber and _load_rejected_calibers from pipeline_store."""
+
+    def test_rejects_matching_caliber(self):
+        """An unresolved caliber in the rejection set should be detected."""
+        result = ResolutionResult(entity_type="cartridge")
+        result.unresolved_refs = ["caliber: 9mm Luger"]
+        assert _has_rejected_caliber(result, {"9mm luger"}) is True
+
+    def test_allows_non_rejected_caliber(self):
+        """An unresolved caliber NOT in the rejection set should pass."""
+        result = ResolutionResult(entity_type="cartridge")
+        result.unresolved_refs = ["caliber: 338 ARC"]
+        assert _has_rejected_caliber(result, {"9mm luger", "12 ga"}) is False
+
+    def test_ignores_non_caliber_refs(self):
+        """Non-caliber unresolved refs should not trigger rejection."""
+        result = ResolutionResult(entity_type="cartridge")
+        result.unresolved_refs = ["bullet: ELD-X", "manufacturer: Unknown"]
+        assert _has_rejected_caliber(result, {"9mm luger"}) is False
+
+    def test_empty_rejection_set(self):
+        """Empty rejection set should never reject."""
+        result = ResolutionResult(entity_type="cartridge")
+        result.unresolved_refs = ["caliber: 9mm Luger"]
+        assert _has_rejected_caliber(result, set()) is False
+
+    def test_no_unresolved_refs(self):
+        """Entity with no unresolved refs should not be rejected."""
+        result = ResolutionResult(entity_type="cartridge")
+        result.unresolved_refs = []
+        assert _has_rejected_caliber(result, {"9mm luger"}) is False
+
+    def test_case_insensitive(self):
+        """Rejection matching should be case-insensitive."""
+        result = ResolutionResult(entity_type="cartridge")
+        result.unresolved_refs = ["caliber: 9MM Luger +P"]
+        assert _has_rejected_caliber(result, {"9mm luger +p"}) is True
+
+    def test_multiple_unresolved_one_rejected(self):
+        """If any caliber ref matches rejection set, entity is rejected."""
+        result = ResolutionResult(entity_type="cartridge")
+        result.unresolved_refs = ["bullet: ELD-X", "caliber: 40 S&W"]
+        assert _has_rejected_caliber(result, {"40 s&w"}) is True
+
+    def test_load_rejected_calibers_from_file(self, tmp_path):
+        """Loading from a valid JSON file returns lowercased caliber set."""
+        import json
+        from unittest.mock import patch
+
+        test_file = tmp_path / "rejected_calibers.json"
+        test_file.write_text(json.dumps({"calibers": ["9mm Luger", "12 GA"]}))
+
+        with patch.object(_store_mod, "REJECTED_CALIBERS_PATH", test_file):
+            result = _load_rejected_calibers()
+        assert result == {"9mm luger", "12 ga"}
+
+    def test_load_rejected_calibers_missing_file(self, tmp_path):
+        """Missing file returns empty set (no rejections)."""
+        from unittest.mock import patch
+
+        with patch.object(_store_mod, "REJECTED_CALIBERS_PATH", tmp_path / "nonexistent.json"):
+            result = _load_rejected_calibers()
+        assert result == set()

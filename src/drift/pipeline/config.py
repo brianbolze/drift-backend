@@ -33,6 +33,7 @@ EXTRACTED_DIR = DATA_DIR / "extracted"
 REVIEW_DIR = DATA_DIR / "review"
 MANIFEST_PATH = DATA_DIR / "url_manifest.json"
 STORE_REPORT_PATH = DATA_DIR / "store_report.json"
+REJECTED_CALIBERS_PATH = DATA_DIR / "rejected_calibers.json"
 
 # ── Numeric Validation Ranges ────────────────────────────────────────────────
 # Values outside these ranges are flagged for review.

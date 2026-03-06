@@ -118,8 +118,57 @@ _BULLET_NOISE_WORDS = frozenset(
         "rifle",
         "handgun",
         "pistol",
+        # Manufacturer names that LLMs include in bullet descriptions but that
+        # don't appear in the bullet's own DB product name.  The manufacturer is
+        # already resolved separately — including it in name scoring only adds noise.
+        "sierra",
+        "nosler",
+        "berger",
+        "barnes",
+        "hornady",
+        "speer",
+        "lapua",
+        "federal",
+        "winchester",
+        "remington",
     }
 )
+
+# Abbreviation ↔ expansion map for bullet type names.
+# "HPBT" in a DB name should match "Hollow Point Boat Tail" from an extraction (and vice versa).
+# Both directions are handled: abbreviation → words, and each word-set → abbreviation.
+_BULLET_ABBREVIATIONS: dict[str, set[str]] = {
+    "hpbt": {"hollow", "point", "boat", "tail"},
+    "bthp": {"boat", "tail", "hollow", "point"},
+    "hp": {"hollow", "point"},
+    "bt": {"boat", "tail"},
+    "sp": {"soft", "point"},
+    "fmj": {"full", "metal", "jacket"},
+    "otm": {"open", "tip", "match"},
+    "smk": {"sierra", "matchking"},
+    "tmk": {"tipped", "matchking"},
+    "jhp": {"jacketed", "hollow", "point"},
+    "jsp": {"jacketed", "soft", "point"},
+    "rn": {"round", "nose"},
+    "fn": {"flat", "nose"},
+    "spbt": {"soft", "point", "boat", "tail"},
+}
+
+
+def _expand_abbreviations(words: set[str]) -> set[str]:
+    """Expand known bullet abbreviations into their constituent words.
+
+    E.g. {"hpbt", "matchking"} → {"hollow", "point", "boat", "tail", "matchking"}.
+    Also works in reverse: if the word set contains all expansion words for an
+    abbreviation, the abbreviation is added to the set.
+    """
+    expanded = set(words)
+    for abbrev, expansion in _BULLET_ABBREVIATIONS.items():
+        if abbrev in expanded:
+            expanded |= expansion
+        if expansion <= expanded:
+            expanded.add(abbrev)
+    return expanded
 
 
 def _bullet_name_score(extracted_name: str, db_name: str) -> float:
@@ -130,8 +179,9 @@ def _bullet_name_score(extracted_name: str, db_name: str) -> float:
     fails here because the union is dominated by caliber/weight tokens in the DB name.
 
     Strategy: extract meaningful keywords from both sides (strip noise words and
-    pure-numeric tokens), then check what fraction of the extracted keywords appear
-    in the DB name.  Returns 0.0–1.0.
+    pure-numeric tokens), expand known abbreviations (HPBT ↔ Hollow Point Boat Tail),
+    then check what fraction of the extracted keywords appear in the DB name.
+    Returns 0.0–1.0.
 
     Handles parenthetical expansions — LLM often extracts "SST (Super Shock Tip)"
     where the DB just has "SST®".  We score both the full name and the portion
@@ -154,17 +204,17 @@ def _bullet_name_score(extracted_name: str, db_name: str) -> float:
         length_factor = min(len(query_words) / 2.0, 1.0)
         return containment * (0.5 + 0.5 * length_factor)
 
-    target_words = _meaningful_words(db_name)
+    target_words = _expand_abbreviations(_meaningful_words(db_name))
 
     # Score the full extracted name
-    full_words = _meaningful_words(extracted_name)
+    full_words = _expand_abbreviations(_meaningful_words(extracted_name))
     score = _score_pair(full_words, target_words)
 
     # Also try the portion before any parenthetical — handles "SST (Super Shock Tip)"
     paren_idx = extracted_name.find("(")
     if paren_idx > 0:
         prefix = extracted_name[:paren_idx].strip()
-        prefix_words = _meaningful_words(prefix)
+        prefix_words = _expand_abbreviations(_meaningful_words(prefix))
         score = max(score, _score_pair(prefix_words, target_words))
 
     return score
@@ -401,7 +451,7 @@ class EntityResolver:
                         name_score = max(jaccard, containment)
                     else:
                         name_score = 0.0
-                    if name_score > 0.3 and name_score > best_composite_score:
+                    if name_score > 0.55 and name_score > best_composite_score:
                         best_composite_score = name_score
                         best_composite = MatchResult(
                             matched=True,
@@ -646,8 +696,14 @@ class EntityResolver:
                 # bullets from a different company (e.g. Federal loads Sierra MatchKings).
                 # Diameter + weight narrow the candidates; name similarity picks the best.
                 bullet_match = self.match_bullet(bullet_stub, None, cart_bullet_diameter)
-                if bullet_match.matched:
+                # Require minimum confidence for bullet FK assignment — low-confidence
+                # fuzzy matches (e.g. weight-mismatched Tier 3) should be flagged, not assigned.
+                if bullet_match.matched and bullet_match.confidence >= 0.5:
                     result.bullet_id = bullet_match.entity_id
+                elif bullet_match.matched:
+                    result.unresolved_refs.append(
+                        f"bullet: {bullet_name} (low confidence {bullet_match.confidence:.0%}: {bullet_match.details})"
+                    )
                 else:
                     result.unresolved_refs.append(f"bullet: {bullet_name}")
         elif entity_type == "rifle":

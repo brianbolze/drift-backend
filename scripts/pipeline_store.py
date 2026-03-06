@@ -26,7 +26,7 @@ from drift.database import get_session_factory
 from drift.models.bullet import Bullet, BulletBCSource
 from drift.models.cartridge import Cartridge
 from drift.models.rifle_model import RifleModel
-from drift.pipeline.config import EXTRACTED_DIR, STORE_REPORT_PATH
+from drift.pipeline.config import EXTRACTED_DIR, REJECTED_CALIBERS_PATH, STORE_REPORT_PATH
 from drift.pipeline.resolution.resolver import EntityResolver, _get_value
 
 logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
@@ -34,6 +34,30 @@ logger = logging.getLogger(__name__)
 
 # Matches below this confidence are flagged for review instead of auto-skipped
 MATCH_CONFIDENCE_THRESHOLD = 0.7
+
+
+def _load_rejected_calibers() -> set[str]:
+    """Load caliber names that should be auto-rejected (pistol, shotgun, etc.).
+
+    Returns a set of lowercased caliber names from data/pipeline/rejected_calibers.json.
+    If the file doesn't exist, returns an empty set (no rejections).
+    """
+    if not REJECTED_CALIBERS_PATH.exists():
+        return set()
+    data = json.loads(REJECTED_CALIBERS_PATH.read_text(encoding="utf-8"))
+    return {name.lower().strip() for name in data.get("calibers", [])}
+
+
+def _has_rejected_caliber(resolution, rejected_calibers: set[str]) -> bool:
+    """Check if an entity's unresolved refs include a rejected caliber."""
+    if not rejected_calibers:
+        return False
+    for ref in resolution.unresolved_refs:
+        if ref.startswith("caliber:"):
+            cal_name = ref.split(":", 1)[1].strip().lower()
+            if cal_name in rejected_calibers:
+                return True
+    return False
 
 
 def _make_bullet(entity: dict, manufacturer_id: str, bullet_diameter_inches: float, source_url: str) -> Bullet:
@@ -165,10 +189,14 @@ def main() -> None:  # noqa: C901
 
     resolver = EntityResolver(session)
 
+    rejected_calibers = _load_rejected_calibers()
+    if rejected_calibers:
+        logger.info("Loaded %d rejected calibers", len(rejected_calibers))
+
     stats = {
-        "bullet": {"created": 0, "matched": 0, "flagged": 0},
-        "cartridge": {"created": 0, "matched": 0, "flagged": 0},
-        "rifle": {"created": 0, "matched": 0, "flagged": 0},
+        "bullet": {"created": 0, "matched": 0, "updated": 0, "flagged": 0, "rejected": 0},
+        "cartridge": {"created": 0, "matched": 0, "updated": 0, "flagged": 0, "rejected": 0},
+        "rifle": {"created": 0, "matched": 0, "updated": 0, "flagged": 0, "rejected": 0},
     }
     report_entries: list[dict] = []
 
@@ -213,6 +241,14 @@ def main() -> None:  # noqa: C901
                     "action": "",
                 }
 
+                # Check if entity references a rejected caliber (pistol, shotgun, etc.)
+                if _has_rejected_caliber(resolution, rejected_calibers):
+                    entry["action"] = "rejected"
+                    stats[entity_type]["rejected"] += 1
+                    logger.info("  [%d] REJECTED (excluded caliber): %s", j + 1, name)
+                    report_entries.append(entry)
+                    continue
+
                 if resolution.match.matched and resolution.match.confidence >= MATCH_CONFIDENCE_THRESHOLD:
                     entry["action"] = "matched_existing"
                     stats[entity_type]["matched"] += 1
@@ -224,6 +260,37 @@ def main() -> None:  # noqa: C901
                         resolution.match.confidence * 100,
                         resolution.match.method,
                     )
+
+                    # Check if FK references should be updated on the existing entity.
+                    # This allows re-runs with improved resolvers to fix previously committed
+                    # bad matches (e.g. wrong bullet_id assigned before abbreviation expansion).
+                    if entity_type == "cartridge" and resolution.match.entity_id:
+                        existing_cart = session.get(Cartridge, resolution.match.entity_id)
+                        if existing_cart and resolution.bullet_id and existing_cart.bullet_id != resolution.bullet_id:
+                            entry["action"] = "matched_updated"
+                            entry["old_bullet_id"] = existing_cart.bullet_id
+                            stats[entity_type]["updated"] = stats[entity_type].get("updated", 0) + 1
+                            stats[entity_type]["matched"] -= 1
+                            logger.info(
+                                "  [%d] UPDATED bullet_id: %s → %s",
+                                j + 1,
+                                existing_cart.bullet_id[:8] if existing_cart.bullet_id else "None",
+                                resolution.bullet_id[:8],
+                            )
+                            if args.commit:
+                                existing_cart.bullet_id = resolution.bullet_id
+                        elif existing_cart and not existing_cart.bullet_id and resolution.bullet_id:
+                            entry["action"] = "matched_updated"
+                            entry["old_bullet_id"] = None
+                            stats[entity_type]["updated"] = stats[entity_type].get("updated", 0) + 1
+                            stats[entity_type]["matched"] -= 1
+                            logger.info(
+                                "  [%d] UPDATED bullet_id: None → %s",
+                                j + 1,
+                                resolution.bullet_id[:8],
+                            )
+                            if args.commit:
+                                existing_cart.bullet_id = resolution.bullet_id
                 elif resolution.match.matched:
                     # Low-confidence match — flag for review instead of auto-skipping
                     entry["action"] = "flagged_low_confidence"
@@ -319,7 +386,18 @@ def main() -> None:  # noqa: C901
     print()
     print(f"Store report ({mode}):")
     for etype, counts in stats.items():
-        print(f"  {etype}: {counts['created']} created, {counts['matched']} matched, {counts['flagged']} flagged")
+        updated = counts.get("updated", 0)
+        rejected = counts.get("rejected", 0)
+        parts = [
+            f"{counts['created']} created",
+            f"{counts['matched']} matched",
+        ]
+        if updated:
+            parts.append(f"{updated} updated")
+        parts.append(f"{counts['flagged']} flagged")
+        if rejected:
+            parts.append(f"{rejected} rejected")
+        print(f"  {etype}: {', '.join(parts)}")
     print(f"\nReport written to: {STORE_REPORT_PATH}")
 
 
