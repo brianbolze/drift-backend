@@ -55,7 +55,6 @@ Read these docs when working in specific areas:
 
 - `docs/engineering_overview.md` -- ballistics domain primer (read before BC, DOPE, or solver work)
 - `docs/wi2_design_proposal.md` -- full schema spec (read when modifying models), albeit slightly outdated
-- `docs/pipeline_working_notes.md` -- pipeline pain points and current state (read before pipeline debugging)
 - `docs/pipeline_README.md` -- pipeline workflow and stage documentation
 - `docs/python-code-patterns.md` -- Pydantic Fields pattern, base schema config
 

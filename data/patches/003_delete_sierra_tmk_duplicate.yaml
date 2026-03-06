@@ -1,0 +1,16 @@
+patch:
+  id: "003_delete_sierra_tmk_duplicate"
+  author: "Brian Bolze"
+  date: "2026-03-06"
+  description: "Delete duplicate Sierra 22 CAL 60gr TMK with no BC data and wrong source_url (W4)"
+
+operations:
+  # W4: Two bullets named "22 CAL 60 GR Tipped MatchKing (TMK)" from Sierra.
+  # Record d15a583e has no BC data and wrong source_url (points to 30-cal TMK page).
+  # Record 6bd41d2e has correct BC (G1=0.323, G7=0.151) and correct URL.
+  # No cartridges reference the bad record.
+  - action: delete_bullet
+    manufacturer: "Sierra Bullets"
+    name: "22 CAL 60 GR Tipped MatchKing (TMK)"
+    id: "d15a583e-6112-4919-b696-812ea75ec489"
+    reason: "Duplicate — identical name, no BC data, wrong source_url (points to 30-cal page). Good copy is 6bd41d2e with G1=0.323, G7=0.151."

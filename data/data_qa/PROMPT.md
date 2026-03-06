@@ -133,6 +133,8 @@ This is informational — these are cosmetic issues for a future cleanup pass, n
 
 Write a markdown report to `data/data_qa/report_YYYY-MM-DD.md` with this structure:
 
+NOTE: If there's an existing file with that same name, don't overwrite it. Just increment the number in the suffix, e.g. `data/data_qa/report_2026-03-06_1.md`, `_2.md`, etc.
+
 ```markdown
 # Data Quality Report — YYYY-MM-DD
 
