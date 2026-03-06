@@ -25,6 +25,7 @@ from sqlalchemy.exc import DataError, IntegrityError
 
 from drift.database import get_session_factory
 from drift.models.bullet import Bullet, BulletBCSource
+from drift.models.caliber import Caliber
 from drift.models.cartridge import Cartridge
 from drift.models.rifle_model import RifleModel
 from drift.pipeline.config import EXTRACTED_DIR, REJECTED_CALIBERS_PATH, STORE_REPORT_PATH
@@ -255,6 +256,8 @@ def main() -> None:  # noqa: C901
     if rejected_calibers:
         logger.info("Loaded %d rejected calibers", len(rejected_calibers))
 
+    valid_bullet_diameters: set[float] = set()
+
     stats = {
         "bullet": {"created": 0, "matched": 0, "updated": 0, "flagged": 0, "rejected": 0, "skipped_locked": 0},
         "cartridge": {"created": 0, "matched": 0, "updated": 0, "flagged": 0, "rejected": 0, "skipped_locked": 0},
@@ -267,6 +270,8 @@ def main() -> None:  # noqa: C901
     session = None
     try:
         session = SessionFactory()
+        valid_bullet_diameters = set(session.scalars(select(Caliber.bullet_diameter_inches).distinct()))
+        logger.info("Loaded %d valid bullet diameters from caliber table", len(valid_bullet_diameters))
         resolver = EntityResolver(session)
         for i, extracted_path in enumerate(entries):
             uhash = extracted_path.stem
@@ -312,6 +317,23 @@ def main() -> None:  # noqa: C901
                     entry["action"] = "rejected"
                     stats[entity_type]["rejected"] += 1
                     logger.info("  [%d] REJECTED (excluded caliber): %s", j + 1, name)
+                    report_entries.append(entry)
+                    continue
+
+                # Check if bullet diameter matches any caliber in the DB
+                if (
+                    entity_type == "bullet"
+                    and resolution.bullet_diameter_inches is not None
+                    and resolution.bullet_diameter_inches not in valid_bullet_diameters
+                ):
+                    entry["action"] = "rejected"
+                    stats[entity_type]["rejected"] += 1
+                    logger.info(
+                        "  [%d] REJECTED (orphan diameter %.4f): %s",
+                        j + 1,
+                        resolution.bullet_diameter_inches,
+                        name,
+                    )
                     report_entries.append(entry)
                     continue
 
@@ -394,7 +416,6 @@ def main() -> None:  # noqa: C901
                 else:
                     # New entity — create it
                     entry["action"] = "created"
-                    stats[entity_type]["created"] += 1
 
                     if args.commit:
                         savepoint = session.begin_nested()
@@ -444,6 +465,7 @@ def main() -> None:  # noqa: C901
                                 session.add(obj)
                                 entry["created_id"] = obj.id
                             savepoint.commit()
+                            stats[entity_type]["created"] += 1
                         except (IntegrityError, DataError) as e:
                             savepoint.rollback()
                             logger.exception("  [%d] CREATE FAILED: %s — %s", j + 1, name, e)
@@ -451,6 +473,7 @@ def main() -> None:  # noqa: C901
                             entry["error"] = str(e)
                             stats[entity_type]["flagged"] += 1
                     else:
+                        stats[entity_type]["created"] += 1
                         logger.info("  [%d] WOULD CREATE: %s", j + 1, name)
 
                 report_entries.append(entry)

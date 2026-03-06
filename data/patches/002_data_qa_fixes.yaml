@@ -1,0 +1,54 @@
+patch:
+  id: "002_data_qa_fixes"
+  author: "Brian Bolze"
+  date: "2026-03-06"
+  description: "Fix critical data issues from QA report: Berger 245gr wrong URL/missing BCs (C4), Lapua G573 wrong weight (C2), Hornady 30-06 metric units (C3)"
+
+operations:
+  # C4: Berger 30cal 245gr Elite Hunter — wrong source_url, missing BCs
+  # source_url points to 338-cal 250gr page instead of 30-cal 245gr EOL Elite Hunter
+  - action: update_bullet
+    manufacturer: "Berger Bullets"
+    name: "30 Caliber 245 Grain Elite Hunter Rifle Bullet"
+    set:
+      source_url: "https://bergerbullets.com/product/30-caliber-245-grain-extreme-outer-limits-eol-elite-hunter/"
+      bc_g1_published: 0.807
+      bc_g7_published: 0.413
+
+  - action: add_bc_source
+    manufacturer: "Berger Bullets"
+    bullet_name: "30 Caliber 245 Grain Elite Hunter Rifle Bullet"
+    bc_type: "g1"
+    bc_value: 0.807
+    source: "manufacturer"
+    source_url: "https://bergerbullets.com/product/30-caliber-245-grain-extreme-outer-limits-eol-elite-hunter/"
+    source_methodology: "published"
+    notes: "Berger product page, verified March 2026"
+
+  - action: add_bc_source
+    manufacturer: "Berger Bullets"
+    bullet_name: "30 Caliber 245 Grain Elite Hunter Rifle Bullet"
+    bc_type: "g7"
+    bc_value: 0.413
+    source: "manufacturer"
+    source_url: "https://bergerbullets.com/product/30-caliber-245-grain-extreme-outer-limits-eol-elite-hunter/"
+    source_methodology: "published"
+    notes: "Berger product page, verified March 2026"
+
+  # C2: Lapua G573 — weight stored as 180gr, should be 120gr
+  # Name says "7,85 g / 120 gr Open Tip G573" but weight_grains = 180.0
+  # The 180gr came from grouping with same-diameter Naturalis N559
+  - action: update_bullet
+    manufacturer: "Lapua"
+    name: "7,85 g / 120 gr Open Tip G573"
+    set:
+      weight_grains: 120.0
+
+  # C3: Hornady 30-06 220gr Custom International — metric values stored as imperial
+  # MV=721 is actually 721 m/s = 2365 fps; barrel=61 is 61cm = 24"
+  - action: update_cartridge
+    manufacturer: "Hornady"
+    name: "30‑06 Springfield 220 gr RN Custom International™"
+    set:
+      muzzle_velocity_fps: 2365
+      test_barrel_length_inches: 24

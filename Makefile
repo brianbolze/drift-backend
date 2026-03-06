@@ -141,7 +141,7 @@ describe-db: ## Display database schema and statistics
 # ═══════════════════════════════════════════════════════════════════════════
 
 pipeline-install: ## Install pipeline-specific dependencies
-	$(VENV)/pip install -e ".[dev,pipeline]"
+	$(VENV)/pip install -e ".[dev,pipeline,openai]"
 	@echo "✓ Pipeline dependencies installed"
 
 pipeline-models: ## List available LLM models for each provider

@@ -60,7 +60,7 @@ class Bullet(TimestampMixin, Base):
     bc_sources: Mapped[list["BulletBCSource"]] = relationship(back_populates="bullet")
 
 
-class BulletBCSource(Base):
+class BulletBCSource(TimestampMixin, Base):
     """Multi-source BC tracking. One row per BC observation from a specific source.
 
     The Bullet's bc_g1_*/bc_g7_* fields are the reconciled canonical values.

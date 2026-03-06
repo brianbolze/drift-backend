@@ -2,10 +2,10 @@
   {
     "id": "C1-cartridge-bullet-weight-mismatches",
     "severity": "critical",
-    "summary": "70 cartridge-bullet weight mismatches from resolver bug",
+    "summary": "68 cartridge-bullet weight mismatches from resolver bug (was 70, improved by 2)",
     "first_seen": "2026-03-06",
     "last_seen": "2026-03-06",
-    "count": 70,
+    "count": 68,
     "status": "open"
   },
   {
@@ -15,21 +15,36 @@
     "first_seen": "2026-03-06",
     "last_seen": "2026-03-06",
     "count": 1,
-    "status": "open"
+    "status": "resolved",
+    "resolved_date": "2026-03-06",
+    "resolution": "Fixed via curation patch 002_data_qa_fixes (weight_grains 180→120)"
   },
   {
     "id": "C3-hornady-international-unit-confusion",
     "severity": "critical",
-    "summary": "Hornady International cartridges with metric units stored as imperial (barrel 61cm→61in, velocity 721 m/s→721 fps, barrel 9.45 unexplained)",
+    "summary": "Hornady International cartridge with metric units stored as imperial (barrel 61cm→61in, velocity 721 m/s→721 fps). Only 30-06 220gr remains (was 4, improved by 3).",
     "first_seen": "2026-03-06",
     "last_seen": "2026-03-06",
-    "count": 4,
-    "status": "open"
+    "count": 1,
+    "status": "resolved",
+    "resolved_date": "2026-03-06",
+    "resolution": "Fixed via curation patch 002_data_qa_fixes (MV 721→2365 fps, barrel 61→24 in)"
   },
   {
-    "id": "W1-hornady-international-zero-mv",
+    "id": "C4-berger-245gr-wrong-url-missing-bc",
+    "severity": "critical",
+    "summary": "Berger 30cal 245gr Elite Hunter has wrong source_url (points to 338-caliber page) and missing BCs (should be G1=0.807, G7=0.413)",
+    "first_seen": "2026-03-06",
+    "last_seen": "2026-03-06",
+    "count": 1,
+    "status": "resolved",
+    "resolved_date": "2026-03-06",
+    "resolution": "Fixed via curation patch 002_data_qa_fixes (source_url, bc_g1_published, bc_g7_published) + BulletBCSource records"
+  },
+  {
+    "id": "W1-hornady-zero-mv",
     "severity": "warning",
-    "summary": "7 Hornady International/ECX cartridges with muzzle_velocity_fps = 0 (pages don't publish velocity)",
+    "summary": "7 cartridges with muzzle_velocity_fps = 0: 6 ECX/Hornady International + 1 .22 Creedmoor CX Superformance (all confirmed unpublished on manufacturer sites)",
     "first_seen": "2026-03-06",
     "last_seen": "2026-03-06",
     "count": 7,
@@ -38,10 +53,10 @@
   {
     "id": "W2-missing-bc-rifle-bullets",
     "severity": "warning",
-    "summary": "28 rifle bullets (diameter <= .375) missing all BC fields, excluding Cutting Edge and Nosler",
+    "summary": "27 rifle bullets (diameter <= .375) missing all BC fields, excluding Cutting Edge and Nosler. Federal 15, Lapua 5, Lehigh 3, Speer 2, Sierra 1, Berger 0 (was 28, Berger 245gr fixed).",
     "first_seen": "2026-03-06",
     "last_seen": "2026-03-06",
-    "count": 28,
+    "count": 27,
     "status": "open"
   },
   {
@@ -56,10 +71,12 @@
   {
     "id": "W4-sierra-tmk-duplicate",
     "severity": "warning",
-    "summary": "Sierra 22 CAL 60 GR TMK appears twice — identical name, one missing BC data",
+    "summary": "Sierra 22 CAL 60 GR TMK appears twice — identical name, one missing BC data and wrong source_url",
     "first_seen": "2026-03-06",
     "last_seen": "2026-03-06",
     "count": 1,
-    "status": "open"
+    "status": "resolved",
+    "resolved_date": "2026-03-06",
+    "resolution": "Bad duplicate (d15a583e) deleted via curation patch 003_delete_sierra_tmk_duplicate"
   }
 ]

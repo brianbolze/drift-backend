@@ -1,0 +1,89 @@
+patch:
+  id: "004_diameter_cleanup"
+  author: "Claude"
+  date: "2026-03-06"
+  description: "Add .303 British caliber and fix bullet diameter extraction errors"
+
+operations:
+  # ── Add missing .303 British caliber ──────────────────────────────────
+  - action: create_caliber
+    name: ".303 British"
+    bullet_diameter_inches: 0.311
+    alt_names: ["303 British", "7.7x56mmR"]
+    case_length_inches: 2.222
+    max_pressure_psi: 49000
+    rim_type: "rimmed"
+    action_length: "standard"
+    year_introduced: 1889
+    is_common_lr: false
+
+  # ── Fix 7.62x39 bullets extracted at 0.310 (should be 0.312) ─────────
+  - action: update_bullet
+    manufacturer: "Barnes Bullets"
+    name: "0.310\" 7.62 X 39MM MPG 108 GR FB"
+    set:
+      bullet_diameter_inches: 0.312
+
+  - action: update_bullet
+    manufacturer: "Hornady"
+    name: "7.62 Cal .310 123 gr FMJ"
+    set:
+      bullet_diameter_inches: 0.312
+
+  - action: update_bullet
+    manufacturer: "Lapua"
+    name: "13,0 g / 200 gr D166 FMJBT"
+    set:
+      bullet_diameter_inches: 0.312
+
+  - action: update_bullet
+    manufacturer: "Nosler"
+    name: "7.62x39mm 123gr Expansion Tip Lead Free (50ct)"
+    set:
+      bullet_diameter_inches: 0.312
+
+  - action: update_bullet
+    manufacturer: "Nosler"
+    name: "7.62x39 Caliber 123gr FB Tipped Varmageddon"
+    set:
+      bullet_diameter_inches: 0.312
+
+  - action: update_bullet
+    manufacturer: "Speer"
+    name: "Gold Dot Rifle Component Bullet"
+    set:
+      bullet_diameter_inches: 0.312
+
+  # ── Fix .303 British bullet at 0.3105 ────────────────────────────────
+  - action: update_bullet
+    manufacturer: "Hornady"
+    name: "303 Cal .3105 174 gr FMJ BT"
+    set:
+      bullet_diameter_inches: 0.311
+
+  # ── Fix 7.62x39 bullet at 0.3115 ────────────────────────────────────
+  - action: update_bullet
+    manufacturer: "Hornady"
+    name: "7.62x39mm .3115 255 gr Sub‑X®"
+    set:
+      bullet_diameter_inches: 0.312
+
+  # ── Fix Speer TNT extracted at 0.24 (should be 0.243 / 6mm) ─────────
+  - action: update_bullet
+    manufacturer: "Speer"
+    name: "TNT Bullet"
+    set:
+      bullet_diameter_inches: 0.243
+
+  # ── Fix Sierra 35 cal bullets extracted at 0.35 (should be 0.358) ────
+  - action: update_bullet
+    manufacturer: "Sierra Bullets"
+    name: "35 CAL 155 GR FN PRO-HUNTER"
+    set:
+      bullet_diameter_inches: 0.358
+
+  - action: update_bullet
+    manufacturer: "Sierra Bullets"
+    name: "35 CAL 225 GR SBT GAMEKING (SGK)"
+    set:
+      bullet_diameter_inches: 0.358
