@@ -41,7 +41,7 @@ Lightweight tech debt and engineering improvement tracker. Agents and humans app
 - [ ] `HttpxFetcher` creates new `AsyncClient` per request — no connection reuse/keep-alive across same-host URLs; same issue with `FirecrawlFetcher` reinstantiating `FirecrawlApp` per call (source: code review, 2026-03-06)
 - [x] `FirecrawlFetcher` has no timeout — `asyncio.to_thread` call blocks indefinitely if Firecrawl is down (source: code review, 2026-03-06)
 - [x] Batch poll doesn't catch `anthropic.RateLimitError` — only catches `APIConnectionError`/`InternalServerError` (source: code review, 2026-03-06)
-- [ ] `--limit` applies to file count, not pending count — `--limit 10` slices first 10 reduced files; if all cached, nothing runs (source: code review, 2026-03-06)
+- [x] `--limit` applies to file count, not pending count — `--limit 10` slices first 10 reduced files; if all cached, nothing runs (source: code review, 2026-03-06)
 - [ ] Stale flagged entries persist on re-extraction — `_write_flagged` deduplicates by hash, so old warnings stick around (source: code review, 2026-03-06)
 
 ## Code / Tooling

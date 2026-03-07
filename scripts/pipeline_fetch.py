@@ -36,7 +36,7 @@ logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
 logger = logging.getLogger(__name__)
 
 
-async def main() -> None:
+async def main() -> None:  # noqa: C901
     parser = argparse.ArgumentParser(description="Fetch and reduce URLs from manifest")
     parser.add_argument("--manifest", type=Path, default=MANIFEST_PATH, help="URL manifest JSON path")
     parser.add_argument("--no-firecrawl", action="store_true", help="Disable Firecrawl fallback")
@@ -63,21 +63,26 @@ async def main() -> None:
 
     stats = {"fetched": 0, "skipped": 0, "failed": 0, "total": 0}
 
-    entries = manifest[: args.limit] if args.limit > 0 else manifest
-
-    for i, entry in enumerate(entries):
-        url = entry["url"]
-        uhash = url_hash(url)
-        stats["total"] += 1
-
-        # Check cache
+    # Separate cached from pending, then apply limit to pending items only
+    pending = []
+    for entry in manifest:
+        uhash = url_hash(entry["url"])
         reduced_cache = REDUCED_DIR / f"{uhash}.json"
         if reduced_cache.exists():
-            logger.info("[%d/%d] SKIP (cached): %s", i + 1, len(entries), url)
             stats["skipped"] += 1
-            continue
+        else:
+            pending.append(entry)
 
-        logger.info("[%d/%d] FETCH: %s", i + 1, len(entries), url)
+    if args.limit > 0:
+        pending = pending[: args.limit]
+
+    stats["total"] = stats["skipped"] + len(pending)
+
+    for i, entry in enumerate(pending):
+        url = entry["url"]
+        uhash = url_hash(url)
+
+        logger.info("[%d/%d] FETCH: %s", i + 1, len(pending), url)
 
         try:
             result = await registry.fetch(url)
@@ -133,7 +138,7 @@ async def main() -> None:
             stats["failed"] += 1
 
         # Rate limiting (non-blocking in async context)
-        if i < len(entries) - 1:
+        if i < len(pending) - 1:
             await asyncio.sleep(args.delay)
 
     print()

@@ -83,10 +83,9 @@ def _load_pending_items(  # noqa: C901
     EXTRACTED_DIR.mkdir(parents=True, exist_ok=True)
     REVIEW_DIR.mkdir(parents=True, exist_ok=True)
 
-    entries = reduced_files[:limit] if limit > 0 else reduced_files
     pending = []
 
-    for reduced_json_path in entries:
+    for reduced_json_path in reduced_files:
         uhash = reduced_json_path.stem
 
         # Check cache — re-extract if previous run returned 0 entities
@@ -128,6 +127,10 @@ def _load_pending_items(  # noqa: C901
                 "reduced_html_path": str(reduced_html_path),
             }
         )
+
+    # Apply limit to *pending* items, not total file count
+    if limit > 0:
+        pending = pending[:limit]
 
     return pending, hash_lookup
 
@@ -198,9 +201,8 @@ def _run_sync(args: argparse.Namespace, provider_name: str) -> None:
     pending, _ = _load_pending_items(args.manifest, args.limit, args.reextract)
 
     total = len(pending)
-    reduced_files = sorted(REDUCED_DIR.glob("*.json"))
-    all_count = min(len(reduced_files), args.limit) if args.limit > 0 else len(reduced_files)
-    skipped = all_count - total
+    all_reduced = len(sorted(REDUCED_DIR.glob("*.json")))
+    skipped = all_reduced - total
 
     if total == 0:
         print(f"Nothing to extract ({skipped} cached).")
@@ -290,9 +292,8 @@ def _run_batch(args: argparse.Namespace) -> None:
     pending, _ = _load_pending_items(args.manifest, args.limit, args.reextract)
 
     total = len(pending)
-    reduced_files = sorted(REDUCED_DIR.glob("*.json"))
-    all_count = min(len(reduced_files), args.limit) if args.limit > 0 else len(reduced_files)
-    skipped = all_count - total
+    all_reduced = len(sorted(REDUCED_DIR.glob("*.json")))
+    skipped = all_reduced - total
 
     if total == 0:
         print(f"Nothing to extract ({skipped} cached).")
@@ -459,7 +460,7 @@ def main() -> None:
         help="LLM provider (auto-detected from model if not specified)",
     )
     parser.add_argument("--model", type=str, default=None, help="LLM model to use")
-    parser.add_argument("--limit", type=int, default=0, help="Max URLs to process (0 = all)")
+    parser.add_argument("--limit", type=int, default=0, help="Max pending (uncached) URLs to process (0 = all)")
     parser.add_argument("--reextract", action="store_true", help="Re-extract even if cached")
 
     mode = parser.add_mutually_exclusive_group()
