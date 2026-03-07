@@ -2,7 +2,7 @@
   {
     "id": "C1-cartridge-bullet-weight-mismatches",
     "severity": "critical",
-    "summary": "67 cartridge-bullet weight mismatches from resolver bug (was 70, improved by 3 total)",
+    "summary": "67 cartridge-bullet weight mismatches from resolver bug",
     "first_seen": "2026-03-06",
     "last_seen": "2026-03-06",
     "count": 67,
@@ -17,34 +17,34 @@
     "count": 1,
     "status": "resolved",
     "resolved_date": "2026-03-06",
-    "resolution": "Fixed via curation patch 002_data_qa_fixes (weight_grains 180→120)"
+    "resolution": "Fixed via curation patch 002_data_qa_fixes (weight_grains 180->120)"
   },
   {
     "id": "C3-hornady-international-unit-confusion",
     "severity": "critical",
-    "summary": "Hornady International cartridge with metric units stored as imperial (barrel 61cm→61in, velocity 721 m/s→721 fps). Only 30-06 220gr remains (was 4, improved by 3).",
+    "summary": "Hornady International cartridges with metric units stored as imperial",
     "first_seen": "2026-03-06",
     "last_seen": "2026-03-06",
-    "count": 1,
+    "count": 0,
     "status": "resolved",
     "resolved_date": "2026-03-06",
-    "resolution": "Fixed via curation patch 002_data_qa_fixes (MV 721→2365 fps, barrel 61→24 in)"
+    "resolution": "Fixed via curation patch 002_data_qa_fixes"
   },
   {
     "id": "C4-berger-245gr-wrong-url-missing-bc",
     "severity": "critical",
-    "summary": "Berger 30cal 245gr Elite Hunter has wrong source_url (points to 338-caliber page) and missing BCs (should be G1=0.807, G7=0.413)",
+    "summary": "Berger 30cal 245gr Elite Hunter has wrong source_url and missing BCs",
     "first_seen": "2026-03-06",
     "last_seen": "2026-03-06",
     "count": 1,
     "status": "resolved",
     "resolved_date": "2026-03-06",
-    "resolution": "Fixed via curation patch 002_data_qa_fixes (source_url, bc_g1_published, bc_g7_published) + BulletBCSource records"
+    "resolution": "Fixed via curation patch 002_data_qa_fixes"
   },
   {
     "id": "C5-hornady-300wm-intl-metric-conversion",
     "severity": "critical",
-    "summary": "Hornady .300 Win Mag 180gr SP Custom International: barrel stored as 9.45\" (from 24cm metric), MV stored as 2961 fps (from 902 m/s, ~2fps rounding error). Same bug pattern as resolved C3.",
+    "summary": "Hornady .300 Win Mag 180gr SP Custom International: barrel=9.45\" (from 24cm), MV=2961 (from 902 m/s)",
     "first_seen": "2026-03-06",
     "last_seen": "2026-03-06",
     "count": 1,
@@ -53,7 +53,7 @@
   {
     "id": "C6-sierra-tmk-22cal-data-errors",
     "severity": "critical",
-    "summary": "Sierra 22 CAL 60gr TMK (b137e0fa): wrong diameter (0.220, should be 0.224), wrong source_url (points to 30-cal page), missing BCs. Surviving record from W4 duplicate cleanup.",
+    "summary": "Sierra 22 CAL 60gr TMK: wrong diameter (0.220, should be 0.224), wrong source_url, missing BCs",
     "first_seen": "2026-03-06",
     "last_seen": "2026-03-06",
     "count": 1,
@@ -62,7 +62,7 @@
   {
     "id": "C7-hornady-308-220gr-intl-metric-barrel",
     "severity": "critical",
-    "summary": "Hornady .308 220gr RN Custom International: barrel stored as 9.45\" (from '24cm' mislabel on Hornady International page, should be 24\"). MV=2310 fps is correct (704 m/s conversion).",
+    "summary": "Hornady .308 220gr RN Custom International: barrel=9.45\" (from 24cm, should be 24\")",
     "first_seen": "2026-03-06",
     "last_seen": "2026-03-06",
     "count": 1,
@@ -71,7 +71,7 @@
   {
     "id": "W1-hornady-zero-mv",
     "severity": "warning",
-    "summary": "7 cartridges with muzzle_velocity_fps = 0: 6 ECX/Hornady International + 1 .22 Creedmoor CX Superformance (all confirmed unpublished on manufacturer sites)",
+    "summary": "7 cartridges with MV=0: 6 ECX/Hornady International + 1 .22 Creedmoor CX Superformance",
     "first_seen": "2026-03-06",
     "last_seen": "2026-03-06",
     "count": 7,
@@ -80,10 +80,10 @@
   {
     "id": "W2-missing-bc-rifle-bullets",
     "severity": "warning",
-    "summary": "23 rifle bullets (diameter <= .375) missing all BC fields, excluding Cutting Edge and Nosler. Federal 15, Lapua 5, Lehigh Defense 2, Sierra 1 (worsened from 22 due to Sierra TMK at wrong diameter).",
+    "summary": "6 rifle bullets (diameter <= .375) missing all BC fields, excluding CE and Nosler. Lapua 3, Lehigh 2, Sierra 1. Improved from 23 (Federal 15 now resolved).",
     "first_seen": "2026-03-06",
     "last_seen": "2026-03-06",
-    "count": 23,
+    "count": 6,
     "status": "open"
   },
   {
@@ -98,12 +98,12 @@
   {
     "id": "W4-sierra-tmk-duplicate",
     "severity": "warning",
-    "summary": "Sierra 22 CAL 60 GR TMK appears twice — identical name, one missing BC data and wrong source_url",
+    "summary": "Sierra 22 CAL 60 GR TMK duplicate",
     "first_seen": "2026-03-06",
     "last_seen": "2026-03-06",
-    "count": 1,
+    "count": 0,
     "status": "resolved",
     "resolved_date": "2026-03-06",
-    "resolution": "Bad duplicate (d15a583e) deleted via curation patch 003_delete_sierra_tmk_duplicate"
+    "resolution": "Bad duplicate deleted via curation patch 003"
   }
 ]

@@ -798,5 +798,165 @@
     "verified": "2026-03-06",
     "status": "pass",
     "notes": "MV=2800, wt=130 match. Federal publishes G1=0.532, G7=0.263 (not stored in DB)"
+  },
+  {
+    "entity": "bullet",
+    "id": "d11d668c-406e-4b6f-ad32-1bade6e40bcd",
+    "name": "Sierra 6.5mm 140gr HPBT SMK",
+    "verified": "2026-03-06",
+    "status": "pass",
+    "notes": "G1=0.535, G7=0.264 exact match"
+  },
+  {
+    "entity": "bullet",
+    "id": "cb1283bf-50fd-42ab-bff8-2e6f6a39f797",
+    "name": "Sierra 6.5mm 140gr SBT GameKing",
+    "verified": "2026-03-06",
+    "status": "pass",
+    "notes": "G1=0.495, G7=0.246 exact match"
+  },
+  {
+    "entity": "bullet",
+    "id": "0a946155-4032-48ab-b26a-624a8c17075b",
+    "name": "Sierra 30cal 190gr HPBT SMK",
+    "verified": "2026-03-06",
+    "status": "pass",
+    "notes": "G1=0.533, G7=0.265 exact match"
+  },
+  {
+    "entity": "bullet",
+    "id": "32f542af-533c-44ca-8e9f-0a23b1ac25bb",
+    "name": "Sierra 30cal 180gr SBT GameKing",
+    "verified": "2026-03-06",
+    "status": "pass",
+    "notes": "G1=0.501, G7=0.253 exact match"
+  },
+  {
+    "entity": "bullet",
+    "id": "5e091781-03bf-4808-a8d2-de779ff4ab98",
+    "name": "Berger 6.5mm 153.5gr LR Hybrid Target",
+    "verified": "2026-03-06",
+    "status": "pass",
+    "notes": "G1=0.694, G7=0.356 exact match"
+  },
+  {
+    "entity": "bullet",
+    "id": "8b9b9b66-6054-40a4-b4d2-ef422e766028",
+    "name": "Lapua 7mm 180gr Scenar-L GB554",
+    "verified": "2026-03-06",
+    "status": "pass",
+    "notes": "G1=0.661, G7=0.332 exact match"
+  },
+  {
+    "entity": "bullet",
+    "id": "59e9f060-186e-4ed0-84fa-90ee673ecff1",
+    "name": "Sierra 7mm 160gr TMK",
+    "verified": "2026-03-06",
+    "status": "pass",
+    "notes": "G1=0.600, G7=0.301 exact match"
+  },
+  {
+    "entity": "bullet",
+    "id": "7bf693b5-934f-40fd-bdee-030c14b623a0",
+    "name": "Hornady 6.5mm 140gr AEROMATCH",
+    "verified": "2026-03-06",
+    "status": "pass",
+    "notes": "G1=0.608 exact match, G7 not published"
+  },
+  {
+    "entity": "bullet",
+    "id": "9d8a632d-1a21-4883-8a8f-783f06790c9c",
+    "name": "Speer .224 30gr TNT Green",
+    "verified": "2026-03-06",
+    "status": "pass",
+    "notes": "G1=0.091 confirmed correct on Speer website"
+  },
+  {
+    "entity": "bullet",
+    "id": "d98d99d1-d624-4a9f-af12-d17023043f2a",
+    "name": "Cutting Edge .358 340gr MTH",
+    "verified": "2026-03-06",
+    "status": "pass",
+    "notes": "BC not published on product page; cannot verify G1=0.920. Weight/diameter confirmed."
+  },
+  {
+    "entity": "cartridge",
+    "id": "176239a7-67d9-4e60-bbb0-d7f2dbee5d66",
+    "name": "Hornady 6.5CM 129gr SST AW Tipped",
+    "verified": "2026-03-06",
+    "status": "pass",
+    "notes": "MV=2810, wt=129, barrel=24 match"
+  },
+  {
+    "entity": "cartridge",
+    "id": "99897364-1a51-4db6-8a35-1c0b75732f42",
+    "name": "Hornady .338 Lapua 285gr ELD Match",
+    "verified": "2026-03-06",
+    "status": "pass",
+    "notes": "MV=2745, wt=285, barrel=24 match. Page BC: G1=0.789, G7=0.394"
+  },
+  {
+    "entity": "cartridge",
+    "id": "6eeb34b2-12df-47a0-855b-faacba1b05df",
+    "name": "Hornady .338 Lapua 250gr BTHP Match",
+    "verified": "2026-03-06",
+    "status": "pass",
+    "notes": "MV=2860, wt=250, barrel=24 match. Page BC: G1=0.670"
+  },
+  {
+    "entity": "cartridge",
+    "id": "2daa1c96-232d-4e7f-84e6-d2919ce03453",
+    "name": "Hornady .300 PRC 225gr ELD Match",
+    "verified": "2026-03-06",
+    "status": "pass",
+    "notes": "MV=2810, wt=225, barrel=24 match. Page BC: G1=0.777, G7=0.391"
+  },
+  {
+    "entity": "cartridge",
+    "id": "47f4729c-3c79-4837-957a-db4763fb92f4",
+    "name": "Hornady .308 180gr SST Superformance",
+    "verified": "2026-03-06",
+    "status": "pass",
+    "notes": "MV=2650, wt=180, barrel=24 match. BC not listed on page."
+  },
+  {
+    "entity": "cartridge",
+    "id": "a8a457e8-87a1-495c-9215-7d63631ac11c",
+    "name": "Hornady 6mm CM 103gr ELD-X PH",
+    "verified": "2026-03-06",
+    "status": "pass",
+    "notes": "MV=3050, wt=103, barrel=24 match. Page BC: G1=0.512, G7=0.258"
+  },
+  {
+    "entity": "cartridge",
+    "id": "2e366f01-1ec5-4a05-b9e1-084a09bf6f28",
+    "name": "Federal 6.5CM 120gr AE OTM",
+    "verified": "2026-03-06",
+    "status": "pass",
+    "notes": "MV=2900, wt=120 match. Page BC: G1=0.421"
+  },
+  {
+    "entity": "cartridge",
+    "id": "66b95ed9-22e5-4e04-a11c-23235ed08cbf",
+    "name": "Federal 6.5CM 140gr GM SMK",
+    "verified": "2026-03-06",
+    "status": "pass",
+    "notes": "MV=2675, wt=140 match. Page BC: G1=0.535, G7=0.261"
+  },
+  {
+    "entity": "cartridge",
+    "id": "6e4d9a3c-e055-4262-8e9a-ac3c4f0ab351",
+    "name": "Federal .300WM 190gr GM SMK",
+    "verified": "2026-03-06",
+    "status": "pass",
+    "notes": "MV=2900, wt=190 match. Page BC: G1=0.533, G7=0.275"
+  },
+  {
+    "entity": "cartridge",
+    "id": "ff09a0a2-cde1-4367-9ec9-199c4e1fd837",
+    "name": "Federal .300WM 165gr Trophy Bonded Tip",
+    "verified": "2026-03-06",
+    "status": "pass",
+    "notes": "MV=3050, wt=165 match. Page BC: G1=0.450"
   }
 ]

@@ -1,0 +1,423 @@
+patch:
+  id: "005_bc_research_march2026"
+  author: "Brian Bolze"
+  date: "2026-03-06"
+  description: "Add BC data for 21 bullets from web research. Sources: Federal component bullet pages (17), Lapua product pages (2), Sierra product page (1), Nosler product page (1 — already in DB). 35 bullets confirmed no published BCs (26 Cutting Edge, 4 Lehigh, 3 Lapua, Hornady DGH, Nosler SHOTS)."
+
+operations:
+
+  # ============================================================
+  # Federal Fusion Component Bullets (5) — G1 only
+  # Source: federalpremium.com component bullet pages
+  # ============================================================
+
+  - action: update_bullet
+    manufacturer: "Federal"
+    name: "Fusion Component Bullet, .224, 90 Grain"
+    set:
+      bc_g1_published: 0.424
+
+  - action: add_bc_source
+    manufacturer: "Federal"
+    bullet_name: "Fusion Component Bullet, .224, 90 Grain"
+    bc_type: "g1"
+    bc_value: 0.424
+    source: "manufacturer"
+    source_url: "https://www.federalpremium.com/reloading/bullets/fusion-component-bullet/11-FB224F1.html"
+    source_methodology: "published"
+    notes: "Federal component bullet page, March 2026"
+
+  - action: update_bullet
+    manufacturer: "Federal"
+    name: "Fusion Component Bullet, .264, 140 Grain"
+    set:
+      bc_g1_published: 0.497
+
+  - action: add_bc_source
+    manufacturer: "Federal"
+    bullet_name: "Fusion Component Bullet, .264, 140 Grain"
+    bc_type: "g1"
+    bc_value: 0.497
+    source: "manufacturer"
+    source_url: "https://www.federalpremium.com/reloading/bullets/fusion-component-bullet/11-FB264F2.html"
+    source_methodology: "published"
+    notes: "Federal component bullet page, March 2026. Loaded ammo pages show 0.439 — discrepancy."
+
+  - action: update_bullet
+    manufacturer: "Federal"
+    name: "Fusion Component Bullet, .277, 150 Grain"
+    set:
+      bc_g1_published: 0.413
+
+  - action: add_bc_source
+    manufacturer: "Federal"
+    bullet_name: "Fusion Component Bullet, .277, 150 Grain"
+    bc_type: "g1"
+    bc_value: 0.413
+    source: "manufacturer"
+    source_url: "https://www.federalpremium.com/reloading/bullets/fusion-component-bullet/11-FB277F4.html"
+    source_methodology: "published"
+    notes: "Federal component bullet page, March 2026. Loaded ammo pages show 0.471 — discrepancy."
+
+  - action: update_bullet
+    manufacturer: "Federal"
+    name: "Fusion Component Bullet, .284, 140 Grain"
+    set:
+      bc_g1_published: 0.416
+
+  - action: add_bc_source
+    manufacturer: "Federal"
+    bullet_name: "Fusion Component Bullet, .284, 140 Grain"
+    bc_type: "g1"
+    bc_value: 0.416
+    source: "manufacturer"
+    source_url: "https://www.federalpremium.com/reloading/bullets/fusion-component-bullet/11-FB284F1.html"
+    source_methodology: "published"
+    notes: "Federal component bullet page, March 2026. Loaded ammo pages show 0.390 — discrepancy."
+
+  - action: update_bullet
+    manufacturer: "Federal"
+    name: "Fusion Component Bullet, .308, 180 Grain"
+    set:
+      bc_g1_published: 0.483
+
+  - action: add_bc_source
+    manufacturer: "Federal"
+    bullet_name: "Fusion Component Bullet, .308, 180 Grain"
+    bc_type: "g1"
+    bc_value: 0.483
+    source: "manufacturer"
+    source_url: "https://www.federalpremium.com/reloading/bullets/fusion-component-bullet/11-FB308F4.html"
+    source_methodology: "published"
+    notes: "Federal component bullet page, March 2026. Loaded ammo pages show 0.503 — discrepancy."
+
+  # ============================================================
+  # Federal Terminal Ascent Component Bullets (4) — G1 + G7
+  # Source: federalpremium.com component bullet pages
+  # ============================================================
+
+  - action: update_bullet
+    manufacturer: "Federal"
+    name: "Terminal Ascent Component Bullet, .264, 130 Grain"
+    set:
+      bc_g1_published: 0.532
+      bc_g7_published: 0.263
+
+  - action: add_bc_source
+    manufacturer: "Federal"
+    bullet_name: "Terminal Ascent Component Bullet, .264, 130 Grain"
+    bc_type: "g1"
+    bc_value: 0.532
+    source: "manufacturer"
+    source_url: "https://www.federalpremium.com/reloading/bullets/terminal-ascent-component-bullet/11-PB264TA1.html"
+    source_methodology: "published"
+    notes: "Federal component bullet page, March 2026"
+
+  - action: add_bc_source
+    manufacturer: "Federal"
+    bullet_name: "Terminal Ascent Component Bullet, .264, 130 Grain"
+    bc_type: "g7"
+    bc_value: 0.263
+    source: "manufacturer"
+    source_url: "https://www.federalpremium.com/reloading/bullets/terminal-ascent-component-bullet/11-PB264TA1.html"
+    source_methodology: "published"
+    notes: "Federal component bullet page, March 2026"
+
+  - action: update_bullet
+    manufacturer: "Federal"
+    name: "Terminal Ascent Component Bullet, .277, 136 Grain"
+    set:
+      bc_g1_published: 0.493
+      bc_g7_published: 0.247
+
+  - action: add_bc_source
+    manufacturer: "Federal"
+    bullet_name: "Terminal Ascent Component Bullet, .277, 136 Grain"
+    bc_type: "g1"
+    bc_value: 0.493
+    source: "manufacturer"
+    source_url: "https://www.federalpremium.com/reloading/bullets/terminal-ascent-component-bullet/11-PB277TA1.html"
+    source_methodology: "published"
+    notes: "Federal component bullet page, March 2026"
+
+  - action: add_bc_source
+    manufacturer: "Federal"
+    bullet_name: "Terminal Ascent Component Bullet, .277, 136 Grain"
+    bc_type: "g7"
+    bc_value: 0.247
+    source: "manufacturer"
+    source_url: "https://www.federalpremium.com/reloading/bullets/terminal-ascent-component-bullet/11-PB277TA1.html"
+    source_methodology: "published"
+    notes: "Federal component bullet page, March 2026"
+
+  - action: update_bullet
+    manufacturer: "Federal"
+    name: "Terminal Ascent Component Bullet, .284, 155 Grain"
+    set:
+      bc_g1_published: 0.586
+      bc_g7_published: 0.300
+
+  - action: add_bc_source
+    manufacturer: "Federal"
+    bullet_name: "Terminal Ascent Component Bullet, .284, 155 Grain"
+    bc_type: "g1"
+    bc_value: 0.586
+    source: "manufacturer"
+    source_url: "https://www.federalpremium.com/reloading/bullets/terminal-ascent-component-bullet/11-PB284TA1.html"
+    source_methodology: "published"
+    notes: "Federal component bullet page, March 2026"
+
+  - action: add_bc_source
+    manufacturer: "Federal"
+    bullet_name: "Terminal Ascent Component Bullet, .284, 155 Grain"
+    bc_type: "g7"
+    bc_value: 0.300
+    source: "manufacturer"
+    source_url: "https://www.federalpremium.com/reloading/bullets/terminal-ascent-component-bullet/11-PB284TA1.html"
+    source_methodology: "published"
+    notes: "Federal component bullet page, March 2026"
+
+  - action: update_bullet
+    manufacturer: "Federal"
+    name: "Terminal Ascent Component Bullet, .308, 175 Grain"
+    set:
+      bc_g1_published: 0.520
+      bc_g7_published: 0.258
+
+  - action: add_bc_source
+    manufacturer: "Federal"
+    bullet_name: "Terminal Ascent Component Bullet, .308, 175 Grain"
+    bc_type: "g1"
+    bc_value: 0.520
+    source: "manufacturer"
+    source_url: "https://www.federalpremium.com/reloading/bullets/terminal-ascent-component-bullet/11-PB308TA1.html"
+    source_methodology: "published"
+    notes: "Federal component bullet page, March 2026"
+
+  - action: add_bc_source
+    manufacturer: "Federal"
+    bullet_name: "Terminal Ascent Component Bullet, .308, 175 Grain"
+    bc_type: "g7"
+    bc_value: 0.258
+    source: "manufacturer"
+    source_url: "https://www.federalpremium.com/reloading/bullets/terminal-ascent-component-bullet/11-PB308TA1.html"
+    source_methodology: "published"
+    notes: "Federal component bullet page, March 2026"
+
+  # ============================================================
+  # Federal Trophy Bonded Bear Claw (1) — G1 only
+  # ============================================================
+
+  - action: update_bullet
+    manufacturer: "Federal"
+    name: "Trophy Bonded Bear Claw Component Bullet, .375, 250 Grain"
+    set:
+      bc_g1_published: 0.340
+
+  - action: add_bc_source
+    manufacturer: "Federal"
+    bullet_name: "Trophy Bonded Bear Claw Component Bullet, .375, 250 Grain"
+    bc_type: "g1"
+    bc_value: 0.340
+    source: "manufacturer"
+    source_url: "https://www.federalpremium.com/reloading/bullets/trophy-bonded-bear-claw-component-bullet/11-PB375TBBC250.html"
+    source_methodology: "published"
+    notes: "Federal component bullet page, March 2026"
+
+  # ============================================================
+  # Federal Trophy Bonded Sledgehammer Solid (3) — G1 only
+  # ============================================================
+
+  - action: update_bullet
+    manufacturer: "Federal"
+    name: "Trophy Bonded Sledgehammer Solid Component Bullet, .375, 300 Grain"
+    set:
+      bc_g1_published: 0.253
+
+  - action: add_bc_source
+    manufacturer: "Federal"
+    bullet_name: "Trophy Bonded Sledgehammer Solid Component Bullet, .375, 300 Grain"
+    bc_type: "g1"
+    bc_value: 0.253
+    source: "manufacturer"
+    source_url: "https://www.federalpremium.com/reloading/bullets/trophy-bonded-sledgehammer-solid-component-bullet/11-PB375TBSH300.html"
+    source_methodology: "published"
+    notes: "Federal component bullet page, March 2026. Low BC expected for flat-nose design."
+
+  - action: update_bullet
+    manufacturer: "Federal"
+    name: "Trophy Bonded Sledgehammer Solid Component Bullet, .416, 400 Grain"
+    set:
+      bc_g1_published: 0.273
+
+  - action: add_bc_source
+    manufacturer: "Federal"
+    bullet_name: "Trophy Bonded Sledgehammer Solid Component Bullet, .416, 400 Grain"
+    bc_type: "g1"
+    bc_value: 0.273
+    source: "manufacturer"
+    source_url: "https://www.federalpremium.com/reloading/bullets/trophy-bonded-sledgehammer-solid-component-bullet/11-PB416TBSH400.html"
+    source_methodology: "published"
+    notes: "Federal component bullet page, March 2026. Low BC expected for flat-nose design."
+
+  - action: update_bullet
+    manufacturer: "Federal"
+    name: "Trophy Bonded Sledgehammer Solid Component Bullet, .458, 500 Grain"
+    set:
+      bc_g1_published: 0.328
+
+  - action: add_bc_source
+    manufacturer: "Federal"
+    bullet_name: "Trophy Bonded Sledgehammer Solid Component Bullet, .458, 500 Grain"
+    bc_type: "g1"
+    bc_value: 0.328
+    source: "manufacturer"
+    source_url: "https://www.federalpremium.com/reloading/bullets/trophy-bonded-sledgehammer-solid-component-bullet/11-PB458TBSH500.html"
+    source_methodology: "published"
+    notes: "Federal component bullet page, March 2026. Low BC expected for flat-nose design."
+
+  # ============================================================
+  # Federal Trophy Bonded Tip (4) — G1 only
+  # ============================================================
+
+  - action: update_bullet
+    manufacturer: "Federal"
+    name: "Trophy Bonded Tip Component Bullet, .277, 130 Grain"
+    set:
+      bc_g1_published: 0.440
+
+  - action: add_bc_source
+    manufacturer: "Federal"
+    bullet_name: "Trophy Bonded Tip Component Bullet, .277, 130 Grain"
+    bc_type: "g1"
+    bc_value: 0.440
+    source: "manufacturer"
+    source_url: "https://www.federalpremium.com/reloading/bullets/trophy-bonded-tip-component-bullet/11-PB277TT130.html"
+    source_methodology: "published"
+    notes: "Federal component bullet page, March 2026"
+
+  - action: update_bullet
+    manufacturer: "Federal"
+    name: "Trophy Bonded Tip Component Bullet, .284, 160 Grain"
+    set:
+      bc_g1_published: 0.520
+
+  - action: add_bc_source
+    manufacturer: "Federal"
+    bullet_name: "Trophy Bonded Tip Component Bullet, .284, 160 Grain"
+    bc_type: "g1"
+    bc_value: 0.520
+    source: "manufacturer"
+    source_url: "https://www.federalpremium.com/reloading/bullets/trophy-bonded-tip-component-bullet/11-PB284TT160.html"
+    source_methodology: "published"
+    notes: "Federal component bullet page, March 2026"
+
+  - action: update_bullet
+    manufacturer: "Federal"
+    name: "Trophy Bonded Tip Component Bullet, .308, 165 Grain"
+    set:
+      bc_g1_published: 0.450
+
+  - action: add_bc_source
+    manufacturer: "Federal"
+    bullet_name: "Trophy Bonded Tip Component Bullet, .308, 165 Grain"
+    bc_type: "g1"
+    bc_value: 0.450
+    source: "manufacturer"
+    source_url: "https://www.federalpremium.com/reloading/bullets/trophy-bonded-tip-component-bullet/11-PB308TT165.html"
+    source_methodology: "published"
+    notes: "Federal component bullet page, March 2026"
+
+  - action: update_bullet
+    manufacturer: "Federal"
+    name: "Trophy Bonded Tip Component Bullet, .338, 200 Grain"
+    set:
+      bc_g1_published: 0.440
+
+  - action: add_bc_source
+    manufacturer: "Federal"
+    bullet_name: "Trophy Bonded Tip Component Bullet, .338, 200 Grain"
+    bc_type: "g1"
+    bc_value: 0.440
+    source: "manufacturer"
+    source_url: "https://www.federalpremium.com/reloading/bullets/trophy-bonded-tip-component-bullet/11-PB338TT200.html"
+    source_methodology: "published"
+    notes: "Federal component bullet page, March 2026"
+
+  # ============================================================
+  # Lapua (2 of 5 — 3 have no published BCs)
+  # ============================================================
+
+  - action: update_bullet
+    manufacturer: "Lapua"
+    name: "15,0 g / 231 gr Naturalis N508"
+    set:
+      bc_g1_published: 0.373
+
+  - action: add_bc_source
+    manufacturer: "Lapua"
+    bullet_name: "15,0 g / 231 gr Naturalis N508"
+    bc_type: "g1"
+    bc_value: 0.373
+    source: "manufacturer"
+    source_url: "https://www.lapua.com/product/338-cal-naturalis-leadfree-hunting-bullet-n508-15-0-g-231-gr"
+    source_methodology: "published"
+    notes: "Lapua product page, March 2026"
+
+  - action: update_bullet
+    manufacturer: "Lapua"
+    name: "16,2 g / 250 gr Lock Base FMJBT B408"
+    set:
+      bc_g1_published: 0.625
+      bc_g7_published: 0.310
+
+  - action: add_bc_source
+    manufacturer: "Lapua"
+    bullet_name: "16,2 g / 250 gr Lock Base FMJBT B408"
+    bc_type: "g1"
+    bc_value: 0.625
+    source: "manufacturer"
+    source_url: "https://www.lapua.com/product/338-cal-lock-base-bullet-b408-162-g-250-gr-fmjbt"
+    source_methodology: "published"
+    notes: "Lapua product page, March 2026"
+
+  - action: add_bc_source
+    manufacturer: "Lapua"
+    bullet_name: "16,2 g / 250 gr Lock Base FMJBT B408"
+    bc_type: "g7"
+    bc_value: 0.310
+    source: "manufacturer"
+    source_url: "https://www.lapua.com/product/338-cal-lock-base-bullet-b408-162-g-250-gr-fmjbt"
+    source_methodology: "published"
+    notes: "Lapua product page, March 2026"
+
+  # ============================================================
+  # Sierra Bullets (1)
+  # ============================================================
+
+  - action: update_bullet
+    manufacturer: "Sierra Bullets"
+    name: "22 CAL 60 GR Tipped MatchKing (TMK)"
+    set:
+      bc_g1_published: 0.323
+      bc_g7_published: 0.151
+
+  - action: add_bc_source
+    manufacturer: "Sierra Bullets"
+    bullet_name: "22 CAL 60 GR Tipped MatchKing (TMK)"
+    bc_type: "g1"
+    bc_value: 0.323
+    source: "manufacturer"
+    source_url: "https://sierrabullets.com/22-cal-60-gr-tipped-matchking-tmk"
+    source_methodology: "published"
+    notes: "Sierra product page, March 2026"
+
+  - action: add_bc_source
+    manufacturer: "Sierra Bullets"
+    bullet_name: "22 CAL 60 GR Tipped MatchKing (TMK)"
+    bc_type: "g7"
+    bc_value: 0.151
+    source: "manufacturer"
+    source_url: "https://sierrabullets.com/22-cal-60-gr-tipped-matchking-tmk"
+    source_methodology: "published"
+    notes: "Sierra product page, March 2026"
