@@ -113,6 +113,7 @@ def _make_bullet(
         tip_type=_get_value(entity, "tip_type"),
         type_tags=_get_value(entity, "type_tags"),
         used_for=_get_value(entity, "used_for"),
+        product_line=_get_value(entity, "product_line"),
         source_url=source_url,
         extraction_confidence=_avg_confidence(entity),
         data_source=data_source,

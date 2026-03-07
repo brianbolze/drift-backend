@@ -22,7 +22,9 @@ from drift.pipeline.resolution.resolver import (
     _name_similarity,
     _normalize,
     _normalize_caliber,
+    _normalize_product_line,
     _pick_best_with_alternatives,
+    _strip_trademarks,
 )
 
 _SCRIPTS_DIR = Path(__file__).resolve().parent.parent / "scripts"
@@ -1289,3 +1291,266 @@ class TestPickBestWithAlternatives:
         assert len(result.alternatives) == 3
         assert result.alternatives[0].entity_id == "id-1"
         assert result.alternatives[2].entity_id == "id-3"
+
+
+# ---------------------------------------------------------------------------
+# Trademark stripping
+# ---------------------------------------------------------------------------
+
+
+class TestStripTrademarks:
+    """_strip_trademarks removes ®, ™, © symbols."""
+
+    def test_strips_registered(self):
+        assert _strip_trademarks("ELD-X®") == "ELD-X"
+
+    def test_strips_trademark(self):
+        assert _strip_trademarks("SST™") == "SST"
+
+    def test_strips_copyright(self):
+        assert _strip_trademarks("©Hornady") == "Hornady"
+
+    def test_strips_all_three(self):
+        assert _strip_trademarks("©ELD-X® SST™") == "ELD-X SST"
+
+    def test_no_symbols_unchanged(self):
+        assert _strip_trademarks("MatchKing") == "MatchKing"
+
+
+class TestNormalizeStripsTrademarks:
+    """_normalize should strip ® ™ © before further processing."""
+
+    def test_normalize_strips_registered(self):
+        assert "eld" in _normalize("ELD-X®")
+
+    def test_normalize_cx_registered(self):
+        # CX® should normalize without the registered symbol
+        result = _normalize("CX®")
+        assert "cx" in result
+
+
+# ---------------------------------------------------------------------------
+# _normalize_product_line
+# ---------------------------------------------------------------------------
+
+
+class TestNormalizeProductLine:
+    """Tests for _normalize_product_line — preserves hyphens, strips prefixes."""
+
+    def test_basic_product_line(self):
+        assert _normalize_product_line("ELD-X") == "eld-x"
+
+    def test_strips_trademark(self):
+        assert _normalize_product_line("ELD-X®") == "eld-x"
+
+    def test_strips_manufacturer_prefix(self):
+        assert _normalize_product_line("Hornady ELD-X") == "eld-x"
+
+    def test_strips_barnes_prefix(self):
+        assert _normalize_product_line("Barnes TSX") == "tsx"
+
+    def test_strips_sierra_prefix(self):
+        assert _normalize_product_line("Sierra MatchKing") == "matchking"
+
+    def test_extracts_parenthetical_abbreviation(self):
+        """Should prefer the shorter parenthetical abbreviation."""
+        assert _normalize_product_line("Barnes Triple-Shock X Bullet (TSX)") == "tsx"
+
+    def test_keeps_parenthetical_when_longer(self):
+        """When parenthetical is longer than the main text, keep the main text."""
+        result = _normalize_product_line("TSX (Triple-Shock X Bullet)")
+        assert result == "tsx"
+
+    def test_unicode_dash_normalized(self):
+        """Unicode dashes (U+2013 en-dash, etc.) should become ASCII hyphens."""
+        assert _normalize_product_line("ELD\u2013X") == "eld-x"
+
+    def test_lowercase(self):
+        assert _normalize_product_line("MatchKing") == "matchking"
+
+    def test_fusion_soft_point_strips_suffix(self):
+        """'Fusion Soft Point' → 'fusion' after stripping generic suffix."""
+        assert _normalize_product_line("Fusion Soft Point") == "fusion"
+
+    def test_sst_super_shock_tip(self):
+        """'SST (Super Shock Tip)' → 'sst' (parenthetical is shorter)."""
+        assert _normalize_product_line("SST (Super Shock Tip)") == "sst"
+
+    def test_nosler_partition(self):
+        assert _normalize_product_line("Nosler Partition") == "partition"
+
+    def test_hybrid_target(self):
+        assert _normalize_product_line("Hybrid Target") == "hybrid target"
+
+    def test_numeric_parenthetical_ignored(self):
+        """Numeric parenthetical like '(50ct)' should not be preferred."""
+        result = _normalize_product_line("Partition (50ct)")
+        assert result == "partition"
+
+    def test_empty_string(self):
+        assert _normalize_product_line("") == ""
+
+    def test_generic_bullet_suffix_stripped(self):
+        """'Component Bullet' suffix should be stripped."""
+        assert _normalize_product_line("Fusion Component Bullet") == "fusion"
+
+
+# ---------------------------------------------------------------------------
+# Product-line matching in match_bullet
+# ---------------------------------------------------------------------------
+
+
+class TestProductLineMatching:
+    """Tests for product_line-based bullet matching."""
+
+    @pytest.fixture()
+    def product_line_db(self, db):
+        """Seed bullets with product_line populated."""
+        mfr_hornady = Manufacturer(name="Hornady", country="US")
+        mfr_sierra = Manufacturer(name="Sierra", country="US")
+        mfr_nosler = Manufacturer(name="Nosler", country="US")
+        db.add_all([mfr_hornady, mfr_sierra, mfr_nosler])
+        db.flush()
+
+        cal = Caliber(name=".308 Winchester", bullet_diameter_inches=0.308)
+        db.add(cal)
+        db.flush()
+
+        bullets = {}
+        bullet_data = [
+            ("178 gr ELD-X", mfr_hornady, 0.308, 178.0, "ELD-X"),
+            ("178 gr ELD Match", mfr_hornady, 0.308, 178.0, "ELD Match"),
+            ("150 gr SST", mfr_hornady, 0.308, 150.0, "SST"),
+            ("165 gr SST", mfr_hornady, 0.308, 165.0, "SST"),
+            ("175 gr MatchKing HPBT", mfr_sierra, 0.308, 175.0, "MatchKing"),
+            ("200 gr Partition", mfr_nosler, 0.308, 200.0, "Partition"),
+            ("165 gr SP Boattail", mfr_hornady, 0.308, 165.0, None),  # generic, no product_line
+        ]
+        for name, mfr, dia, wt, pl in bullet_data:
+            b = Bullet(
+                manufacturer_id=mfr.id,
+                name=name,
+                bullet_diameter_inches=dia,
+                weight_grains=wt,
+                product_line=pl,
+            )
+            db.add(b)
+            bullets[name] = b
+        db.commit()
+
+        return {"bullets": bullets, "cal": cal}
+
+    def test_product_line_match_with_weight(self, product_line_db, db):
+        """product_line + weight should give high-confidence match.
+
+        Note: "ELD-X" also matches via composite_key (0.95) since bullet name
+        contains "ELD-X". The resolver correctly picks the highest-confidence method.
+        """
+        resolver = EntityResolver(db)
+        result = resolver.match_bullet(
+            {"name": {"value": "ELD-X"}, "weight_grains": {"value": 178.0}},
+            manufacturer_id=None,
+            bullet_diameter_inches=0.308,
+        )
+        assert result.matched is True
+        assert result.entity_id == product_line_db["bullets"]["178 gr ELD-X"].id
+        assert result.confidence >= 0.93
+        assert result.method in ("product_line", "composite_key")
+
+    def test_product_line_match_without_weight(self, product_line_db, db):
+        """product_line without weight should still match but with lower confidence."""
+        resolver = EntityResolver(db)
+        result = resolver.match_bullet(
+            {"name": {"value": "Partition"}},
+            manufacturer_id=None,
+            bullet_diameter_inches=0.308,
+        )
+        assert result.matched is True
+        assert result.entity_id == product_line_db["bullets"]["200 gr Partition"].id
+        assert result.confidence == 0.80
+        assert result.method == "product_line"
+
+    def test_product_line_weight_disambiguates(self, product_line_db, db):
+        """When multiple bullets share a product_line, weight should pick the right one."""
+        resolver = EntityResolver(db)
+        # Two SSTs: 150gr and 165gr
+        result = resolver.match_bullet(
+            {"name": {"value": "SST"}, "weight_grains": {"value": 150.0}},
+            manufacturer_id=None,
+            bullet_diameter_inches=0.308,
+        )
+        assert result.matched is True
+        assert result.entity_id == product_line_db["bullets"]["150 gr SST"].id
+        assert result.confidence == 0.93
+
+    def test_product_line_distinguishes_eld_x_from_eld_match(self, product_line_db, db):
+        """ELD-X and ELD Match are different product lines — should not cross-match."""
+        resolver = EntityResolver(db)
+        result = resolver.match_bullet(
+            {"name": {"value": "ELD-X"}, "weight_grains": {"value": 178.0}},
+            manufacturer_id=None,
+            bullet_diameter_inches=0.308,
+        )
+        assert result.entity_id == product_line_db["bullets"]["178 gr ELD-X"].id
+
+    def test_product_line_with_manufacturer_prefix(self, product_line_db, db):
+        """'Sierra MatchKing' should match bullet with product_line='MatchKing'."""
+        resolver = EntityResolver(db)
+        result = resolver.match_bullet(
+            {"name": {"value": "Sierra MatchKing"}, "weight_grains": {"value": 175.0}},
+            manufacturer_id=None,
+            bullet_diameter_inches=0.308,
+        )
+        assert result.matched is True
+        assert result.entity_id == product_line_db["bullets"]["175 gr MatchKing HPBT"].id
+        assert result.method == "product_line"
+
+    def test_product_line_with_trademark_symbol(self, product_line_db, db):
+        """'SST®' should match bullet with product_line='SST'."""
+        resolver = EntityResolver(db)
+        result = resolver.match_bullet(
+            {"name": {"value": "SST\u00ae"}, "weight_grains": {"value": 165.0}},
+            manufacturer_id=None,
+            bullet_diameter_inches=0.308,
+        )
+        assert result.matched is True
+        assert result.entity_id == product_line_db["bullets"]["165 gr SST"].id
+
+    def test_generic_bullet_skips_product_line_tier(self, product_line_db, db):
+        """Generic bullet (no product_line) should not match via product_line."""
+        resolver = EntityResolver(db)
+        # "SP Boattail" has no product_line — should fall through to Tier 2/3
+        result = resolver.match_bullet(
+            {"name": {"value": "SP Boattail"}, "weight_grains": {"value": 165.0}},
+            manufacturer_id=None,
+            bullet_diameter_inches=0.308,
+        )
+        # May or may not match — but if it does, should NOT be via product_line
+        if result.matched:
+            assert result.method != "product_line"
+
+    def test_explicit_product_line_field(self, product_line_db, db):
+        """When extracted entity has an explicit product_line field, use it."""
+        resolver = EntityResolver(db)
+        result = resolver.match_bullet(
+            {
+                "name": {"value": "Nosler Partition"},
+                "weight_grains": {"value": 200.0},
+                "product_line": {"value": "Partition"},
+            },
+            manufacturer_id=None,
+            bullet_diameter_inches=0.308,
+        )
+        assert result.matched is True
+        assert result.entity_id == product_line_db["bullets"]["200 gr Partition"].id
+        assert result.method == "product_line"
+
+    def test_product_line_methods_tried(self, product_line_db, db):
+        """product_line should appear in methods_tried."""
+        resolver = EntityResolver(db)
+        result = resolver.match_bullet(
+            {"name": {"value": "ELD-X"}, "weight_grains": {"value": 178.0}},
+            manufacturer_id=None,
+            bullet_diameter_inches=0.308,
+        )
+        assert "product_line" in result.methods_tried

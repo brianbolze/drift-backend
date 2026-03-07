@@ -376,6 +376,7 @@ class TestExtractionEngineWithProvider:
                 "tip_type": {"value": "polymer_tip", "source_text": "polymer", "confidence": 0.8},
                 "type_tags": {"value": ["match"], "source_text": "match", "confidence": 0.7},
                 "used_for": {"value": ["competition"], "source_text": "", "confidence": 0.5},
+                "product_line": {"value": "ELD Match", "source_text": "ELD Match", "confidence": 0.9},
                 "sku": {"value": "26331", "source_text": "#26331", "confidence": 0.95},
             }
         ]
@@ -414,6 +415,7 @@ class TestExtractionEngineWithProvider:
                 "tip_type": {"value": None, "source_text": "", "confidence": 0.0},
                 "type_tags": {"value": [], "source_text": "", "confidence": 0.0},
                 "used_for": {"value": [], "source_text": "", "confidence": 0.0},
+                "product_line": {"value": None, "source_text": "", "confidence": 0.0},
                 "sku": {"value": None, "source_text": "", "confidence": 0.0},
             }
         ]

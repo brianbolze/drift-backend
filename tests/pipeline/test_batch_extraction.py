@@ -64,6 +64,7 @@ MINIMAL_BULLET = {
     "tip_type": {"value": None, "source_text": "", "confidence": 0.0},
     "type_tags": {"value": [], "source_text": "", "confidence": 0.0},
     "used_for": {"value": [], "source_text": "", "confidence": 0.0},
+    "product_line": {"value": None, "source_text": "", "confidence": 0.0},
     "sku": {"value": None, "source_text": "", "confidence": 0.0},
 }
 

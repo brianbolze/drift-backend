@@ -81,13 +81,18 @@ class ResolutionResult:
     methods_tried: list[str] = field(default_factory=list)
 
 
+def _strip_trademarks(name: str) -> str:
+    """Strip trademark/copyright symbols: ®, ™, ©."""
+    return name.replace("\u00ae", "").replace("\u2122", "").replace("\u00a9", "")
+
+
 def _normalize(name: str) -> str:
     """Normalize a name for comparison: lowercase, strip punctuation, collapse whitespace.
 
     Periods are kept only when leading a token (caliber names like ".308", ".223").
     Trailing periods are stripped (handles "Inc." vs "Inc", "INC." vs "Inc").
     """
-    name = name.lower().strip()
+    name = _strip_trademarks(name).lower().strip()
     # Keep periods to preserve caliber names like ".308", ".223"
     name = re.sub(r"[^\w\s.]", " ", name)
     name = re.sub(r"\s+", " ", name)
@@ -107,6 +112,75 @@ def _normalize_caliber(name: str) -> str:
     # Strip leading period from tokens: ".308" → "308", ".223" → "223"
     tokens = [t.lstrip(".") if t.startswith(".") else t for t in norm.split()]
     return " ".join(tokens)
+
+
+# Manufacturer prefixes to strip from product-line names during normalization.
+_MANUFACTURER_PREFIXES = frozenset(
+    {
+        "sierra",
+        "nosler",
+        "berger",
+        "barnes",
+        "hornady",
+        "speer",
+        "lapua",
+        "federal",
+        "winchester",
+        "remington",
+        "swift",
+        "cutting edge",
+        "lehigh",
+    }
+)
+
+
+def _normalize_product_line(name: str) -> str:
+    """Normalize a product-line name for matching.
+
+    Unlike _normalize(), this preserves hyphens (ELD-X stays ELD-X) and strips
+    manufacturer prefixes. Also extracts parenthetical abbreviations as alternatives.
+
+    Returns the best (shortest, most canonical) form.
+    """
+    s = _strip_trademarks(name).lower().strip()
+    # Normalize unicode dashes to ASCII hyphen
+    s = re.sub(r"[\u2010\u2011\u2012\u2013\u2014\u2015]", "-", s)
+    # Collapse whitespace
+    s = re.sub(r"\s+", " ", s).strip()
+
+    # Extract parenthetical abbreviation: "Barnes Triple-Shock X Bullet (TSX)" → "TSX"
+    paren_match = re.search(r"\(([^)]+)\)", s)
+    paren_content = paren_match.group(1).strip() if paren_match else None
+
+    # Strip parenthetical from main string
+    main = re.sub(r"\([^)]*\)", "", s).strip()
+
+    # Strip manufacturer prefixes
+    for prefix in _MANUFACTURER_PREFIXES:
+        if main.startswith(prefix + " "):
+            main = main[len(prefix) + 1 :].strip()
+            break
+
+    # Strip generic suffixes that add noise (longest first to avoid partial matches)
+    for suffix in ("component bullet", "soft point", "bullets", "bullet"):
+        if main.endswith(" " + suffix):
+            candidate = main[: -(len(suffix) + 1)].strip()
+            if candidate:
+                main = candidate
+                break
+
+    # If parenthetical is shorter and non-numeric (ignore count suffixes like "50ct"), prefer it
+    if paren_content and not re.match(r"^\d+\w*$", paren_content):
+        paren_clean = paren_content.strip()
+        # Strip manufacturer prefix from paren too
+        for prefix in _MANUFACTURER_PREFIXES:
+            if paren_clean.startswith(prefix + " "):
+                paren_clean = paren_clean[len(prefix) + 1 :].strip()
+                break
+        if paren_clean and len(paren_clean) <= len(main):
+            return paren_clean
+
+    return main
 
 
 def _name_similarity(a: str, b: str) -> float:
@@ -484,12 +558,13 @@ class EntityResolver:
     ) -> MatchResult:
         """Match an extracted bullet against existing DB bullets.
 
-        Collects scored candidates across Tier 2 (composite key) and Tier 3 (fuzzy),
-        picks the global best, and records runner-up alternatives for diagnostics.
+        Collects scored candidates across product_line matching, Tier 2 (composite key),
+        and Tier 3 (fuzzy), picks the global best, and records runner-up alternatives.
         """
         name = _get_value(extracted, "name", "")
         sku = _get_value(extracted, "sku")
         weight = _get_value(extracted, "weight_grains")
+        extracted_product_line = _get_value(extracted, "product_line")
         methods_tried: list[str] = []
 
         # Tier 1: Exact SKU match (deterministic, short-circuits)
@@ -521,6 +596,40 @@ class EntityResolver:
 
         # Collect all scored candidates across tiers: (entity_id, confidence, method, details)
         all_scored: list[tuple[str, float, str, str]] = []
+
+        # Derive a normalized product line from the extracted name for matching.
+        # This is used both for product_line matching and as a fallback when
+        # the extracted entity doesn't have an explicit product_line field.
+        norm_extracted_pl = _normalize_product_line(name) if name else ""
+        if extracted_product_line:
+            norm_extracted_pl = _normalize_product_line(extracted_product_line)
+
+        # Product-line matching — when the extracted name (or explicit product_line)
+        # matches a bullet's product_line, that's a strong signal. Combined with
+        # weight + diameter (already filtered), this is highly deterministic.
+        if norm_extracted_pl:
+            methods_tried.append("product_line")
+            for bullet in candidates:
+                if not bullet.product_line:
+                    continue
+                norm_bullet_pl = _normalize_product_line(bullet.product_line)
+                if norm_bullet_pl != norm_extracted_pl:
+                    continue
+                # Product line matches — score based on weight agreement
+                if weight is not None:
+                    try:
+                        weight_matches = abs(bullet.weight_grains - float(weight)) < 0.5
+                    except (ValueError, TypeError):
+                        weight_matches = False
+                else:
+                    weight_matches = False
+                if weight_matches:
+                    conf = 0.93
+                    detail = f"product_line={norm_extracted_pl}, weight={weight}"
+                else:
+                    conf = 0.80
+                    detail = f"product_line={norm_extracted_pl}, no weight match"
+                all_scored.append((bullet.id, conf, "product_line", detail))
 
         # Tier 2: Composite key — weight match + best name similarity
         if weight is not None:

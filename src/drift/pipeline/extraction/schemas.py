@@ -70,6 +70,7 @@ class ExtractedBullet(BaseModel):
     tip_type: ExtractedValue[str | None]
     type_tags: ExtractedValue[list[str] | None]
     used_for: ExtractedValue[list[str] | None]
+    product_line: ExtractedValue[str | None]
     sku: ExtractedValue[str | None]
 
 

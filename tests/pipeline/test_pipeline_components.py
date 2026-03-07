@@ -110,6 +110,7 @@ class TestExtractionSchemas:
             "tip_type": {"value": "polymer_tip", "source_text": "polymer tip", "confidence": 0.8},
             "type_tags": {"value": ["match", "long_range"], "source_text": "match", "confidence": 0.7},
             "used_for": {"value": ["competition"], "source_text": "", "confidence": 0.5},
+            "product_line": {"value": "ELD Match", "source_text": "ELD Match", "confidence": 0.9},
             "sku": {"value": "26331", "source_text": "#26331", "confidence": 0.95},
         }
         bullet = ExtractedBullet.model_validate(data)

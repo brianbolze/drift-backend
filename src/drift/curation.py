@@ -57,6 +57,7 @@ _BULLET_UPDATE_FIELDS = frozenset(
         "type_tags",
         "used_for",
         "is_lead_free",
+        "product_line",
         "source_url",
     }
 )
@@ -124,6 +125,7 @@ class CreateBulletOp(BaseModel):
     is_lead_free: bool = False
     type_tags: list[str] | None = None
     used_for: list[str] | None = None
+    product_line: str | None = Field(None, max_length=100)
     source_url: str | None = Field(None, max_length=500)
     bc_source: str = "manufacturer"
     bc_source_methodology: str | None = None
@@ -456,6 +458,7 @@ def _apply_create_bullet(session: Session, op: CreateBulletOp, stats: ApplyStats
         is_lead_free=op.is_lead_free,
         type_tags=op.type_tags,
         used_for=op.used_for,
+        product_line=op.product_line,
         source_url=op.source_url,
         data_source="manual",
         is_locked=True,

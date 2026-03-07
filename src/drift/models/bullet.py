@@ -38,6 +38,10 @@ class Bullet(TimestampMixin, Base):
     type_tags: Mapped[list | None] = mapped_column(JSON, nullable=True)
     used_for: Mapped[list | None] = mapped_column(JSON, nullable=True)
 
+    # Product family name (e.g. "ELD-X", "MatchKing", "TSX") — used for cartridge→bullet matching.
+    # Null for generic bullets without a named product line (plain soft points, FMJs, etc.)
+    product_line: Mapped[str | None] = mapped_column(String(100), nullable=True, index=True)
+
     # Structured classification (nullable, V2 filtering)
     base_type: Mapped[str | None] = mapped_column(String(50), nullable=True)
     tip_type: Mapped[str | None] = mapped_column(String(50), nullable=True)

@@ -51,6 +51,7 @@ Extract ALL bullet products from this page. For each bullet, extract:
   "tip_type": {"value": "one of: polymer_tip, hollow_point, open_tip_match, fmj, soft_point, ballistic_tip, meplat — or null", "source_text": "...", "confidence": ...},
   "type_tags": {"value": ["list of: match, hunting, target, varmint, long_range, tactical, plinking"], "source_text": "...", "confidence": ...},
   "used_for": {"value": ["list of: competition, hunting_deer, hunting_elk, hunting_varmint, long_range, precision, self_defense, plinking"], "source_text": "...", "confidence": ...},
+  "product_line": {"value": "string or null — the bullet's product family name", "source_text": "...", "confidence": ...},
   "sku": {"value": "string or null — manufacturer part number", "source_text": "...", "confidence": ...}
 }
 
@@ -58,6 +59,20 @@ IMPORTANT: "length_inches" is the BULLET (projectile) length — the physical ti
 the projectile itself, typically 0.5–1.8 inches. Do NOT confuse this with cartridge OAL (overall length), \
 which is the full assembled round length (bullet seated in the case) and is typically 2.0–3.7 inches. \
 If the page only lists OAL/COAL and not the standalone bullet length, set length_inches to null.
+
+PRODUCT LINE EXTRACTION:
+"product_line" is the bullet's branded product family name — the marketing name that identifies the bullet \
+design across all calibers and weights. Extract it as a short, clean string without trademark symbols.
+Examples:
+  "30 Cal .308 178 gr ELD-X®" → product_line: "ELD-X"
+  "6.5MM 140 GR HPBT MatchKing (SMK)" → product_line: "MatchKing"
+  "0.308 30 CAL TSX BT 168 GR" → product_line: "TSX"
+  "Fusion Component Bullet, .308, 180 Grain" → product_line: "Fusion"
+  "338 Caliber 225gr Partition (50ct)" → product_line: "Partition"
+  "30 Caliber 185 Grain Hybrid Target Rifle Bullet" → product_line: "Hybrid Target"
+  "22 Cal .224 55 gr SP Boattail with Cannelure" → product_line: null (generic, no named family)
+  "55 GR FMJ Boat Tail" → product_line: null (generic type, not a product family)
+Set null for generic bullets described only by their type (SP, FMJ, HP, HPBT, etc.) with no branded family name.
 
 Return a JSON array of extracted bullets. If a field is not found on the page, set value to null with confidence 0.0.
 """
@@ -69,7 +84,7 @@ Extract ALL factory-loaded cartridge/ammunition products from this page. For eac
   "name": {"value": "string — full product name", "source_text": "...", "confidence": ...},
   "manufacturer": {"value": "string", "source_text": "...", "confidence": ...},
   "caliber": {"value": "string — e.g. '6.5 Creedmoor'", "source_text": "...", "confidence": ...},
-  "bullet_name": {"value": "string — name of the bullet used", "source_text": "...", "confidence": ...},
+  "bullet_name": {"value": "string — the bullet's product family name", "source_text": "...", "confidence": ...},
   "bullet_weight_grains": {"value": number, "source_text": "...", "confidence": ...},
   "bc_g1": {"value": number or null, "source_text": "...", "confidence": ...},
   "bc_g7": {"value": number or null, "source_text": "...", "confidence": ...},
@@ -77,7 +92,7 @@ Extract ALL factory-loaded cartridge/ammunition products from this page. For eac
   "muzzle_velocity_fps": {"value": integer, "source_text": "...", "confidence": ...},
   "test_barrel_length_inches": {"value": number or null, "source_text": "...", "confidence": ...},
   "round_count": {"value": integer or null — rounds per box, "source_text": "...", "confidence": ...},
-  "product_line": {"value": "string or null — e.g. 'Precision Hunter', 'Match'", "source_text": "...", "confidence": ...},
+  "product_line": {"value": "string or null — the ammo product line, e.g. 'Precision Hunter', 'Gold Medal'", "source_text": "...", "confidence": ...},
   "sku": {"value": "string or null", "source_text": "...", "confidence": ...}
 }
 
@@ -85,6 +100,21 @@ IMPORTANT: "bullet_length_inches" is the BULLET (projectile) length — the phys
 the projectile itself, typically 0.5–1.8 inches. Do NOT confuse this with cartridge OAL (overall length), \
 which is the full assembled round length (bullet seated in the case) and is typically 2.0–3.7 inches. \
 If the page only lists OAL/COAL and not the standalone bullet length, set bullet_length_inches to null.
+
+BULLET NAME EXTRACTION:
+"bullet_name" is the bullet's product family name — the short branded name that identifies the projectile design. \
+Extract it as a clean, short string without trademark symbols (no ®, ™). Do NOT include caliber, weight, \
+manufacturer prefixes, or verbose descriptions — just the product family name.
+Examples:
+  Page says "ELD-X®" → bullet_name: "ELD-X"
+  Page says "SST® (Super Shock Tip)" → bullet_name: "SST"
+  Page says "Barnes Triple-Shock X Bullet (TSX)" → bullet_name: "TSX"
+  Page says "Sierra MatchKing BTHP" → bullet_name: "MatchKing"
+  Page says "Fusion Soft Point" → bullet_name: "Fusion"
+  Page says "Nosler Partition" → bullet_name: "Partition"
+  Page says "Jacketed Soft Point" → bullet_name: "Jacketed Soft Point" (generic, no product family — keep as-is)
+Note: "product_line" is the AMMO line (e.g. "Precision Hunter"), "bullet_name" is the BULLET family (e.g. "ELD-X"). \
+These are different fields — a Hornady Precision Hunter cartridge uses an ELD-X bullet.
 
 Return a JSON array of extracted cartridges. If a field is not found on the page, set value to null with confidence 0.0.
 """
