@@ -114,7 +114,7 @@ class BatchExtractor:
                 try:
                     batch = self._client.messages.batches.retrieve(batch_id)
                     break
-                except (anthropic.APIConnectionError, anthropic.InternalServerError) as e:
+                except (anthropic.APIConnectionError, anthropic.InternalServerError, anthropic.RateLimitError) as e:
                     if attempt == max_transient_retries:
                         raise
                     delay = 2 ** (attempt + 1)
