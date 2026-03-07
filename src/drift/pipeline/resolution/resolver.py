@@ -909,6 +909,38 @@ class EntityResolver:
                 # bullets from a different company (e.g. Federal loads Sierra MatchKings).
                 # Diameter + weight narrow the candidates; name similarity picks the best.
                 bullet_match = self.match_bullet(bullet_stub, None, cart_bullet_diameter)
+                # Hard weight gate: reject bullet matches where weight disagrees beyond
+                # tolerance. Prevents linking to wrong-weight bullets when the correct
+                # weight variant hasn't been ingested yet (e.g. 150gr CX → 110gr CX).
+                if bullet_match.matched and weight is not None:
+                    matched_bullet = self._session.get(Bullet, bullet_match.entity_id)
+                    if matched_bullet:
+                        try:
+                            weight_diff = abs(matched_bullet.weight_grains - float(weight))
+                        except (ValueError, TypeError):
+                            weight_diff = 0.0
+                        if weight_diff > _BULLET_WEIGHT_GATE_GRAINS:
+                            logger.info(
+                                "Rejecting bullet match '%s' (%.0fgr) for cartridge bullet '%.0fgr %s' "
+                                "— weight diff %.0fgr exceeds gate (%.0fgr)",
+                                matched_bullet.name,
+                                matched_bullet.weight_grains,
+                                float(weight),
+                                bullet_name,
+                                weight_diff,
+                                _BULLET_WEIGHT_GATE_GRAINS,
+                            )
+                            result.unresolved_refs.append(
+                                f"bullet: {bullet_name} (weight mismatch: "
+                                f"cartridge={float(weight):.0f}gr, "
+                                f"best match={matched_bullet.weight_grains:.0f}gr "
+                                f"{matched_bullet.name})"
+                            )
+                            bullet_match = MatchResult(
+                                matched=False,
+                                details=f"weight gate: {weight_diff:.0f}gr diff exceeds {_BULLET_WEIGHT_GATE_GRAINS:.0f}gr limit",
+                                methods_tried=bullet_match.methods_tried,
+                            )
                 # Require minimum confidence for bullet FK assignment — low-confidence
                 # fuzzy matches (e.g. weight-mismatched Tier 3) should be flagged, not assigned.
                 if bullet_match.matched and bullet_match.confidence >= 0.5:
@@ -933,6 +965,7 @@ class EntityResolver:
         return result
 
 
+_BULLET_WEIGHT_GATE_GRAINS = 5.0  # Max weight diff (grains) for cartridge→bullet linkage; rejects wrong-weight matches
 _BC_TOLERANCE = 5e-4  # Covers manufacturer rounding at 3 decimal places (max rounding error = 0.0005)
 
 

@@ -936,7 +936,7 @@ class TestBulletFKConfidenceThreshold:
             },
             "cartridge",
         )
-        # bullet_id should be None — the only SST is 165gr, confidence should be below threshold
+        # bullet_id should be None — the only SST is 165gr, weight gate rejects 15gr diff
         assert result.bullet_id is None
         assert any("bullet" in ref.lower() for ref in result.unresolved_refs)
 
@@ -955,6 +955,64 @@ class TestBulletFKConfidenceThreshold:
             "cartridge",
         )
         assert result.bullet_id == setup_db["bullet"].id
+
+    def test_weight_gate_rejects_large_diff(self, setup_db):
+        """Weight gate rejects bullet match when weight diff exceeds threshold (>5gr)."""
+        session = setup_db["session"]
+        # Add a product-line bullet that would otherwise match at high confidence (0.80+)
+        bullet_cx = Bullet(
+            manufacturer_id=setup_db["mfr"].id,
+            name="30 Cal .308 150 gr CX®",
+            bullet_diameter_inches=0.308,
+            weight_grains=150.0,
+            product_line="CX",
+        )
+        session.add(bullet_cx)
+        session.flush()
+
+        resolver = EntityResolver(session)
+        # Cartridge wants 110gr CX but DB only has 150gr CX — 40gr diff, must be rejected
+        result = resolver.resolve(
+            {
+                "manufacturer": {"value": "Hornady"},
+                "name": {"value": "300 Blackout 110 gr CX® Custom™"},
+                "caliber": {"value": ".308 Winchester"},
+                "bullet_name": {"value": "CX"},
+                "bullet_weight_grains": {"value": 110.0},
+                "muzzle_velocity_fps": {"value": 2280},
+            },
+            "cartridge",
+        )
+        assert result.bullet_id is None
+        assert any("weight mismatch" in ref for ref in result.unresolved_refs)
+
+    def test_weight_gate_allows_small_diff(self, setup_db):
+        """Weight gate allows bullet match when weight diff is within threshold (<=5gr)."""
+        session = setup_db["session"]
+        bullet = Bullet(
+            manufacturer_id=setup_db["mfr"].id,
+            name="30 Cal .308 168 gr BTHP Match",
+            bullet_diameter_inches=0.308,
+            weight_grains=168.0,
+            product_line="BTHP Match",
+        )
+        session.add(bullet)
+        session.flush()
+
+        resolver = EntityResolver(session)
+        # Cartridge weight 168.5gr vs bullet 168gr — 0.5gr diff, well within gate
+        result = resolver.resolve(
+            {
+                "manufacturer": {"value": "Hornady"},
+                "name": {"value": "308 Win 168 gr BTHP Match"},
+                "caliber": {"value": ".308 Winchester"},
+                "bullet_name": {"value": "BTHP Match"},
+                "bullet_weight_grains": {"value": 168.5},
+                "muzzle_velocity_fps": {"value": 2700},
+            },
+            "cartridge",
+        )
+        assert result.bullet_id == bullet.id
 
 
 # ---------------------------------------------------------------------------
