@@ -958,5 +958,165 @@
     "verified": "2026-03-06",
     "status": "pass",
     "notes": "MV=3050, wt=165 match. Page BC: G1=0.450"
+  },
+  {
+    "entity": "bullet",
+    "id": "92e3a491-d212-4838-a893-d80092073cff",
+    "name": "Barnes 30cal 208gr LRX BT",
+    "verified": "2026-03-07",
+    "status": "pass",
+    "notes": "G1=0.633, G7=0.316 exact match"
+  },
+  {
+    "entity": "bullet",
+    "id": "7707bf26-26ee-430e-8fbd-ba96b4436cbf",
+    "name": "Sierra 7mm 183gr HPBT MatchKing",
+    "verified": "2026-03-07",
+    "status": "pass",
+    "notes": "G1=0.707, G7=0.351 exact match"
+  },
+  {
+    "entity": "bullet",
+    "id": "c4585f83-80d4-4ef8-9a42-9f00d0d036b7",
+    "name": "Berger 30cal 220gr LR Hybrid Target",
+    "verified": "2026-03-07",
+    "status": "pass",
+    "notes": "G1=0.717, G7=0.369 exact match"
+  },
+  {
+    "entity": "bullet",
+    "id": "76449753-e892-49c4-a3f9-4a304c9ba5f9",
+    "name": "Lapua .308 185gr D46 FMJBT",
+    "verified": "2026-03-07",
+    "status": "pass",
+    "notes": "G1=0.506, G7=0.254 exact match"
+  },
+  {
+    "entity": "bullet",
+    "id": "39309b57-2e3a-4010-a3b5-b98bc3415079",
+    "name": "Lapua 6.5mm 120gr TRX N583",
+    "verified": "2026-03-07",
+    "status": "pass",
+    "notes": "G1=0.428, G7=0.212 exact match"
+  },
+  {
+    "entity": "bullet",
+    "id": "f7d67f26-306a-4f21-8cdc-a30a3ef7b514",
+    "name": "Hornady 30cal 150gr CX",
+    "verified": "2026-03-07",
+    "status": "pass",
+    "notes": "G1=0.418 exact match, G7 not published"
+  },
+  {
+    "entity": "bullet",
+    "id": "5af82873-45e4-4bd2-8e91-ea890d518ba0",
+    "name": "Hornady 7mm 150gr ECX",
+    "verified": "2026-03-07",
+    "status": "pass",
+    "notes": "G1=0.287 exact match, G7 not published"
+  },
+  {
+    "entity": "bullet",
+    "id": "c0bb1044-9934-48bb-b85a-ac1a2d85813f",
+    "name": "Speer .308 165gr BT",
+    "verified": "2026-03-07",
+    "status": "pass",
+    "notes": "G1=0.520 exact match, G7 not published"
+  },
+  {
+    "entity": "bullet",
+    "id": "546193c7-e603-4cae-a186-e179dd480328",
+    "name": "Speer .284 175gr Grand Slam",
+    "verified": "2026-03-07",
+    "status": "pass",
+    "notes": "G1=0.436 exact match, G7 not published"
+  },
+  {
+    "entity": "bullet",
+    "id": "e61c2bd2-3d22-4432-abc4-7d900b72af56",
+    "name": "Barnes 7mm 140gr TSX BT",
+    "verified": "2026-03-07",
+    "status": "pass",
+    "notes": "G1=0.394 exact match, G7 not published"
+  },
+  {
+    "entity": "cartridge",
+    "id": "533a4f5b-d95e-4c6d-91e2-4aecbe557a71",
+    "name": "Hornady .308 155gr Critical Defense",
+    "verified": "2026-03-07",
+    "status": "pass",
+    "notes": "MV=2785, wt=155, barrel=24 match. Page BC: G1=0.313"
+  },
+  {
+    "entity": "cartridge",
+    "id": "10614692-0a7f-495f-ad9e-26a0bdec2515",
+    "name": "Federal .308 150gr Power-Shok Copper",
+    "verified": "2026-03-07",
+    "status": "pass",
+    "notes": "MV=2820, wt=150 match. Page BC: G1=0.278"
+  },
+  {
+    "entity": "cartridge",
+    "id": "cfb5d0af-db0a-44eb-8c5d-80950168fcc2",
+    "name": "Federal 6mm CM 107gr GM SMK",
+    "verified": "2026-03-07",
+    "status": "pass",
+    "notes": "MV=3000, wt=107 match. Page BC: G1=0.547, G7=0.271"
+  },
+  {
+    "entity": "cartridge",
+    "id": "9c6b42f4-b652-497f-a415-bfbc132a1cbb",
+    "name": "Hornady 6mm CM 105gr BTHP Black",
+    "verified": "2026-03-07",
+    "status": "pass",
+    "notes": "MV=2960, wt=105, barrel=24 match. Page BC: G1=0.530"
+  },
+  {
+    "entity": "cartridge",
+    "id": "83490dd7-702c-4be7-b8bc-3b0c109e44d3",
+    "name": "Federal .300WM 180gr Fusion",
+    "verified": "2026-03-07",
+    "status": "pass",
+    "notes": "MV=2960, wt=180 match. Page BC: G1=0.485"
+  },
+  {
+    "entity": "cartridge",
+    "id": "fa8240f5-a9ff-480a-80d7-a07f72ec98e1",
+    "name": "Federal .300WM 150gr Power-Shok",
+    "verified": "2026-03-07",
+    "status": "pass",
+    "notes": "MV=3150, wt=150 match. Page BC: G1=0.389"
+  },
+  {
+    "entity": "cartridge",
+    "id": "34e61de3-76ac-4c36-8f7b-d901881169e1",
+    "name": "Federal 6.5CM 130gr Barnes TSX",
+    "verified": "2026-03-07",
+    "status": "pass",
+    "notes": "MV=2825, wt=130 match. Page BC: G1=0.365"
+  },
+  {
+    "entity": "cartridge",
+    "id": "ec04d410-f550-4a5d-9fe5-9f9853907464",
+    "name": "Federal .308 165gr Trophy Bonded Tip",
+    "verified": "2026-03-07",
+    "status": "pass",
+    "notes": "MV=2700, wt=165 match. Page BC: G1=0.450"
+  },
+  {
+    "entity": "cartridge",
+    "id": "cbfe577a-961a-4dbc-a3b9-886a45ceedda",
+    "name": "Federal 6.5 PRC 140gr Fusion Tipped",
+    "verified": "2026-03-07",
+    "status": "pass",
+    "notes": "MV=2975, wt=140 match. Page BC: G1=0.529"
+  },
+  {
+    "entity": "cartridge",
+    "id": "3129656e-4c09-45a8-b40d-b91665246323",
+    "name": "Hornady .338LM 240gr CX Custom",
+    "verified": "2026-03-07",
+    "status": "pass",
+    "notes": "MV=2900, wt=240, barrel=24 match. Page BC: G1=0.611"
   }
 ]

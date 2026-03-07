@@ -2,10 +2,10 @@
   {
     "id": "C1-cartridge-bullet-weight-mismatches",
     "severity": "critical",
-    "summary": "67 cartridge-bullet weight mismatches from resolver bug",
+    "summary": "100 cartridge-bullet weight mismatches from resolver linking to wrong-weight bullets",
     "first_seen": "2026-03-06",
-    "last_seen": "2026-03-06",
-    "count": 67,
+    "last_seen": "2026-03-07",
+    "count": 100,
     "status": "open"
   },
   {
@@ -46,16 +46,16 @@
     "severity": "critical",
     "summary": "Hornady .300 Win Mag 180gr SP Custom International: barrel=9.45\" (from 24cm), MV=2961 (from 902 m/s)",
     "first_seen": "2026-03-06",
-    "last_seen": "2026-03-06",
+    "last_seen": "2026-03-07",
     "count": 1,
     "status": "open"
   },
   {
     "id": "C6-sierra-tmk-22cal-data-errors",
     "severity": "critical",
-    "summary": "Sierra 22 CAL 60gr TMK: wrong diameter (0.220, should be 0.224), wrong source_url, missing BCs",
+    "summary": "Sierra 22 CAL 60gr TMK: bad record (diam=0.220) still exists alongside corrected record (diam=0.224). Bad record needs deletion.",
     "first_seen": "2026-03-06",
-    "last_seen": "2026-03-06",
+    "last_seen": "2026-03-07",
     "count": 1,
     "status": "open"
   },
@@ -64,7 +64,7 @@
     "severity": "critical",
     "summary": "Hornady .308 220gr RN Custom International: barrel=9.45\" (from 24cm, should be 24\")",
     "first_seen": "2026-03-06",
-    "last_seen": "2026-03-06",
+    "last_seen": "2026-03-07",
     "count": 1,
     "status": "open"
   },
@@ -73,16 +73,16 @@
     "severity": "warning",
     "summary": "7 cartridges with MV=0: 6 ECX/Hornady International + 1 .22 Creedmoor CX Superformance",
     "first_seen": "2026-03-06",
-    "last_seen": "2026-03-06",
+    "last_seen": "2026-03-07",
     "count": 7,
     "status": "open"
   },
   {
     "id": "W2-missing-bc-rifle-bullets",
     "severity": "warning",
-    "summary": "6 rifle bullets (diameter <= .375) missing all BC fields, excluding CE and Nosler. Lapua 3, Lehigh 2, Sierra 1. Improved from 23 (Federal 15 now resolved).",
+    "summary": "6 rifle bullets (diameter <= .375) missing all BC fields, excluding CE and Nosler. Lapua 3, Lehigh 2, Sierra 1.",
     "first_seen": "2026-03-06",
-    "last_seen": "2026-03-06",
+    "last_seen": "2026-03-07",
     "count": 6,
     "status": "open"
   },
@@ -91,7 +91,7 @@
     "severity": "warning",
     "summary": ".204 Ruger 24gr NTX at 4400 fps exceeds 4200 fps threshold (plausible for 24gr Superformance)",
     "first_seen": "2026-03-06",
-    "last_seen": "2026-03-06",
+    "last_seen": "2026-03-07",
     "count": 1,
     "status": "open"
   },
