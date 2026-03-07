@@ -132,6 +132,10 @@ SYNC_RETRY_BASE_SECONDS = 2.0  # Exponential backoff: 2s, 4s, 8s, 16s, 32s
 HTTPX_TIMEOUT_SECONDS = 30.0
 HTTPX_CONNECT_TIMEOUT_SECONDS = 10.0
 FIRECRAWL_RATE_LIMIT_SECONDS = 1.0  # Default inter-request delay (used for all fetchers, not just Firecrawl)
+FIRECRAWL_TIMEOUT_SECONDS = 60.0  # Max time for a single Firecrawl scrape
+
+FETCH_MAX_RETRIES = 3  # Retries on transient errors (TimeoutException, ConnectError)
+FETCH_RETRY_BASE_SECONDS = 2.0  # Exponential backoff: 2s, 4s, 8s
 
 HTTPX_HEADERS = {
     "User-Agent": (

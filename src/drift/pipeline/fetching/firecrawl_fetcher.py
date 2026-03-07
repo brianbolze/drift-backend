@@ -6,7 +6,7 @@ import asyncio
 import hashlib
 from datetime import datetime, timezone
 
-from drift.pipeline.config import FIRECRAWL_API_KEY
+from drift.pipeline.config import FIRECRAWL_API_KEY, FIRECRAWL_TIMEOUT_SECONDS
 from drift.pipeline.fetching.base import BaseFetcher
 from drift.pipeline.fetching.schemas import FetchResult
 
@@ -24,7 +24,10 @@ class FirecrawlFetcher(BaseFetcher):
 
         app = FirecrawlApp(api_key=self._api_key)
         # FirecrawlApp.scrape() is synchronous — run in executor to avoid blocking the event loop
-        doc = await asyncio.to_thread(app.scrape, url, formats=["html"])
+        doc = await asyncio.wait_for(
+            asyncio.to_thread(app.scrape, url, formats=["html"]),
+            timeout=FIRECRAWL_TIMEOUT_SECONDS,
+        )
 
         html = doc.html or ""
         status = getattr(doc.metadata, "statusCode", 200) if doc.metadata else 200
