@@ -1525,9 +1525,9 @@ class TestProductLineMatching:
             manufacturer_id=None,
             bullet_diameter_inches=0.308,
         )
-        # May or may not match — but if it does, should NOT be via product_line
-        if result.matched:
-            assert result.method != "product_line"
+        # Should match the "165 gr SP Boattail" bullet via composite_key or fuzzy, not product_line
+        assert result.matched is True
+        assert result.method != "product_line"
 
     def test_explicit_product_line_field(self, product_line_db, db):
         """When extracted entity has an explicit product_line field, use it."""

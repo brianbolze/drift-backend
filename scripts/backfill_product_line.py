@@ -13,7 +13,7 @@ from __future__ import annotations
 import argparse
 import json
 import logging
-import os
+import sys
 import time
 from pathlib import Path
 
@@ -25,9 +25,9 @@ load_dotenv(Path(__file__).resolve().parent.parent / ".env", override=True)
 from sqlalchemy import select  # noqa: E402
 
 from drift.database import get_session_factory  # noqa: E402
-from drift.models.bullet import Bullet
-from drift.models.manufacturer import Manufacturer
-from drift.pipeline.extraction.providers import create_provider
+from drift.models.bullet import Bullet  # noqa: E402
+from drift.models.manufacturer import Manufacturer  # noqa: E402
+from drift.pipeline.extraction.providers import create_provider  # noqa: E402
 
 logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
 logger = logging.getLogger(__name__)
@@ -71,7 +71,24 @@ def _apply_batch_results(session, batch_tuples, results, commit: bool) -> tuple[
     """Apply LLM results for a single batch. Returns (updated, skipped)."""
     updated = skipped = 0
     for (bullet_id, bullet_name, _mfr), result in zip(batch_tuples, results, strict=True):
-        pl = result.get("product_line")
+        if not isinstance(result, dict):
+            logger.error("  INVALID RESULT for %s: expected dict, got %s", bullet_name, type(result).__name__)
+            skipped += 1
+            continue
+
+        # Validate ID matches (guard against LLM reordering)
+        result_id = result.get("id")
+        if result_id is not None and str(result_id) != bullet_id:
+            logger.warning("  ID MISMATCH for %s: expected %s, got %s — skipping", bullet_name, bullet_id, result_id)
+            skipped += 1
+            continue
+
+        if "product_line" not in result:
+            logger.warning("  MALFORMED: %s — result dict missing 'product_line' key", bullet_name)
+            skipped += 1
+            continue
+
+        pl = result["product_line"]
         if pl is None:
             skipped += 1
             logger.debug("  SKIP (generic): %s", bullet_name)
@@ -83,14 +100,17 @@ def _apply_batch_results(session, batch_tuples, results, commit: bool) -> tuple[
             continue
 
         bullet = session.get(Bullet, bullet_id)
-        if bullet and not bullet.is_locked:
+        if bullet is None:
+            logger.warning("  NOT FOUND: bullet_id=%s (%s) — stale session?", bullet_id, bullet_name)
+            skipped += 1
+        elif bullet.is_locked:
+            logger.info("  SKIP (locked): %s -> would set product_line=%r", bullet_name, pl)
+            skipped += 1
+        else:
             logger.info("  UPDATE: %s -> product_line=%r", bullet_name, pl)
             if commit:
                 bullet.product_line = pl
             updated += 1
-        elif bullet and bullet.is_locked:
-            logger.info("  SKIP (locked): %s -> would set product_line=%r", bullet_name, pl)
-            skipped += 1
     return updated, skipped
 
 
@@ -136,6 +156,7 @@ def main() -> None:  # noqa: C901
     session = SessionFactory()
 
     try:
+        # session.execute (not scalars) — multi-column select from a join, not a single ORM entity
         rows = list(
             session.execute(
                 select(Bullet.id, Bullet.name, Manufacturer.name)
@@ -162,8 +183,12 @@ def main() -> None:  # noqa: C901
 
             try:
                 results = _call_llm(provider, BACKFILL_PROMPT + _build_batch(batch_tuples), args.model)
-            except Exception as e:
-                logger.error("Batch %d failed: %s", batch_num, e)
+            except json.JSONDecodeError as e:
+                logger.error("Batch %d returned unparseable JSON: %s", batch_num, e)
+                errors += len(batch)
+                continue
+            except OSError as e:
+                logger.error("Batch %d LLM call failed (transient): %s", batch_num, e)
                 errors += len(batch)
                 continue
 
@@ -179,7 +204,15 @@ def main() -> None:  # noqa: C901
             if batch_start + BATCH_SIZE < len(rows):
                 time.sleep(1)
 
+        if errors > 0 and errors >= len(rows):
+            logger.error("All %d bullets failed — aborting without commit", len(rows))
+            session.rollback()
+            print(f"\nBackfill FAILED ({mode}): all {len(rows)} bullets errored")
+            sys.exit(1)
+
         if args.commit:
+            if errors > 0:
+                logger.warning("Committing partial results: %d updated, %d errors", updated, errors)
             session.commit()
             logger.info("Committed to database")
         else:

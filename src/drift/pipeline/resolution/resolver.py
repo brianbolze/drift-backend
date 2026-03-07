@@ -597,9 +597,11 @@ class EntityResolver:
         # Collect all scored candidates across tiers: (entity_id, confidence, method, details)
         all_scored: list[tuple[str, float, str, str]] = []
 
-        # Derive a normalized product line from the extracted name for matching.
-        # This is used both for product_line matching and as a fallback when
-        # the extracted entity doesn't have an explicit product_line field.
+        # Derive a normalized product line for matching. When no explicit product_line
+        # is provided, we attempt to extract one from the full bullet name. This rarely
+        # produces false matches because a full name (e.g. "Hornady 6.5 CM 143gr ELD-X")
+        # normalizes to something long and unlikely to equal a short DB product_line like
+        # "eld-x" — but the explicit field takes precedence when available.
         norm_extracted_pl = _normalize_product_line(name) if name else ""
         if extracted_product_line:
             norm_extracted_pl = _normalize_product_line(extracted_product_line)
@@ -620,6 +622,7 @@ class EntityResolver:
                     try:
                         weight_matches = abs(bullet.weight_grains - float(weight)) < 0.5
                     except (ValueError, TypeError):
+                        logger.warning("product_line: cannot parse weight %r for bullet %s", weight, bullet.name)
                         weight_matches = False
                 else:
                     weight_matches = False
@@ -634,8 +637,13 @@ class EntityResolver:
         # Tier 2: Composite key — weight match + best name similarity
         if weight is not None:
             methods_tried.append("composite_key")
+            try:
+                weight_f = float(weight)
+            except (ValueError, TypeError):
+                logger.warning("composite_key: cannot parse weight %r — skipping tier", weight)
+                weight_f = None
             for bullet in candidates:
-                if abs(bullet.weight_grains - float(weight)) < 0.5:
+                if weight_f is not None and abs(bullet.weight_grains - weight_f) < 0.5:
                     if name and bullet.name:
                         jaccard = _name_similarity(name, bullet.name)
                         containment = _bullet_name_score(name, bullet.name)
@@ -660,6 +668,7 @@ class EntityResolver:
                         try:
                             weight_agrees = abs(bullet.weight_grains - float(weight)) <= 1.0
                         except (ValueError, TypeError):
+                            logger.warning("fuzzy_name: cannot parse weight %r for bullet %s", weight, bullet.name)
                             weight_agrees = False
                     else:
                         weight_agrees = False
@@ -715,8 +724,13 @@ class EntityResolver:
         # Uses both Jaccard and containment-based scoring to handle asymmetric names.
         if weight is not None:
             methods_tried.append("composite_key")
+            try:
+                weight_f = float(weight)
+            except (ValueError, TypeError):
+                logger.warning("composite_key (cartridge): cannot parse weight %r — skipping tier", weight)
+                weight_f = None
             for cart in candidates:
-                if abs(cart.bullet_weight_grains - float(weight)) < 0.5:
+                if weight_f is not None and abs(cart.bullet_weight_grains - weight_f) < 0.5:
                     if name and cart.name:
                         jaccard = _name_similarity(name, cart.name)
                         containment = _bullet_name_score(name, cart.name)
@@ -741,6 +755,7 @@ class EntityResolver:
                         try:
                             weight_agrees = abs(cart.bullet_weight_grains - float(weight)) <= 1.0
                         except (ValueError, TypeError):
+                            logger.warning("fuzzy_name (cartridge): cannot parse weight %r for %s", weight, cart.name)
                             weight_agrees = False
                     else:
                         weight_agrees = False
