@@ -52,7 +52,7 @@ Lightweight tech debt and engineering improvement tracker. Agents and humans app
 - [ ] Missing composite unique constraints on natural keys — `Bullet(manufacturer_id, name, weight_grains, diameter)` and `Cartridge(manufacturer_id, name, caliber_id)` (source: code review, 2026-03-06)
 - [ ] `Optic.reticle_id` non-nullable — blocks storing optics with unknown/custom reticles (source: code review, 2026-03-06)
 - [ ] No controlled-vocabulary validation on `base_type`, `tip_type`, `type_tags`, `used_for` in extraction schemas — config defines valid values but Pydantic doesn't enforce them (source: code review, 2026-03-06)
-- [ ] Confusing script names: `validate_manifest.py` (JSON format) vs `manifest_validate.py` (DB cross-check) (source: code review, 2026-03-06)
+- [x] Confusing script names: `validate_manifest.py` (JSON format) vs `manifest_validate.py` (DB cross-check) (source: code review, 2026-03-06) — renamed to `crosscheck_manifest.py` (agent, 2026-03-07)
 - [x] Session created outside try block in `pipeline_store.py` — leaks if exception occurs before try (source: code review, 2026-03-06)
 
 ## Documentation
