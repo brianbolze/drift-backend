@@ -35,25 +35,19 @@ Lightweight tech debt and engineering improvement tracker. Agents and humans app
 - [ ] Cartridge→bullet resolver can't match generic extracted names to DB records — "ELD-X", "Berger Hybrid", "Fusion Soft Point" etc. don't fuzzy-match "30 Cal .308 178 gr ELD® Match" or "Fusion Component Bullet, .308, 180 Grain". Blocks 100+ cartridge resolutions. Resolver needs type+weight+diameter matching, not just name similarity (source: agent, 2026-03-06)
 - [ ] Bullet name normalization inconsistent — ALL CAPS (Sierra), metric prefix (Lapua), caliber in name (Hornady), trademark symbols (source: pipeline working notes)
 - [ ] Cutting Edge HTML at ~200KB after reduction — worst of all manufacturers, needs per-manufacturer CSS selector hints (source: pipeline working notes)
-- [ ] Sierra/Nosler/Barnes at ~70KB — 2-3x over 30KB reducer target, still works but wastes tokens (source: pipeline working notes)
+- [ ] Sierra/Nosler/Barnes at ~70KB — 2-3x over 30KB reducer target, still works but wastes tokens (source: pipeline working notes) -- Idea: Multiple reducer strategies -- use manufacturer-based lookup table to choose strategy
 - [ ] Nosler BCs only in load data section — product pages return null BC, need to scrape load data pages separately (source: pipeline working notes)
-- [x] No retry on transient httpx errors — `TimeoutException`/`ConnectError` permanently skip a URL with no retry (source: code review, 2026-03-06)
 - [ ] `HttpxFetcher` creates new `AsyncClient` per request — no connection reuse/keep-alive across same-host URLs; same issue with `FirecrawlFetcher` reinstantiating `FirecrawlApp` per call (source: code review, 2026-03-06)
-- [x] `FirecrawlFetcher` has no timeout — `asyncio.to_thread` call blocks indefinitely if Firecrawl is down (source: code review, 2026-03-06)
-- [x] Batch poll doesn't catch `anthropic.RateLimitError` — only catches `APIConnectionError`/`InternalServerError` (source: code review, 2026-03-06)
-- [x] `--limit` applies to file count, not pending count — `--limit 10` slices first 10 reduced files; if all cached, nothing runs (source: code review, 2026-03-06)
 - [ ] Stale flagged entries persist on re-extraction — `_write_flagged` deduplicates by hash, so old warnings stick around (source: code review, 2026-03-06)
 
 ## Code / Tooling
 
-- [x] Curation dry-run leaks savepoint commits — `session.begin_nested()` + `sp.commit()` persists through outer `session.rollback()` on SQLite. Deletes and creates in dry-run mode actually modify the DB (source: agent, 2026-03-06)
 - [ ] No `ondelete` cascade on any FK relationship — `BulletBCSource.bullet_id` especially needs `ondelete="CASCADE"` (source: code review, 2026-03-06)
 - [ ] Missing indexes on FK columns used by resolver — `bullet.manufacturer_id`, `bullet.bullet_diameter_inches`, `cartridge.caliber_id`, etc. (source: code review, 2026-03-06)
 - [ ] Missing composite unique constraints on natural keys — `Bullet(manufacturer_id, name, weight_grains, diameter)` and `Cartridge(manufacturer_id, name, caliber_id)` (source: code review, 2026-03-06)
 - [ ] `Optic.reticle_id` non-nullable — blocks storing optics with unknown/custom reticles (source: code review, 2026-03-06)
 - [ ] No controlled-vocabulary validation on `base_type`, `tip_type`, `type_tags`, `used_for` in extraction schemas — config defines valid values but Pydantic doesn't enforce them (source: code review, 2026-03-06)
 - [ ] Confusing script names: `validate_manifest.py` (JSON format) vs `manifest_validate.py` (DB cross-check) (source: code review, 2026-03-06)
-- [x] Session created outside try block in `pipeline_store.py` — leaks if exception occurs before try (source: code review, 2026-03-06)
 
 ## Documentation
 
