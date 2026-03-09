@@ -5,7 +5,7 @@
       "Bash(.venv/bin/pytest *)",
       "Bash(python scripts/describe_db.py *)",
       "Bash(python scripts/pipeline_status.py *)",
-      "Bash(python scripts/manifest_validate.py *)",
+      "Bash(python scripts/crosscheck_manifest.py *)",
       "Bash(git status *)",
       "Bash(git diff *)",
       "Bash(git log *)",

@@ -5,8 +5,8 @@ using source_url, then checks for discrepancies in manufacturer, caliber,
 weight, diameter, and BC values.
 
 Usage:
-    PYTHONPATH=src python scripts/manifest_validate.py
-    PYTHONPATH=src python scripts/manifest_validate.py --json   # write JSON report
+    PYTHONPATH=src python scripts/crosscheck_manifest.py
+    PYTHONPATH=src python scripts/crosscheck_manifest.py --json   # write JSON report
 """
 
 from __future__ import annotations

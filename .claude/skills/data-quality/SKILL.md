@@ -10,8 +10,8 @@ description: Data quality checks, BC validation, manufacturer resolution, and bu
 ```bash
 python scripts/describe_db.py              # Schema + row counts
 make pipeline-status                       # Pipeline stage counts
-python scripts/manifest_validate.py        # Manifest vs DB cross-check
-python scripts/manifest_validate.py --json # + write JSON report
+python scripts/crosscheck_manifest.py        # Manifest vs DB cross-check
+python scripts/crosscheck_manifest.py --json # + write JSON report
 ```
 
 ## BC Range Expectations
