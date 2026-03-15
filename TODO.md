@@ -27,7 +27,8 @@ Lightweight tech debt and engineering improvement tracker. Agents and humans app
 - [ ] 4 MatchKing->Nosler HPBT false matches — Sierra MatchKing bullets missing at certain weights, causing cross-manufacturer false positives (source: pipeline working notes)
 - [ ] 22 bullets missing BC data entirely — no BulletBCSource records (source: QA report, 2026-03-06)
 - [ ] Hornady .300 WM Custom International metric conversion — barrel=9.45" (from 24cm), MV=2961 (from 902 m/s). Fix via curation patch. Audit remaining Hornady International cartridges for same pattern. (source: QA report, 2026-03-06)
-- [x] Sierra 22 CAL 60gr TMK (b137e0fa) — wrong diameter (0.220→0.224), wrong source_url (points to 30-cal page), missing BCs. Resolved: bad record no longer in DB as of 2026-03-14.
+- [ ] Sierra 22 CAL 60gr TMK (f4facb6b) — bad record with diam=0.220 still in DB as of 2026-03-15. Previously marked resolved but re-confirmed present. Needs deletion via curation patch. (source: QA report, 2026-03-15)
+- [ ] Sierra 6.5mm 107gr TMK (adb2ba7f) misnamed as "6MM" — diameter and BCs correct for 6.5mm, only display name wrong. Fix name to "6.5MM 107 GR Tipped MatchKing (TMK)" via curation patch. (source: QA report, 2026-03-15)
 - [ ] 12 Berger loaded ammunition product pages stored as bullet records — duplicates component bullet data (e.g., "300 Winchester Magnum 185 Grain Classic Hunter Rifle Ammunition"). Clean up via curation delete or pipeline filter. (source: QA report, 2026-03-14)
 - [ ] Hornady .308 220gr RN Custom International — barrel=9.45" (from "24cm" mislabel), should be 24". Same Hornady Intl metric pattern as C5. Fix via curation patch. (source: QA report, 2026-03-06)
 - [ ] 5 Federal "Custom Rifle Ammo" placeholder cartridges — zero weight, zero MV, no barrel length. Useless records, delete via curation patch. (source: QA report, 2026-03-09)
@@ -51,6 +52,15 @@ Lightweight tech debt and engineering improvement tracker. Agents and humans app
 - [ ] Missing composite unique constraints on natural keys — `Bullet(manufacturer_id, name, weight_grains, diameter)` and `Cartridge(manufacturer_id, name, caliber_id)` (source: code review, 2026-03-06)
 - [ ] `Optic.reticle_id` non-nullable — blocks storing optics with unknown/custom reticles (source: code review, 2026-03-06)
 - [ ] No controlled-vocabulary validation on `base_type`, `tip_type`, `type_tags`, `used_for` in extraction schemas — config defines valid values but Pydantic doesn't enforce them (source: code review, 2026-03-06)
+
+## Coverage Gaps (JBM Audit 2026-03-15)
+
+- [ ] Winchester missing entirely — 185 rifle bullets in JBM, 0 in Drift. Major ammo + component bullet maker. (source: JBM coverage audit, 2026-03-15)
+- [ ] Swift missing entirely — 55 rifle bullets in JBM (A-Frame, Scirocco II). Blocks ~182 flagged cartridge resolutions. (source: JBM coverage audit, 2026-03-15)
+- [ ] Berger 53 rifle bullet gaps — 19 in .224, 14 in .308. Core competition bullets (Match/VLD/Hybrid). (source: JBM coverage audit, 2026-03-15)
+- [ ] Scrape JBM BC values as supplementary BulletBCSource — 3,520 entries with BCs, 261 Litz-measured (gold standard). Could fill 66 Drift bullets missing BCs. (source: JBM coverage audit, 2026-03-15)
+- [ ] Sako missing entirely — 63 rifle bullets in JBM. Popular European brand. (source: JBM coverage audit, 2026-03-15)
+- [ ] Norma missing entirely — 38 rifle bullets in JBM despite being in manifest. Pipeline may not have stored. (source: JBM coverage audit, 2026-03-15)
 
 ## Documentation
 

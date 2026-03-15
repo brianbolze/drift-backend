@@ -1,0 +1,3521 @@
+manufacturer,caliber_inches,weight_gr,bullet_name
+Aguila,0.223,29,Short High Velocity
+Aguila,0.223,30,Super Maximum Hollow Point
+Aguila,0.223,30,Super Maximum Solid
+Aguila,0.223,38,Long Rifle High Velocity Hollow Point
+Aguila,0.223,38,Long Rifle Subsonic HP
+Aguila,0.223,40,Long Rifle High Velocity Solid
+Aguila,0.223,40,Long Rifle Match Golden Eagle
+Aguila,0.223,40,Long Rifle Standard Velocity
+Aguila,0.223,40,Match Rifle
+Aguila,0.223,60,SSS Sniper Subsonic
+Alco Precision,0.000,12,Alpha Hunter
+Alco Precision,0.224,69,RBT ULD Machined Metal Tip
+Alco Precision,0.224,77,RBT ULD Machined Metal Tip
+Alco Precision,0.224,90,RBT ULD Machined Metal Tip
+Alco Precision,0.284,168,RBT ULD Machined Metal Tip
+Alco Precision,0.284,180,RBT ULD Machined Metal Tip
+Alco Precision,0.284,195,RBT ULD Machined Metal Tip
+Alco Precision,0.308,110,Flat Base
+Alco Precision,0.308,125,Flat Base
+Alco Precision,0.308,150,Flat Base
+Alco Precision,0.308,155,RBT ULD Machined Metal Tip
+Alco Precision,0.308,155,Rebated Boat Tail
+Alco Precision,0.308,168,RBT ULD Machined Metal Tip
+Alco Precision,0.308,168,Rebated Boat Tail
+Alco Precision,0.308,175,RBT ULD Machined Metal Tip
+Alco Precision,0.308,175,Rebated Boat Tail
+Alco Precision,0.308,185,RBT ULD Machined Metal Tip
+Alco Precision,0.308,190,RBT ULD Machined Metal Tip
+Alco Precision,0.308,200,Flat Base
+Alco Precision,0.308,200,Rebated Boat Tail
+Alco Precision,0.308,210,Flat Base
+Alco Precision,0.308,210,RBT ULD Machined Metal Tip
+Alco Precision,0.308,210,Rebated Boat Tail
+Alco Precision,0.308,220,Flat Base
+Alco Precision,0.308,220,RBT ULD Machined Metal Tip
+Alco Precision,0.308,220,Rebated Boat Tail
+Alco Precision,0.308,230,Flat Base
+Alco Precision,0.308,230,Rebated Boat Tail
+Alco Precision,0.308,240,RBT ULD Machined Metal Tip
+Armscor,0.224,62,FMJ w/cannelure
+Balistix,0.243,75,HunTac
+Balistix,0.243,75,Target
+Balistix,0.243,85,HunTac
+Balistix,0.243,85,Target
+Balistix,0.264,115,HunTac
+Balistix,0.264,115,Target
+Balistix,0.264,120,HunTac
+Balistix,0.264,125,HunTac
+Balistix,0.264,125,Target
+Balistix,0.277,130,HunTac
+Balistix,0.277,130,Target
+Balistix,0.284,140,HunTac
+Balistix,0.284,140,Target
+Balistix,0.303,170,HunTac
+Balistix,0.308,155,HunTac
+Balistix,0.308,155,Target
+Balistix,0.308,155,Ultra Hunt
+Balistix,0.308,165,HunTac
+Balistix,0.308,165,Target
+Balistix,0.308,165,Ultra Hunt
+Balistix,0.308,175,HunTac
+Balistix,0.308,175,Target
+Balistix,0.308,175,Ultra Hunt
+Balistix,0.323,200,Ultra Hunt
+Balistix,0.338,250,HunTac
+Balistix,0.338,250,Target
+Balistix,0.338,250,Ultra Hunt
+Balistix,0.366,230,Target
+Balistix,0.366,230,Ultra Hunt
+Balistix,0.375,250,Target
+Balistix,0.375,250,Ultra Hunt
+Balistix,0.375,375,HunTac
+Balistix,0.375,375,Target
+Barnes,0.204,32,Varmin-A-Tor&trade;
+Barnes,0.224,30,Varmint Grenade Flat Base
+Barnes,0.224,36,Varmint Grenade
+Barnes,0.224,40,Varmin-A-Tor&trade;
+Barnes,0.224,45,Banded Spitzer
+Barnes,0.224,45,Triple-Shock&trade; X Flat Base
+Barnes,0.224,45,XLC&trade; Boattail
+Barnes,0.224,50,Boattail
+Barnes,0.224,50,Tipped Triple-Shock&trade; X Boattail
+Barnes,0.224,50,Tipped Triple-Shock&trade; X Flat Base
+Barnes,0.224,50,Varmin-A-Tor&trade;
+Barnes,0.224,50,Varmint Grenade
+Barnes,0.224,52,BT Match
+Barnes,0.224,52,Match Burner&trade; MB Match
+Barnes,0.224,53,Triple-Shock&trade; X Flat Base
+Barnes,0.224,53,XLC&trade; Flat Base
+Barnes,0.224,55,Multi-Purpose Green&trade; Flat Base
+Barnes,0.224,55,RRLP&trade; Flat Base
+Barnes,0.224,55,TAC-X&trade; Flat Base
+Barnes,0.224,55,Tipped Triple-Shock&trade; X Boattail
+Barnes,0.224,55,Triple-Shock&trade; X Flat Base
+Barnes,0.224,62,TAC-X&trade; Boattail
+Barnes,0.224,62,Tipped Triple-Shock&trade; X Boattail
+Barnes,0.224,62,Tipped Triple-Shock&trade; X Boattail (Litz)
+Barnes,0.224,62,Triple-Shock&trade; X Boattail
+Barnes,0.224,69,BT Match
+Barnes,0.224,69,Match Burner&trade; BT Match
+Barnes,0.224,69,Match Burner&trade; BT Match (Litz)
+Barnes,0.224,70,TAC-X&trade; Boattail
+Barnes,0.224,70,TAC-X&trade; Boattail (Litz)
+Barnes,0.224,70,Triple-Shock&trade; X Boattail
+Barnes,0.224,70,Triple-Shock&trade; X Boattail (Litz)
+Barnes,0.224,77,Long Range X Boattail
+Barnes,0.224,85,BT Match
+Barnes,0.224,85,Match Burner&trade; BT Match
+Barnes,0.224,85,Match Burner&trade; BT Match (Litz)
+Barnes,0.243,58,Varmin-A-Tor&trade;
+Barnes,0.243,62,Varmint Grenade
+Barnes,0.243,68,BT Match
+Barnes,0.243,68,Match Burner&trade; FB Match
+Barnes,0.243,72,Varmin-A-Tor&trade;
+Barnes,0.243,75,Banded Spitzer Boattail
+Barnes,0.243,80,Tipped Triple-Shock&trade; X Boattail
+Barnes,0.243,80,Tipped Triple-Shock&trade; X Boattail (Litz)
+Barnes,0.243,85,Boattail
+Barnes,0.243,85,Triple-Shock&trade; X Boattail
+Barnes,0.243,90,X Flat Base
+Barnes,0.243,95,Long Range X Boattail
+Barnes,0.243,95,XLC&trade; Flat Base
+Barnes,0.243,105,BT Match
+Barnes,0.243,105,Match Burner&trade; BT Match
+Barnes,0.243,112,Match Burner&trade; BT Match
+Barnes,0.243,115,Round Nose Soft Point
+Barnes,0.257,80,Tipped Triple-Shock&trade; X Boattail
+Barnes,0.257,80,Tipped Triple-Shock&trade; X Boattail (Litz)
+Barnes,0.257,90,Banded Tipped Triple-Shock&trade; X Boattail
+Barnes,0.257,90,Boattail
+Barnes,0.257,100,Tipped Triple-Shock&trade; X Boattail
+Barnes,0.257,100,Triple-Shock&trade; X Boattail
+Barnes,0.257,100,XLC&trade; Boattail
+Barnes,0.257,101,Long Range X Boattail
+Barnes,0.257,115,Triple-Shock&trade; X Flat Base
+Barnes,0.257,115,Triple-Shock&trade; X Flat Base (Litz)
+Barnes,0.264,100,Tipped Triple-Shock&trade;
+Barnes,0.264,110,Banded Spitzer Boattail
+Barnes,0.264,115,TAC-TX&trade;
+Barnes,0.264,120,Match Burner&trade; BT Match
+Barnes,0.264,120,Tipped Triple-Shock&trade;
+Barnes,0.264,120,Triple-Shock&trade; X Boattail
+Barnes,0.264,120,XLC&trade; Flat Base
+Barnes,0.264,127,Long Range X Boattail
+Barnes,0.264,130,Triple-Shock&trade; X Flat Base
+Barnes,0.264,140,BT Match
+Barnes,0.264,140,Match Burner&trade; BT Match
+Barnes,0.264,140,XLC&trade; Flat Base
+Barnes,0.264,145,Match Burner&trade; MB Match
+Barnes,0.277,85,TAC-X&trade; Flat Base
+Barnes,0.277,85,Tipped Triple-Shock&trade; X Flat Base
+Barnes,0.277,95,Tipped Triple-Shock&trade; X Boattail
+Barnes,0.277,110,TAC-X&trade; Boattail
+Barnes,0.277,110,Tipped Triple-Shock&trade; Boattail
+Barnes,0.277,110,Triple-Shock&trade; X Boattail
+Barnes,0.277,120,Banded Spitzer Boattail
+Barnes,0.277,129,Long Range X Boattail
+Barnes,0.277,130,MRX BT
+Barnes,0.277,130,Tipped Triple-Shock&trade; Boattail
+Barnes,0.277,130,Triple-Shock&trade; X Boattail
+Barnes,0.277,130,XLC&trade; Boattail
+Barnes,0.277,140,Triple-Shock&trade; X Boattail
+Barnes,0.277,150,MRX BT
+Barnes,0.277,150,Triple-Shock&trade; X Flat Base
+Barnes,0.277,155,Long Range X Boattail
+Barnes,0.284,110,Tipped Triple-Shock&trade; Flatbase
+Barnes,0.284,120,Tipped Triple-Shock&trade; Boattail
+Barnes,0.284,120,Triple-Shock&trade; X Boattail
+Barnes,0.284,130,Tipped Triple-Shock&trade; Boattail
+Barnes,0.284,139,Long Range X Boattail
+Barnes,0.284,140,Banded Spitzer Boattail
+Barnes,0.284,140,MRX BT
+Barnes,0.284,140,Tipped Triple-Shock&trade; Boattail
+Barnes,0.284,140,Triple-Shock&trade; X Boattail
+Barnes,0.284,140,XLC&trade; Boattail
+Barnes,0.284,145,Long Range X Boattail
+Barnes,0.284,150,Tipped Triple-Shock&trade; X Boattail
+Barnes,0.284,150,Triple-Shock&trade; X Boattail
+Barnes,0.284,150,X Boattail
+Barnes,0.284,160,MRX BT
+Barnes,0.284,160,Triple-Shock&trade; X Flat Base
+Barnes,0.284,160,XLC&trade; Flat Base
+Barnes,0.284,168,Long Range X Boattail
+Barnes,0.284,171,BT Match
+Barnes,0.284,171,Match Burner&trade; BT Match
+Barnes,0.284,175,TSX (Litz)
+Barnes,0.284,175,Triple-Shock&trade; X Flat Base
+Barnes,0.284,175,X Flat Base
+Barnes,0.308,100,X Flat Nose
+Barnes,0.308,110,300 Tipped Triple-Shock&trade; X Flat Base - AAC BLK
+Barnes,0.308,110,TAC-TX&trade;
+Barnes,0.308,110,TAC-X&trade; Flat Base
+Barnes,0.308,110,Tipped Triple-Shock&trade; X Flat Base
+Barnes,0.308,110,Triple-Shock&trade; X Flat Base
+Barnes,0.308,120,TAC-TX&trade;
+Barnes,0.308,130,Tipped Triple-Shock&trade; X Boattail
+Barnes,0.308,130,Triple-Shock&trade; X Boattail
+Barnes,0.308,130,XLC&trade; Boattail
+Barnes,0.308,140,Multi-Purpose Green&trade; Flat Base
+Barnes,0.308,140,RRLP&trade; Flat Base
+Barnes,0.308,150,MRX BT
+Barnes,0.308,150,TAC-X&trade; Boattail
+Barnes,0.308,150,Tipped Triple-Shock&trade; X Boattail
+Barnes,0.308,150,Triple-Shock&trade; X Boattail
+Barnes,0.308,150,Triple-Shock&trade; X Flat Nose
+Barnes,0.308,150,X Flat Base
+Barnes,0.308,150,X Flat Nose
+Barnes,0.308,150,XLC&trade; Boattail
+Barnes,0.308,155,BT Match
+Barnes,0.308,155,Match Burner&trade; BT Palma
+Barnes,0.308,165,Banded Spitzer Boattail
+Barnes,0.308,165,MRX BT
+Barnes,0.308,165,Tipped Triple-Shock&trade; X Boattail
+Barnes,0.308,165,Triple-Shock&trade; X Boattail
+Barnes,0.308,165,X Boattail
+Barnes,0.308,165,XLC&trade; Boattail
+Barnes,0.308,168,TAC-X&trade; Boattail
+Barnes,0.308,168,TSX BT (Litz)
+Barnes,0.308,168,TTSX BT (Litz)
+Barnes,0.308,168,Tipped Triple-Shock&trade; X Boattail
+Barnes,0.308,168,Triple-Shock&trade; X Boattail
+Barnes,0.308,168,XLC&trade; Boattail
+Barnes,0.308,175,BT Match
+Barnes,0.308,175,Long Range X Boattail
+Barnes,0.308,175,Match Burner&trade; BT Match
+Barnes,0.308,180,MRX BT
+Barnes,0.308,180,TSX BT (Litz)
+Barnes,0.308,180,Tipped Triple-Shock&trade; X Boattail
+Barnes,0.308,180,Triple-Shock&trade; X Boattail
+Barnes,0.308,180,X Boattail
+Barnes,0.308,180,X Flat Base
+Barnes,0.308,180,XLC&trade; Boattail
+Barnes,0.308,190,Long Range X Boattail
+Barnes,0.308,200,Long Range X Boattail
+Barnes,0.308,200,Tipped Triple-Shock&trade; X Boattail
+Barnes,0.308,200,Triple-Shock&trade; X Flat Base
+Barnes,0.308,200,X Flat Base
+Barnes,0.308,208,Long Range X Boattail
+Barnes,0.308,212,Long Range X Boattail Bore Rider
+Barnes,0.310,108,Multi-Purpose Green&trade; Flat Base
+Barnes,0.310,108,RRLP&trade; Flat Base
+Barnes,0.310,123,TAC-X&trade; Boattail
+Barnes,0.323,160,Tipped Triple-Shock&trade; X Boattail
+Barnes,0.323,180,Triple-Shock&trade; X Boattail
+Barnes,0.323,200,Triple-Shock&trade; X Boattail
+Barnes,0.323,200,XLC&trade; Flat Base
+Barnes,0.338,160,Tipped Triple-Shock&trade; X Flat Base
+Barnes,0.338,160,X Flat Base
+Barnes,0.338,185,MRX BT
+Barnes,0.338,185,Tipped Triple-Shock&trade; X Boattail
+Barnes,0.338,185,Tipped Triple-Shock&trade; X Boattail (Litz)
+Barnes,0.338,185,Triple-Shock&trade; X Boattail
+Barnes,0.338,185,XLC&trade; Boattail
+Barnes,0.338,210,Tipped Triple-Shock&trade; X Boattail
+Barnes,0.338,210,Tipped Triple-Shock&trade; X Boattail (Litz)
+Barnes,0.338,210,Triple-Shock&trade; X Boattail
+Barnes,0.338,225,MRX BT
+Barnes,0.338,225,TTSX BT (Litz)
+Barnes,0.338,225,Tipped Triple-Shock&trade; X Boattail
+Barnes,0.338,225,Tipped Triple-Shock&trade; X Boattail (Litz)
+Barnes,0.338,225,Triple-Shock&trade; X Flat Base
+Barnes,0.338,250,Banded Solid Roundnose
+Barnes,0.338,250,MRX BT
+Barnes,0.338,250,Triple-Shock&trade; X Flat Base
+Barnes,0.338,250,X Flat Base
+Barnes,0.338,265,Lapua Tipped Triple-Shock&trade; X Boattail
+Barnes,0.338,265,Long Range X Boattail
+Barnes,0.338,265,Long Range X Boattail
+Barnes,0.338,285,Long Range X Boattail
+Barnes,0.338,285,Triple-Shock&trade; X Boattail (Litz)
+Barnes,0.348,220,Flat Nose Soft Point
+Barnes,0.348,250,Flat Nose Soft Point
+Barnes,0.355,115,XPB&trade; Pistol
+Barnes,0.358,180,Tipped Triple-Shock&trade; X Boattail
+Barnes,0.358,180,X Flat Base
+Barnes,0.358,200,Tipped Triple-Shock&trade; X Boattail
+Barnes,0.358,200,X Flat Base
+Barnes,0.358,225,Triple-Shock&trade; X Flat Base
+Barnes,0.366,250,Banded Solid Round Nose
+Barnes,0.366,250,Tipped Triple-Shock&trade; X Boattail
+Barnes,0.366,250,Triple-Shock&trade; X Flat Base
+Barnes,0.366,250,X Flat Base
+Barnes,0.366,286,Banded Solid Round Nose
+Barnes,0.366,286,Triple-Shock&trade; X Flat Base
+Barnes,0.366,286,X Flat Base
+Barnes,0.375,210,X Flat Base
+Barnes,0.375,235,Triple-Shock&trade; X Flat Base
+Barnes,0.375,235,XLC&trade; Flat Base
+Barnes,0.375,250,Tipped Triple-Shock&trade; X Boattail
+Barnes,0.375,255,Flat Nose Soft Point
+Barnes,0.375,270,Banded Solid Round Nose
+Barnes,0.375,270,Long Range X Boattail
+Barnes,0.375,270,Triple-Shock&trade; X Flat Base
+Barnes,0.375,300,Banded Solid Round Nose
+Barnes,0.375,300,Triple-Shock&trade; X Flat Base
+Barnes,0.375,350,Banded Solid Round Nose
+Barnes,0.377,255,Flat Nose Soft Point
+Barnes,0.400,155,XPB&trade; Pistol
+Barnes,0.400,195,Expander MZ
+Barnes,0.406,250,Flat Nose Soft Point
+Barnes,0.406,250,Round Nose Soft Point
+Barnes,0.410,400,Banded Solid Flat Nose
+Barnes,0.411,300,X Flat Base
+Barnes,0.416,300,X Flat Base
+Barnes,0.416,350,Banded Solid Round Nose
+Barnes,0.416,350,Tipped Triple-Shock&trade; X Boattail
+Barnes,0.416,350,Triple-Shock&trade; X Flat Base
+Barnes,0.416,400,Banded Solid Round Nose
+Barnes,0.416,400,Triple-Shock&trade; X Flat Base
+Barnes,0.422,400,Banded Solid Round Nose
+Barnes,0.423,400,X Flat Base
+Barnes,0.429,200,XPB&trade; Pistol
+Barnes,0.429,225,XPB&trade; Pistol
+Barnes,0.429,300,Buster&trade
+Barnes,0.450,400,Buster&trade
+Barnes,0.451,185,XPB&trade; Pistol
+Barnes,0.451,200,XPB&trade; Pistol
+Barnes,0.451,225,XPB&trade; Pistol
+Barnes,0.451,245,Spit-Fire MZ
+Barnes,0.451,250,Expander MZ
+Barnes,0.451,250,Spit-Fire TMZ
+Barnes,0.451,250,XPB&trade; Pistol
+Barnes,0.451,285,Spit-Fire MZ
+Barnes,0.451,290,Spit-Fire TMZ
+Barnes,0.451,300,Expander MZ
+Barnes,0.454,325,Buster&trade
+Barnes,0.458,250,Triple-Shock&trade; X Flat Nose
+Barnes,0.458,250,X Flat Nose
+Barnes,0.458,300,300 Tipped Triple-Shock&trade; X Flat Base - 458 SOCOM
+Barnes,0.458,300,Banded Solid Flat Nose
+Barnes,0.458,300,Flat Nose Soft Point
+Barnes,0.458,300,Spitzer Soft Point
+Barnes,0.458,300,Tipped Triple-Shock&trade; X Boattail
+Barnes,0.458,300,Triple-Shock&trade; X Flat Nose
+Barnes,0.458,300,X Flat Base
+Barnes,0.458,300,X Flat Nose
+Barnes,0.458,350,X Flat Base
+Barnes,0.458,400,Flat Nose Soft Point
+Barnes,0.458,400,Spitzer Soft Point
+Barnes,0.458,450,Banded Solid
+Barnes,0.458,450,Triple-Shock&trade; X Flat Base
+Barnes,0.458,500,Banded Solid Round Nose
+Barnes,0.458,500,Triple-Shock&trade; X Flat Base
+Barnes,0.458,600,Round Nose Soft Point
+Barnes,0.474,500,Banded Solid Flat Nose
+Barnes,0.474,500,Triple-Shock&trade; Flat Base
+Barnes,0.475,500,XLC&trade; Flat Base
+Barnes,0.500,275,Expander MZ
+Barnes,0.500,275,XPB&trade; Pistol
+Barnes,0.500,325,Expander MZ
+Barnes,0.500,325,XPB&trade; Pistol
+Barnes,0.500,375,XPB&trade; Pistol
+Barnes,0.500,400,Buster&trade
+Barnes,0.504,525,Banded Solid Round Nose
+Barnes,0.509,570,Banded Solid Flat Nose
+Barnes,0.509,570,Triple-Shock&trade; Flat Base
+Barnes,0.509,570,XLC&trade; Flat Base
+Barnes,0.510,300,Flat Nose Soft Point
+Barnes,0.510,450,Flat Nose Soft Point
+Barnes,0.510,535,Banded Solid Round Nose
+Barnes,0.510,647,TAC-X&trade; Boattail
+Barnes,0.510,647,Triple-Shock&trade; X Boattail
+Barnes,0.510,647,X Boattail
+Barnes,0.510,750,Banded Solid Bore Rider
+Barnes,0.510,750,LRS Bore Rider Boattail
+Barnes,0.510,750,TAC-LR&trade; Boattail (Secant)
+Barnes,0.510,750,TAC-LR&trade; Boattail (Tangent)
+Barnes,0.510,800,Banded Solid Bore Rider
+Barnes,0.510,800,LRS Bore Rider Boattail
+Barnes,0.525,525,Banded Solid
+Barnes,0.583,750,Banded Solid Flat Nose
+Barnes,0.585,750,XLC&trade; Flat Base
+Barnes,0.618,900,Banded Solid Flat Base
+Barrett,0.416,452,Brass Solid
+Berger,0.172,20,Match Varmint
+Berger,0.172,25,Match Target
+Berger,0.172,25,Match Varmint
+Berger,0.172,30,Match Varmint
+Berger,0.204,30,Match Varmint
+Berger,0.204,35,Match Varmint
+Berger,0.204,40,Match Varmint
+Berger,0.204,40,Match Varmint BT
+Berger,0.204,50,Match Varmint
+Berger,0.204,50,Match Varmint BT
+Berger,0.204,55,Match Varmint BT
+Berger,0.224,30,Match Varmint
+Berger,0.224,40,Match Varmint
+Berger,0.224,50,Match
+Berger,0.224,50,Match Varmint
+Berger,0.224,52,Match
+Berger,0.224,52,Match Varmint
+Berger,0.224,55,Match
+Berger,0.224,55,Match Varmint
+Berger,0.224,60,Match Varmint
+Berger,0.224,62,Match Varmint
+Berger,0.224,64,Match Varmint
+Berger,0.224,70,Match Target VLD
+Berger,0.224,70,Match VLD
+Berger,0.224,70,VLD (Litz)
+Berger,0.224,73,BT (Litz)
+Berger,0.224,73,Match BT
+Berger,0.224,73,Match Target BT
+Berger,0.224,75,Match Target VLD
+Berger,0.224,75,Match VLD
+Berger,0.224,75,VLD (Litz)
+Berger,0.224,77,BT (Litz)
+Berger,0.224,77,Match BT
+Berger,0.224,77,Match Target BT
+Berger,0.224,77,OTM
+Berger,0.224,80,Match Target VLD
+Berger,0.224,80,Match Target VLD Moly
+Berger,0.224,80,Match VLD
+Berger,0.224,80,VLD (Litz)
+Berger,0.224,80,Fullbore (Litz)
+Berger,0.224,82,BT (Litz)
+Berger,0.224,82,Match BT
+Berger,0.224,82,Match Target BT
+Berger,0.224,85.5,Long Range Hybrid Target
+Berger,0.224,90,Match Target BT Long Range
+Berger,0.224,90,Match Target BT Long Range (Litz)
+Berger,0.224,90,Match Target VLD
+Berger,0.224,90,Match VLD
+Berger,0.224,90,VLD (Litz)
+Berger,0.243,60,Match
+Berger,0.243,62,Match
+Berger,0.243,65,Match
+Berger,0.243,65,Match BT
+Berger,0.243,65,Match Target BT
+Berger,0.243,66,Match High BC Flat Base
+Berger,0.243,68,Match
+Berger,0.243,69,High BC Flat Base
+Berger,0.243,70,Match
+Berger,0.243,80,Match
+Berger,0.243,87,Match Hunting VLD
+Berger,0.243,88,Match High BC Flat Base
+Berger,0.243,90,BT (Litz)
+Berger,0.243,90,Match BT
+Berger,0.243,90,Match Target BT
+Berger,0.243,95,Classic Hunter
+Berger,0.243,95,Match Hunting VLD
+Berger,0.243,95,Match Target VLD
+Berger,0.243,95,Match VLD
+Berger,0.243,95,VLD (Litz)
+Berger,0.243,100,BT (Litz)
+Berger,0.243,100,Match Target BT
+Berger,0.243,100,Target Hybrid
+Berger,0.243,105,BT (Litz)
+Berger,0.243,105,Match Boattail
+Berger,0.243,105,Match Hunting VLD
+Berger,0.243,105,Match Target BT
+Berger,0.243,105,Match Target BT Moly
+Berger,0.243,105,Match Target VLD
+Berger,0.243,105,Match Target VLD Moly
+Berger,0.243,105,Match VLD
+Berger,0.243,105,Target Hybrid
+Berger,0.243,105,VLD (Litz)
+Berger,0.243,108,BT (Litz)
+Berger,0.243,108,Boattail
+Berger,0.243,108,Elite Hunter
+Berger,0.243,108,Match Boattail
+Berger,0.243,108,Match Target BT
+Berger,0.243,109,Long Range Target Hybrid
+Berger,0.243,115,Match Hunting VLD
+Berger,0.243,115,Match VLD
+Berger,0.243,115,VLD (Litz)
+Berger,0.257,87,Match
+Berger,0.257,115,Match Hunting VLD
+Berger,0.257,115,Match Target VLD
+Berger,0.257,115,Match VLD
+Berger,0.257,115,VLD (Litz)
+Berger,0.264,100,Match Target BT
+Berger,0.264,120,BT (Litz)
+Berger,0.264,120,Match Boattail
+Berger,0.264,120,Match Target BT
+Berger,0.264,130,AR Hyrbrid OTM Tactical
+Berger,0.264,130,Match Hunting VLD
+Berger,0.264,130,Match Target VLD
+Berger,0.264,130,Match VLD
+Berger,0.264,130,VLD (Litz)
+Berger,0.264,140,BT (Litz)
+Berger,0.264,140,LR BT HP (Litz)
+Berger,0.264,140,Match Hunting VLD
+Berger,0.264,140,Match Target BT
+Berger,0.264,140,Match Target BT Long Range
+Berger,0.264,140,Match Target VLD
+Berger,0.264,140,Match Target VLD Moly
+Berger,0.264,140,Match VLD
+Berger,0.264,140,Short BT (Litz)
+Berger,0.264,140,Target Hybrid
+Berger,0.264,140,VLD (Litz)
+Berger,0.264,144,Long Range Hybrid Target
+Berger,0.264,153.5,Long Range Hybrid Target
+Berger,0.264,156,EOL Elite Hunter
+Berger,0.277,130,Classic Hunter
+Berger,0.277,130,Match Hunting VLD
+Berger,0.277,130,Match VLD
+Berger,0.277,130,VLD (Litz)
+Berger,0.277,140,Match Hunting VLD
+Berger,0.277,140,Match VLD
+Berger,0.277,140,VLD (Litz)
+Berger,0.277,150,Match Hunting VLD
+Berger,0.277,150,Match VLD
+Berger,0.277,150,VLD (Litz)
+Berger,0.277,170,EOL Elite Hunter
+Berger,0.284,140,Match Hunting VLD
+Berger,0.284,140,Match VLD
+Berger,0.284,168,Classic Hunter
+Berger,0.284,168,Match Hunting VLD
+Berger,0.284,168,Match Target VLD
+Berger,0.284,168,Match VLD
+Berger,0.284,168,VLD (Litz)
+Berger,0.284,175,Elite Hunter
+Berger,0.284,180,BT (Litz)
+Berger,0.284,180,Match Hunting VLD
+Berger,0.284,180,Match Target BT
+Berger,0.284,180,Match Target VLD
+Berger,0.284,180,Match VLD
+Berger,0.284,180,Target Hybrid
+Berger,0.284,180,VLD (Litz)
+Berger,0.284,184,Target Hybrid
+Berger,0.284,195,EOL Elite Hunter
+Berger,0.308,110,Match Target FB
+Berger,0.308,115,Match Target FB
+Berger,0.308,125,Match Target FB
+Berger,0.308,135,Match Target FB
+Berger,0.308,150,Match Target FB
+Berger,0.308,155,Match BT FULLBORE
+Berger,0.308,155,Match Boattail
+Berger,0.308,155,Match Hunting VLD
+Berger,0.308,155,Match Target BT
+Berger,0.308,155,Match Target VLD
+Berger,0.308,155,Match VLD
+Berger,0.308,155,Target Hybrid
+Berger,0.308,155,VLD (Litz)
+Berger,0.308,155.5,Fullbore (Litz)
+Berger,0.308,155.5,Match Target BT FULLBORE
+Berger,0.308,168,BT (Litz)
+Berger,0.308,168,Classic Hunter
+Berger,0.308,168,Match Boattail
+Berger,0.308,168,Match Hunting VLD
+Berger,0.308,168,Match Target BT
+Berger,0.308,168,Match Target VLD
+Berger,0.308,168,Match Target VLD Moly
+Berger,0.308,168,Match VLD
+Berger,0.308,168,Target Hybrid
+Berger,0.308,168,VLD (Litz)
+Berger,0.308,175,Long Range BT (Litz)
+Berger,0.308,175,Match Boattail
+Berger,0.308,175,Match Hunting VLD
+Berger,0.308,175,Match Target BT Long Range
+Berger,0.308,175,Match Target BT VLD
+Berger,0.308,175,Match Target VLD
+Berger,0.308,175,OTM
+Berger,0.308,175,VLD (Litz)
+Berger,0.308,180,Elite Hunter
+Berger,0.308,185,Classic Hunter
+Berger,0.308,185,Juggernaut OTM Tactical
+Berger,0.308,185,Juggernaut Target
+Berger,0.308,185,Long Range BT (Litz)
+Berger,0.308,185,Match Boattail
+Berger,0.308,185,Match Hunting VLD
+Berger,0.308,185,Match Target BT Long Range
+Berger,0.308,185,Match Target VLD
+Berger,0.308,185,Match VLD
+Berger,0.308,185,Target Hybrid
+Berger,0.308,185,VLD (Litz)
+Berger,0.308,190,Match Hunting VLD
+Berger,0.308,190,Match Target VLD
+Berger,0.308,190,Match VLD
+Berger,0.308,190,VLD (Litz)
+Berger,0.308,200,Target Hybrid
+Berger,0.308,200,200.20X Hybrid Target
+Berger,0.308,205,Elite Hunter
+Berger,0.308,208,Long Range Hybrid Target
+Berger,0.308,210,Long Range BT (Litz)
+Berger,0.308,210,Match Boattail
+Berger,0.308,210,Match Hunting VLD
+Berger,0.308,210,Match Target BT Long Range
+Berger,0.308,210,Match Target VLD
+Berger,0.308,210,Match VLD
+Berger,0.308,210,VLD (Litz)
+Berger,0.308,215,Target Hybrid
+Berger,0.308,230,Hybrid OTM
+Berger,0.308,230,Target Hybrid
+Berger,0.308,245,Extreme Outer Limits (EOL) Elite Hunter
+Berger,0.338,250,BT (Litz -- estimated)
+Berger,0.338,250,Elite Hunter
+Berger,0.338,250,Hybrid (Litz)
+Berger,0.338,250,Hybrid OTM
+Berger,0.338,250,VLD (Litz -- estimated)
+Berger,0.338,300,BT (Litz -- estimated)
+Berger,0.338,300,Elite Hunter
+Berger,0.338,300,Hybrid
+Berger,0.338,300,Hybrid (Litz)
+Berger,0.338,300,Hybrid OTM
+Berger,0.338,300,VLD (Litz -- estimated)
+CCI,0.172,17,TNT HP (Hornady Magnum Rimfre)
+CCI,0.223,27,Short HP
+CCI,0.223,29,Long High Speed
+CCI,0.223,29,Short High Speed Solid
+CCI,0.223,29,Short Target Solid
+CCI,0.223,30,WMR Maxi-Mag +V Hollow Point
+CCI,0.223,30,WMR TNT Hollow Point
+CCI,0.223,32,Long Rifle Quik-Shok
+CCI,0.223,32,Long Rifle Stinger HP
+CCI,0.223,36,Long Rifle Mini-Mag HP
+CCI,0.223,40,Long Rifle Green Tag Comp. Solid
+CCI,0.223,40,Long Rifle HS Mini-Mag Solid
+CCI,0.223,40,Long Rifle Pistol Match Solid
+CCI,0.223,40,Long Rifle Silhouette
+CCI,0.223,40,Long Rifle Standard Velocity Solid
+CCI,0.223,40,Long Rifle Velocitor Hollow Point
+CCI,0.223,40,WMR Maxi-Mag Hollow Point
+CCI,0.223,40,WMR Maxi-Mag Solid
+Chey Tac,0.375,350,Solid (Litz)
+Chey Tac,0.408,305,Solid (Litz)
+Chey Tac,0.408,419,Solid (Litz)
+Cutting Edge,0.224,30,HG Raptor&trade;
+Cutting Edge,0.224,40,Flat Base Raptor&trade;
+Cutting Edge,0.224,40,MTH&trade;
+Cutting Edge,0.224,45,Copper Raptor&trade;
+Cutting Edge,0.224,50,Flat Base Raptor&trade;
+Cutting Edge,0.224,55,Flat Base Raptor&trade;
+Cutting Edge,0.224,55,MTAC
+Cutting Edge,0.224,55,MTH&trade;
+Cutting Edge,0.224,60,Copper Raptor&trade;
+Cutting Edge,0.224,65,MTH&trade;
+Cutting Edge,0.243,77,MTH&trade;
+Cutting Edge,0.243,88,MTH&trade;
+Cutting Edge,0.243,90,MTAC Single Feed
+Cutting Edge,0.243,100,MTAC Single Feed
+Cutting Edge,0.243,100,MTH&trade;
+Cutting Edge,0.257,100,MTH&trade;
+Cutting Edge,0.257,115,MTH&trade;
+Cutting Edge,0.264,110,Copper Raptor&trade;
+Cutting Edge,0.264,120,MTH&trade;
+Cutting Edge,0.264,130,MTH&trade;
+Cutting Edge,0.264,130,Safari Solid&trade; Copper
+Cutting Edge,0.264,133,MTAC Single Feed
+Cutting Edge,0.264,140,MTH&trade;
+Cutting Edge,0.264,143,MTAC Single Feed
+Cutting Edge,0.277,82,Extended Range Raptor&trade;
+Cutting Edge,0.277,82,Extended Range Raptor&trade; - Thick Skin
+Cutting Edge,0.277,90,Copper Raptor&trade;
+Cutting Edge,0.277,115,Copper Raptor&trade;
+Cutting Edge,0.277,120,MTH&trade;
+Cutting Edge,0.277,130,MTH&trade;
+Cutting Edge,0.277,140,MTH&trade; - Single Feed
+Cutting Edge,0.284,120,Copper Raptor&trade;
+Cutting Edge,0.284,130,MTH&trade;
+Cutting Edge,0.284,135,Copper Raptor&trade;
+Cutting Edge,0.284,145,MTH&trade;
+Cutting Edge,0.284,157,MTAC Single Feed
+Cutting Edge,0.284,160,MTH&trade; - Single Feed
+Cutting Edge,0.284,170,MTH&trade;
+Cutting Edge,0.284,192,MTAC
+Cutting Edge,0.308,135,Copper Raptor&trade;
+Cutting Edge,0.308,140,MTH&trade;
+Cutting Edge,0.308,150,Copper Raptor&trade;
+Cutting Edge,0.308,150,MTH&trade;
+Cutting Edge,0.308,155,MTAC
+Cutting Edge,0.308,165,Lazer&trade;
+Cutting Edge,0.308,165,MTH&trade;
+Cutting Edge,0.308,168,MTAC
+Cutting Edge,0.308,180,Lazer&trade;
+Cutting Edge,0.308,180,Lazer&trade; - Single Feed
+Cutting Edge,0.308,180,MTH&trade;
+Cutting Edge,0.308,180,MTH&trade; Max
+Cutting Edge,0.308,180,Safari Solid&trade; Copper
+Cutting Edge,0.308,182,MTAC
+Cutting Edge,0.308,190,MTH&trade; Max
+Cutting Edge,0.308,200,Lazer&trade; - Single Feed
+Cutting Edge,0.308,200,MTH&trade; Max
+Cutting Edge,0.308,210,Safari Solid&trade; Copper
+Cutting Edge,0.338,176,Extended Range Raptor&trade;
+Cutting Edge,0.338,185,Copper Raptor&trade;
+Cutting Edge,0.338,200,MTH
+Cutting Edge,0.338,225,Copper Raptor&trade;
+Cutting Edge,0.338,225,Lazer&trade;
+Cutting Edge,0.338,225,Lazer&trade; (Litz)
+Cutting Edge,0.338,225,MTH
+Cutting Edge,0.338,227,MTAC
+Cutting Edge,0.338,250,Lazer&trade;
+Cutting Edge,0.338,250,Lazer&trade; (Litz)
+Cutting Edge,0.338,252,MTH
+Cutting Edge,0.338,252,MTH (Litz)
+Cutting Edge,0.338,254,MTAC
+Cutting Edge,0.338,254,MTAC Single Feed
+Cutting Edge,0.338,254,MTAC Single Feed (Litz)
+Cutting Edge,0.338,265,MTH
+Cutting Edge,0.338,265,MTH (Litz)
+Cutting Edge,0.338,275,Lazer&trade;
+Cutting Edge,0.338,275,Lazer&trade;
+Cutting Edge,0.338,275,MTH
+Cutting Edge,0.338,275,MTH (Litz)
+Cutting Edge,0.338,278,MTAC Single Feed
+Cutting Edge,0.338,278,MTAC Single Feed (Litz)
+Cutting Edge,0.338,300,Lazer&trade; - Single Feed
+Cutting Edge,0.338,300,MTH Max
+Cutting Edge,0.358,200,MTH&trade; Max
+Cutting Edge,0.366,255,Safari Raptor&trade;
+Cutting Edge,0.366,255,Safari Raptor&trade; - Thick Skin
+Cutting Edge,0.366,280,Safari Solid&trade
+Cutting Edge,0.375,235,Extended Range Raptor&trade;
+Cutting Edge,0.375,275,Safari Raptor&trade;
+Cutting Edge,0.375,275,Safari Raptor&trade; - Thick Skin
+Cutting Edge,0.375,280,Safari Solid&trade
+Cutting Edge,0.375,300,MTH&trade; Single Feed
+Cutting Edge,0.375,320,MTH&trade;
+Cutting Edge,0.375,325,Lazer&trade;
+Cutting Edge,0.375,330,MTH&trade; Single Feed
+Cutting Edge,0.375,350,Lazer&trade;
+Cutting Edge,0.375,350,MTH&trade; Single Feed
+Cutting Edge,0.375,350,MTH&trade; Single Feed (Litz)
+Cutting Edge,0.375,352,MTAC Single Feed
+Cutting Edge,0.375,352,MTAC Single Feed (Litz)
+Cutting Edge,0.375,375,Lazer&trade;
+Cutting Edge,0.375,375,MTH&trade; Single Feed
+Cutting Edge,0.375,377,MTAC Single Feed
+Cutting Edge,0.375,400,Lazer&trade;
+Cutting Edge,0.375,400,MTH&trade; Single Feed
+Cutting Edge,0.375,402,MTAC Single Feed
+Cutting Edge,0.375,425,Lazer&trade;
+Cutting Edge,0.375,425,MTH&trade; Single Feed
+Cutting Edge,0.375,427,MTAC Single Feed
+Cutting Edge,0.408,390,MTH&trade;
+Cutting Edge,0.408,390,MTH&trade;
+Cutting Edge,0.408,390,MTH&trade; (Litz)
+Cutting Edge,0.408,415,MTH&trade;
+Cutting Edge,0.408,415,MTH&trade; (Litz)
+Cutting Edge,0.408,420,MTAC
+Cutting Edge,0.408,420,MTH&trade;
+Cutting Edge,0.408,425,Lazer&trade;
+Cutting Edge,0.408,450,Lazer&trade;
+Cutting Edge,0.409,370,Safari Raptor&trade;
+Cutting Edge,0.409,400,Safari Solid&trade;
+Cutting Edge,0.409,400,Safari Solid&trade;
+Cutting Edge,0.416,225,Safari Raptor&trade;
+Cutting Edge,0.416,325,Safari Raptor&trade;
+Cutting Edge,0.416,340,MTH&trade; Max
+Cutting Edge,0.416,350,MTH&trade; Max
+Cutting Edge,0.416,350,Safari Solid&trade;
+Cutting Edge,0.416,370,Safari Raptor&trade;
+Cutting Edge,0.416,375,MTH&trade; Max
+Cutting Edge,0.416,400,Safari Solid&trade;
+Cutting Edge,0.416,420,MTH&trade; Max
+Cutting Edge,0.416,422,MTAC
+Cutting Edge,0.416,446,MTAC
+Cutting Edge,0.416,450,Lazer&trade;
+Cutting Edge,0.416,452,MTAC Single Feed
+Cutting Edge,0.416,472,MTAC
+Cutting Edge,0.416,475,Lazer&trade;
+Cutting Edge,0.416,500,Lazer&trade;
+Cutting Edge,0.416,525,Lazer&trade;
+Cutting Edge,0.416,550,Lazer&trade;
+Cutting Edge,0.423,325,Safari Raptor&trade;
+Cutting Edge,0.423,350,Safari Solid&trade;
+Cutting Edge,0.423,375,Safari Raptor&trade;
+Cutting Edge,0.423,400,Safari Solid&trade;
+Cutting Edge,0.457,450,Safari Raptor&trade;
+Cutting Edge,0.457,450,Safari Raptor&trade;
+Cutting Edge,0.457,480,Safari Solid&trade;
+Cutting Edge,0.457,480,Safari Solid&trade;
+Cutting Edge,0.458,250,Safari Lever&#43; Raptor&trade;
+Cutting Edge,0.458,258,Flat Base Raptor&trade;
+Cutting Edge,0.458,295,Safari Lever&#43; Raptor&trade;
+Cutting Edge,0.458,295,Safari Raptor&trade;
+Cutting Edge,0.458,325,Lever Gun Solid
+Cutting Edge,0.458,325,Safari Solid&trade;
+Cutting Edge,0.458,370,Safari Lever&#43; Raptor&trade;
+Cutting Edge,0.458,400,Lever Solid
+Cutting Edge,0.458,420,Safari Raptor&trade;
+Cutting Edge,0.458,450,Safari Solid&trade;
+Cutting Edge,0.470,460,Safari Raptor&trade;
+Cutting Edge,0.474,500,Safari Solid&trade;
+Cutting Edge,0.487,500,Safari Solid&trade;
+Cutting Edge,0.510,475,Safari Raptor&trade;
+Cutting Edge,0.510,510,Safari Solid&trade;
+Cutting Edge,0.510,530,Safari Raptor&trade;
+Cutting Edge,0.510,570,Safari Solid&trade;
+Cutting Edge,0.510,720,MTAC
+Cutting Edge,0.510,762,MTAC
+Cutting Edge,0.510,802,MTAC
+Cutting Edge,0.520,798,MTH&trade; Max
+Cutting Edge,0.585,700,Safari Raptor&trade;
+Cutting Edge,0.585,750,Safari Solid&trade;
+Cutting Edge,0.620,825,Safari Raptor&trade;
+Cutting Edge,0.620,900,Safari Solid&trade;
+DRT,0.224,79,Frangible (Litz)
+DRT,0.308,175,Frangible (non-lead) (Litz)
+DRT,0.308,200,Frangible (non-lead) (Litz)
+DTAC,0.243,115,115 DTAC&trade;
+DTAC,0.243,115,115 DTAC&trade; (Pointed)
+DTAC,0.243,115,BTHP (Litz)
+DTAC,0.243,115,DTAC&trade; RBT Closed Nose - Boron Nitride
+DTAC,0.243,117,BT (Litz)
+Eley,0.223,29,Short Rapid Fire Match
+Eley,0.223,37.5,Long Rifle High Velocity Hollow Point
+Eley,0.223,40,Biathlon Match
+Eley,0.223,40,Club
+Eley,0.223,40,LR Silhouex
+Eley,0.223,40,Long Rifle High Velocity Solid
+Eley,0.223,40,Long Rifle Pistol Match
+Eley,0.223,40,Long Rifle Subsonic Xtra Plus
+Eley,0.223,40,Long Rifle Target Pistol
+Eley,0.223,40,Long Rifle Tenex Pistol Xtra
+Eley,0.223,40,Long Rifle Tenex Ultimate EPS Pistol
+Eley,0.223,40,Match EPS
+Eley,0.223,40,Practice
+Eley,0.223,40,Standard
+Eley,0.223,40,Subsonic Hollow Point (G1)
+Eley,0.223,40,Subsonic Hollow Point (RA4)
+Eley,0.223,40,Target
+Eley,0.223,40,Tenex Ultimate EPS
+Extreme Performance,0.224,52,Solid Spotter
+Extreme Performance,0.224,58,Solid Armor Piercing
+Extreme Performance,0.224,58,Solid Armor Piercing Incendiary
+Extreme Performance,0.224,59,Solid
+Extreme Performance,0.308,135,Solid Limited Penetration
+Extreme Performance,0.308,135,Solid Spotter (140)
+Extreme Performance,0.308,140,Solid (140)
+Extreme Performance,0.308,140,Solid Armor Piercing (140)
+Extreme Performance,0.308,140,Solid Armor Target Penetration
+Extreme Performance,0.308,140,Solid Barrier Penetration
+Extreme Performance,0.308,141,Solid Armor Piercing Incendiary (140)
+Extreme Performance,0.308,145,Solid Armor Piercing Incendiary (155)
+Extreme Performance,0.308,149,Solid Spotter (155)
+Extreme Performance,0.308,150,Solid Limited Penetration
+Extreme Performance,0.308,151,Solid Armor Piercing (155)
+Extreme Performance,0.308,155,Solid (155)
+Extreme Performance,0.308,155,Solid Armor Target Penetration
+Extreme Performance,0.308,155,Solid Barrier Penetration
+Extreme Performance,0.308,170,Solid Limited Penetration
+Extreme Performance,0.308,170,Solid Spotter (175)
+Extreme Performance,0.308,175,Solid (175)
+Extreme Performance,0.308,175,Solid Armor Piercing (175)
+Extreme Performance,0.308,175,Solid Armor Piercing Incendiary (175)
+Extreme Performance,0.308,175,Solid Armor Target Penetration
+Extreme Performance,0.308,175,Solid Barrier Penetration
+Extreme Performance,0.338,209,Solid Spotter
+Extreme Performance,0.338,220,Solid Armor Piercing Incendiary
+Extreme Performance,0.338,225,Solid Armor Piercing
+Extreme Performance,0.338,234,Solid
+Extreme Performance,0.408,375,Solid Armor Piercing Incendiary
+Extreme Performance,0.408,380,Solid Spotter
+Extreme Performance,0.408,395,Solid Armor Piercing
+Extreme Performance,0.408,400,Solid
+Extreme Performance,0.510,760,Solid Armor Piercing Incendiary
+Extreme Performance,0.510,760,Solid Spotter
+Extreme Performance,0.510,765,Solid Armor Piercing
+Extreme Performance,0.510,770,Solid
+Federal,0.172,17,Hornady V-Max (Hornady Magnum Rimfire)
+Federal,0.172,17,Speer TNT JHP (Hornady Magnum Rimfire)
+Federal,0.223,30,WMR Jacketed Hollow Point
+Federal,0.223,30,WMR TNT Jacketed Hollow Point
+Federal,0.223,31,Long Rifle Hyper Velocity HP Copper Plated
+Federal,0.223,36,Long Rifle Hollow Point
+Federal,0.223,38,American Eagle&reg; Long Rifle Hollow Point Copper-Plated
+Federal,0.223,38,Long Rifle Hollow Point Copper-Plated
+Federal,0.223,40,American Eagle&reg; Long Rifle Solid
+Federal,0.223,40,Long Rifle Match Solid
+Federal,0.223,40,Long Rifle Match Solid
+Federal,0.223,40,Long Rifle Solid
+Federal,0.223,40,Long Rifle Solid Copper Plated
+Federal,0.223,40,Long Rifle Target Solid
+Federal,0.223,40,Long Rifle Ultramatch Solid
+Federal,0.223,40,Long Rifle Ultramatch Solid
+Federal,0.223,40,WMR Full Metal Jacket Solid
+Federal,0.223,50,WMR Jacketed Hollow Point
+Federal,0.224,55,American Eagle&reg; Full Metal Jacket Boattail
+Federal,0.224,90,Fusion Soft Point
+Federal,0.264,130,Terminal Ascent
+Federal,0.264,140,Fusion Soft Point
+Federal,0.277,130,Fusion Soft Point
+Federal,0.277,136,Terminal Ascent
+Federal,0.277,150,Fusion Soft Point
+Federal,0.284,140,Fusion Soft Point
+Federal,0.284,155,Terminal Ascent
+Federal,0.284,160,Fusion Soft Point
+Federal,0.284,170,Terminal Ascent
+Federal,0.284,175,Fusion Soft Point
+Federal,0.308,150,Fusion Soft Point
+Federal,0.308,168,American Eagle&reg; OTM
+Federal,0.308,175,Terminal Ascent
+Federal,0.308,180,Fusion Soft Point
+Federal,0.308,200,Terminal Ascent
+Fiocchi,0.223,29,Short Round Nose Compensated Solid
+Fiocchi,0.223,40,Long Rifle Biathlon Match Solid
+Fiocchi,0.223,40,Long Rifle Match Solid
+Fiocchi,0.223,40,Long Rifle Match Training Solid
+Fiocchi,0.223,40,Long Rifle Pistol Match Solid
+Fiocchi,0.223,40,Long Rifle Pistol Match Training Solid
+GS Custom Bullets,0.172,17,SP
+GS Custom Bullets,0.172,19,SP
+GS Custom Bullets,0.204,29,SP
+GS Custom Bullets,0.204,36,SP
+GS Custom Bullets,0.223,35,HV
+GS Custom Bullets,0.224,35,HV
+GS Custom Bullets,0.224,36,SP
+GS Custom Bullets,0.224,40,HV
+GS Custom Bullets,0.224,50,HV
+GS Custom Bullets,0.224,57,SP (Litz)
+GS Custom Bullets,0.224,60,HV
+GS Custom Bullets,0.224,69,SP (Litz)
+GS Custom Bullets,0.227,42,HV
+GS Custom Bullets,0.243,51,SP
+GS Custom Bullets,0.243,58,SP
+GS Custom Bullets,0.243,62,HV
+GS Custom Bullets,0.243,64,SP
+GS Custom Bullets,0.243,67,HP
+GS Custom Bullets,0.243,69,HV
+GS Custom Bullets,0.243,70,SP
+GS Custom Bullets,0.243,75,HP
+GS Custom Bullets,0.243,75,HV
+GS Custom Bullets,0.243,81,SP (Litz)
+GS Custom Bullets,0.243,83,SP
+GS Custom Bullets,0.243,109,SP (Litz)
+GS Custom Bullets,0.257,80,HV
+GS Custom Bullets,0.257,82,SP
+GS Custom Bullets,0.257,85,HV
+GS Custom Bullets,0.257,90,SP
+GS Custom Bullets,0.257,92,SP
+GS Custom Bullets,0.257,100,HP
+GS Custom Bullets,0.257,100,HV
+GS Custom Bullets,0.264,93,SP
+GS Custom Bullets,0.264,95,HV
+GS Custom Bullets,0.264,101,SP
+GS Custom Bullets,0.264,103,HV
+GS Custom Bullets,0.264,105,SP
+GS Custom Bullets,0.264,110,HP
+GS Custom Bullets,0.264,110,HV
+GS Custom Bullets,0.264,110,SP
+GS Custom Bullets,0.264,120,SP
+GS Custom Bullets,0.277,80,HV
+GS Custom Bullets,0.277,99,HV
+GS Custom Bullets,0.277,99,SP
+GS Custom Bullets,0.277,105,SP
+GS Custom Bullets,0.277,110,HV
+GS Custom Bullets,0.277,120,HV
+GS Custom Bullets,0.277,130,HV
+GS Custom Bullets,0.284,115,SP
+GS Custom Bullets,0.284,116,HV
+GS Custom Bullets,0.284,120,HV
+GS Custom Bullets,0.284,125,SP
+GS Custom Bullets,0.284,130,HV
+GS Custom Bullets,0.284,140,HP
+GS Custom Bullets,0.284,140,HV
+GS Custom Bullets,0.285,117,HV
+GS Custom Bullets,0.285,120,HV
+GS Custom Bullets,0.285,130,HV
+GS Custom Bullets,0.285,135,HV
+GS Custom Bullets,0.308,100,HV
+GS Custom Bullets,0.308,107,SP
+GS Custom Bullets,0.308,130,HV
+GS Custom Bullets,0.308,137,SP
+GS Custom Bullets,0.308,140,HV
+GS Custom Bullets,0.308,145,HP
+GS Custom Bullets,0.308,145,HV
+GS Custom Bullets,0.308,150,HP
+GS Custom Bullets,0.308,150,HV
+GS Custom Bullets,0.308,158,SP
+GS Custom Bullets,0.308,160,HV
+GS Custom Bullets,0.308,163,SP
+GS Custom Bullets,0.308,168,HP
+GS Custom Bullets,0.308,173,HV
+GS Custom Bullets,0.308,177,HV
+GS Custom Bullets,0.308,197,SP
+GS Custom Bullets,0.311,140,HV
+GS Custom Bullets,0.311,150,HP
+GS Custom Bullets,0.318,157,HV
+GS Custom Bullets,0.318,180,HP
+GS Custom Bullets,0.323,160,HV
+GS Custom Bullets,0.323,170,HV
+GS Custom Bullets,0.323,180,HV
+GS Custom Bullets,0.330,165,HV
+GS Custom Bullets,0.338,180,HV
+GS Custom Bullets,0.338,200,HV
+GS Custom Bullets,0.338,200,SP
+GS Custom Bullets,0.338,200,SP (Litz)
+GS Custom Bullets,0.338,225,HP
+GS Custom Bullets,0.338,225,HV
+GS Custom Bullets,0.338,232,SP
+GS Custom Bullets,0.338,232,SP (Litz)
+GS Custom Bullets,0.338,267,SP
+GS Custom Bullets,0.338,267,SP (Litz)
+GS Custom Bullets,0.338,295,SP
+GS Custom Bullets,0.358,180,HV
+GS Custom Bullets,0.358,200,HV
+GS Custom Bullets,0.358,220,HV
+GS Custom Bullets,0.358,225,HV
+GS Custom Bullets,0.358,250,HV
+GS Custom Bullets,0.366,195,HV
+GS Custom Bullets,0.366,230,HV
+GS Custom Bullets,0.366,245,HP
+GS Custom Bullets,0.366,260,FN
+GS Custom Bullets,0.366,260,HV
+GS Custom Bullets,0.375,200,HV
+GS Custom Bullets,0.375,200,SP
+GS Custom Bullets,0.375,250,HV
+GS Custom Bullets,0.375,265,HV
+GS Custom Bullets,0.375,270,FN
+GS Custom Bullets,0.375,291,SP
+GS Custom Bullets,0.375,291,SP (Litz)
+GS Custom Bullets,0.375,300,FN
+GS Custom Bullets,0.375,300,HV
+GS Custom Bullets,0.375,330,SP (Litz)
+GS Custom Bullets,0.375,355,SP
+GS Custom Bullets,0.375,355,SP (Litz)
+GS Custom Bullets,0.379,205,HV
+GS Custom Bullets,0.395,340,HV
+GS Custom Bullets,0.408,370,HV
+GS Custom Bullets,0.408,385,SP
+GS Custom Bullets,0.408,385,SP (Litz)
+GS Custom Bullets,0.416,330,HV
+GS Custom Bullets,0.416,380,FN
+GS Custom Bullets,0.416,420,SP
+GS Custom Bullets,0.423,320,HV
+GS Custom Bullets,0.423,387,FN
+GS Custom Bullets,0.458,270,HV
+GS Custom Bullets,0.458,315,HV
+GS Custom Bullets,0.458,400,HV
+GS Custom Bullets,0.458,450,FN
+GS Custom Bullets,0.458,450,HV
+GS Custom Bullets,0.458,500,FN
+GS Custom Bullets,0.458,566,SP
+GS Custom Bullets,0.470,380,HV
+GS Custom Bullets,0.470,500,FN
+GS Custom Bullets,0.510,450,HV
+GS Custom Bullets,0.510,650,HV
+GS Custom Bullets,0.510,720,SP
+GS Custom Bullets,0.510,790,HV
+GS Custom Bullets,0.550,600,HV
+HBC,0.308,155,BJD
+HBC,0.308,155,BJD (Litz)
+Hornady,0.172,17,V-Max (Hornady Mach 2 Rimfire)
+Hornady,0.172,20,V-Max
+Hornady,0.172,20,XTP (Hornady Magnum Rimfire)
+Hornady,0.172,20,Z-Max&trade;
+Hornady,0.172,25,Hollow Point
+Hornady,0.172,25,V-Max
+Hornady,0.204,24,NTX&reg;
+Hornady,0.204,30,NTX&reg;
+Hornady,0.204,32,V-Max
+Hornady,0.204,32,Z-Max&trade;
+Hornady,0.204,40,V-Max
+Hornady,0.204,45,Soft Point
+Hornady,0.222,40,Jet
+Hornady,0.223,45,Jet
+Hornady,0.224,35,NTX&reg;
+Hornady,0.224,35,V-Max&trade;
+Hornady,0.224,40,V-Max&trade;
+Hornady,0.224,40,V-Max&trade; (Litz)
+Hornady,0.224,40,V-Max&trade; Moly
+Hornady,0.224,40,Z-Max&trade;
+Hornady,0.224,45,Hollow Point/Bee
+Hornady,0.224,45,Hornet
+Hornady,0.224,50,CX&trade;
+Hornady,0.224,50,GMX&reg;
+Hornady,0.224,50,Spire Point
+Hornady,0.224,50,Spire Point Super Explosive
+Hornady,0.224,50,V-Max&trade;
+Hornady,0.224,50,V-Max&trade; (Litz)
+Hornady,0.224,50,V-Max&trade; Moly
+Hornady,0.224,50,Z-Max&trade;
+Hornady,0.224,52,A-Max&reg;
+Hornady,0.224,52,A-Max&reg; (Litz)
+Hornady,0.224,52,Boat Tail Hollow Point Match
+Hornady,0.224,52,ELD M (Extremely Low Drag Match)
+Hornady,0.224,53,Hollow Point Match
+Hornady,0.224,53,V-Max&trade;
+Hornady,0.224,55,Full Metal Jacket Boat Tail W/C
+Hornady,0.224,55,Full Metal Jacket Boat Tail W/C (Litz)
+Hornady,0.224,55,GMX&reg;
+Hornady,0.224,55,Spire Point
+Hornady,0.224,55,Spire Point Super Explosive
+Hornady,0.224,55,Spire Point W/C
+Hornady,0.224,55,V-Max&trade;
+Hornady,0.224,55,V-Max&trade; (Litz)
+Hornady,0.224,55,V-Max&trade; Moly
+Hornady,0.224,55,V-Max&trade; W/C
+Hornady,0.224,55,Z-Max&trade; with Cannelure
+Hornady,0.224,60,Hollow Point
+Hornady,0.224,60,Spire Point
+Hornady,0.224,60,V-Max&trade;
+Hornady,0.224,62,Boattail Hollow Point W/Cannelure
+Hornady,0.224,62,ELD-VT&reg;
+Hornady,0.224,62,Full Metal Jacket
+Hornady,0.224,68,Boat Tail Hollow Point Match
+Hornady,0.224,68,Boat Tail Hollow Point Match (Litz)
+Hornady,0.224,70,GMX&reg;
+Hornady,0.224,73,ELD M (Extremely Low Drag Match)
+Hornady,0.224,75,A-Max&reg;
+Hornady,0.224,75,A-Max&reg; (Litz)
+Hornady,0.224,75,A-Max&reg; Moly
+Hornady,0.224,75,Boat Tail Hollow Point Match
+Hornady,0.224,75,Boat Tail Hollow Point Match (Litz)
+Hornady,0.224,75,Boat Tail Hollow Point Moly
+Hornady,0.224,75,ELD M (Extremely Low Drag Match)
+Hornady,0.224,80,A-Max&reg;
+Hornady,0.224,80,A-Max&reg; (Litz)
+Hornady,0.224,80,ELD M (Extremely Low Drag Match)
+Hornady,0.224,80,ELD-X (Extremely Low Drag - eXpanding)
+Hornady,0.224,88,ELD M (Extremely Low Drag Match)
+Hornady,0.227,70,Spire Point W/C
+Hornady,0.243,58,V-Max
+Hornady,0.243,58,V-Max Moly
+Hornady,0.243,58,V-Max&trade; (Litz)
+Hornady,0.243,58,Z-Max&trade;
+Hornady,0.243,65,V-Max
+Hornady,0.243,65,V-Max Moly
+Hornady,0.243,65,V-Max&trade; (Litz)
+Hornady,0.243,70,Spire Point
+Hornady,0.243,75,Hollow Point
+Hornady,0.243,75,V-Max&trade;
+Hornady,0.243,75,V-Max&trade; (Litz)
+Hornady,0.243,75,V-Max&trade; Moly
+Hornady,0.243,80,CX&trade;
+Hornady,0.243,80,ELD-VT&reg;
+Hornady,0.243,80,Full Metal Jacket
+Hornady,0.243,80,GMX&reg;
+Hornady,0.243,80,GMX&reg;
+Hornady,0.243,80,GMX&reg; (Litz)
+Hornady,0.243,85,InterBond&reg; (Litz)
+Hornady,0.243,87,Boat Tail Hollow Point
+Hornady,0.243,87,Boat Tail Hollow Point (Litz)
+Hornady,0.243,87,Spire Point
+Hornady,0.243,87,V-Max&trade;
+Hornady,0.243,87,V-Max&trade; (Litz)
+Hornady,0.243,90,CX&trade;
+Hornady,0.243,90,ELD-X (Extremely Low Drag - eXpanding)
+Hornady,0.243,90,GMX&reg;
+Hornady,0.243,95,SST&reg;
+Hornady,0.243,100,Boat Tail Spire Point
+Hornady,0.243,100,Boat Tail Spire Point (Litz)
+Hornady,0.243,100,Round Nose
+Hornady,0.243,100,Spire Point
+Hornady,0.243,103,ELD-X (Extremely Low Drag - eXpanding)
+Hornady,0.243,105,A-Max&reg;
+Hornady,0.243,105,A-Max&reg; (Litz)
+Hornady,0.243,105,A-Max&reg; Moly
+Hornady,0.243,105,Boat Tail Hollow Point Match&trade;
+Hornady,0.243,105,Boat Tail Hollow Point Match&trade; (Litz)
+Hornady,0.243,108,ELD M (Extremely Low Drag Match)
+Hornady,0.243,108,ELD M (Extremely Low Drag Match)
+Hornady,0.243,110,A-Tip&trade; Match
+Hornady,0.257,60,Flat Point
+Hornady,0.257,75,Hollow Point
+Hornady,0.257,75,V-Max
+Hornady,0.257,87,Spire Point
+Hornady,0.257,87,Spitzer (Litz)
+Hornady,0.257,90,CX&trade;
+Hornady,0.257,90,GMX&reg;
+Hornady,0.257,100,Spire Point
+Hornady,0.257,110,ELD-X (Extremely Low Drag - eXpanding)
+Hornady,0.257,110,InterBond&reg; (Litz)
+Hornady,0.257,117,Boat Tail Spire Point
+Hornady,0.257,117,Round Nose
+Hornady,0.257,117,SST&reg;
+Hornady,0.257,117,SST&reg; (Litz)
+Hornady,0.257,120,Hollow Point
+Hornady,0.257,134,ELD M (Extremely Low Drag - Match)
+Hornady,0.257,138,A-Tip&trade; Match
+Hornady,0.264,95,V-Max&reg;
+Hornady,0.264,95,V-Max&reg; (Litz)
+Hornady,0.264,100,ELD M (Extremely Low Drag Match)
+Hornady,0.264,100,ELD-VT&reg;
+Hornady,0.264,100,Spire Point
+Hornady,0.264,120,A-Max&reg;
+Hornady,0.264,120,CX&trade;
+Hornady,0.264,120,ELD M (Extremely Low Drag Match)
+Hornady,0.264,120,GMX&reg;
+Hornady,0.264,123,A-Max&reg;
+Hornady,0.264,123,ELD M (Extremely Low Drag Match)
+Hornady,0.264,123,SST&reg;
+Hornady,0.264,129,InterBond&reg;
+Hornady,0.264,129,InterLock&reg;
+Hornady,0.264,129,SST&reg;
+Hornady,0.264,129,SST&reg; (Litz)
+Hornady,0.264,129,Spire Point
+Hornady,0.264,130,CX&trade;
+Hornady,0.264,130,ELD M (Extremely Low Drag Match)
+Hornady,0.264,135,A-Tip&trade; Match
+Hornady,0.264,140,A-Max&reg;
+Hornady,0.264,140,A-Max&reg; (Litz)
+Hornady,0.264,140,A-Max&reg; Moly
+Hornady,0.264,140,BTHP Match&trade;
+Hornady,0.264,140,ELD M (Extremely Low Drag Match)
+Hornady,0.264,140,InterLock&reg;
+Hornady,0.264,140,SST&reg;
+Hornady,0.264,140,Spire Point
+Hornady,0.264,143,ELD-X (Extremely Low Drag - eXpanding)
+Hornady,0.264,147,ELD M (Extremely Low Drag Match)
+Hornady,0.264,153,A-Tip&trade; Match
+Hornady,0.264,160,InterLock&reg; Round Nose
+Hornady,0.268,160,Round Nose
+Hornady,0.277,100,CX&trade;
+Hornady,0.277,100,GMX&reg;
+Hornady,0.277,100,Spire Point
+Hornady,0.277,110,Hollow Point
+Hornady,0.277,110,V-Max
+Hornady,0.277,110,V-Max&trade; (Litz)
+Hornady,0.277,120,SST&reg;
+Hornady,0.277,130,CX&trade;
+Hornady,0.277,130,GMX&reg;
+Hornady,0.277,130,InterBond&reg;
+Hornady,0.277,130,InterBond&reg; (Litz)
+Hornady,0.277,130,SST&reg;
+Hornady,0.277,130,Spire Point
+Hornady,0.277,140,BTSP InterLock&reg; (Litz)
+Hornady,0.277,140,Boat Tail Spire Point
+Hornady,0.277,140,SST&reg;
+Hornady,0.277,145,ELD-X (Extremely Low Drag - eXpanding)
+Hornady,0.277,150,InterBond&reg;
+Hornady,0.277,150,Round Nose
+Hornady,0.277,150,SP InterLock&reg; (Litz)
+Hornady,0.277,150,SST&reg;
+Hornady,0.277,150,Spire Point
+Hornady,0.284,100,Hollow Point
+Hornady,0.284,120,Hollow Point
+Hornady,0.284,120,Spire Point
+Hornady,0.284,120,V-Max
+Hornady,0.284,120,V-Max&trade; (Litz)
+Hornady,0.284,139,BTSP InterLock&reg; (Litz)
+Hornady,0.284,139,Boat Tail Spire Point
+Hornady,0.284,139,CX&trade;
+Hornady,0.284,139,GMX&reg;
+Hornady,0.284,139,InterBond&reg;
+Hornady,0.284,139,SP InterLock&reg; (Litz)
+Hornady,0.284,139,SST&reg;
+Hornady,0.284,139,Spire Point
+Hornady,0.284,150,CX&trade;
+Hornady,0.284,150,ELD-X (Extremely Low Drag - eXpanding)
+Hornady,0.284,154,InterBond&reg;
+Hornady,0.284,154,Round Nose
+Hornady,0.284,154,SP InterLock&reg; (Litz)
+Hornady,0.284,154,SST&reg;
+Hornady,0.284,154,SST&reg; (Litz)
+Hornady,0.284,154,Spire Point
+Hornady,0.284,160,CX&trade;
+Hornady,0.284,162,A-Max&reg;
+Hornady,0.284,162,A-Max&reg; (Litz)
+Hornady,0.284,162,A-Max&reg; Moly
+Hornady,0.284,162,Boat Tail Spire Point
+Hornady,0.284,162,ELD M (Extremely Low Drag Match)
+Hornady,0.284,162,ELD-X (Extremely Low Drag - eXpanding)
+Hornady,0.284,162,SST&reg;
+Hornady,0.284,166,A-Tip&trade; Match
+Hornady,0.284,175,ELD-X (Extremely Low Drag - eXpanding)
+Hornady,0.284,175,InterLock&reg; (Litz)
+Hornady,0.284,175,Round Nose
+Hornady,0.284,175,Spire Point
+Hornady,0.284,180,ELD M (Extremely Low Drag Match)
+Hornady,0.284,190,A-Tip&trade; Match
+Hornady,0.308,86,RN XTP&reg;
+Hornady,0.308,90,HP XTP&reg;
+Hornady,0.308,100,Short Jacket
+Hornady,0.308,110,CX&trade;
+Hornady,0.308,110,Full Metal Jacket
+Hornady,0.308,110,Round Nose
+Hornady,0.308,110,Spire Point
+Hornady,0.308,110,V-Max
+Hornady,0.308,125,FMJ
+Hornady,0.308,125,Hollow Point FMJ
+Hornady,0.308,125,SST&reg;
+Hornady,0.308,130,Spire Point
+Hornady,0.308,135,FTX&reg;
+Hornady,0.308,140,MonoFlex&reg;
+Hornady,0.308,150,BTSP (Litz)
+Hornady,0.308,150,Boat Tail Spire Point
+Hornady,0.308,150,CX&trade;
+Hornady,0.308,150,Full Metal Jacket Boat Tail
+Hornady,0.308,150,GMX&reg;
+Hornady,0.308,150,InterBond&reg;
+Hornady,0.308,150,InterLock&reg; Spire Point
+Hornady,0.308,150,Round Nose
+Hornady,0.308,150,SST&reg;
+Hornady,0.308,150,SST&reg; (Litz)
+Hornady,0.308,150,Spire Point
+Hornady,0.308,155,A-Max&reg;
+Hornady,0.308,155,A-Max&reg; (Litz)
+Hornady,0.308,155,A-Max&reg; Moly
+Hornady,0.308,155,ELD M (Extremely Low Drag Match)
+Hornady,0.308,160,FTX&reg; (30-30 Win);
+Hornady,0.308,160,FTX&reg; (308 Marlin Express)
+Hornady,0.308,165,Boat Tail Spire Point
+Hornady,0.308,165,CX&trade;
+Hornady,0.308,165,GMX&reg;
+Hornady,0.308,165,InterBond&reg;
+Hornady,0.308,165,SST&reg;
+Hornady,0.308,165,SST&reg; (Litz)
+Hornady,0.308,165,Spire Point
+Hornady,0.308,168,A-Max&reg;
+Hornady,0.308,168,A-Max&reg; (Litz)
+Hornady,0.308,168,A-Max&reg; Moly
+Hornady,0.308,168,Boat Tail Hollow Point Match
+Hornady,0.308,168,Boat Tail Hollow Point Moly
+Hornady,0.308,168,ELD M (Extremely Low Drag Match)
+Hornady,0.308,168,HPBT (Litz)
+Hornady,0.308,170,InterLock&reg; Flat Point
+Hornady,0.308,174,ELD-VT&reg;
+Hornady,0.308,175,Sub-X&trade;
+Hornady,0.308,176,A-Tip&trade; Match
+Hornady,0.308,178,A-Max&reg;
+Hornady,0.308,178,A-Max&reg; (Litz)
+Hornady,0.308,178,A-Max&reg; Moly
+Hornady,0.308,178,BTHP Match&trade;
+Hornady,0.308,178,ELD M (Extremely Low Drag Match)
+Hornady,0.308,178,ELD-X (Extremely Low Drag - eXpanding)
+Hornady,0.308,180,Boat Tail Spire Point
+Hornady,0.308,180,CX&trade;
+Hornady,0.308,180,InterBond&reg;
+Hornady,0.308,180,InterLock&reg; Boattail Soft Point
+Hornady,0.308,180,InterLock&reg; Round Nose
+Hornady,0.308,180,InterLock&reg; Soft Point
+Hornady,0.308,180,Round Nose
+Hornady,0.308,180,SST&reg;
+Hornady,0.308,180,Spire Point
+Hornady,0.308,190,BTSP (Litz)
+Hornady,0.308,190,Boat Tail Spire Point
+Hornady,0.308,190,CX&trade;
+Hornady,0.308,190,Sub-X&trade;
+Hornady,0.308,190,Sub-X&trade;
+Hornady,0.308,195,ELD M (Extremely Low Drag Match)
+Hornady,0.308,200,ELD-X (Extremely Low Drag - eXpanding)
+Hornady,0.308,208,A-Max&reg
+Hornady,0.308,208,A-Max&reg; (Litz)
+Hornady,0.308,208,ELD M (Extremely Low Drag Match)
+Hornady,0.308,212,ELD-X (Extremely Low Drag - eXpanding)
+Hornady,0.308,220,ELD-X (Extremely Low Drag - eXpanding)
+Hornady,0.308,220,Round Nose
+Hornady,0.308,225,BTHP Match&trade;
+Hornady,0.308,225,ELD M (Extremely Low Drag Match)
+Hornady,0.308,230,A-Tip&trade; Match
+Hornady,0.308,250,A-Tip&trade; Match
+Hornady,0.310,123,SST&reg;
+Hornady,0.310,123,Spire Point
+Hornady,0.310,123,Z-Max&trade;
+Hornady,0.310,174,Full Metal Jacket Boat Tail
+Hornady,0.312,60,HP XTP&reg;
+Hornady,0.312,85,HP XTP&reg;
+Hornady,0.312,100,HP XTP&reg;
+Hornady,0.312,150,Spire Point
+Hornady,0.312,174,Round Nose
+Hornady,0.321,170,Flat Point
+Hornady,0.323,125,Spire Point
+Hornady,0.323,150,Spire Point
+Hornady,0.323,170,Round Nose
+Hornady,0.323,170,SST&reg;
+Hornady,0.323,180,GMX&reg;
+Hornady,0.323,195,Spire Point
+Hornady,0.323,196,Boattail Hollow Point
+Hornady,0.338,185,CX&trade;
+Hornady,0.338,185,GMX&reg;
+Hornady,0.338,185,GMX&reg; (Litz)
+Hornady,0.338,200,FTX&reg;
+Hornady,0.338,200,FTX&reg; (Litz)
+Hornady,0.338,200,InterLock&reg; SP-RP
+Hornady,0.338,200,SST&reg;
+Hornady,0.338,200,SST&reg; (Litz)
+Hornady,0.338,200,Spire Point
+Hornady,0.338,225,CX&trade;
+Hornady,0.338,225,InterBond&reg;
+Hornady,0.338,225,InterLock&reg; SP-RP
+Hornady,0.338,225,SST&reg;
+Hornady,0.338,225,SST&reg; (Litz)
+Hornady,0.338,225,Spire Point
+Hornady,0.338,230,ELD-X (Extremely Low Drag - eXpanding)
+Hornady,0.338,250,BTHP
+Hornady,0.338,250,BTHP (Litz)
+Hornady,0.338,250,InterLock&reg; Round Nose
+Hornady,0.338,250,InterLock&reg; SP-RP
+Hornady,0.338,250,Spire Point
+Hornady,0.338,270,ELD-X (Extremely Low Drag - eXpanding)
+Hornady,0.338,285,A-Max&trade;
+Hornady,0.338,285,A-Max&trade; (Litz)
+Hornady,0.338,285,BTHP Match&trade;
+Hornady,0.338,285,BTHP Match&trade; (Litz)
+Hornady,0.338,285,ELD M (Extremely Low Drag Match)
+Hornady,0.338,300,A-Tip&trade; Match
+Hornady,0.348,200,InterLock&reg; Flat Point
+Hornady,0.348,200,Round Nose
+Hornady,0.355,90,HP XTP&reg;
+Hornady,0.355,95,HP XTP&reg; (Makarov)
+Hornady,0.355,115,FMJ RN
+Hornady,0.355,115,HP XTP&reg;
+Hornady,0.355,124,HP XTP&reg;
+Hornady,0.355,147,HP XTP&reg;
+Hornady,0.355,165,FTX&reg;
+Hornady,0.355,170,Spire Point InterLock&reg;
+Hornady,0.356,115,HAP&reg;
+Hornady,0.356,125,HAP&reg;
+Hornady,0.357,110,HP XTP&reg;
+Hornady,0.357,125,FP XTP&reg;
+Hornady,0.357,125,HP XTP&reg;
+Hornady,0.357,140,FTX&reg; (357 Mag)
+Hornady,0.357,140,HP XTP&reg;
+Hornady,0.357,158,FP XTP&reg;
+Hornady,0.357,158,HP XTP&reg;
+Hornady,0.357,180,HP XTP&reg;
+Hornady,0.357,250,Sub-X&trade;
+Hornady,0.358,180,Soft Point (Single Shot Pistol)
+Hornady,0.358,200,FTX&reg; (35 Rem)
+Hornady,0.358,200,Round Nose
+Hornady,0.358,200,Soft Point
+Hornady,0.358,250,Round Nose
+Hornady,0.358,250,Soft Point
+Hornady,0.366,286,InterLock&reg; SP-RP
+Hornady,0.375,220,Flat Point
+Hornady,0.375,225,Spire Point
+Hornady,0.375,250,CX&trade;
+Hornady,0.375,270,Round Nose
+Hornady,0.375,270,Spire Point
+Hornady,0.375,300,Boat Tail Spire Point
+Hornady,0.375,300,DGS&reg;
+Hornady,0.375,300,DGX&reg;
+Hornady,0.375,300,Full Metal Jacket Round Nose ENC
+Hornady,0.375,300,Round Nose
+Hornady,0.375,390,A-Tip&trade; Match
+Hornady,0.400,155,HP XTP&reg;
+Hornady,0.400,180,HAP&reg;
+Hornady,0.400,180,HP XTP&reg;
+Hornady,0.400,200,HAP&reg;
+Hornady,0.400,200,HP XTP&reg;
+Hornady,0.410,210,HP XTP&reg;
+Hornady,0.410,400,DGS&reg;
+Hornady,0.410,400,DGX&reg;
+Hornady,0.411,300,Flat Point
+Hornady,0.411,300,Spire Point
+Hornady,0.416,400,DGS&reg;
+Hornady,0.416,400,DGX&reg;
+Hornady,0.416,400,Full Metal Jacket ENC
+Hornady,0.416,450,BTHP
+Hornady,0.416,500,A-Tip&trade; Match
+Hornady,0.423,400,DGS&reg;
+Hornady,0.423,400,DGX&reg;
+Hornady,0.430,180,HP XTP&reg;
+Hornady,0.430,200,HP XTP&reg;
+Hornady,0.430,225,FTX&reg; (44 Mag)
+Hornady,0.430,240,HP XTP&reg;
+Hornady,0.430,240,XTP&reg; CL-SIL
+Hornady,0.430,265,FTX&reg; (444 Marlin)
+Hornady,0.430,265,Flat Point
+Hornady,0.430,300,HP XTP&reg;
+Hornady,0.451,185,HAP&reg;
+Hornady,0.451,185,HP XTP&reg;
+Hornady,0.451,185,SWC Target Encapsulated
+Hornady,0.451,200,HAP&reg;
+Hornady,0.451,200,HP XTP&reg;
+Hornady,0.451,230,FMJ-RN Encapsulated
+Hornady,0.451,230,HAP&reg;
+Hornady,0.451,230,HP XTP&reg;
+Hornady,0.452,225,FTX&reg; (45 Colt)
+Hornady,0.452,240,HP XTP&reg; Mag
+Hornady,0.452,250,FTX&reg; (450 Bushmaster)
+Hornady,0.452,250,HP XTP&reg;
+Hornady,0.452,300,HP XTP&reg;
+Hornady,0.452,300,HP XTP&reg; Mag
+Hornady,0.452,395,Sub-X&trade;
+Hornady,0.458,250,MonoFlex&reg;
+Hornady,0.458,300,Hollow Point
+Hornady,0.458,325,FTX&reg; (45-70 &amp; 450 Marlin)
+Hornady,0.458,350,Flat Point
+Hornady,0.458,350,Round Nose
+Hornady,0.458,410,Sub-X&trade;
+Hornady,0.458,480,DGS&reg;
+Hornady,0.458,480,DGX&reg;
+Hornady,0.458,500,DGS&reg;
+Hornady,0.458,500,DGX&reg;
+Hornady,0.458,500,Full Metal Jacket Round Nose ENC
+Hornady,0.458,500,Round Nose InterBond&reg;
+Hornady,0.474,500,DGS&reg;
+Hornady,0.474,500,DGX&reg;
+Hornady,0.475,325,HP XTP&reg; Mag
+Hornady,0.475,400,HP XTP&reg; Mag
+Hornady,0.500,300,HP XTP&reg; MAP
+Hornady,0.500,350,HP XTP&reg; Mag
+Hornady,0.500,500,InterLock&reg; FP XTP&reg; Mag
+Hornady,0.510,570,DGS&reg;
+Hornady,0.510,570,DGX&reg;
+Hornady,0.510,750,A-Max&reg;
+JLK,0.224,75,VLD
+JLK,0.224,80,VLD
+JLK,0.224,80,VLD (Litz)
+JLK,0.224,90,VLD
+JLK,0.243,105,VLD
+JLK,0.243,105,VLD (Litz)
+JLK,0.257,108,VLD
+JLK,0.264,130,VLD
+JLK,0.264,140,VLD
+JLK,0.264,140,VLD (Litz)
+JLK,0.284,168,VLD
+JLK,0.284,180,VLD
+JLK,0.284,180,VLD (Litz)
+JLK,0.308,175,VLD
+JLK,0.308,180,LBT
+JLK,0.308,180,VLD
+JLK,0.308,190,VLD
+JLK,0.308,210,LBT
+JLK,0.308,210,VLD
+Lake City,0.224,69,FMJBT (Litz)
+Lapua,0.223,36,Long Rifle Hollow Point
+Lapua,0.223,36,Long Rifle Subsonic HP
+Lapua,0.223,40,Long Rifle Biathlon Solid
+Lapua,0.223,40,Long Rifle Master Solid
+Lapua,0.223,40,Long Rifle Midas L Solid
+Lapua,0.223,40,Long Rifle Midas M Solid
+Lapua,0.223,40,Long Rifle Multi Match Solid
+Lapua,0.223,40,Long Rifle Pistol King Solid
+Lapua,0.223,40,Long Rifle Pistol Trainer Solid
+Lapua,0.223,40,Long Rifle Scoremax Solid
+Lapua,0.223,40,Long Rifle Speed Ace Solid
+Lapua,0.223,40,Long Rifle Standard Rifle Club Solid
+Lapua,0.223,40,Long Rifle Super Club Solid
+Lapua,0.224,51,HP Cutting Edge
+Lapua,0.224,55,Full Metal Jacket
+Lapua,0.224,55,Soft Point
+Lapua,0.224,55,Spitzer
+Lapua,0.224,55,Spitzer
+Lapua,0.224,69,Scenar
+Lapua,0.224,69,Scenar (CD)
+Lapua,0.224,69,Scenar (Litz)
+Lapua,0.224,69,Scenar L (Litz)
+Lapua,0.224,69,Scenar Silver Jacket
+Lapua,0.224,77,Scenar
+Lapua,0.224,77,Scenar (CD)
+Lapua,0.224,77,Scenar (Litz)
+Lapua,0.224,77,Scenar L (Litz)
+Lapua,0.243,77,HP Silver Jacket
+Lapua,0.243,77,Hollow Point
+Lapua,0.243,77,Hollow Point (CD)
+Lapua,0.243,90,Full Metal Jacket Boat Tail
+Lapua,0.243,90,Full Metal Jacket Boat Tail (Litz)
+Lapua,0.243,90,Scenar
+Lapua,0.243,90,Scenar (CD)
+Lapua,0.243,90,Scenar (Litz)
+Lapua,0.243,90,Scenar L (Litz)
+Lapua,0.243,90,Silver Jacket
+Lapua,0.243,100,Soft Point
+Lapua,0.243,105,Scenar
+Lapua,0.243,105,Scenar (CD)
+Lapua,0.243,105,Scenar (Litz)
+Lapua,0.243,105,Scenar Silver Jacket
+Lapua,0.264,100,Full Metal Jacket
+Lapua,0.264,100,Full Metal Jacket Cutting Edge
+Lapua,0.264,100,Scenar
+Lapua,0.264,100,Scenar Silver Jacket
+Lapua,0.264,108,Scenar
+Lapua,0.264,108,Scenar (CD)
+Lapua,0.264,108,Scenar (Litz)
+Lapua,0.264,108,Scenar Silver Jacket
+Lapua,0.264,120,Scenar
+Lapua,0.264,123,Scenar
+Lapua,0.264,123,Scenar (CD)
+Lapua,0.264,123,Scenar Silver Jacket
+Lapua,0.264,136,Scenar
+Lapua,0.264,139,Scenar
+Lapua,0.264,139,Scenar (CD)
+Lapua,0.264,139,Scenar (Litz)
+Lapua,0.264,139,Scenar Silver Jacket
+Lapua,0.264,140,Naturalis
+Lapua,0.264,144,Full Metal Jacket Boat Tail
+Lapua,0.264,144,Scenar (Litz)
+Lapua,0.264,155,Mega
+Lapua,0.284,156,Naturalis
+Lapua,0.308,100,HP Cutting Edge
+Lapua,0.308,123,Full Metal Jacket
+Lapua,0.308,123,Full Metal Jacket Cutting Edge
+Lapua,0.308,123,Spitzer
+Lapua,0.308,150,Lock Base
+Lapua,0.308,150,Lock Base (CD)
+Lapua,0.308,150,Mega
+Lapua,0.308,154,Scenar (CD)
+Lapua,0.308,155,Full Metal Jacket Boat Tail
+Lapua,0.308,155,Scenar
+Lapua,0.308,155,Scenar (Litz)
+Lapua,0.308,155,Scenar Silver Jacket
+Lapua,0.308,165,Armor Piercing (AP492)
+Lapua,0.308,165,Scenar (CD)
+Lapua,0.308,167,Scenar
+Lapua,0.308,167,Scenar (CD)
+Lapua,0.308,167,Scenar (Litz)
+Lapua,0.308,167,Scenar Silver Jacket
+Lapua,0.308,170,Full Metal Jacket Boat Tail
+Lapua,0.308,170,Lock Base
+Lapua,0.308,170,Lock Base (CD)
+Lapua,0.308,170,Naturalis
+Lapua,0.308,170,Naturalis (CD)
+Lapua,0.308,175,Scenar-L (G1)
+Lapua,0.308,175,Scenar-L (G7)
+Lapua,0.308,180,Naturalis (CD)
+Lapua,0.308,181,Naturalis
+Lapua,0.308,185,FMJBT (D46) (Litz)
+Lapua,0.308,185,Full Metal Jacket Boat Tail
+Lapua,0.308,185,Full Metal Jacket Boattail
+Lapua,0.308,185,Mega
+Lapua,0.308,185,Scenar
+Lapua,0.308,185,Scenar (CD)
+Lapua,0.308,185,Scenar (Litz)
+Lapua,0.308,185,Scenar Silver Jacket
+Lapua,0.308,200,FMJBT (subsonic) (Litz)
+Lapua,0.308,200,Mega
+Lapua,0.308,200,Subsonic
+Lapua,0.308,200,Subsonic (CD)
+Lapua,0.308,220,Scenar L
+Lapua,0.311,123,Full Metal Jacket (CD)
+Lapua,0.311,123,Spitzer
+Lapua,0.311,200,Full Metal Jacket Boat Tail
+Lapua,0.311,200,Full Metal Jacket Boattail (CD)
+Lapua,0.323,180,Naturalis
+Lapua,0.338,231,Naturalis
+Lapua,0.338,231,Naturalis (CD)
+Lapua,0.338,248,Armor Piercing (AP485)
+Lapua,0.338,248,Armor Piercing (AP485) (CD)
+Lapua,0.338,250,Full Metal Jacket Boattail (Litz)
+Lapua,0.338,250,Lock Base
+Lapua,0.338,250,Lock Base (CD)
+Lapua,0.338,250,Scenar
+Lapua,0.338,250,Scenar (CD)
+Lapua,0.338,250,Scenar (Litz)
+Lapua,0.338,250,Scenar Silver Jacket
+Lapua,0.338,253,Armor Piercing Incendiary (API526)
+Lapua,0.338,300,Armor Piercing (AP485)
+Lapua,0.338,300,Scenar
+Lapua,0.338,300,Scenar (CD)
+Lapua,0.338,300,Scenar (Litz)
+Lapua,0.366,220,Naturalis
+Lapua,0.366,221,Naturalis
+Lapua,0.366,285,Mega
+Lapua,0.510,750,Bullex-N
+Lapua,0.510,750,Bullex-N Silver Jacket
+Lapua,0.510,750,Bullex-N Solid (CD)
+Lapua,0.510,800,Bullex-N
+Lapua,0.510,800,Bullex-N Silver Jacket
+Lehigh,0.172,18,Controlled Chaos
+Lehigh,0.204,28,Controlled Chaos
+Lehigh,0.224,45,Controlled Chaos
+Lehigh,0.224,55,Controlled Chaos
+Lehigh,0.243,57,Controlled Chaos
+Lehigh,0.243,60,Controlled Chaos
+Lehigh,0.257,85,Controlled Chaos
+Lehigh,0.264,95,Controlled Chaos
+Lehigh,0.264,110,Match Solid
+Lehigh,0.264,121,Match Solid
+Lehigh,0.264,130,Match Solid
+Lehigh,0.277,100,Controlled Chaos
+Lehigh,0.284,125,Controlled Chaos
+Lehigh,0.308,110,Controlled Chaos
+Lehigh,0.308,145,Controlled Chaos
+Lehigh,0.308,150,Match Solid
+Lehigh,0.308,168,Controlled Fracturing (Subsonic)
+Lehigh,0.308,170,Controlled Fracturing (Subsonic)
+Lehigh,0.308,174,Controlled Fracturing (Subsonic)
+Lehigh,0.308,194,Maximum Expansion (Subsonic)
+Lehigh,0.311,150,Match Solid
+Lehigh,0.338,230,Match
+Lehigh,0.338,230,Match Solid
+Lehigh,0.338,230,Match Solid (Litz)
+Lehigh,0.338,240,Controlled Fracturing (Subsonic)
+Lehigh,0.338,245,Match Hybrid BoreRider
+Lehigh,0.338,245,Match Solid
+Lehigh,0.338,245,Match Solid (Litz)
+Lehigh,0.338,283,Controlled Fracturing (Subsonic)
+Lehigh,0.375,330,Match Hybrid BoreRider
+Lehigh,0.375,330,Match Solid
+Lehigh,0.375,330,Match Solid (Litz)
+Lehigh,0.400,200,DOA HP MZ
+Lehigh,0.408,385,Match
+Lehigh,0.408,400,Match Solid
+Lehigh,0.408,400,Match Solid (Litz)
+Lehigh,0.416,330,Controlled Fracturing
+Lehigh,0.416,330,DOA HP
+Lehigh,0.416,416,Match
+Lehigh,0.416,416,Match Solid
+Lehigh,0.452,250,DOA HP MZ
+Lehigh,0.458,255,Match Solid
+Lehigh,0.458,255,SOCOM Match
+Lehigh,0.458,275,SOCOM DOA HP
+Lehigh,0.458,300,Controlled Fracturing (Subsonic)
+Lehigh,0.458,300,Match Solid
+Lehigh,0.458,300,SOCOM Match
+Lehigh,0.458,305,Controlled Fracturing
+Lehigh,0.458,305,DOA HP
+Lehigh,0.458,528,Match
+Lehigh,0.458,528,Subsonic Expansion
+Lehigh,0.458,570,Controlled Fracturing (Subsonic)
+Lehigh,0.500,350,Controlled Fracturing
+Lehigh,0.500,350,Match Solid
+Lehigh,0.500,363,DOA HP
+Lehigh,0.500,385,Controlled Fracturing
+Lehigh,0.510,440,Shredder Tip Solid
+Lehigh,0.510,645,Solid Ball
+Lehigh,0.510,650,Match Solid
+Lehigh,0.510,680,Solid Copper Subsonic Expansion
+Lehigh,0.510,725,Controlled Fracturing (Subsonic)
+Lehigh,0.510,750,Controlled Chaos
+Lehigh,0.510,750,High Velocity Hunting Bullet
+Lehigh,0.510,750,Match
+Lehigh,0.510,750,Match Solid
+Lehigh,0.510,792,Match BoreRider - Short Band
+Lehigh,0.510,794,Match BoreRider - Long Band
+Lehigh,0.510,795,Match Hybrid - Short Band
+Lehigh,0.510,808,Match Solid
+Lehigh,0.510,815,Match BoreRider - Heavy
+Matrix Ballistics,0.243,100,Rebated Boat-tail (10S)
+Matrix Ballistics,0.243,107,Very Low Drag
+Matrix Ballistics,0.243,107,Very Low Drag (Litz)
+Matrix Ballistics,0.243,117,Very Low Drag
+Matrix Ballistics,0.243,120,Rebated Boat-tail (6S)
+Matrix Ballistics,0.257,100,Flat Base (10S)
+Matrix Ballistics,0.257,100,Rebated Boat-tail (10S)
+Matrix Ballistics,0.257,100,Rebated Boat-tail (6S)
+Matrix Ballistics,0.257,125,Flat Base (10S)
+Matrix Ballistics,0.257,125,Rebated Boat-tail (10S)
+Matrix Ballistics,0.264,129,Very Low Drag
+Matrix Ballistics,0.264,130,Flat Base (10S)
+Matrix Ballistics,0.264,130,Rebated Boat-tail (10S)
+Matrix Ballistics,0.264,140,Flat Base (10S)
+Matrix Ballistics,0.264,140,Rebated Boat-tail (10S)
+Matrix Ballistics,0.264,142,Very Low Drag
+Matrix Ballistics,0.264,160,Very Low Drag
+Matrix Ballistics,0.277,130,Flat Base (10S)
+Matrix Ballistics,0.277,130,Rebated Boat-tail (6S)
+Matrix Ballistics,0.277,140,Flat Base (10S)
+Matrix Ballistics,0.277,150,Flat Base (10S)
+Matrix Ballistics,0.277,150,Rebated Boat-tail (10S)
+Matrix Ballistics,0.277,165,Very Low Drag
+Matrix Ballistics,0.277,175,Very Low Drag
+Matrix Ballistics,0.284,140,Flat Base (10S)
+Matrix Ballistics,0.284,140,Rebated Boat-tail (10S)
+Matrix Ballistics,0.284,168,Very Low Drag
+Matrix Ballistics,0.284,175,Flat Base (10S)
+Matrix Ballistics,0.284,175,Rebated Boat-tail (10S)
+Matrix Ballistics,0.308,168,Rebated Boat-tail (10S)
+Matrix Ballistics,0.308,178,Rebated Boat-tail (10S)
+Matrix Ballistics,0.308,185,Very Low Drag
+Matrix Ballistics,0.308,194,Rebated Boat-tail (10S)
+Matrix Ballistics,0.308,210,Flat Base (6S)
+Matrix Ballistics,0.308,210,Very Low Drag
+Matrix Ballistics,0.323,178,Flat Base (6S)
+Matrix Ballistics,0.323,178,Rebated Boat-tail (6S)
+Matrix Ballistics,0.323,198,Rebated Boat-tail (6S)
+Matrix Ballistics,0.323,220,Rebated Boat-tail (6S)
+Matrix Ballistics,0.338,225,Flat Base (1E)
+Matrix Ballistics,0.338,265,Flat Base (10S)
+MidwayUSA Dogtown,0.172,20,Hollow Point
+MidwayUSA Dogtown,0.204,34,Hollow Point
+MidwayUSA Dogtown,0.224,34,Hollow Point
+MidwayUSA Dogtown,0.224,50,Hollow Point
+MidwayUSA Dogtown,0.224,50,Soft Point
+MidwayUSA Dogtown,0.224,55,Hollow Point
+MidwayUSA Dogtown,0.224,55,Soft Point
+Montana Gold,0.224,55,FMJ
+Norma,0.223,40,Lead Round Nose
+Norma,0.224,50,FMJ
+Norma,0.224,50,Soft Point Semi-Point
+Norma,0.224,53,Soft Point Spire Point
+Norma,0.224,62,Soft Point
+Norma,0.224,69,GTX
+Norma,0.243,100,Soft Point Semi-Point
+Norma,0.264,100,GTX
+Norma,0.264,100,Hollow Point
+Norma,0.264,100,Hollow Point
+Norma,0.264,120,Full Jacket Pointed
+Norma,0.264,130,Diamond Line
+Norma,0.264,130,GTX
+Norma,0.264,130,Hollow Point
+Norma,0.264,143,GTX
+Norma,0.264,156,Soft Point Alaska
+Norma,0.264,156,Soft Point Oryx
+Norma,0.264,156,Soft Point Vulkan
+Norma,0.284,150,Full Jacket Semi-Point
+Norma,0.284,156,Soft Point Oryx
+Norma,0.284,170,Soft Point Vulkan
+Norma,0.308,150,Full Jacket Pointed
+Norma,0.308,155,GTX
+Norma,0.308,168,GTX
+Norma,0.308,175,GTX
+Norma,0.308,180,Soft Point Alaska
+Norma,0.308,180,Soft Point Oryx
+Norma,0.308,180,Soft Point Vulkan
+Norma,0.308,200,Soft Point Oryx
+Norma,0.323,123,Full Jacket
+Norma,0.323,196,Soft Point Alaska
+Norma,0.323,196,Soft Point Oryx
+Norma,0.323,196,Soft Point Vulkan
+Norma,0.338,250,GTX
+Norma,0.364,232,Full Jacket Semi-Point
+Norma,0.364,232,Soft Point Vulkan
+Norma,0.364,285,Soft Point Oryx
+Norma,0.364,286,Soft Point Alaska
+Nosler,0.172,20,Varmageddon FB Tipped
+Nosler,0.172,20,Varmageddon FBHP
+Nosler,0.204,32,Ballistic Silvertip&reg; Spitzer
+Nosler,0.204,32,Ballistic Tip&trade; Spitzer
+Nosler,0.204,32,Ballistic Tip&trade; Spitzer Leadfree
+Nosler,0.204,32,Combined Technologies&trade; Varmint; Spitzer
+Nosler,0.204,32,Varmageddon FB Tipped
+Nosler,0.204,32,Varmageddon FBHP
+Nosler,0.204,40,Ballistic Tip&trade; Spitzer
+Nosler,0.224,35,Ballistic Tip&trade; Spitzer Leadfree
+Nosler,0.224,35,Varmageddon FB Tipped
+Nosler,0.224,40,Ballistic Tip&trade; Spitzer
+Nosler,0.224,40,Ballistic Tip&trade; Spitzer Leadfree
+Nosler,0.224,40,Varmageddon FB Tipped
+Nosler,0.224,40,Varmageddon FBHP
+Nosler,0.224,45,Solid Base
+Nosler,0.224,45,Solid Base Hornet
+Nosler,0.224,50,Ballistic Silvertip&reg; Spitzer
+Nosler,0.224,50,Ballistic Tip&trade; Spitzer
+Nosler,0.224,50,Combined Technologies&trade; Varmint; Spitzer
+Nosler,0.224,52,CC (Litz)
+Nosler,0.224,52,Custom Competition HPBT
+Nosler,0.224,52,Custom Competition HPBT
+Nosler,0.224,53,Varmageddon FB Tipped
+Nosler,0.224,55,Ballistic Silvertip&reg; Spitzer
+Nosler,0.224,55,Ballistic Tip (Litz)
+Nosler,0.224,55,Ballistic Tip&trade; Spitzer
+Nosler,0.224,55,Combined Technologies&trade; Varmint; Spitzer
+Nosler,0.224,55,Varmageddon FB Tipped
+Nosler,0.224,55,Varmageddon FBHP
+Nosler,0.224,60,Ballistic Tip&trade; Spitzer
+Nosler,0.224,60,Ballistic Tip&trade; Spitzer (Litz)
+Nosler,0.224,60,Partition&trade; Spitzer
+Nosler,0.224,62,Varmageddon FBHP W/Cannelure
+Nosler,0.224,64,Partition&trade; Protected Point
+Nosler,0.224,69,Custom Competition HPBT
+Nosler,0.224,69,Custom Competition HPBT (Litz)
+Nosler,0.224,70,RDF Hollow Point Boattail
+Nosler,0.224,77,Custom Competition HPBT
+Nosler,0.224,77,Custom Competition HPBT (Litz)
+Nosler,0.224,77,RDF Hollow Point Boattail
+Nosler,0.224,80,Custom Competition HPBT
+Nosler,0.224,85,RDF Hollow Point Boattail
+Nosler,0.243,55,Ballistic Silvertip&reg; Spitzer
+Nosler,0.243,55,Ballistic Tip&trade; Spitzer
+Nosler,0.243,55,Ballistic Tip&trade; Spitzer Leadfree
+Nosler,0.243,55,Combined Technologies&trade; Varmint; Spitzer
+Nosler,0.243,55,Varmageddon FB Tipped
+Nosler,0.243,55,Varmageddon FBHP
+Nosler,0.243,70,Ballistic Tip (Litz)
+Nosler,0.243,70,Ballistic Tip&trade; Spitzer
+Nosler,0.243,70,Varmageddon FB Tipped
+Nosler,0.243,80,Ballistic Tip (Litz)
+Nosler,0.243,80,Ballistic Tip&trade; Spitzer
+Nosler,0.243,85,Ballistic Silvertip&reg; Spitzer
+Nosler,0.243,85,Partition&trade; Spitzer
+Nosler,0.243,90,AccuBond&trade; Spitzer
+Nosler,0.243,90,AccuBond&trade; Spitzer (Litz)
+Nosler,0.243,90,Ballistic Tip&trade; Spitzer
+Nosler,0.243,90,E-Tip&trade;
+Nosler,0.243,90,E-Tip&trade; (Litz)
+Nosler,0.243,95,Ballistic Silvertip&reg; Spitzer
+Nosler,0.243,95,Ballistic Tip&trade; Spitzer
+Nosler,0.243,95,Combined Technologies&trade; Hunting Spitzer
+Nosler,0.243,95,Partition (Litz)
+Nosler,0.243,95,Partition&trade; Spitzer
+Nosler,0.243,100,Partition&trade; Spitzer
+Nosler,0.243,105,Custom Competition&trade; HPBT
+Nosler,0.243,105,RDF Hollow Point Boattail
+Nosler,0.243,107,Custom Competition HPBT
+Nosler,0.243,115,RDF Hollow Point Boattail
+Nosler,0.257,85,Ballistic Tip&trade; Spitzer
+Nosler,0.257,85,Combined Technologies&trade; Varmint; Spitzer
+Nosler,0.257,100,Ballistic Tip&trade; Spitzer
+Nosler,0.257,100,Ballistic Tip&trade; Spitzer
+Nosler,0.257,100,Ballistic Tip&trade; Spitzer (Litz)
+Nosler,0.257,100,Partition&trade; Spitzer
+Nosler,0.257,110,AccuBond&trade; Spitzer
+Nosler,0.257,110,AccuBond&trade; Spitzer (Litz)
+Nosler,0.257,115,Ballistic Silvertip&reg; Spitzer
+Nosler,0.257,115,Ballistic Tip&trade; Spitzer
+Nosler,0.257,115,Ballistic Tip&trade; Spitzer (Litz)
+Nosler,0.257,115,Combined Technologies&trade; Hunting Spitzer
+Nosler,0.257,115,Partition&trade; Spitzer
+Nosler,0.257,115,Partition&trade; Spitzer
+Nosler,0.257,120,Partition&trade; Spitzer
+Nosler,0.264,90,Varmageddon FB Tipped
+Nosler,0.264,100,Ballistic Tip&trade Spitzer;
+Nosler,0.264,100,Custom Competition&trade; HPBT
+Nosler,0.264,100,Partition&trade; Spitzer
+Nosler,0.264,120,Ballistic Tip (Litz)
+Nosler,0.264,120,Ballistic Tip&trade; Spitzer
+Nosler,0.264,120,E-Tip&trade;
+Nosler,0.264,123,Custom Competition&trade; HPBT
+Nosler,0.264,125,Partition&trade; Spitzer
+Nosler,0.264,129,AccuBond Long Range Spitzer (G1)
+Nosler,0.264,129,AccuBond Long Range Spitzer (G7)
+Nosler,0.264,130,AccuBond&trade; Spitzer
+Nosler,0.264,130,RDF Hollow Point Boattail
+Nosler,0.264,140,AccuBond&trade; Spitzer
+Nosler,0.264,140,CC (Litz)
+Nosler,0.264,140,Custom Competition&trade; HPBT
+Nosler,0.264,140,Partition&trade; Spitzer
+Nosler,0.264,140,RDF Hollow Point Boattail
+Nosler,0.264,142,AccuBond Long Range Spitzer (G1)
+Nosler,0.264,142,AccuBond Long Range Spitzer (G7)
+Nosler,0.264,150,AccuBond Long Range
+Nosler,0.277,90,Partition&trade; Protected Point
+Nosler,0.277,100,AccuBond&trade; Spitzer
+Nosler,0.277,110,AccuBond&trade; Spitzer
+Nosler,0.277,115,Custom Competition&trade; HPBT
+Nosler,0.277,130,AccuBond&trade; Spitzer
+Nosler,0.277,130,Ballistic Silvertip&reg; Spitzer
+Nosler,0.277,130,Ballistic Tip&trade; Spitzer
+Nosler,0.277,130,Combined Technologies&trade; Hunting Spitzer
+Nosler,0.277,130,E-Tip&trade;
+Nosler,0.277,130,Partition&trade; Spitzer
+Nosler,0.277,140,AccuBond&trade; Spitzer
+Nosler,0.277,140,Ballistic Tip (Litz)
+Nosler,0.277,140,Ballistic Tip&trade; Spitzer
+Nosler,0.277,140,Fail Safe
+Nosler,0.277,140,Partition (Litz)
+Nosler,0.277,140,Partition&trade; Spitzer
+Nosler,0.277,150,AccuBond Long Range Spitzer (G1)
+Nosler,0.277,150,AccuBond Long Range Spitzer (G7)
+Nosler,0.277,150,Ballistic Silvertip&reg; Spitzer
+Nosler,0.277,150,Ballistic Tip&trade; Spitzer
+Nosler,0.277,150,Combined Technologies&trade; Hunting Spitzer
+Nosler,0.277,150,Partition&trade; Gold
+Nosler,0.277,150,Partition&trade; Spitzer
+Nosler,0.277,160,Partition&trade; Semi Spitzer
+Nosler,0.284,120,BT (Litz)
+Nosler,0.284,120,Ballistic Tip&trade; Spitzer
+Nosler,0.284,140,AccuBond&trade; Spitzer
+Nosler,0.284,140,Ballistic Silvertip&reg; Spitzer
+Nosler,0.284,140,Ballistic Tip&trade; Spitzer
+Nosler,0.284,140,Combined Technologies&trade; Hunting Spitzer
+Nosler,0.284,140,E-Tip&trade;
+Nosler,0.284,140,Partition&trade; Spitzer
+Nosler,0.284,150,AccuBond Long Range Spitzer (G1)
+Nosler,0.284,150,AccuBond Long Range Spitzer (G7)
+Nosler,0.284,150,BT (Litz)
+Nosler,0.284,150,Ballistic Silvertip&reg; Spitzer
+Nosler,0.284,150,Ballistic Tip&trade; Spitzer
+Nosler,0.284,150,Combined Technologies&trade; Hunting Spitzer
+Nosler,0.284,150,E-Tip&trade;
+Nosler,0.284,150,Partition (Litz)
+Nosler,0.284,150,Partition&trade; Spitzer
+Nosler,0.284,160,AccuBond&trade; Spitzer
+Nosler,0.284,160,Partition&trade; Spitzer
+Nosler,0.284,168,AccuBond Long Range Spitzer (G1)
+Nosler,0.284,168,AccuBond Long Range Spitzer (G7)
+Nosler,0.284,175,AccuBond Long Range Spitzer (G1)
+Nosler,0.284,175,AccuBond Long Range Spitzer (G7)
+Nosler,0.284,175,Partition (Litz)
+Nosler,0.284,175,Partition&trade; Spitzer
+Nosler,0.308,110,Varmageddon FB Tipped
+Nosler,0.308,125,Ballistic Tip (Litz)
+Nosler,0.308,125,Ballistic Tip&trade; Spitzer
+Nosler,0.308,150,AccuBond&trade; Spitzer
+Nosler,0.308,150,Ballistic Silvertip&reg; Round Nose
+Nosler,0.308,150,Ballistic Silvertip&reg; Spitzer
+Nosler,0.308,150,Ballistic Tip (Litz)
+Nosler,0.308,150,Ballistic Tip&trade; Spitzer
+Nosler,0.308,150,Combined Technologies&trade; Hunting Round Nose
+Nosler,0.308,150,Combined Technologies&trade; Hunting Spitzer
+Nosler,0.308,150,E-Tip&trade;
+Nosler,0.308,150,Partition&trade; Spitzer
+Nosler,0.308,155,Custom Competition&trade; HPBT
+Nosler,0.308,165,AccuBond (Litz)
+Nosler,0.308,165,AccuBond&trade; Spitzer
+Nosler,0.308,165,Ballistic Tip (Litz)
+Nosler,0.308,165,Ballistic Tip&trade; Spitzer
+Nosler,0.308,165,Partition (Litz)
+Nosler,0.308,165,Partition&trade; Spitzer
+Nosler,0.308,168,AccuBond Long Range Spitzer (G1)
+Nosler,0.308,168,AccuBond Long Range Spitzer (G7)
+Nosler,0.308,168,Ballistic Silvertip&reg; Spitzer
+Nosler,0.308,168,Ballistic Tip&trade; Spitzer
+Nosler,0.308,168,Combined Technologies&trade; Hunting Spitzer
+Nosler,0.308,168,Custom Comp (Litz)
+Nosler,0.308,168,Custom Competition&trade; HPBT
+Nosler,0.308,168,E-Tip&trade;
+Nosler,0.308,168,Partition&trade; Protected Point
+Nosler,0.308,168,RDF Hollow Point Boattail
+Nosler,0.308,170,Partition&trade; Round Nose
+Nosler,0.308,175,Custom Competition&trade; HPBT
+Nosler,0.308,175,RDF Hollow Point Boattail
+Nosler,0.308,180,AccuBond (Litz) Spitzer
+Nosler,0.308,180,AccuBond&trade; Spitzer
+Nosler,0.308,180,Ballistic Silvertip&reg; Spitzer
+Nosler,0.308,180,Ballistic Tip (Litz)
+Nosler,0.308,180,Ballistic Tip&trade; Spitzer
+Nosler,0.308,180,Combined Technologies&trade; Hunting Spitzer
+Nosler,0.308,180,E-Tip&trade;
+Nosler,0.308,180,Partition (Litz)
+Nosler,0.308,180,Partition&trade; Protected Point
+Nosler,0.308,180,Partition&trade; Spitzer
+Nosler,0.308,190,AccuBond Long Range Spitzer (G1)
+Nosler,0.308,190,AccuBond Long Range Spitzer (G7)
+Nosler,0.308,190,Custom Competition HPBT
+Nosler,0.308,200,AccuBond&trade; Spitzer
+Nosler,0.308,200,Partition (Litz)
+Nosler,0.308,200,Partition&trade; Spitzer
+Nosler,0.308,210,AccuBond Long Range Spitzer (G1)
+Nosler,0.308,210,AccuBond Long Range Spitzer (G7)
+Nosler,0.308,210,RDF Hollow Point Boattail
+Nosler,0.308,220,Custom Competition&trade; HPBT
+Nosler,0.308,220,Partition&trade; Semi Spitzer
+Nosler,0.323,180,Ballistic Silvertip&reg; Spitzer
+Nosler,0.323,180,Ballistic Tip&trade; Spitzer
+Nosler,0.323,180,Combined Technologies&trade; Hunting Spitzer
+Nosler,0.323,200,AccuBond&trade;
+Nosler,0.323,200,Custom Competition HPBT
+Nosler,0.323,200,Partition&trade; Spitzer
+Nosler,0.338,180,AccuBond&trade; Spitzer
+Nosler,0.338,180,AccuBond&trade; Spitzer (Litz)
+Nosler,0.338,200,AccuBond&trade; Spitzer
+Nosler,0.338,200,Ballistic Silvertip&reg; Spitzer
+Nosler,0.338,200,Combined Technologies&trade; Hunting Spitzer
+Nosler,0.338,200,E-Tip&trade;
+Nosler,0.338,200,E-Tip&trade; (Litz)
+Nosler,0.338,210,Partition&trade; Spitzer
+Nosler,0.338,225,AccuBond&trade; Spitzer
+Nosler,0.338,225,AccuBond&trade; Spitzer (Litz)
+Nosler,0.338,225,Partition&trade; Spitzer
+Nosler,0.338,250,AccuBond&trade; Spitzer
+Nosler,0.338,250,AccuBond&trade; Spitzer (Litz)
+Nosler,0.338,250,Partition&trade; Spitzer
+Nosler,0.338,265,AccuBond&trade; Long Range Spitzer (G1)
+Nosler,0.338,265,AccuBond&trade; Long Range Spitzer (G7)
+Nosler,0.338,300,AccuBond&trade; Spitzer
+Nosler,0.338,300,Custom Competition HPBT
+Nosler,0.338,300,RDF Hollow Point Boattail
+Nosler,0.358,180,Partition&trade;-HG
+Nosler,0.358,225,Partition&trade; Spitzer
+Nosler,0.358,250,Partition&trade; Spitzer
+Nosler,0.366,250,AccuBond&trade; Spitzer
+Nosler,0.366,286,Partition&trade; Spitzer
+Nosler,0.375,260,AccuBond&trade; Spitzer
+Nosler,0.375,260,Partition&trade; Spitzer
+Nosler,0.375,260,Solid&trade;
+Nosler,0.375,270,Fail Safe
+Nosler,0.375,300,AccuBond&trade; Spitzer
+Nosler,0.375,300,Fail Safe
+Nosler,0.375,300,Partition&trade; Spitzer
+Nosler,0.375,300,Solid&trade;
+Nosler,0.416,400,Partition&trade; Spitzer
+Nosler,0.416,400,Solid&trade;
+Nosler,0.458,300,Ballistic Silvertip&reg; Round Nose
+Nosler,0.458,300,Partition&trade; Protected Point
+Nosler,0.458,500,Partition&trade; Protected Point
+Nosler,0.458,500,Solid&trade;
+NwCP,0.224,55,Flat Base 6-S Open Tip Hunting
+NwCP,0.224,65,Flat Base 6-S Open Tip Hunting
+NwCP,0.224,75,Flat Base 6-S Open Tip Hunting
+NwCP,0.284,140,Hollow Point Rebated Boat Tail
+NwCP,0.284,160,Hollow Point Rebated Boat Tail
+NwCP,0.308,150,Rebated Boat Tail 6-S Open Tip Hunting
+NwCP,0.308,165,Rebated Boat Tail 6-S Open Tip Hunting
+NwCP,0.308,177,Rebated Boat Tail 6-S Open Tip Hunting
+NwCP,0.308,180,RBT-AT 180
+NwCP,0.308,180,Rebated Boat Tail 6-S Open Tip Hunting
+NwCP,0.308,190,Rebated Boat Tail 6-S Open Tip Hunting
+NwCP,0.308,200,Rebated Boat Tail 6-S Open Tip Hunting
+NwCP,0.338,180,Flat Base 6-S Open Tip Hunting
+NwCP,0.338,210,Flat Base 6-S Open Tip Hunting
+NwCP,0.338,250,Flat Base 6-S Open Tip Hunting
+NwCP,0.338,300,Flat Base 6-S Open Tip Hunting
+NwCP,0.357,110,Manstopper Flat Base
+NwCP,0.357,158,Manstopper Flat Base
+NwCP,0.400,180,Rebated Boattail TC
+NwCP,0.400,180,Vixen Rebated Boattail
+NwCP,0.400,200,Manstopper Flat Base
+NwCP,0.452,260,EXTREME Rebated Boattail TC
+NwCP,0.452,260,Manstopper Rebated Boattail
+NwCP,0.452,260,Scorpion Rebated Boattail HP
+NwCP,0.452,300,EXTREME Rebated Boattail TC
+NwCP,0.500,350,Flat Base Lead Tip 1.5S
+NwCP,0.500,350,Manstopper Flat Base
+NwCP,0.510,350,Flat Base Lead Tip 1.5S
+NwCP,0.510,350,Manstopper Flat Base
+NwCP,0.510,650,Rebated Boat Tail
+NwCP,0.510,750,Rebated Boat Tail
+PMC,0.223,38,Long Rifle Moderator Subsonic Velocity
+PMC,0.223,38,Zapper Long Rifle Hollow High velocity HP CC
+PMC,0.223,40,Long Rifle Match Pistol
+PMC,0.223,40,Long Rifle Match Rifle
+PMC,0.223,40,Scoremaster Long Rifle Standard Velocity Solid
+PMC,0.223,40,WMR Predator Magnum Jacketed Hollow Point
+PMC,0.223,40,WMR Predator Magnum Jacketed Soft Point
+PMC,0.223,40,Zapper Long Rifle High velocity Solid CC
+PMC,0.224,50,PSP
+PMC,0.224,55,FMJ
+PMC,0.224,55,HPBT
+PMC,0.224,55,PSP
+PMC,0.224,64,PSP
+PMP,0.224,50,SP
+PMP,0.224,55,FMJ BT
+PMP,0.224,55,SP
+Peregrine Bullets,0.224,46,BushMaster
+Peregrine Bullets,0.224,46,Solid Copper
+Peregrine Bullets,0.224,50,Match
+Peregrine Bullets,0.224,50,PlainsMaster
+Peregrine Bullets,0.224,54,RangeMaster
+Peregrine Bullets,0.224,55,BushMaster
+Peregrine Bullets,0.224,55,Match
+Peregrine Bullets,0.224,55,PlainsMaster
+Peregrine Bullets,0.224,55,Solid Copper
+Peregrine Bullets,0.224,65,RangeMaster
+Peregrine Bullets,0.224,69,Match
+Peregrine Bullets,0.224,69,PlainsMaster
+Peregrine Bullets,0.243,68,Match
+Peregrine Bullets,0.243,68,PlainsMaster
+Peregrine Bullets,0.243,71,RangeMaster
+Peregrine Bullets,0.243,75,Match
+Peregrine Bullets,0.243,75,PlainsMaster
+Peregrine Bullets,0.243,80,Match
+Peregrine Bullets,0.243,80,PlainsMaster
+Peregrine Bullets,0.243,81,RangeMaster
+Peregrine Bullets,0.243,85,BushMaster
+Peregrine Bullets,0.243,85,Solid Copper
+Peregrine Bullets,0.243,87,Match
+Peregrine Bullets,0.243,87,PlainsMaster
+Peregrine Bullets,0.243,91,RangeMaster
+Peregrine Bullets,0.243,95,Match
+Peregrine Bullets,0.243,95,PlainsMaster
+Peregrine Bullets,0.243,100,BushMaster
+Peregrine Bullets,0.243,100,Match
+Peregrine Bullets,0.243,100,PlainsMaster
+Peregrine Bullets,0.243,100,Solid Copper
+Peregrine Bullets,0.257,87,Match
+Peregrine Bullets,0.257,87,PlainsMaster
+Peregrine Bullets,0.257,100,Match
+Peregrine Bullets,0.257,100,PlainsMaster
+Peregrine Bullets,0.257,120,BushMaster
+Peregrine Bullets,0.257,120,Solid Copper
+Peregrine Bullets,0.264,96,RangeMaster
+Peregrine Bullets,0.264,105,Match
+Peregrine Bullets,0.264,105,PlainsMaster
+Peregrine Bullets,0.264,106,RangeMaster
+Peregrine Bullets,0.264,117,RangeMaster
+Peregrine Bullets,0.264,120,BushMaster
+Peregrine Bullets,0.264,120,Match
+Peregrine Bullets,0.264,120,PlainsMaster
+Peregrine Bullets,0.264,120,Solid Copper
+Peregrine Bullets,0.264,125,Match
+Peregrine Bullets,0.264,125,PlainsMaster
+Peregrine Bullets,0.264,132,BushMaster
+Peregrine Bullets,0.264,132,Match
+Peregrine Bullets,0.264,132,PlainsMaster
+Peregrine Bullets,0.264,132,Solid Copper
+Peregrine Bullets,0.264,140,BushMaster
+Peregrine Bullets,0.264,140,Match
+Peregrine Bullets,0.264,140,Solid Copper
+Peregrine Bullets,0.277,107,RangeMaster
+Peregrine Bullets,0.277,120,Match
+Peregrine Bullets,0.277,120,PlainsMaster
+Peregrine Bullets,0.277,121,RangeMaster
+Peregrine Bullets,0.277,130,BushMaster
+Peregrine Bullets,0.277,130,Match
+Peregrine Bullets,0.277,130,PlainsMaster
+Peregrine Bullets,0.277,130,Solid Copper
+Peregrine Bullets,0.277,136,RangeMaster
+Peregrine Bullets,0.277,140,BushMaster
+Peregrine Bullets,0.277,140,Match
+Peregrine Bullets,0.277,140,PlainsMaster
+Peregrine Bullets,0.277,140,Solid Copper
+Peregrine Bullets,0.277,150,BushMaster
+Peregrine Bullets,0.277,150,Solid Copper
+Peregrine Bullets,0.283,120,Match
+Peregrine Bullets,0.283,120,PlainsMaster
+Peregrine Bullets,0.283,130,BushMaster
+Peregrine Bullets,0.283,130,Match
+Peregrine Bullets,0.283,130,PlainsMaster
+Peregrine Bullets,0.283,130,Solid Copper
+Peregrine Bullets,0.283,140,BushMaster
+Peregrine Bullets,0.283,140,Match
+Peregrine Bullets,0.283,140,PlainsMaster
+Peregrine Bullets,0.283,140,Solid Copper
+Peregrine Bullets,0.283,150,BushMaster
+Peregrine Bullets,0.283,150,Match
+Peregrine Bullets,0.283,150,PlainsMaster
+Peregrine Bullets,0.283,150,Solid Copper
+Peregrine Bullets,0.284,115,RangeMaster
+Peregrine Bullets,0.284,130,RangeMaster
+Peregrine Bullets,0.284,145,RangeMaster
+Peregrine Bullets,0.284,153,RangeMaster
+Peregrine Bullets,0.308,132,Match
+Peregrine Bullets,0.308,132,PlainsMaster
+Peregrine Bullets,0.308,146,RangeMaster
+Peregrine Bullets,0.308,150,BushMaster
+Peregrine Bullets,0.308,150,Match
+Peregrine Bullets,0.308,150,PlainsMaster
+Peregrine Bullets,0.308,150,Solid Copper
+Peregrine Bullets,0.308,155.5,RangeMaster
+Peregrine Bullets,0.308,165,BushMaster
+Peregrine Bullets,0.308,165,Match
+Peregrine Bullets,0.308,165,PlainsMaster
+Peregrine Bullets,0.308,165,Solid Copper
+Peregrine Bullets,0.308,166,RangeMaster
+Peregrine Bullets,0.308,176,RangeMaster
+Peregrine Bullets,0.308,180,BushMaster
+Peregrine Bullets,0.308,180,Match
+Peregrine Bullets,0.308,180,PlainsMaster
+Peregrine Bullets,0.308,180,Solid Brass
+Peregrine Bullets,0.308,180,Solid Copper
+Peregrine Bullets,0.308,186,RangeMaster
+Peregrine Bullets,0.308,190,Match
+Peregrine Bullets,0.308,190,PlainsMaster
+Peregrine Bullets,0.308,196,RangeMaster
+Peregrine Bullets,0.308,200,BushMaster
+Peregrine Bullets,0.308,200,Match
+Peregrine Bullets,0.308,200,PlainsMaster
+Peregrine Bullets,0.308,200,Solid Copper
+Peregrine Bullets,0.308,206,RangeMaster
+Peregrine Bullets,0.308,220,BushMaster
+Peregrine Bullets,0.308,220,Solid Copper
+Peregrine Bullets,0.313,150,BushMaster
+Peregrine Bullets,0.313,150,Match
+Peregrine Bullets,0.313,150,PlainsMaster
+Peregrine Bullets,0.313,150,Solid Copper
+Peregrine Bullets,0.313,168,BushMaster
+Peregrine Bullets,0.313,168,Match
+Peregrine Bullets,0.313,168,PlainsMaster
+Peregrine Bullets,0.313,168,Solid Copper
+Peregrine Bullets,0.313,180,BushMaster
+Peregrine Bullets,0.313,180,Solid Copper
+Peregrine Bullets,0.313,200,Solid Brass
+Peregrine Bullets,0.318,180,Match
+Peregrine Bullets,0.318,180,PlainsMaster
+Peregrine Bullets,0.318,200,BushMaster
+Peregrine Bullets,0.318,200,Solid Copper
+Peregrine Bullets,0.318,220,Solid Brass
+Peregrine Bullets,0.323,180,Match
+Peregrine Bullets,0.323,180,PlainsMaster
+Peregrine Bullets,0.323,200,BushMaster
+Peregrine Bullets,0.323,200,Match
+Peregrine Bullets,0.323,200,Solid Copper
+Peregrine Bullets,0.323,220,BushMaster
+Peregrine Bullets,0.323,220,Solid Brass
+Peregrine Bullets,0.323,220,Solid Copper
+Peregrine Bullets,0.330,200,BushMaster
+Peregrine Bullets,0.330,200,Solid Copper
+Peregrine Bullets,0.330,225,BushMaster
+Peregrine Bullets,0.330,225,Solid Copper
+Peregrine Bullets,0.330,250,BushMaster
+Peregrine Bullets,0.330,250,Solid Copper
+Peregrine Bullets,0.338,200,Match
+Peregrine Bullets,0.338,200,PlainsMaster
+Peregrine Bullets,0.338,220,BushMaster
+Peregrine Bullets,0.338,220,Match
+Peregrine Bullets,0.338,220,PlainsMaster
+Peregrine Bullets,0.338,220,RangeMaster
+Peregrine Bullets,0.338,220,Solid Copper
+Peregrine Bullets,0.338,245,RangeMaster
+Peregrine Bullets,0.338,250,BushMaster
+Peregrine Bullets,0.338,250,Match
+Peregrine Bullets,0.338,250,PlainsMaster
+Peregrine Bullets,0.338,250,Solid Brass
+Peregrine Bullets,0.338,250,Solid Copper
+Peregrine Bullets,0.338,260,RangeMaster
+Peregrine Bullets,0.338,275,RangeMaster
+Peregrine Bullets,0.357,200,BushMaster
+Peregrine Bullets,0.357,200,Match
+Peregrine Bullets,0.357,200,PlainsMaster
+Peregrine Bullets,0.357,200,Solid Copper
+Peregrine Bullets,0.357,220,Match
+Peregrine Bullets,0.357,220,PlainsMaster
+Peregrine Bullets,0.357,235,BushMaster
+Peregrine Bullets,0.357,235,Solid Brass
+Peregrine Bullets,0.357,235,Solid Copper
+Peregrine Bullets,0.357,250,Match
+Peregrine Bullets,0.357,250,PlainsMaster
+Peregrine Bullets,0.365,230,BushMaster
+Peregrine Bullets,0.365,230,Match
+Peregrine Bullets,0.365,230,PlainsMaster
+Peregrine Bullets,0.365,230,Solid Copper
+Peregrine Bullets,0.365,250,BushMaster
+Peregrine Bullets,0.365,250,Match
+Peregrine Bullets,0.365,250,PlainsMaster
+Peregrine Bullets,0.365,250,Solid Copper
+Peregrine Bullets,0.365,270,Match
+Peregrine Bullets,0.365,270,PlainsMaster
+Peregrine Bullets,0.365,286,BushMaster
+Peregrine Bullets,0.365,286,Solid Brass
+Peregrine Bullets,0.365,286,Solid Copper
+Peregrine Bullets,0.375,200,BushMaster
+Peregrine Bullets,0.375,200,Match
+Peregrine Bullets,0.375,200,PlainsMaster
+Peregrine Bullets,0.375,200,Solid Copper
+Peregrine Bullets,0.375,230,Match
+Peregrine Bullets,0.375,230,PlainsMaster
+Peregrine Bullets,0.375,247,RangeMaster
+Peregrine Bullets,0.375,250,Match
+Peregrine Bullets,0.375,250,PlainsMaster
+Peregrine Bullets,0.375,270,BushMaster
+Peregrine Bullets,0.375,270,Match
+Peregrine Bullets,0.375,270,PlainsMaster
+Peregrine Bullets,0.375,270,Solid Copper
+Peregrine Bullets,0.375,300,BushMaster
+Peregrine Bullets,0.375,300,RangeMaster
+Peregrine Bullets,0.375,300,Solid Brass
+Peregrine Bullets,0.375,300,Solid Copper
+Peregrine Bullets,0.375,336,RangeMaster
+Peregrine Bullets,0.408,405,RangeMaster
+Peregrine Bullets,0.410,400,BushMaster
+Peregrine Bullets,0.410,400,Solid Copper
+Peregrine Bullets,0.416,300,BushMaster
+Peregrine Bullets,0.416,300,Match
+Peregrine Bullets,0.416,300,PlainsMaster
+Peregrine Bullets,0.416,300,Solid Copper
+Peregrine Bullets,0.416,340,BushMaster
+Peregrine Bullets,0.416,340,Solid Copper
+Peregrine Bullets,0.416,400,BushMaster
+Peregrine Bullets,0.416,400,Solid Brass
+Peregrine Bullets,0.416,400,Solid Copper
+Peregrine Bullets,0.416,430,RangeMaster
+Peregrine Bullets,0.422,320,Match
+Peregrine Bullets,0.422,320,PlainsMaster
+Peregrine Bullets,0.422,350,BushMaster
+Peregrine Bullets,0.422,350,Solid Copper
+Peregrine Bullets,0.422,400,BushMaster
+Peregrine Bullets,0.422,400,Solid Brass
+Peregrine Bullets,0.422,400,Solid Copper
+Peregrine Bullets,0.429,200,Solid Copper
+Peregrine Bullets,0.435,350,BushMaster
+Peregrine Bullets,0.435,350,Solid Copper
+Peregrine Bullets,0.458,300,Match
+Peregrine Bullets,0.458,300,PlainsMaster
+Peregrine Bullets,0.458,343,BushMaster
+Peregrine Bullets,0.458,343,Solid Copper
+Peregrine Bullets,0.458,380,BushMaster
+Peregrine Bullets,0.458,380,Match
+Peregrine Bullets,0.458,380,PlainsMaster
+Peregrine Bullets,0.458,380,Solid Copper
+Peregrine Bullets,0.458,400,BushMaster
+Peregrine Bullets,0.458,400,Solid Copper
+Peregrine Bullets,0.458,450,BushMaster
+Peregrine Bullets,0.458,450,Solid Copper
+Peregrine Bullets,0.458,480,BushMaster
+Peregrine Bullets,0.458,480,Solid Copper
+Peregrine Bullets,0.458,500,BushMaster
+Peregrine Bullets,0.458,500,Solid Brass
+Peregrine Bullets,0.458,500,Solid Copper
+Peregrine Bullets,0.472,450,BushMaster
+Peregrine Bullets,0.472,450,Solid Copper
+Peregrine Bullets,0.472,500,BushMaster
+Peregrine Bullets,0.472,500,Solid Copper
+Peregrine Bullets,0.487,500,BushMaster
+Peregrine Bullets,0.487,500,Solid Copper
+Peregrine Bullets,0.500,750,RangeMaster
+Peregrine Bullets,0.500,850,RangeMaster
+Peregrine Bullets,0.504,600,BushMaster
+Peregrine Bullets,0.504,600,Solid Brass
+Peregrine Bullets,0.504,600,Solid Copper
+Peregrine Bullets,0.509,500,BushMaster
+Peregrine Bullets,0.509,500,Solid Brass
+Peregrine Bullets,0.509,500,Solid Copper
+Peregrine Bullets,0.509,525,BushMaster
+Peregrine Bullets,0.509,525,Solid Copper
+Peregrine Bullets,0.509,550,BushMaster
+Peregrine Bullets,0.509,550,Solid Brass
+Peregrine Bullets,0.509,550,Solid Copper
+Peregrine Bullets,0.509,570,BushMaster
+Peregrine Bullets,0.509,570,Solid Brass
+Peregrine Bullets,0.509,570,Solid Copper
+Peregrine Bullets,0.509,700,Match
+Peregrine Bullets,0.509,750,Match
+Peregrine Bullets,0.582,700,BushMaster
+Peregrine Bullets,0.582,700,Solid Copper
+Precision Ballistics,0.243,103,VLD (Litz)
+Precision Ballistics,0.243,105,VLD (Litz)
+Precision Ballistics,0.243,108,VLD (Litz)
+Precision Ballistics,0.243,113,VLD (Litz)
+Precision Ballistics,0.243,115,VLD (Litz)
+Predator Projectiles,0.308,178,.308 Projectile
+Predator Projectiles,0.338,235,.338 Projectile
+Predator Projectiles,0.375,350,.375 Projectile
+Predator Projectiles,0.408,410,.408 Projectile
+Predator Projectiles,0.416,420,.416 Projectile
+Predator Projectiles,0.458,550,.458 Projectile
+Predator Projectiles,0.510,720,.510 Projectile
+Prvi Partizan,0.222,45,Soft Point (B-193)
+Prvi Partizan,0.224,50,Soft Point (B-032)
+Prvi Partizan,0.224,55,Full Metal Jacket Boat Tail (B-212)
+Prvi Partizan,0.224,55,Full Metal Jacket Boat Tail (B-615)
+Prvi Partizan,0.224,55,Hollow Point Boat Tail (B-616)
+Prvi Partizan,0.224,55,Soft Point (B-132)
+Prvi Partizan,0.224,55,Soft Point (B-211)
+Prvi Partizan,0.224,62,Full Metal Jacket Boat Tail (B-419)
+Prvi Partizan,0.224,69,Hollow Point Boat Tail (B-399)
+Prvi Partizan,0.224,69,Hollow Point Boat Tail (B-535)
+Prvi Partizan,0.224,75,Hollow Point Boat Tail (B-481)
+Prvi Partizan,0.224,75,Hollow Point Boat Tail (B-495)
+Prvi Partizan,0.242,90,Soft Point (B-131)
+Prvi Partizan,0.242,100,Soft Point (B-134)
+Prvi Partizan,0.250,50,Full Metal Jacket (B-016)
+Prvi Partizan,0.257,90,Hollow Point (B-046)
+Prvi Partizan,0.257,100,Pointed Soft Point (B-047)
+Prvi Partizan,0.263,123,Pointed Soft Point (B-117)
+Prvi Partizan,0.263,123,Pointed Soft Point (B-483)
+Prvi Partizan,0.263,123,Soft Point
+Prvi Partizan,0.263,139,Full Metal Jacket Boat Tail (B-083)
+Prvi Partizan,0.263,139,Soft Point Boat Tail (B-084)
+Prvi Partizan,0.263,140,Pointed Soft Point (B-114)
+Prvi Partizan,0.263,156,Soft Point Round Nose (B-118)
+Prvi Partizan,0.263,156,Soft Point Round Nose (B-230)
+Prvi Partizan,0.264,75,Hollow Point Boat Tail (B-540)
+Prvi Partizan,0.264,110,Full Metal Jacket Boat Tail (B-484)
+Prvi Partizan,0.264,120,Hollow Point Boat Tail (B-485)
+Prvi Partizan,0.268,139,Full Metal Jacket Boat Tail (B-605)
+Prvi Partizan,0.270,130,Soft Point (B-161)
+Prvi Partizan,0.270,150,Soft Point (B-027)
+Prvi Partizan,0.277,115,Full Metal Jacket Boat Tail (B-603)
+Prvi Partizan,0.277,115,Hollow Point Boat Tail (B-604)
+Prvi Partizan,0.284,120,Hollow Point (B-401)
+Prvi Partizan,0.284,139,Soft Point (B-051)
+Prvi Partizan,0.284,139,Soft Point (B-478)
+Prvi Partizan,0.284,140,Pointed Soft Point Boat Tail (B-400)
+Prvi Partizan,0.284,145,Soft Point (B-123)
+Prvi Partizan,0.284,150,Hollow Point Boat Tail (B-405)
+Prvi Partizan,0.284,150,Hollow Point Boat Tail (B-499)
+Prvi Partizan,0.284,160,Soft Point Boat Tail (B-403)
+Prvi Partizan,0.284,173,Soft Point (B-067)
+Prvi Partizan,0.284,173,Soft Point (B-558)
+Prvi Partizan,0.284,174,Pointed Soft Point Boat Tail (B-404)
+Prvi Partizan,0.284,174,Soft Point (B-115)
+Prvi Partizan,0.284,175,Full Metal Jacket Boat Tail (B-127)
+Prvi Partizan,0.307,85,Full Metal Jacket (B-012)
+Prvi Partizan,0.307,85,Jacketed Hollow Point (B-174)
+Prvi Partizan,0.307,98,Flat Point Jacket (B-470)
+Prvi Partizan,0.307,110,Full Metal Jacket (B-010)
+Prvi Partizan,0.307,110,Hollow Soft Point (B-273)
+Prvi Partizan,0.307,110,Soft Point Round Nose (B-204)
+Prvi Partizan,0.308,71,Full Metal Jacket (B-015)
+Prvi Partizan,0.308,71,Jacketed Hollow Point (B-175)
+Prvi Partizan,0.308,93,Full Metal Jacket (B-549)
+Prvi Partizan,0.308,125,Full Metal Jacket (B-636)
+Prvi Partizan,0.308,125,Hollow Point Boat Tail (B-638)
+Prvi Partizan,0.308,139,Full Metal Jacket (B-007)
+Prvi Partizan,0.308,145,Full Metal Jacket Boat Tail (B-009)
+Prvi Partizan,0.308,145,Full Metal Jacket Boat Tail (B-119)
+Prvi Partizan,0.308,150,Flat Soft Point (B-028)
+Prvi Partizan,0.308,150,Full Metal Jacket (B-099)
+Prvi Partizan,0.308,150,Full Metal Jacket Boat Tail (B-436)
+Prvi Partizan,0.308,150,Soft Point (B-062)
+Prvi Partizan,0.308,155,Hollow Point Boat Tail (B-625)
+Prvi Partizan,0.308,156,Solid Hollow Point (B-594)
+Prvi Partizan,0.308,165,Pointed Soft Point Boat Tail (B-362)
+Prvi Partizan,0.308,168,Hollow Point Boat Tail (B-363)
+Prvi Partizan,0.308,168,Hollow Point Boat Tail (B-496)
+Prvi Partizan,0.308,170,Flat Soft Point (B-200)
+Prvi Partizan,0.308,174,Full Metal Jacket Boat Tail (B-345)
+Prvi Partizan,0.308,174,Soft Point (B-428)
+Prvi Partizan,0.308,175,Full Metal Jacket Boat Tail (B-366)
+Prvi Partizan,0.308,175,Full Metal Jacket Boat Tail (B-449)
+Prvi Partizan,0.308,175,Full Metal Jacket Boat Tail (B-500)
+Prvi Partizan,0.308,175,Hollow Point Boat Tail (B-592)
+Prvi Partizan,0.308,175,Hollow Point Boat Tail (B-593)
+Prvi Partizan,0.308,180,Soft Point (B-066)
+Prvi Partizan,0.308,190,Hollow Point Boat Tail (B-367)
+Prvi Partizan,0.308,190,Hollow Point Boat Tail (B-497)
+Prvi Partizan,0.310,123,Full Metal Jacket (B-074)
+Prvi Partizan,0.310,123,Pointed Soft Point (B-210)
+Prvi Partizan,0.310,123,Soft Point Round Nose (B-030)
+Prvi Partizan,0.311,150,Full Metal Jacket Boat Tail (B-219)
+Prvi Partizan,0.311,150,Soft Point Boat Tail (B-382)
+Prvi Partizan,0.311,170,Full Metal Jacket Boat Tail (B-437)
+Prvi Partizan,0.311,174,Full Metal Jacket Boat Tail (B-143)
+Prvi Partizan,0.311,180,Soft Point Boat Tail (B-125)
+Prvi Partizan,0.311,182,Full Metal Jacket Boat Tail (B-169)
+Prvi Partizan,0.311,182,Full Metal Jacket Boat Tail (B-529)
+Prvi Partizan,0.311,190,Full Metal Jacket Boat Tail (B-006)
+Prvi Partizan,0.313,98,Lead Round Nose (B-081)
+Prvi Partizan,0.313,98,Wadcutter (B-298)
+Prvi Partizan,0.322,139,Soft Point (B-462)
+Prvi Partizan,0.322,175,Hollow Point Boat Tail (B-350)
+Prvi Partizan,0.322,198,Full Metal Jacket Boat Tail (B-022)
+Prvi Partizan,0.322,198,Full Metal Jacket Boat Tail (B-348)
+Prvi Partizan,0.322,200,Full Metal Jacket Boat Tail (B-541)
+Prvi Partizan,0.322,200,Full Metal Jacket Boat Tail (B-564)
+Prvi Partizan,0.323,124,Full Metal Jacket Boat Tail (B-424)
+Prvi Partizan,0.323,139,Soft Point (B-162)
+Prvi Partizan,0.323,175,Pointed Soft Point Boat Tail (B-349)
+Prvi Partizan,0.323,196,Soft Point (B-128)
+Prvi Partizan,0.323,196,Soft Point (B-459)
+Prvi Partizan,0.323,198,Full Metal Jacket Boat Tail (B-001)
+Prvi Partizan,0.323,250,Full Metal Jacket Boat Tail (B-471)
+Prvi Partizan,0.323,250,Full Metal Jacket Boat Tail (B-498)
+Prvi Partizan,0.327,200,Full Metal Jacket Boat Tail (B-417)
+Prvi Partizan,0.330,208,Full Metal Jacket Boat Tail (B-384)
+Prvi Partizan,0.330,208,Soft Point (B-561)
+Prvi Partizan,0.338,250,Full Metal Jacket Boat Tail (B-421)
+Prvi Partizan,0.338,250,Full Metal Jacket Boat Tail (B-583)
+Prvi Partizan,0.338,250,Hollow Point Boat Tail (B-423)
+Prvi Partizan,0.355,94,Jacketed Hollow Point (B-145)
+Prvi Partizan,0.355,95,Full Metal Jacket (B-398)
+Prvi Partizan,0.355,115,Full Metal Jacket (B-112)
+Prvi Partizan,0.355,115,Jacketed Hollow Point (B-101)
+Prvi Partizan,0.355,124,Full Metal Jacket (B-013)
+Prvi Partizan,0.355,124,Jacketed Hollow Point (B-171)
+Prvi Partizan,0.355,125,Flat Point Jacket (B-191)
+Prvi Partizan,0.355,125,Flat Point Jacket (B-446)
+Prvi Partizan,0.355,130,Full Metal Jacket (B-354)
+Prvi Partizan,0.355,130,Semi Jacketed Soft Point (B-329)
+Prvi Partizan,0.355,147,Full Metal Jacket (B-166)
+Prvi Partizan,0.355,147,Jacketed Hollow Point (B-163)
+Prvi Partizan,0.355,158,Full Metal Jacket (B-457)
+Prvi Partizan,0.356,94,Full Metal Jacket (B-014)
+Prvi Partizan,0.356,124,Lead Round Nose (B-192)
+Prvi Partizan,0.356,130,Full Metal Jacket (B-614)
+Prvi Partizan,0.356,158,Flat Point Jacket (B-339)
+Prvi Partizan,0.356,158,Full Metal Spitz (B-111)
+Prvi Partizan,0.356,158,Semi Jacketed Flat Point (B-338)
+Prvi Partizan,0.356,158,Semi Jacketed Hollow Point (B-135)
+Prvi Partizan,0.358,145,Lead Round Nose (B-089)
+Prvi Partizan,0.358,148,Wadcutter (B-053)
+Prvi Partizan,0.358,158,Lead Round Nose (B-017)
+Prvi Partizan,0.358,158,Semi Wadcutter (B-140)
+Prvi Partizan,0.358,158,Semi Wadcutter (B-326)
+Prvi Partizan,0.358,158,Semi Wadcutter Hollow Point (B-136)
+Prvi Partizan,0.359,108,Full Metal Jacket (B-164)
+Prvi Partizan,0.364,285,Soft Point (B-330)
+Prvi Partizan,0.365,93,Full Metal Jacket (B-102)
+Prvi Partizan,0.365,95,Jacketed Hollow Point (B-172)
+Prvi Partizan,0.365,250,Solid Hollow Point (B-633)
+Prvi Partizan,0.375,270,Solid Hollow Point (B-631)
+Prvi Partizan,0.375,300,Flat Point Jacketed (B-444)
+Prvi Partizan,0.375,300,Full Metal Jacket Round Nose (B-265)
+Prvi Partizan,0.375,300,Soft Point (B-267)
+Prvi Partizan,0.400,165,Flat Point Jacket (B-614)
+Prvi Partizan,0.400,170,Flat Point Jacket (B-361)
+Prvi Partizan,0.400,180,Jacketed Hollow Point (B-196)
+Prvi Partizan,0.400,190,Flat Point Jacket (B-195)
+Prvi Partizan,0.412,230,Lead Round Nose (B-202)
+Prvi Partizan,0.429,180,Flat Point Jacket (B-221)
+Prvi Partizan,0.429,180,Jacketed Hollow Point (B-154)
+Prvi Partizan,0.429,240,Flat Point Jacket (B-222)
+Prvi Partizan,0.429,240,Jacketed Hollow Point (B-156)
+Prvi Partizan,0.429,240,Semi Jacketed Flat Point (B-359)
+Prvi Partizan,0.429,240,Semi Jacketed Hollow Point (B-580)
+Prvi Partizan,0.429,300,Semi Jacketed Flat Point (B-320)
+Prvi Partizan,0.450,185,Semi Jacketed Flat Point (B-181)
+Prvi Partizan,0.450,200,Flat Point Jacket (B-214)
+Prvi Partizan,0.450,230,Full Metal Jacket (B-180)
+Prvi Partizan,0.458,405,SJ Flat Point (B-448)
+Prvi Partizan,0.510,725,Solid (B-429)
+RWS,0.223,28,Short R25
+RWS,0.223,40,Long Rifle High Velocity Hollow Point
+RWS,0.223,40,Long Rifle Match
+RWS,0.223,40,Long Rifle R100
+RWS,0.223,40,Long Rifle R50
+RWS,0.223,40,Long Rifle Subsonic Hollow Point
+RWS,0.223,40,Long Rifle Target Rifle
+RWS,0.224,52,Target Elite Plus
+RWS,0.224,69,Target Elite Plus
+RWS,0.224,77,Target Elite Plus
+RWS,0.264,130,Target Elite Plus
+RWS,0.264,143,Target Elite Plus
+RWS,0.308,154,Target Elite Plus
+RWS,0.308,168,Target Elite Plus
+RWS,0.308,175,Target Elite Plus
+RWS,0.308,190,Target Elite Plus
+RWS,0.308,190,Target Elite Plus (G7)
+RWS,0.338,250,Target Elite Plus
+Remington,0.223,29,Short Solid
+Remington,0.223,33,Long Rifle Yellow Jacket HP
+Remington,0.223,33,WMR Premier V-Max Boattail
+Remington,0.223,36,Long Rifle Cyclone Hollow Point
+Remington,0.223,36,Long Rifle Hollow Point
+Remington,0.223,36,Long Rifle Viper Solid
+Remington,0.223,38,Long Rifle Subsonic HP
+Remington,0.223,40,Long Rifle Solid
+Remington,0.223,40,Long Rifle Target Solid
+Remington,0.223,40,Long Rifle Thunderbolt Solid
+Remington,0.223,40,WMR Jacketed Hollow Point
+Remington,0.223,40,WMR Pointed Soft Point Solid
+Remington,0.308,180,Soft Point Core-Lokt&trade;
+Remington/Eley,0.223,40,Club Extra
+Remington/Eley,0.223,40,Match EPS
+Remington/Eley,0.223,40,Target Rifle
+Rocky Mountain Bullets,0.338,225,RBTAL Match/Hunting
+Rocky Mountain Bullets,0.338,250,RBTAL Match/Hunting
+Rocky Mountain Bullets,0.338,275,RBTAL Match/Hunting
+Rocky Mountain Bullets,0.338,300,RBTAL Match/Hunting
+Rocky Mountain Bullets,0.338,325,RBTAL Match/Hunting
+Rocky Mountain Bullets,0.338,325,RBTAL Match/Hunting (Litz)
+Rocky Mountain Bullets,0.375,370,RBTAL Match/Hunting
+Rocky Mountain Bullets,0.408,420,RBTAL Match/Hunting
+Rocky Mountain Bullets,0.408,420,RBTAL Match/Target
+Rocky Mountain Bullets,0.416,450,RBTAL Match/Hunting
+Rocky Mountain Bullets,0.510,750,RBTAL Match/Hunting
+Sako,0.224,50,Arrowhead
+Sako,0.224,50,Gamehead
+Sako,0.224,50,Powerhead II
+Sako,0.224,50,Speedhead
+Sako,0.224,55,Gamehead
+Sako,0.243,80,Powerhead II
+Sako,0.243,90,Gamehead
+Sako,0.243,90,Speedhead
+Sako,0.243,100,Deerhead
+Sako,0.243,100,Gamehead
+Sako,0.257,117,Gamehead
+Sako,0.264,100,Speedhead
+Sako,0.264,120,Powerhead II
+Sako,0.264,156,Deerhead
+Sako,0.277,130,Powerhead
+Sako,0.277,156,Hammerhead
+Sako,0.284,78,Gamehead
+Sako,0.284,78,Speedhead
+Sako,0.284,140,Arrowhead
+Sako,0.284,140,Gamehead
+Sako,0.284,150,Arrowhead II
+Sako,0.284,150,Gamehead
+Sako,0.284,150,Powerhead II
+Sako,0.284,160,Powerhead II
+Sako,0.284,170,Hammerhead
+Sako,0.308,120,Gamehead
+Sako,0.308,123,Gamehead
+Sako,0.308,123,Speedhead
+Sako,0.308,150,Gamehead
+Sako,0.308,150,Super Hammerhead
+Sako,0.308,165,Powerhead
+Sako,0.308,168,Powerhead II
+Sako,0.308,175,Racehead OTM
+Sako,0.308,180,Arrowhead II
+Sako,0.308,180,Hammerhead
+Sako,0.308,180,Powerhead
+Sako,0.308,180,Powerhead II
+Sako,0.308,180,Super Hammerhead
+Sako,0.308,200,Hammerhead
+Sako,0.308,220,Hammerhead
+Sako,0.312,117,Gamehead
+Sako,0.312,123,Speedhead
+Sako,0.323,175,Gamehead
+Sako,0.323,200,Hammerhead
+Sako,0.338,250,Hammerhead
+Sako,0.338,275,Twinhead II
+Sako,0.338,300,Racehead OTM
+Sako,0.366,231,Speedhead
+Sako,0.366,250,Arrowhead
+Sako,0.366,250,Dangerous Game Solid
+Sako,0.366,250,Powerhead
+Sako,0.366,264,Gamehead
+Sako,0.366,286,Hammerhead
+Sako,0.366,286,Powerhead
+Sako,0.375,270,Dangerous Game Solid
+Sako,0.375,270,Powerhead
+Sako,0.375,300,Twinhead II
+Sako,0.416,400,Dangerous Game Solid
+Sako,0.416,400,Twinhead II
+Sako,0.458,450,Dangerous Game Solid
+Sako,0.458,450,Twinhead II
+Sako,0.510,535,Dangerous Game Solid
+Sako,0.510,535,Twinhead II
+Sellier and Bellot,0.223,28,Short
+Sellier and Bellot,0.223,36,Long Rifle High Velocity
+Sellier and Bellot,0.223,38,Long Rifle High Velocity Hollow Point
+Sellier and Bellot,0.223,40,Long Rifle SB Standard
+Sellier and Bellot,0.224,45,Soft Point
+Sellier and Bellot,0.224,50,Full Metal Jacket
+Sellier and Bellot,0.224,50,Soft Point
+Sellier and Bellot,0.224,55,Full Metal Jacket
+Sellier and Bellot,0.224,55,Soft Point
+Sellier and Bellot,0.228,70,Full Metal Jacket
+Sellier and Bellot,0.228,70,Soft Point
+Sellier and Bellot,0.243,100,Soft Point
+Sellier and Bellot,0.257,117,Soft Point
+Sellier and Bellot,0.264,131,Soft Point
+Sellier and Bellot,0.264,140,Full Metal Jacket
+Sellier and Bellot,0.264,140,Soft Point
+Sellier and Bellot,0.277,150,Soft Point
+Sellier and Bellot,0.284,173,Soft Point CE
+Sellier and Bellot,0.308,110,Full Metal Jacket
+Sellier and Bellot,0.308,147,Full Metal Jacket
+Sellier and Bellot,0.308,150,Soft Point
+Sellier and Bellot,0.308,150,Soft Point CE
+Sellier and Bellot,0.308,180,Full Metal Jacket
+Sellier and Bellot,0.308,180,Soft Point
+Sellier and Bellot,0.308,180,Soft Point CE
+Sellier and Bellot,0.311,123,Full Metal Jacket
+Sellier and Bellot,0.311,123,Soft Point
+Sellier and Bellot,0.311,150,Soft Point
+Sellier and Bellot,0.311,180,Full Metal Jacket
+Sellier and Bellot,0.311,180,Soft Point
+Sellier and Bellot,0.318,196,Soft Point
+Sellier and Bellot,0.323,196,Full Metal Jacket
+Sellier and Bellot,0.323,196,Soft Point CE
+Sellier and Bellot,0.338,250,Boattail Hollow Point Match
+Sellier and Bellot,0.338,300,Boattail Hollow Point Match
+Sellier and Bellot,0.366,193,Soft Point
+Sellier and Bellot,0.366,285,Soft Point
+Sierra,0.200,32,BlitzKing&trade;
+Sierra,0.200,39,BlitzKing&trade;
+Sierra,0.223,40,Hornet (Varminter)
+Sierra,0.223,45,Hornet (Varminter)
+Sierra,0.224,40,BlitzKing&trade;
+Sierra,0.224,40,Hollow Point (Varminter)
+Sierra,0.224,40,Hornet (Varminter)
+Sierra,0.224,45,Hornet (Varminter)
+Sierra,0.224,45,Semi-Point (Varminter)
+Sierra,0.224,45,Spitzer (Varminter)
+Sierra,0.224,50,Blitz (Varminter)
+Sierra,0.224,50,BlitzKing&trade;
+Sierra,0.224,50,Semi-Point (Varminter)
+Sierra,0.224,50,Spitzer (Varminter)
+Sierra,0.224,52,HPBT MatchKing&trade;
+Sierra,0.224,52,HPBT MatchKing&trade; (Litz)
+Sierra,0.224,53,HP MatchKing&trade;
+Sierra,0.224,55,Blitz (Varminter)
+Sierra,0.224,55,BlitzKing&trade;
+Sierra,0.224,55,FMJBT (Litz)
+Sierra,0.224,55,Full Metal Jacket Boattail (GameKing)
+Sierra,0.224,55,HPBT (GameKing)
+Sierra,0.224,55,Semi-Point (Varminter)
+Sierra,0.224,55,Spitzer (Varminter)
+Sierra,0.224,55,Spitzer Boattail (GameKing)
+Sierra,0.224,60,Hollow Point (Varminter)
+Sierra,0.224,60,Tipped MatchKing&trade;
+Sierra,0.224,63,Semi-Point (Varminter)
+Sierra,0.224,64,Tipped GameKing&trade;
+Sierra,0.224,65,Spitzer Boattail (GameKing)
+Sierra,0.224,65,Spitzer Boattail (GameKing) (Litz)
+Sierra,0.224,69,HPBT MatchKing&trade;
+Sierra,0.224,69,MatchKing&trade; (Litz)
+Sierra,0.224,69,Tipped MatchKing&trade;
+Sierra,0.224,69,Tipped MatchKing&trade; (Litz)
+Sierra,0.224,77,HPBT MatchKing&trade;
+Sierra,0.224,77,HPBT MatchKing&trade; Cannelured
+Sierra,0.224,77,MatchKing&trade; (Litz)
+Sierra,0.224,77,Tipped MatchKing&trade;
+Sierra,0.224,80,HPBT MatchKing&trade;
+Sierra,0.224,80,MatchKing&trade; (Litz)
+Sierra,0.224,90,HPBT MatchKing&trade;
+Sierra,0.224,90,MatchKing&trade; (Litz)
+Sierra,0.224,95,HPBT MatchKing&trade;
+Sierra,0.243,55,BlitzKing&trade;
+Sierra,0.243,60,Hollow Point (Varminter)
+Sierra,0.243,70,BlitzKing&trade;
+Sierra,0.243,70,HPBT MatchKing&trade;
+Sierra,0.243,70,MatchKing&trade; (Litz)
+Sierra,0.243,75,Hollow Point (Varminter)
+Sierra,0.243,80,Blitz (Litz)
+Sierra,0.243,80,Spitzer Boattail Blitz (Varminter)
+Sierra,0.243,80,Spitzer Single Shot Pistol (Pro-Hunter)
+Sierra,0.243,85,HPBT (GameKing)
+Sierra,0.243,85,Spitzer (Varminter)
+Sierra,0.243,90,Full Metal Jacket Boattail (GameKing)
+Sierra,0.243,90,Tipped GameChanger
+Sierra,0.243,95,HPBT MatchKing&trade;
+Sierra,0.243,95,MatchKing&trade; (Litz)
+Sierra,0.243,95,Tipped MatchKing&trade;
+Sierra,0.243,100,Semi-Point
+Sierra,0.243,100,Spitzer (Pro-Hunter)
+Sierra,0.243,100,Spitzer (Pro-Hunter) (Litz)
+Sierra,0.243,100,Spitzer Boattail (GameKing)
+Sierra,0.243,100,Tipped GameKing&trade;
+Sierra,0.243,107,HPBT MatchKing&trade;
+Sierra,0.243,107,MatchKing&trade; (Litz)
+Sierra,0.243,110,MatchKing&trade;
+Sierra,0.251,50,Full Metal Jacket (Tournament Master)
+Sierra,0.257,70,BlitzKing&trade;
+Sierra,0.257,70,BlitzKing&trade; (Litz)
+Sierra,0.257,75,Hollow Point (Varminter)
+Sierra,0.257,87,Spitzer (Varminter)
+Sierra,0.257,90,BlitzKing&trade;
+Sierra,0.257,90,HPBT (GameKing)
+Sierra,0.257,100,HPBT MatchKing&trade;
+Sierra,0.257,100,MatchKing&trade; (Litz)
+Sierra,0.257,100,Spitzer (Pro-Hunter)
+Sierra,0.257,100,Spitzer Boattail (GameKing)
+Sierra,0.257,110,Tipped GameKing&trade;
+Sierra,0.257,117,Pro Hunter (Litz)
+Sierra,0.257,117,Spitzer (Pro-Hunter)
+Sierra,0.257,117,Spitzer Boattail (GameKing)
+Sierra,0.257,120,HPBT (GameKing)
+Sierra,0.264,85,Hollow Point (Varminter)
+Sierra,0.264,100,Hollow Point (Varminter)
+Sierra,0.264,107,HPBT MatchKing&trade;
+Sierra,0.264,107,MatchKing&trade; (Litz)
+Sierra,0.264,107,Tipped MatchKing&trade;
+Sierra,0.264,120,HPBT MatchKing&trade;
+Sierra,0.264,120,Pro Hunter (Litz)
+Sierra,0.264,120,Spitzer (Pro-Hunter)
+Sierra,0.264,120,Tipped GameKing&trade;
+Sierra,0.264,123,HPBT MatchKing&trade;
+Sierra,0.264,123,MatchKing&trade; (Litz)
+Sierra,0.264,130,Tipped GameChanger
+Sierra,0.264,130,Tipped MatchKing&trade;
+Sierra,0.264,140,HPBT MatchKing&trade;
+Sierra,0.264,140,Spitzer Boattail (GameKing)
+Sierra,0.264,142,HPBT MatchKing&trade;
+Sierra,0.264,142,MatchKing&trade; (Litz)
+Sierra,0.264,150,MatchKing&trade;
+Sierra,0.264,155,HPBT MatchKing&trade;
+Sierra,0.264,160,Semi-Point
+Sierra,0.277,90,Hollow Point (Varminter)
+Sierra,0.277,110,Spitzer (Pro-Hunter)
+Sierra,0.277,115,HPBT MatchKing&trade;
+Sierra,0.277,115,MatchKing&trade; (Litz)
+Sierra,0.277,130,Spitzer (Pro-Hunter)
+Sierra,0.277,130,Spitzer Boattail (GameKing)
+Sierra,0.277,135,HPBT MatchKing&trade;
+Sierra,0.277,135,MatchKing&trade; (Litz)
+Sierra,0.277,140,HPBT (GameKing)
+Sierra,0.277,140,Spitzer Boattail (GameKing)
+Sierra,0.277,140,Tipped GameChanger
+Sierra,0.277,150,GameKing&trade; (Litz)
+Sierra,0.277,150,Spitzer Boattail (GameKing)
+Sierra,0.284,100,Hollow Point (Varminter)
+Sierra,0.284,120,Spitzer (Pro-Hunter)
+Sierra,0.284,130,HPBT MatchKing&trade;
+Sierra,0.284,130,Spitzer Single Shot Pistol
+Sierra,0.284,140,Spitzer (Pro-Hunter)
+Sierra,0.284,140,Spitzer Boattail (GameKing)
+Sierra,0.284,140,Tipped GameKing&trade;
+Sierra,0.284,150,GameKing&trade; (Litz)
+Sierra,0.284,150,HPBT MatchKing&trade;
+Sierra,0.284,150,Spitzer Boattail (GameKing)
+Sierra,0.284,150,Tipped GameKing&trade;
+Sierra,0.284,160,HPBT (GameKing)
+Sierra,0.284,160,Spitzer Boattail (GameKing)
+Sierra,0.284,160,Tipped MatchKing&trade;
+Sierra,0.284,165,Tipped GameChanger
+Sierra,0.284,165,Tipped GameKing&trade;
+Sierra,0.284,168,HPBT MatchKing&trade;
+Sierra,0.284,168,MatchKing&trade; (Litz)
+Sierra,0.284,170,Round Nose
+Sierra,0.284,175,GameKing&trade; (Litz)
+Sierra,0.284,175,MatchKing&trade;
+Sierra,0.284,175,MatchKing&trade; (Litz)
+Sierra,0.284,175,Spitzer Boattail (GameKing)
+Sierra,0.284,180,HPBT MatchKing&trade;
+Sierra,0.284,183,HPBT MatchKing&trade;
+Sierra,0.284,197,HPBT MatchKing&trade;
+Sierra,0.308,85,Round Nose (Sports Master)
+Sierra,0.308,110,Full Metal Jacket (Pro-Hunter)
+Sierra,0.308,110,Hollow Point (Varminter)
+Sierra,0.308,110,Round Nose (Pro-Hunter)
+Sierra,0.308,125,HP/FN (Pro-Hunter)
+Sierra,0.308,125,Open Tip Match (OTM);
+Sierra,0.308,125,Spitzer (Pro-Hunter)
+Sierra,0.308,125,Tipped MatchKing&trade;
+Sierra,0.308,125,Tipped MatchKing&trade; (Litz)
+Sierra,0.308,135,HP (Varminter&trade;)
+Sierra,0.308,135,HPBT MatchKing&trade;
+Sierra,0.308,135,Spitzer - Single Shot Pistol (Pro-Hunter)
+Sierra,0.308,150,Flat Nose (Pro-Hunter)
+Sierra,0.308,150,Full Metal Jacket Boattail (GameKing)
+Sierra,0.308,150,HPBT MatchKing&trade;
+Sierra,0.308,150,Round Nose (Pro-Hunter)
+Sierra,0.308,150,Spitzer (Pro-Hunter)
+Sierra,0.308,150,Spitzer Boattail (GameKing)
+Sierra,0.308,155,HPBT MatchKing&trade;
+Sierra,0.308,155,HPBT Palma MatchKing&trade;
+Sierra,0.308,155,Palma [2155] (Litz)
+Sierra,0.308,155,Palma [2156] (Litz)
+Sierra,0.308,155,Tipped MatchKing&trade;
+Sierra,0.308,155,Tipped MatchKing&trade; (Litz)
+Sierra,0.308,165,GameKing&trade; (Litz)
+Sierra,0.308,165,HPBT (GameKing)
+Sierra,0.308,165,Spitzer Boattail (GameKing)
+Sierra,0.308,165,Tipped GameChanger
+Sierra,0.308,168,HPBT MatchKing&trade;
+Sierra,0.308,168,MatchKing&trade; (Litz)
+Sierra,0.308,168,Tipped MatchKing&trade;
+Sierra,0.308,169,MatchKing&trade;
+Sierra,0.308,170,Flat Nose (Pro-Hunter)
+Sierra,0.308,175,HPBT MatchKing&trade;
+Sierra,0.308,175,MatchKing&trade; (Litz)
+Sierra,0.308,175,Tipped MatchKing&trade;
+Sierra,0.308,175,Tipped MatchKing&trade; (Litz)
+Sierra,0.308,180,GameKing&trade; (Litz)
+Sierra,0.308,180,HPBT MatchKing&trade;
+Sierra,0.308,180,MatchKing&trade; (Litz)
+Sierra,0.308,180,Round Nose (Pro-Hunter)
+Sierra,0.308,180,Spitzer (Pro-Hunter)
+Sierra,0.308,180,Spitzer Boattail (GameKing)
+Sierra,0.308,190,HPBT MatchKing&trade;
+Sierra,0.308,190,MatchKing&trade; (Litz)
+Sierra,0.308,195,Tipped MatchKing&trade;
+Sierra,0.308,200,GameKing&trade; (Litz)
+Sierra,0.308,200,HPBT MatchKing&trade;
+Sierra,0.308,200,MatchKing&trade; (Litz)
+Sierra,0.308,200,Spitzer Boattail (GameKing)
+Sierra,0.308,210,HPBT MatchKing&trade;
+Sierra,0.308,210,MatchKing&trade; (Litz)
+Sierra,0.308,220,HPBT MatchKing&trade;
+Sierra,0.308,220,MatchKing&trade; (Litz)
+Sierra,0.308,220,Round Nose (Pro-Hunter)
+Sierra,0.308,230,HPBT MatchKing&trade;
+Sierra,0.308,240,HPBT MatchKing&trade;
+Sierra,0.308,240,MatchKing&trade; (Litz)
+Sierra,0.311,125,Spitzer (Pro-Hunter)
+Sierra,0.311,150,Spitzer (Pro-Hunter)
+Sierra,0.311,174,HPBT MatchKing&trade;
+Sierra,0.311,180,Spitzer (Pro-Hunter)
+Sierra,0.312,71,Full Metal Jacket
+Sierra,0.312,90,Jacketed Hollow Cavity
+Sierra,0.323,150,Spitzer (Pro-Hunter)
+Sierra,0.323,175,Spitzer (Pro-Hunter)
+Sierra,0.323,200,HPBT MatchKing&trade;
+Sierra,0.323,220,Spitzer Boattail (GameKing)
+Sierra,0.338,215,Spitzer Boattail (GameKing)
+Sierra,0.338,250,GameKing&trade; (Litz)
+Sierra,0.338,250,HPBT MatchKing&trade;
+Sierra,0.338,250,MatchKing&trade; (Litz)
+Sierra,0.338,250,Spitzer Boattail (GameKing)
+Sierra,0.338,300,HPBT MatchKing&trade;
+Sierra,0.338,300,MatchKing&trade; (Litz)
+Sierra,0.355,90,Jacketed Hollow Point (Sports Master)
+Sierra,0.355,95,Full Metal Jacket (Tournament Master)
+Sierra,0.355,115,Full Metal Jacket (Tournament Master)
+Sierra,0.355,115,Jacketed Hollow Point (Sports Master)
+Sierra,0.355,125,Full Metal Jacket (Tournament Master)
+Sierra,0.355,125,Jacketed Hollow Point (Sports Master)
+Sierra,0.355,130,Full Metal Jacket
+Sierra,0.357,110,JHC Blitz (Sports Master)
+Sierra,0.357,125,Jacketed Hollow Cavity (Sports Master)
+Sierra,0.357,125,Jacketed Soft Point (Sports Master)
+Sierra,0.357,140,Jacketed Hollow Cavity (Sports Master)
+Sierra,0.357,158,Jacketed Hollow Cavity (Sports Master)
+Sierra,0.357,158,Jacketed Soft Point (Sports Master)
+Sierra,0.357,170,Full Metal Jacket Match (Tournament Master)
+Sierra,0.357,170,Jacketed Hollow Cavity
+Sierra,0.357,180,Full Profile Jacket (FPJ) Match (Tournament Master)
+Sierra,0.358,200,Round Nose (Pro-Hunter)
+Sierra,0.358,225,Spitzer Boattail (GameKing)
+Sierra,0.363,100,Full Profile Jacket (FPJ) Makarov (Tournament Master)
+Sierra,0.375,200,Flat Nose (Pro-Hunter)
+Sierra,0.375,250,Spitzer Boattail (GameKing)
+Sierra,0.375,300,Spitzer Boattail (GameKing)
+Sierra,0.375,300,Spitzer Boattail (GameKing) (Litz)
+Sierra,0.375,350,HPBT MatchKing&trade;
+Sierra,0.375,350,HPBT MatchKing&trade; (Litz)
+Sierra,0.400,135,Jacketed Hollow Point (Sports Master)
+Sierra,0.400,150,Jacketed Hollow Point (Sports Master)
+Sierra,0.400,165,Jacketed Hollow Point (Sports Master)
+Sierra,0.400,180,Jacketed Hollow Point (Sports Master)
+Sierra,0.400,190,Full Profile Jacket (FPJ) (Tournament Master)
+Sierra,0.410,170,Jacketed Hollow Cavity (Sports Master)
+Sierra,0.410,210,Jacketed Hollow Cavity (Sports Master)
+Sierra,0.429,210,Jacketed Hollow Cavity (Sports Master)
+Sierra,0.429,220,Full Profile Jacket (FPJ) Match (Tournament Master)
+Sierra,0.429,240,Jacketed Hollow Cavity (Sports Master)
+Sierra,0.429,250,Full Profile Jacket (FPJ) Match (Tournament Master)
+Sierra,0.429,300,Jacketed Soft Point (Sports Master)
+Sierra,0.451,185,Full Profile Jacket (FPJ) Match (Tournament Master)
+Sierra,0.451,185,Jacketed Hollow Point (Sports Master)
+Sierra,0.451,200,Full Profile Jacket (FPJ) Match (Tournament Master)
+Sierra,0.451,230,Full Metal Jacket Match (Tournament Master)
+Sierra,0.451,230,Jacketed Hollow Point (Sports Master)
+Sierra,0.451,240,Jacketed Hollow Cavity (Sports Master)
+Sierra,0.451,300,Jacketed Soft Point (Sports Master)
+Sierra,0.458,300,Hollow Point Flat Nose (Pro-Hunter)
+Sierra,0.500,350,Jacketed Hollow Point (Sports Master)
+Sierra,0.500,400,Full Profile Jacket (FPJ) (Sports Master)
+Speer,0.204,32,TNT&reg; Green&trade;
+Speer,0.224,30,TNT&reg; Green&trade;
+Speer,0.224,33,TNT&trade; HP 22 Hornet
+Speer,0.224,40,Spire SP
+Speer,0.224,43,TNT&reg; Green&trade;
+Speer,0.224,45,Spitzer Soft Point
+Speer,0.224,46,Flat Nose SP/cann [218 Bee]
+Speer,0.224,50,MHP
+Speer,0.224,50,Spitzer Soft Point
+Speer,0.224,50,TNT&reg; Green&trade;
+Speer,0.224,50,TNT&trade; HP
+Speer,0.224,52,Hollow Point
+Speer,0.224,52,Hollow Point Boattail Match
+Speer,0.224,52,THP Match
+Speer,0.224,55,Full Metal Jacket Boattail
+Speer,0.224,55,Gold Dot&trade; Rifle Component
+Speer,0.224,55,Spitzer SP/cann
+Speer,0.224,55,Spitzer Soft Point
+Speer,0.224,55,TNT&trade; HP High Velocity
+Speer,0.224,55,Trophy Bonded&trade; Bear Claw&trade; SP
+Speer,0.224,62,Full Metal Jacket Boattail
+Speer,0.224,62,Gold Dot&trade; Rifle Component
+Speer,0.224,70,Semi-Spitzer SP
+Speer,0.224,75,Gold Dot&trade; Rifle Component
+Speer,0.243,70,MHP
+Speer,0.243,70,TNT&trade; SP
+Speer,0.243,75,Soft Point
+Speer,0.243,80,DeepCurl&trade; SP
+Speer,0.243,80,Spitzer Soft Point
+Speer,0.243,85,Spitzer BTSP
+Speer,0.243,90,DeepCurl&trade; SP
+Speer,0.243,90,Hot-Cor&trade;
+Speer,0.243,90,Spitzer Soft Point
+Speer,0.243,100,Grand Slam&trade; SP
+Speer,0.243,100,Spitzer BTSP
+Speer,0.243,105,Spitzer Soft Point
+Speer,0.257,75,Flat Nose SP/cann [25-20 Win]
+Speer,0.257,87,MHP
+Speer,0.257,87,Spitzer Soft Point
+Speer,0.257,87,TNT&trade; SP
+Speer,0.257,100,Hollow Point
+Speer,0.257,100,Spitzer BTSP
+Speer,0.257,100,Spitzer SP
+Speer,0.257,115,Trophy Bonded&trade; Bear Claw&trade; SP
+Speer,0.257,120,DeepCurl&trade; SP
+Speer,0.257,120,Grand Slam&trade; SP
+Speer,0.257,120,Spitzer BTSP
+Speer,0.257,120,Spitzer Soft Point
+Speer,0.264,90,TNT&trade; HP
+Speer,0.264,120,Gold Dot&trade; Rifle Component
+Speer,0.264,120,Spitzer Soft Point
+Speer,0.264,140,DeepCurl&trade; SP
+Speer,0.264,140,Gold Dot&trade; Rifle Component
+Speer,0.264,140,Grand Slam&trade; SP
+Speer,0.264,140,Spitzer Soft Point
+Speer,0.264,140,Trophy Bonded&trade; Bear Claw&trade; SP
+Speer,0.277,90,Gold Dot&trade; Rifle Component
+Speer,0.277,90,MHP
+Speer,0.277,90,TNT&trade; HP
+Speer,0.277,100,Hollow Point
+Speer,0.277,115,Gold Dot&trade; Rifle Component
+Speer,0.277,130,Grand Slam&trade; SP
+Speer,0.277,130,Spitzer BTSP
+Speer,0.277,130,Spitzer Soft Point
+Speer,0.277,140,Trophy Bonded&trade; Bear Claw&trade; SP
+Speer,0.277,150,DeepCurl&trade; SP
+Speer,0.277,150,Grand Slam&trade; SP
+Speer,0.277,150,Spitzer BTSP
+Speer,0.277,150,Spitzer Soft Point
+Speer,0.284,110,MHP
+Speer,0.284,110,TNT&trade; HP
+Speer,0.284,115,Hollow Point
+Speer,0.284,130,Flat Nose SP/cann [for 7x30 Waters]
+Speer,0.284,130,Spitzer BTSP
+Speer,0.284,130,Spitzer Soft Point
+Speer,0.284,140,Trophy Bonded&trade; Bear Claw&trade; SP
+Speer,0.284,145,BTHP Match
+Speer,0.284,145,Grand Slam&trade; SP
+Speer,0.284,145,Spitzer BTSP
+Speer,0.284,145,Spitzer Soft Point
+Speer,0.284,160,DeepCurl&trade; SP
+Speer,0.284,160,Grand Slam&trade; SP
+Speer,0.284,160,Mag-Tip SP
+Speer,0.284,160,Spitzer BTSP
+Speer,0.284,160,Spitzer Soft Point
+Speer,0.284,160,Trophy Bonded&trade; Bear Claw&trade; SP
+Speer,0.284,175,DeepCurl&trade; SP
+Speer,0.284,175,Grand Slam&trade; SP
+Speer,0.284,175,Mag-Tip SP
+Speer,0.284,175,Trophy Bonded&trade; Bear Claw&trade; SP
+Speer,0.308,100,Round Nose SP Plinker
+Speer,0.308,110,DeepCurl&trade; RN
+Speer,0.308,110,Hollow Point
+Speer,0.308,110,Round Nose SP 30 Carbine
+Speer,0.308,110,Round Nose TMJ 30 Carbine
+Speer,0.308,110,Spire SP
+Speer,0.308,125,TNT&trade; HP
+Speer,0.308,130,Flat Nose SP/cann 30-30 Win
+Speer,0.308,130,Hollow Point
+Speer,0.308,150,DeepCurl&trade; FN
+Speer,0.308,150,Flat Nose SP/cann 30-30 Win
+Speer,0.308,150,Full Metal Jacket Boattail
+Speer,0.308,150,Gold Dot&trade; Rifle Component
+Speer,0.308,150,Grand Slam&trade; SP
+Speer,0.308,150,Mag-Tip SP
+Speer,0.308,150,Round Nose SP
+Speer,0.308,150,Spitzer BTSP
+Speer,0.308,150,Spitzer Soft Point
+Speer,0.308,150,Trophy Bonded&trade; Bear Claw&trade; SP
+Speer,0.308,165,DeepCurl&trade; SP
+Speer,0.308,165,Grand Slam&trade; SP
+Speer,0.308,165,Spitzer BTSP
+Speer,0.308,165,Spitzer Soft Point
+Speer,0.308,165,Trophy Bonded&trade; Bear Claw&trade; SP
+Speer,0.308,168,BTHP Match
+Speer,0.308,168,BTHP Match MHP
+Speer,0.308,168,Gold Dot&trade; Rifle Component
+Speer,0.308,168,Target Match
+Speer,0.308,170,DeepCurl&trade; FN
+Speer,0.308,170,Flat Nose SP/cann 30-30 Win
+Speer,0.308,180,DeepCurl&trade; SP
+Speer,0.308,180,Grand Slam&trade; SP
+Speer,0.308,180,Mag-Tip SP
+Speer,0.308,180,Round Nose SP
+Speer,0.308,180,Spitzer BTSP
+Speer,0.308,180,Spitzer Soft Point
+Speer,0.308,180,Trophy Bonded&trade; Bear Claw&trade; SP
+Speer,0.308,200,Grand Slam&trade; SP
+Speer,0.308,200,Spitzer Soft Point
+Speer,0.308,200,Trophy Bonded&trade; Bear Claw&trade; SP
+Speer,0.310,123,Gold Dot&trade; Rifle Component
+Speer,0.310,123,Spitzer SP/cann [for 7.63x]
+Speer,0.310,150,Spitzer Soft Point
+Speer,0.311,150,Spitzer Soft Point
+Speer,0.311,180,Round Nose SP
+Speer,0.312,100,32-20 Win HP/cann
+Speer,0.321,170,32 Special Flat Nose SP/cann
+Speer,0.323,150,Spitzer Soft Point
+Speer,0.323,170,Semi-Spitzer SP
+Speer,0.323,200,Spitzer Soft Point
+Speer,0.338,200,Spitzer Soft Point
+Speer,0.338,225,Grand Slam&trade; SP
+Speer,0.338,225,Spitzer BTSP
+Speer,0.338,225,Trophy Bonded&trade; Bear Claw&trade; SP
+Speer,0.338,250,Grand Slam&trade; SP
+Speer,0.358,158,Idaho Territory FN Lead
+Speer,0.358,180,Flat Nose SP/cann
+Speer,0.358,220,Flat Nose SP/cann
+Speer,0.358,225,Trophy Bonded&trade; Bear Claw&trade; SP
+Speer,0.358,250,Grand Slam&trade; SP
+Speer,0.358,250,Spitzer Soft Point
+Speer,0.366,270,Semi-Spitzer SP
+Speer,0.375,235,Semi-Spitzer SP
+Speer,0.375,270,Spitzer BTSP
+Speer,0.375,285,Grand Slam&trade; SP
+Speer,0.375,300,African Grand Slam&trade; SP
+Speer,0.375,300,African Grand Slam&trade; Solid
+Speer,0.375,300,Trophy Bonded&trade; Bear Claw&trade; SP
+Speer,0.416,350,Mag-Tip SP
+Speer,0.416,400,African Grand Slam&trade; SP
+Speer,0.416,400,African Grand Slam&trade; Solid
+Speer,0.416,400,Trophy Bonded&trade; Bear Claw&trade; SP
+Speer,0.429,240,Gold Dot&trade; HP
+Speer,0.429,240,Gold Dot&trade; SP
+Speer,0.429,270,Gold Dot&trade; SP
+Speer,0.429,300,Flat Nose SP
+Speer,0.429,300,Jacketed Soft Point
+Speer,0.430,200,Idaho Territory FN Lead
+Speer,0.454,230,Idaho Territory FN Lead
+Speer,0.458,300,Flat Nose HP [45-70; 450 Marlin]
+Speer,0.458,350,Flat Nose SP [458 Win Mag]
+Speer,0.458,400,Flat Nose SP [45-70; 450 Marlin]
+Speer,0.458,500,African Grand Slam&trade; SP
+Speer,0.458,500,African Grand Slam&trade; Solid
+Speer,0.458,500,Trophy Bonded&trade; Bear Claw&trade; SP
+Speer,0.459,405,Idaho Territory FN Lead
+Swift,0.224,75,Scirocco&trade; Boat Tail Spitzer
+Swift,0.243,90,Scirocco&trade; Boat Tail Spitzer
+Swift,0.257,100,A-Frame&trade; Semi-Spitzer
+Swift,0.257,100,Scirocco&trade; Boat Tail Spitzer
+Swift,0.257,100,Scirocco&trade; Boat Tail Spitzer (Litz)
+Swift,0.257,120,A-Frame&trade; Semi-Spitzer
+Swift,0.264,120,A-Frame&trade; Semi-Spitzer
+Swift,0.264,130,Scirocco&trade; Boat Tail Spitzer
+Swift,0.264,140,A-Frame&trade; Semi-Spitzer
+Swift,0.270,130,A-Frame&trade; Semi-Spitzer
+Swift,0.270,130,Scirocco&trade; Boat Tail Spitzer
+Swift,0.270,140,A-Frame&trade; Semi-Spitzer
+Swift,0.270,150,A-Frame&trade; Semi-Spitzer
+Swift,0.284,140,A-Frame&trade; Semi-Spitzer
+Swift,0.284,150,Scirocco&trade; Boat Tail Spitzer
+Swift,0.284,160,A-Frame&trade; Semi-Spitzer
+Swift,0.284,175,A-Frame&trade; Semi-Spitzer
+Swift,0.308,150,Scirocco&trade; Boat Tail Spitzer
+Swift,0.308,165,A-Frame&trade; Semi-Spitzer
+Swift,0.308,165,Scirocco&trade; Boat Tail Spitzer
+Swift,0.308,180,A-Frame&trade; Semi-Spitzer
+Swift,0.308,180,Scirocco&trade; Boat Tail Spitzer
+Swift,0.308,200,A-Frame&trade; Semi-Spitzer
+Swift,0.323,200,A-Frame&trade; Semi-Spitzer
+Swift,0.323,220,A-Frame&trade; Semi-Spitzer
+Swift,0.338,210,Scirocco&trade; Boat Tail Spitzer
+Swift,0.338,225,A-Frame&trade; Semi-Spitzer
+Swift,0.338,250,A-Frame&trade; Semi-Spitzer
+Swift,0.338,275,A-Frame&trade; Semi-Spitzer
+Swift,0.358,225,A-Frame&trade; Semi-Spitzer
+Swift,0.358,250,A-Frame&trade; Semi-Spitzer
+Swift,0.358,280,A-Frame&trade; Semi-Spitzer
+Swift,0.366,250,A-Frame&trade; Semi-Spitzer
+Swift,0.366,300,A-Frame&trade; Semi-Spitzer
+Swift,0.375,250,A-Frame&trade; Semi-Spitzer
+Swift,0.375,270,A-Frame&trade; Semi-Spitzer
+Swift,0.375,300,A-Frame&trade; Semi-Spitzer
+Swift,0.416,350,A-Frame&trade; Semi-Spitzer
+Swift,0.416,400,A-Frame&trade; Semi-Spitzer
+Swift,0.423,400,A-Frame&trade; Semi-Spitzer
+Swift,0.430,240,A-Frame&trade; Hollow Point [Muzzle Loader]
+Swift,0.430,240,A-Frame&trade; Hollow Point [Revolver]
+Swift,0.430,280,A-Frame&trade; Hollow Point [Revolver]
+Swift,0.430,300,A-Frame&trade; Hollow Point [Muzzle Loader]
+Swift,0.430,300,A-Frame&trade; Hollow Point [Revolver]
+Swift,0.452,265,A-Frame&trade; Hollow Point [Muzzle Loader]
+Swift,0.452,265,A-Frame&trade; Hollow Point [Revolver]
+Swift,0.452,300,A-Frame&trade; Hollow Point [Revolver]
+Swift,0.452,325,A-Frame&trade; Hollow Point [Muzzle Loader]
+Swift,0.452,325,A-Frame&trade; Hollow Point [Revolver]
+Swift,0.458,350,A-Frame&trade; Flat Nose
+Swift,0.458,400,A-Frame&trade; Flat Nose
+Swift,0.458,450,A-Frame&trade; Semi-Spitzer
+Swift,0.458,500,A-Frame&trade; Semi-Spitzer
+Swift,0.475,500,A-Frame&trade; Round Nose
+US Military,0.224,62,M855
+US Military,0.510,619,M20 APIT
+US Military,0.510,647,M33 Ball
+US Military,0.510,649,M8 API
+US Military,0.510,700,M2 Ball
+US Military,0.510,817,M48A1 Spotter Tracer
+Vapor Trail Bullets,0.243,103,Boattail Hollow Point
+Vapor Trail Bullets,0.243,103,V-Tac Boattail Hollow Point
+Vapor Trail Bullets,0.264,139,Boattail Hollow Point
+Vapor Trail Bullets,0.308,204,Boattail Hollow Point
+Vapor Trail Bullets,0.308,207,Boattail Hollow Point
+Warner Tool Company,0.243,88,Flatline (G1)
+Warner Tool Company,0.243,88,Flatline (G7)
+Warner Tool Company,0.264,121,Flatline (G1)
+Warner Tool Company,0.264,121,Flatline (G7)
+Warner Tool Company,0.284,151,Flatline (G1)
+Warner Tool Company,0.284,151,Flatline (G7)
+Warner Tool Company,0.308,155.5,Flatline (G1)
+Warner Tool Company,0.308,155.5,Flatline (G7)
+Warner Tool Company,0.308,160,Flatline (G1)
+Warner Tool Company,0.308,160,Flatline (G7)
+Warner Tool Company,0.308,180,Flatline - FTR (G1)
+Warner Tool Company,0.308,180,Flatline - FTR (G7)
+Warner Tool Company,0.308,198,Flatline (G1)
+Warner Tool Company,0.308,198,Flatline (G7)
+Warner Tool Company,0.338,256,Flatline (G1)
+Warner Tool Company,0.338,256,Flatline (G7)
+Warner Tool Company,0.375,361,Flatline (G1)
+Warner Tool Company,0.375,361,Flatline (G7)
+Warner Tool Company,0.375,400,Flatline (G1)
+Warner Tool Company,0.375,400,Flatline (G7)
+Winchester,0.204,34,Super-X&trade; Hollow Point
+Winchester,0.223,29,Short Standard Velocity Solid
+Winchester,0.223,34,WMR Jacketed Hollow Point
+Winchester,0.223,36,Long Rifle Hollow Point
+Winchester,0.223,37,Long Rifle Hollow Point
+Winchester,0.223,40,Long Rifle Lead Hollow Point
+Winchester,0.223,40,Long Rifle Power-Point Hollow Point
+Winchester,0.223,40,Long Rifle Solid
+Winchester,0.223,40,Long Rifle Wildcat Solid
+Winchester,0.223,40,WMR Full Metal Jacket Solid
+Winchester,0.223,40,WMR Jacketed Hollow Point
+Winchester,0.224,45,Super-X&trade; Soft Point
+Winchester,0.224,45,USA Jacketed Hollow Point
+Winchester,0.224,46,Super-X&trade; Hollow Point
+Winchester,0.224,50,Super-X&trade; Pointed Soft Point
+Winchester,0.224,50,Supreme&trade; Ballistic Silvertip&trade;
+Winchester,0.224,55,Super-X&trade; Pointed Soft Point
+Winchester,0.224,55,Super-X&trade; Super Clean NT&trade; Tin
+Winchester,0.224,55,Supreme&trade; Ballistic Silvertip&trade;
+Winchester,0.224,55,USA Full Metal Jacket
+Winchester,0.224,62,USA Full Metal Jacket
+Winchester,0.243,55,Supreme&trade; Ballistic Silvertip&trade;
+Winchester,0.243,95,Supreme Elite&trade; XP3&trade;
+Winchester,0.243,95,Supreme&trade; Ballistic Silvertip&trade;
+Winchester,0.243,100,Super-X&trade; Power-Point&trade;
+Winchester,0.251,45,Super-X&trade; Jacketed Hollow Point
+Winchester,0.251,50,USA Full Metal Jacket
+Winchester,0.257,85,Supreme&trade; Ballistic Silvertip&trade;
+Winchester,0.257,90,Super-X&trade; Positive Expanding Point
+Winchester,0.257,110,Supreme&trade; AccuBond&trade; CT&trade;
+Winchester,0.257,115,Supreme&trade; Ballistic Silvertip&trade;
+Winchester,0.257,117,Super-X&trade; Power-Point&trade;
+Winchester,0.257,120,Super-X&trade; Positive Expanding Point
+Winchester,0.258,86,Super-X&trade; Soft Point
+Winchester,0.258,100,Super-X&trade; Silvertip&trade;
+Winchester,0.258,117,Super-X&trade; Soft Point
+Winchester,0.264,140,Super-X&trade; Power-Point&trade;
+Winchester,0.264,140,Super-X&trade; Soft Point
+Winchester,0.270,130,Super-X&trade; Power-Point&trade;
+Winchester,0.270,150,Super-X&trade; Power-Point&trade;
+Winchester,0.277,130,Super-X&trade; Silvertip&trade;
+Winchester,0.277,130,Supreme&trade; Ballistic Silvertip&trade;
+Winchester,0.277,130,Supreme&trade; E-Tip
+Winchester,0.277,140,Supreme&trade; AccuBond&trade; CT&trade;
+Winchester,0.277,150,Supreme&trade; Ballistic Silvertip&trade;
+Winchester,0.284,140,Super-X&trade; Power-Point&trade;
+Winchester,0.284,140,Supreme&trade; AccuBond&trade; CT&trade;
+Winchester,0.284,140,Supreme&trade; Ballistic Silvertip&trade;
+Winchester,0.284,145,Super-X&trade; Power-Point&trade;
+Winchester,0.284,150,Super-X&trade; Power-Point&trade;
+Winchester,0.284,150,Supreme&trade; Ballistic Silvertip&trade;
+Winchester,0.284,160,Supreme&trade; AccuBond&trade; CT&trade;
+Winchester,0.284,175,Super-X&trade; Power-Point&trade;
+Winchester,0.308,110,Super-X&trade; Hollow Soft Point
+Winchester,0.308,110,USA Full Metal Jacket
+Winchester,0.308,123,Super-X&trade; Soft Point
+Winchester,0.308,123,USA Full Metal Jacket
+Winchester,0.308,125,Super-X&trade; Pointed Soft Point
+Winchester,0.308,147,USA Full Metal Jacket
+Winchester,0.308,150,Super-X&trade; Hollow Point
+Winchester,0.308,150,Super-X&trade; Power-Point&trade;
+Winchester,0.308,150,Super-X&trade; Silvertip&trade;
+Winchester,0.308,150,Super-X&trade; Silvertip&trade; (.30-30)
+Winchester,0.308,150,Supreme Elite&trade; XP3&trade;
+Winchester,0.308,150,Supreme&trade; Ballistic Silvertip&trade;
+Winchester,0.308,150,Supreme&trade; E-Tip
+Winchester,0.308,165,Super-X&trade; Pointed Soft Point
+Winchester,0.308,168,Supreme&trade; Ballistic Silvertip&trade;
+Winchester,0.308,168,Supreme&trade; Hollow Point Boattail
+Winchester,0.308,170,Super-X&trade; Power-Point&trade;
+Winchester,0.308,170,Super-X&trade; Silvertip&trade; (.30-30)
+Winchester,0.308,180,Super-X&trade; Power-Point&trade; (300 Win Mag)
+Winchester,0.308,180,Super-X&trade; Power-Point&trade; (308 Win)
+Winchester,0.308,180,Super-X&trade; Silvertip&trade;
+Winchester,0.308,180,Supreme&trade; AccuBond&trade; CT&trade;
+Winchester,0.308,180,Supreme&trade; Ballistic Silvertip&trade;
+Winchester,0.308,180,Supreme&trade; E-Tip
+Winchester,0.309,60,Super-X&trade; Silvertip&trade; Hollow Point
+Winchester,0.309,71,USA Full Metal Jacket
+Winchester,0.309,93,Super-X&trade; Full Metal Jacket
+Winchester,0.312,85,Super-X&trade; Lead Round Nose
+Winchester,0.312,98,Super-X&trade; Lead Round Nose
+Winchester,0.312,100,Super-X&trade; Lead
+Winchester,0.321,170,Super-X&trade; Power-Point&trade;
+Winchester,0.323,180,Supreme&trade; Ballistic Silvertip&trade;
+Winchester,0.323,200,Supreme Elite&trade; XP3&trade;
+Winchester,0.323,200,Supreme&trade; AccuBond&trade; CT&trade;
+Winchester,0.323,220,Super-X&trade; Power-Point&trade;
+Winchester,0.338,200,Super-X&trade; Power-Point&trade;
+Winchester,0.338,200,Supreme&trade; Ballistic Silvertip&trade;
+Winchester,0.338,225,Supreme&trade; AccuBond&trade; CT&trade;
+Winchester,0.348,200,Super-X&trade; Silvertip&trade;
+Winchester,0.355,85,Super-X&trade; Silvertip&trade; Hollow Point
+Winchester,0.355,95,Supreme&trade; T-Series
+Winchester,0.355,95,USA Full Metal Jacket
+Winchester,0.355,95,WinClean&trade; Brass Enclosed Base
+Winchester,0.355,105,Super Clean NT&trade; (Tin)
+Winchester,0.355,115,Super-X&trade; Silvertip&trade; Hollow Point
+Winchester,0.355,115,USA Full Metal Jacket
+Winchester,0.355,115,USA Jacketed Hollow Point
+Winchester,0.355,115,WinClean&trade; Brass Enclosed Base
+Winchester,0.355,124,USA Full Metal Jacket
+Winchester,0.355,124,USA Jacketed Soft Point
+Winchester,0.355,124,WinClean&trade; Brass Enclosed Base
+Winchester,0.355,125,Super-X&trade; Silvertip&trade; Hollow Point
+Winchester,0.355,125,USA Full Metal Jacket - Flat Nose
+Winchester,0.355,125,USA Jacketed Hollow Point
+Winchester,0.355,125,WinClean&trade; Brass Enclosed Base
+Winchester,0.355,145,Full Metal Jacket
+Winchester,0.355,147,Super-X&trade; Silvertip&trade; Hollow Point
+Winchester,0.355,147,Supreme&trade; T-Series
+Winchester,0.355,147,USA Full Metal Jacket - Flat Nose
+Winchester,0.355,147,USA Jacketed Hollow Point
+Winchester,0.355,147,WinClean&trade; Brass Enclosed Base
+Winchester,0.355,150,Copper Extreme Point
+Winchester,0.355,150,Extreme Point
+Winchester,0.355,160,Defender
+Winchester,0.355,180,Power Point
+Winchester,0.355,255,Super Suppressed Open Tip
+Winchester,0.357,110,Super-X&trade; Silvertip&trade; Hollow Point
+Winchester,0.357,110,USA Jacketed Hollow Point
+Winchester,0.357,125,Super-X&trade; Jacketed Hollow Point
+Winchester,0.357,125,Super-X&trade; Silvertip&trade; Hollow Point
+Winchester,0.357,125,USA Jacketed Hollow Point
+Winchester,0.357,125,USA Jacketed Soft Point
+Winchester,0.357,125,WinClean&trade; Jacketed Soft Point
+Winchester,0.357,130,Supreme&trade; T-Series
+Winchester,0.357,130,USA Full Metal Jacket
+Winchester,0.357,145,Super-X&trade; Lead Round Nose
+Winchester,0.357,145,Super-X&trade; Silvertip&trade; Hollow Point
+Winchester,0.357,148,Super-X&trade; Match
+Winchester,0.357,150,USA Lead
+Winchester,0.357,158,Cowboy Loads Lead
+Winchester,0.357,158,Super-X&trade; Jacketed Hollow Point
+Winchester,0.357,158,Super-X&trade; Jacketed Soft Point
+Winchester,0.357,158,Super-X&trade; Lead Round Nose
+Winchester,0.357,158,Super-X&trade; Lead Semi-Wad Cutter
+Winchester,0.357,158,Super-X&trade; Lead Semi-Wad Cutter HP
+Winchester,0.357,180,Supreme&trade; Partition Gold&trade;
+Winchester,0.358,200,Super-X&trade; Power-Point&trade;
+Winchester,0.358,200,Super-X&trade; Silvertip&trade;
+Winchester,0.375,200,Super-X&trade; Power-Point&trade;
+Winchester,0.400,140,Super Clean NT&trade; (Tin)
+Winchester,0.400,155,Super-X&trade; Silvertip&trade; Hollow Point
+Winchester,0.400,165,Supreme&trade; T-Series
+Winchester,0.400,165,USA Full Metal Jacket - Flat Nose
+Winchester,0.400,165,WinClean&trade; Brass Enclosed Base
+Winchester,0.400,175,Super-X&trade; Silvertip&reg; Hollow Point
+Winchester,0.400,180,Supreme&trade; T-Series
+Winchester,0.400,180,USA Full Metal Jacket
+Winchester,0.400,180,USA Jacketed Hollow Point
+Winchester,0.400,180,WinClean&trade; Brass Enclosed Base
+Winchester,0.401,180,Super-X&trade; Soft Point
+Winchester,0.401,255,Super-X&trade; Soft Point
+Winchester,0.410,175,Super-X&trade; Silvertip&trade; Hollow Point
+Winchester,0.410,240,Supreme&trade; Platinum Tip Hollow Point
+Winchester,0.411,300,Super-X&trade; Flat Point
+Winchester,0.421,210,Super-X&trade; Silvertip&trade; Hollow Point
+Winchester,0.421,240,Super-X&trade; Hollow Soft Point
+Winchester,0.427,200,Super-X&trade; Soft Point
+Winchester,0.427,225,Cowboy Loads Lead
+Winchester,0.429,200,Super-X&trade; Silvertip&trade; Hollow Point
+Winchester,0.429,210,Super-X&trade; Silvertip&trade; Hollow Point
+Winchester,0.429,240,Super-X&trade; Hollow Soft Point
+Winchester,0.429,240,USA Jacketed Soft Point
+Winchester,0.429,246,Super-X&trade; Lead Round Nose
+Winchester,0.429,250,Supreme&trade; Partition Gold&trade;
+Winchester,0.429,250,Supreme&trade; Platinum Tip Hollow Point
+Winchester,0.451,185,Super-X&trade; Silvertip&trade; Hollow Point
+Winchester,0.451,185,USA Full Metal Jacket - Flat Nose
+Winchester,0.451,185,WinClean&trade; Brass Enclosed Base
+Winchester,0.451,230,Supreme&trade; T-Series
+Winchester,0.451,230,USA Full Metal Jacket
+Winchester,0.451,230,USA Jacketed Hollow Point
+Winchester,0.451,230,WinClean&trade; Brass Enclosed Base
+Winchester,0.451,255,Super-X&trade; Lead Round Nose
+Winchester,0.452,250,Super-X&trade; Jacketed Hollow Point
+Winchester,0.452,260,Super-X&trade; Jacketed Hollow Point
+Winchester,0.452,260,Supreme&trade; Partition Gold&trade;
+Winchester,0.452,260,Supreme&trade; Platinum Tip Hollow Point
+Winchester,0.454,225,Super-X&trade; Silvertip&trade; Hollow Point
+Winchester,0.454,250,Cowboy Loads Lead
+Winchester,0.458,300,Super-X&trade; JHP
+Winchester,0.458,300,Supreme&trade; Partition Gold&trade;
+Winchester,0.458,510,Super-X&trade; Soft Point
+Woodleigh,0.264,140,PP SN
+Woodleigh,0.264,160,PP SN
+Woodleigh,0.277,130,PP SN
+Woodleigh,0.277,150,PP SN
+Woodleigh,0.284,140,PP SN
+Woodleigh,0.284,160,PP SN
+Woodleigh,0.284,175,PP SN
+Woodleigh,0.287,160,PP SN
+Woodleigh,0.287,175,PP SN
+Woodleigh,0.308,130,PP SN
+Woodleigh,0.308,150,PP SN
+Woodleigh,0.308,165,PP SN
+Woodleigh,0.308,180,FN SN
+Woodleigh,0.308,180,PP SN
+Woodleigh,0.308,180,PP SN (300 Win Mag)
+Woodleigh,0.308,200,PP SN (300 Win Mag)
+Woodleigh,0.308,220,FMJ
+Woodleigh,0.308,220,PP SN
+Woodleigh,0.308,240,PP SN
+Woodleigh,0.312,174,PP SN
+Woodleigh,0.312,215,RN SN
+Woodleigh,0.318,200,RN SN (8x57l)
+Woodleigh,0.323,196,RN SN
+Woodleigh,0.323,200,PN SN (325 Win)
+Woodleigh,0.323,220,PN SN (325 Win)
+Woodleigh,0.323,220,RN SN
+Woodleigh,0.323,250,RN SN
+Woodleigh,0.330,250,FMJ (318 Westly Rich.)
+Woodleigh,0.330,250,RN SN (318 Westly Rich.)
+Woodleigh,0.333,250,RN SN (333 Jeffery)
+Woodleigh,0.333,300,FMJ (333 Jeffery)
+Woodleigh,0.333,300,RN SN (333 Jeffery)
+Woodleigh,0.338,225,PP SN
+Woodleigh,0.338,250,FMJ
+Woodleigh,0.338,250,PP SN
+Woodleigh,0.338,250,RN SN
+Woodleigh,0.338,300,FMJ
+Woodleigh,0.338,300,RN SN
+Woodleigh,0.358,225,FMJ
+Woodleigh,0.358,225,RN SN
+Woodleigh,0.358,250,RN SN
+Woodleigh,0.358,310,RN SN
+Woodleigh,0.366,250,PP SN
+Woodleigh,0.366,250,RN SN
+Woodleigh,0.366,286,FMJ
+Woodleigh,0.366,286,PP SN
+Woodleigh,0.366,286,RN SN
+Woodleigh,0.366,320,FMJ
+Woodleigh,0.366,320,PP SN
+Woodleigh,0.366,320,RN SN
+Woodleigh,0.375,235,PP SN
+Woodleigh,0.375,270,PP SN
+Woodleigh,0.375,270,RN SN
+Woodleigh,0.375,300,FMJ
+Woodleigh,0.375,300,PP SN
+Woodleigh,0.375,300,RN SN
+Woodleigh,0.375,350,FMJ
+Woodleigh,0.375,350,PP SN
+Woodleigh,0.375,350,RN SN
+Woodleigh,0.405,230,RN SN (400 Purdey)
+Woodleigh,0.408,400,FMJ
+Woodleigh,0.408,400,RN SN
+Woodleigh,0.410,400,FMJ (450/400 &amp; Ruger)
+Woodleigh,0.410,400,RN SN (450/400 3&quot; Ruger)
+Woodleigh,0.411,400,RN SN (450/400 Nitro)
+Woodleigh,0.412,300,RN SN (405 Winchester)
+Woodleigh,0.416,340,PP SN (416 Rigby)
+Woodleigh,0.416,400,RN SN (416 Remington)
+Woodleigh,0.416,410,FMJ (416 Rigby)
+Woodleigh,0.416,410,RN SN (416 Rigby)
+Woodleigh,0.416,450,FMJ (416 Rigby)
+Woodleigh,0.416,450,RN SN (416 Rigby)
+Woodleigh,0.423,347,FMJ (10.75 x 68mm)
+Woodleigh,0.423,347,RN SN (10.75 x 68mm)
+Woodleigh,0.423,350,RN SN (404 Jeffery)
+Woodleigh,0.423,400,FMJ (404 Jeffery)
+Woodleigh,0.423,400,RN SN (404 Jeffery)
+Woodleigh,0.423,450,FMJ (404 Jeffery)
+Woodleigh,0.423,450,RN SN (404 Jeffery)
+Woodleigh,0.435,410,FMJ (425 Westly Rich.)
+Woodleigh,0.435,410,RN SN (425 Westly Rich.)
+Woodleigh,0.440,401,RN SN (11.2 Schuler)
+Woodleigh,0.458,350,RN SN (450 BPE)
+Woodleigh,0.458,400,PP SN (458 Mag)
+Woodleigh,0.458,405,Flat Nose SN (45/70)
+Woodleigh,0.458,480,RN SN (450 Nitro)
+Woodleigh,0.458,500,FMJ (458 Mag)
+Woodleigh,0.458,500,PP (458 Mag)
+Woodleigh,0.458,500,RN SN (458 Mag)
+Woodleigh,0.458,550,FMJ (458 Mag)
+Woodleigh,0.458,550,RN SN (458 Mag)
+Woodleigh,0.468,480,FMJ (465 Nitro)
+Woodleigh,0.468,480,RN SN (465 Nitro)
+Woodleigh,0.474,500,FMJ (470 Nitro)
+Woodleigh,0.474,500,RN SN (470 Nitro)
+Woodleigh,0.476,520,FMJ (476 Westley Rich.)
+Woodleigh,0.476,520,RN SN (476 Westley Rich.)
+Woodleigh,0.483,480,FMJ (475 No. 2)
+Woodleigh,0.483,480,RN SN (475 No. 2)
+Woodleigh,0.488,500,FMJ (475 No. 2 Jeffery)
+Woodleigh,0.488,500,RN SN (475 No. 2 Jeffery)
+Woodleigh,0.500,400,FN SN (500 S&amp;W Mag)
+Woodleigh,0.505,525,FMJ (505 Gibbs)
+Woodleigh,0.505,525,RN SN (505 Gibbs)
+Woodleigh,0.505,600,FMJ (505 Gibbs)
+Woodleigh,0.505,600,PP SN (505 Gibbs)
+Woodleigh,0.510,440,RN SN (500 BP)
+Woodleigh,0.510,450,RN SN (500 Nitro)
+Woodleigh,0.510,500,FN SN (50 Alaskan &amp; 50/110 Win)
+Woodleigh,0.510,535,FMJ (500 Jeffery)
+Woodleigh,0.510,535,PP SN (500 Jeffery)
+Woodleigh,0.510,535,RN SN (500 Jeffery)
+Woodleigh,0.510,570,FMJ (500 Nitro)
+Woodleigh,0.510,570,RN SN (500 Nitro)
+Woodleigh,0.510,600,FMJ (500 Jeffery)
+Woodleigh,0.510,600,PP SN (500 Jeffery)
+Woodleigh,0.584,650,FMJ (577 Nitro)
+Woodleigh,0.584,750,FMJ (577 Nitro)
+Woodleigh,0.585,650,RN SN (577 BP Express)
+Woodleigh,0.585,650,RN SN (577 Nitro)
+Woodleigh,0.585,750,RN SN (577 Nitro)
+Woodleigh,0.620,900,FMJ (600 Nitro)
+Woodleigh,0.620,900,RN SN (600 Nitro)
+Woodleigh,0.700,1000,FMJ (700 Nitro)
+Woodleigh,0.700,1000,RN SN (700 Nitro)
