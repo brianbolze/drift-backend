@@ -17,6 +17,7 @@ class Manufacturer(TimestampMixin, Base):
 
     id: Mapped[str] = uuid_pk()
     name: Mapped[str] = mapped_column(String(255), unique=True, index=True)
+    short_name: Mapped[str | None] = mapped_column(String(50), nullable=True)
     alt_names: Mapped[list | None] = mapped_column(JSON, nullable=True)
     website_url: Mapped[str | None] = mapped_column(String(500), nullable=True)
     logo_url: Mapped[str | None] = mapped_column(String(500), nullable=True)
