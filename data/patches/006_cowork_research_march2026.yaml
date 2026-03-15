@@ -1,0 +1,154 @@
+patch:
+  id: "006_cowork_research_march2026"
+  author: "Brian Bolze"
+  date: "2026-03-14"
+  description: "Add 7 missing bullets from CoWork research + fix Sierra TMK diameter, Speer Impact URL, delete mis-classified Nosler RDF duplicate"
+
+operations:
+  # ── PRIORITY 1: Create missing bullets ────────────────────────────────────
+
+  - action: create_bullet
+    manufacturer: "Hornady"
+    name: "17 Cal .172 17 gr V-MAX"
+    weight_grains: 17.0
+    bullet_diameter_inches: 0.172
+    bc_g1: 0.125
+    source_url: "https://www.hornady.com/ammunition/rimfire/17-hmr-17-gr-v-max"
+    base_type: "flat_base"
+    tip_type: "polymer_tip"
+    construction: "lead_core"
+    type_tags: ["varmint"]
+    used_for: ["varmint", "small_game"]
+    bc_source: "manufacturer"
+    bc_source_methodology: "published"
+    bc_source_notes: "G1 BC from loaded 17 HMR ammo page — not sold as component bullet"
+
+  - action: create_bullet
+    manufacturer: "Barnes Bullets"
+    name: ".224 78 gr TSX BT"
+    sku: "30204"
+    weight_grains: 78.0
+    bullet_diameter_inches: 0.224
+    bc_g1: 0.383
+    source_url: "https://barnesbullets.com/0-224-224-valkyrie-tsx-78-gr-bt/"
+    base_type: "boat_tail"
+    tip_type: "hollow_point"
+    construction: "monolithic_copper"
+    is_lead_free: true
+    type_tags: ["hunting"]
+    used_for: ["big_game", "medium_game"]
+    bc_source: "manufacturer"
+    bc_source_methodology: "published"
+    bc_source_notes: "G1 BC from product page. G7 not published by Barnes."
+
+  - action: create_bullet
+    manufacturer: "Federal"
+    name: "Terminal Ascent 7mm .284 170 gr"
+    weight_grains: 170.0
+    bullet_diameter_inches: 0.284
+    bc_g1: 0.646
+    source_url: "https://www.federalpremium.com/rifle/terminal-ascent/11-P7PRCTA3.html"
+    base_type: "boat_tail"
+    tip_type: "polymer_tip"
+    construction: "bonded"
+    type_tags: ["hunting"]
+    used_for: ["big_game"]
+    bc_source: "manufacturer"
+    bc_source_methodology: "published"
+    bc_source_notes: "G1 BC from loaded 7mm PRC ammo page — 170gr not sold as component bullet"
+
+  - action: create_bullet
+    manufacturer: "Hornady"
+    name: "30 Cal .308 195 gr ELD Match"
+    sku: "30951"
+    weight_grains: 195.0
+    bullet_diameter_inches: 0.308
+    bc_g1: 0.584
+    bc_g7: 0.294
+    source_url: "https://www.hornady.com/bullets/rifle/30-cal-.308-195-gr-eld-match"
+    base_type: "boat_tail"
+    tip_type: "polymer_tip"
+    construction: "lead_core"
+    type_tags: ["match"]
+    used_for: ["competition", "precision"]
+    bc_source: "manufacturer"
+    bc_source_methodology: "published"
+    bc_source_notes: "Both G1 and G7 published, Doppler radar verified"
+
+  - action: create_bullet
+    manufacturer: "Hornady"
+    name: "30 Cal .308 225 gr ELD Match"
+    sku: "30904"
+    weight_grains: 225.0
+    bullet_diameter_inches: 0.308
+    bc_g1: 0.777
+    bc_g7: 0.391
+    source_url: "https://www.hornady.com/bullets/rifle/30-cal-.308-225-gr-eld-match"
+    base_type: "boat_tail"
+    tip_type: "polymer_tip"
+    construction: "lead_core"
+    type_tags: ["match"]
+    used_for: ["competition", "precision"]
+    bc_source: "manufacturer"
+    bc_source_methodology: "published"
+    bc_source_notes: "Both G1 and G7 published, Doppler radar verified. Designed for 300 PRC."
+
+  - action: create_bullet
+    manufacturer: "Hornady"
+    name: "35 Cal .355 170 gr InterLock SP"
+    sku: "3501"
+    weight_grains: 170.0
+    bullet_diameter_inches: 0.355
+    bc_g1: 0.215
+    source_url: "https://www.hornady.com/bullets/rifle/35-cal-.355-170-gr-sp"
+    base_type: "flat_base"
+    tip_type: "spitzer"
+    construction: "lead_core"
+    type_tags: ["hunting"]
+    used_for: ["medium_game", "big_game"]
+    bc_source: "manufacturer"
+    bc_source_methodology: "published"
+    bc_source_notes: "G1 BC from product page. Diameter is .355 (350 Legend uses 9mm bore), NOT .358."
+
+  - action: create_bullet
+    manufacturer: "Sierra Bullets"
+    name: "7mm 150 gr HPBT MatchKing (SMK)"
+    sku: "1915"
+    weight_grains: 150.0
+    bullet_diameter_inches: 0.284
+    bc_g1: 0.429
+    bc_g7: 0.220
+    source_url: "https://sierrabullets.com/7mm-150-gr-hpbt-matchking-smk/"
+    base_type: "boat_tail"
+    tip_type: "hollow_point"
+    construction: "lead_core"
+    type_tags: ["match"]
+    used_for: ["competition", "precision"]
+    bc_source: "manufacturer"
+    bc_source_methodology: "published"
+    bc_source_notes: "Both G1 and G7 published. SKU is #1915 (not #1913 as previously assumed)."
+
+  # ── PRIORITY 2: Fix existing bullet data ──────────────────────────────────
+
+  # Sierra TMK 22cal 60gr — delete bad duplicate (b137e0fa, diameter=0.22)
+  # Good record 6bd41d2e already exists with correct diameter 0.224
+  - action: delete_bullet
+    manufacturer: "Sierra Bullets"
+    name: "22 CAL 60 GR Tipped MatchKing (TMK)"
+    id: "b137e0fa-7bf3-4482-921a-b0500f70867d"
+    reason: "Duplicate record with wrong diameter (0.22 instead of 0.224). Correct record 6bd41d2e already exists."
+
+  # Speer Impact .264 140gr — fix source_url (was pointing to dead DeepCurl handgun page)
+  - action: update_bullet
+    manufacturer: "Speer"
+    name: "Impact Bullet, .264, 140 Grain"
+    set:
+      source_url: "https://www.speer.com/bullets/rifle-bullets/impact-bullet/19-TB264H1.html"
+
+  # Delete mis-classified Nosler RDF record (loaded ammo name stored as bullet)
+  # Real component record already exists at 5d7756b4 with correct BCs
+  - action: delete_bullet
+    manufacturer: "Nosler"
+    name: "308 Win 175g Match Grade RDF HPBT"
+    id: "1deb6390-bbab-448c-b798-8ee65ad45233"
+    reason: "Mis-classified loaded ammunition record. Real component bullet '30 Caliber 175gr RDF (100ct)' already exists with correct BCs."

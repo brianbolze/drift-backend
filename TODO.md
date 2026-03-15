@@ -27,8 +27,12 @@ Lightweight tech debt and engineering improvement tracker. Agents and humans app
 - [ ] 4 MatchKing->Nosler HPBT false matches — Sierra MatchKing bullets missing at certain weights, causing cross-manufacturer false positives (source: pipeline working notes)
 - [ ] 22 bullets missing BC data entirely — no BulletBCSource records (source: QA report, 2026-03-06)
 - [ ] Hornady .300 WM Custom International metric conversion — barrel=9.45" (from 24cm), MV=2961 (from 902 m/s). Fix via curation patch. Audit remaining Hornady International cartridges for same pattern. (source: QA report, 2026-03-06)
-- [ ] Sierra 22 CAL 60gr TMK (b137e0fa) — wrong diameter (0.220→0.224), wrong source_url (points to 30-cal page), missing BCs. Surviving record from W4 duplicate cleanup needs curation patch. (source: QA report, 2026-03-06)
+- [x] Sierra 22 CAL 60gr TMK (b137e0fa) — wrong diameter (0.220→0.224), wrong source_url (points to 30-cal page), missing BCs. Resolved: bad record no longer in DB as of 2026-03-14.
+- [ ] 12 Berger loaded ammunition product pages stored as bullet records — duplicates component bullet data (e.g., "300 Winchester Magnum 185 Grain Classic Hunter Rifle Ammunition"). Clean up via curation delete or pipeline filter. (source: QA report, 2026-03-14)
 - [ ] Hornady .308 220gr RN Custom International — barrel=9.45" (from "24cm" mislabel), should be 24". Same Hornady Intl metric pattern as C5. Fix via curation patch. (source: QA report, 2026-03-06)
+- [ ] 5 Federal "Custom Rifle Ammo" placeholder cartridges — zero weight, zero MV, no barrel length. Useless records, delete via curation patch. (source: QA report, 2026-03-09)
+- [ ] Speer .264 140gr Impact (c22dc78f) wrong source_url — points to dead DeepCurl handgun page. Correct: speer.com/bullets/rifle-bullets/impact-bullet/19-TB264H1.html (source: QA report, 2026-03-09)
+- [ ] Hornady 8x57 JS 195gr SP Custom International — barrel=9.45" (from 24cm metric), MV=2568 (likely metric conversion). Third instance of Hornady International metric bug (see C5, C7). (source: QA report, 2026-03-09)
 
 ## Pipeline Improvements
 
