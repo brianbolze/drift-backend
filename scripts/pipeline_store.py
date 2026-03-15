@@ -245,18 +245,19 @@ def _avg_confidence(entity: dict) -> float:
     return round(sum(scores) / len(scores), 3) if scores else 0.0
 
 
-def _should_auto_create_bullet(
+def _should_auto_create_weight_variant(
     entity: dict,
+    entity_type: str,
     resolution,
     session,
 ) -> bool:
-    """Decide if a low-confidence bullet match should be auto-created instead of flagged.
+    """Decide if a low-confidence match is a new weight variant that should be auto-created.
 
     Returns True when ALL of these hold:
     - Match confidence is below AUTO_CREATE_CONFIDENCE_CEILING
-    - The matched bullet's weight doesn't agree with the extracted weight (±1gr)
-    - The entity has a resolved manufacturer_id and valid bullet_diameter_inches
-    - The extracted weight_grains is present and positive
+    - The entity has all required resolved references for creation
+    - The extracted weight is present and positive
+    - The matched entity's weight disagrees with the extracted weight
 
     This catches the common case where a new weight variant (e.g. Barnes 30cal 130gr TTSX)
     fuzzy-matches to a different weight (e.g. Barnes 30cal 110gr TTSX) because the correct
@@ -264,42 +265,75 @@ def _should_auto_create_bullet(
     """
     if resolution.match.confidence >= AUTO_CREATE_CONFIDENCE_CEILING:
         return False
-    if not resolution.manufacturer_id or resolution.bullet_diameter_inches is None:
+
+    if entity_type == "bullet":
+        if not resolution.manufacturer_id or resolution.bullet_diameter_inches is None:
+            return False
+        weight_field = "weight_grains"
+        model_cls = Bullet
+        tolerance = 1.0
+    elif entity_type == "cartridge":
+        if not resolution.manufacturer_id or not resolution.caliber_id or not resolution.bullet_id:
+            return False
+        weight_field = "bullet_weight_grains"
+        model_cls = Cartridge
+        tolerance = 2.0
+    else:
         return False
-    extracted_weight = _safe_float(_get_value(entity, "weight_grains"))
+
+    extracted_weight = _safe_float(_get_value(entity, weight_field))
     if not extracted_weight or extracted_weight <= 0:
         return False
-    # Check that the matched bullet's weight actually disagrees
-    matched_bullet = session.get(Bullet, resolution.match.entity_id) if resolution.match.entity_id else None
-    if not matched_bullet:
+
+    matched = session.get(model_cls, resolution.match.entity_id) if resolution.match.entity_id else None
+    if not matched:
+        if resolution.match.entity_id:
+            logger.warning(
+                "Match target %s %s not found in DB — treating as unmatched", entity_type, resolution.match.entity_id
+            )
         return True  # No match target — safe to create
-    return abs(matched_bullet.weight_grains - extracted_weight) > 1.0
+
+    matched_weight = getattr(matched, weight_field)
+    return abs(matched_weight - extracted_weight) > tolerance
 
 
-def _should_auto_create_cartridge(
+def _create_entity(
+    entity_type: str,
     entity: dict,
     resolution,
     session,
-) -> bool:
-    """Decide if a low-confidence cartridge match should be auto-created instead of flagged.
+    url: str,
+    data_source: str,
+    bc_sources: list[dict],
+) -> str:
+    """Create an entity ORM object, add it to the session, and return its ID.
 
-    Returns True when ALL of these hold:
-    - Match confidence is below AUTO_CREATE_CONFIDENCE_CEILING
-    - The matched cartridge's bullet weight doesn't agree (±2gr)
-    - The entity has resolved manufacturer_id and caliber_id
-    - The extracted bullet_weight_grains is present and positive
+    Handles bullet (with BC sources), cartridge (with cartridge BC sources),
+    and rifle entity types. Raises ValueError if required fields are missing.
     """
-    if resolution.match.confidence >= AUTO_CREATE_CONFIDENCE_CEILING:
-        return False
-    if not resolution.manufacturer_id or not resolution.caliber_id:
-        return False
-    extracted_weight = _safe_float(_get_value(entity, "bullet_weight_grains"))
-    if not extracted_weight or extracted_weight <= 0:
-        return False
-    matched_cart = session.get(Cartridge, resolution.match.entity_id) if resolution.match.entity_id else None
-    if not matched_cart:
-        return True
-    return abs(matched_cart.bullet_weight_grains - extracted_weight) > 2.0
+    if entity_type == "bullet":
+        if resolution.bullet_diameter_inches is None:
+            name = _get_value(entity, "name", "")
+            raise ValueError(f"Cannot create bullet {name!r}: bullet_diameter_inches is None")
+        obj = _make_bullet(entity, resolution.manufacturer_id, resolution.bullet_diameter_inches, url, data_source)
+        session.add(obj)
+        bullet_name = _get_value(entity, "name", "")
+        bullet_bc_sources = [bc for bc in bc_sources if bc.get("bullet_name", "") == bullet_name]
+        for bc_obj in _make_bc_sources(obj.id, bullet_bc_sources, url):
+            if not _bc_source_exists(session, bc_obj.bullet_id, bc_obj.bc_type, bc_obj.bc_value, bc_obj.source):
+                session.add(bc_obj)
+    elif entity_type == "cartridge":
+        obj = _make_cartridge(
+            entity, resolution.manufacturer_id, resolution.caliber_id, resolution.bullet_id, url, data_source
+        )
+        session.add(obj)
+        _add_cartridge_bc_sources(session, resolution.bullet_id, bc_sources, entity, url)
+    elif entity_type == "rifle":
+        obj = _make_rifle(entity, resolution.manufacturer_id, resolution.chamber_id, url, data_source)
+        session.add(obj)
+    else:
+        raise ValueError(f"Unknown entity type: {entity_type!r}")
+    return obj.id
 
 
 def main() -> None:  # noqa: C901
@@ -460,10 +494,7 @@ def main() -> None:  # noqa: C901
                 elif resolution.match.matched:
                     # Low-confidence match — check if this is a new weight variant that
                     # should be auto-created rather than flagged for manual review.
-                    should_auto_create = (
-                        entity_type == "bullet" and _should_auto_create_bullet(entity, resolution, session)
-                    ) or (entity_type == "cartridge" and _should_auto_create_cartridge(entity, resolution, session))
-                    if should_auto_create:
+                    if _should_auto_create_weight_variant(entity, entity_type, resolution, session):
                         entry["action"] = "created"
                         entry["auto_create_reason"] = "weight_mismatch_low_confidence"
                         logger.info(
@@ -472,50 +503,6 @@ def main() -> None:  # noqa: C901
                             resolution.match.confidence * 100,
                             name,
                         )
-
-                        if args.commit:
-                            savepoint = session.begin_nested()
-                            try:
-                                if entity_type == "bullet":
-                                    obj = _make_bullet(
-                                        entity,
-                                        resolution.manufacturer_id,
-                                        resolution.bullet_diameter_inches,
-                                        url,
-                                        data_source=data_source,
-                                    )
-                                    session.add(obj)
-                                    bullet_name = _get_value(entity, "name", "")
-                                    bullet_bc_sources = [
-                                        bc for bc in bc_sources if bc.get("bullet_name", "") == bullet_name
-                                    ]
-                                    for bc_obj in _make_bc_sources(obj.id, bullet_bc_sources, url):
-                                        if not _bc_source_exists(
-                                            session, bc_obj.bullet_id, bc_obj.bc_type, bc_obj.bc_value, bc_obj.source
-                                        ):
-                                            session.add(bc_obj)
-                                elif entity_type == "cartridge":
-                                    obj = _make_cartridge(
-                                        entity,
-                                        resolution.manufacturer_id,
-                                        resolution.caliber_id,
-                                        resolution.bullet_id,
-                                        url,
-                                        data_source=data_source,
-                                    )
-                                    session.add(obj)
-                                    _add_cartridge_bc_sources(session, resolution.bullet_id, bc_sources, entity, url)
-                                entry["created_id"] = obj.id
-                                savepoint.commit()
-                                stats[entity_type]["created"] += 1
-                            except (IntegrityError, DataError) as e:
-                                savepoint.rollback()
-                                logger.exception("  [%d] AUTO-CREATE FAILED: %s — %s", j + 1, name, e)
-                                entry["action"] = "create_failed"
-                                entry["error"] = str(e)
-                                stats[entity_type]["flagged"] += 1
-                        else:
-                            stats[entity_type]["created"] += 1
                     else:
                         # Genuine low-confidence match — flag for review
                         entry["action"] = "flagged_low_confidence"
@@ -541,56 +528,17 @@ def main() -> None:  # noqa: C901
                     # New entity — create it
                     entry["action"] = "created"
 
+                # Commit path for all "created" actions (both auto-create and new entity)
+                if entry["action"] == "created":
                     if args.commit:
                         savepoint = session.begin_nested()
                         try:
-                            if entity_type == "bullet":
-                                if resolution.bullet_diameter_inches is None:
-                                    raise ValueError(f"Cannot create bullet {name!r}: bullet_diameter_inches is None")
-                                obj = _make_bullet(
-                                    entity,
-                                    resolution.manufacturer_id,
-                                    resolution.bullet_diameter_inches,
-                                    url,
-                                    data_source=data_source,
-                                )
-                                session.add(obj)
-                                # Only attach BC sources that belong to this bullet
-                                bullet_name = _get_value(entity, "name", "")
-                                bullet_bc_sources = [
-                                    bc for bc in bc_sources if bc.get("bullet_name", "") == bullet_name
-                                ]
-                                for bc_obj in _make_bc_sources(obj.id, bullet_bc_sources, url):
-                                    if not _bc_source_exists(
-                                        session, bc_obj.bullet_id, bc_obj.bc_type, bc_obj.bc_value, bc_obj.source
-                                    ):
-                                        session.add(bc_obj)
-                                entry["created_id"] = obj.id
-                            elif entity_type == "cartridge":
-                                obj = _make_cartridge(
-                                    entity,
-                                    resolution.manufacturer_id,
-                                    resolution.caliber_id,
-                                    resolution.bullet_id,  # None if unresolved (not empty string)
-                                    url,
-                                    data_source=data_source,
-                                )
-                                session.add(obj)
-                                entry["created_id"] = obj.id
-                                _add_cartridge_bc_sources(session, resolution.bullet_id, bc_sources, entity, url)
-                            elif entity_type == "rifle":
-                                obj = _make_rifle(
-                                    entity,
-                                    resolution.manufacturer_id,
-                                    resolution.chamber_id,
-                                    url,
-                                    data_source=data_source,
-                                )
-                                session.add(obj)
-                                entry["created_id"] = obj.id
+                            entry["created_id"] = _create_entity(
+                                entity_type, entity, resolution, session, url, data_source, bc_sources
+                            )
                             savepoint.commit()
                             stats[entity_type]["created"] += 1
-                        except (IntegrityError, DataError) as e:
+                        except (IntegrityError, DataError, ValueError) as e:
                             savepoint.rollback()
                             logger.exception("  [%d] CREATE FAILED: %s — %s", j + 1, name, e)
                             entry["action"] = "create_failed"
@@ -598,7 +546,8 @@ def main() -> None:  # noqa: C901
                             stats[entity_type]["flagged"] += 1
                     else:
                         stats[entity_type]["created"] += 1
-                        logger.info("  [%d] WOULD CREATE: %s", j + 1, name)
+                        if "auto_create_reason" not in entry:
+                            logger.info("  [%d] WOULD CREATE: %s", j + 1, name)
 
                 report_entries.append(entry)
 
