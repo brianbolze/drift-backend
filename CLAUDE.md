@@ -32,7 +32,7 @@ MANIFEST -> FETCH -> REDUCE -> EXTRACT -> RESOLVE -> STORE
 - **Scripts**: `scripts/` (CLI entry points, called via Makefile)
 - **Curation**: `src/drift/curation.py` (YAML patch applier), `data/patches/` (numbered YAML patches)
 - **Database**: `data/drift.db` (SQLite, source of truth)
-- **Production DB**: `data/drift_production.db` (stripped copy for iOS app)
+- **Production DB**: `data/production/drift.db` (stripped copy for iOS app)
 - **Pipeline cache**: `data/pipeline/{fetched,reduced,extracted,review,batches}/`
 
 ## Code Style
@@ -93,10 +93,10 @@ make curate-commit    # Write to DB
 
 ## Production Export
 
-`scripts/export_production_db.py` creates `data/drift_production.db` — a stripped-down copy of `drift.db` for the iOS app. Drops pipeline-only tables (`alembic_version`, `bullet_bc_source`), removes pipeline metadata columns (`data_source`, `is_locked`, `extraction_confidence`, etc.), filters out bad records (zero-MV, weight-mismatched, bogus-diameter), and VACUUMs.
+`scripts/export_production_db.py` creates `data/production/drift.db` — a stripped-down copy of `drift.db` for the iOS app. Drops pipeline-only tables (`alembic_version`, `bullet_bc_source`), removes pipeline metadata columns (`data_source`, `is_locked`, `extraction_confidence`, etc.), filters out bad records (zero-MV, weight-mismatched, bogus-diameter), and VACUUMs.
 
 ```bash
-make export-production-db                              # Default: data/drift_production.db
+make export-production-db                              # Default: data/production/drift.db
 python scripts/export_production_db.py -o path.db      # Custom output path
 ```
 

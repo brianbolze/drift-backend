@@ -1,6 +1,6 @@
 """Export a production-ready SQLite database for the iOS app.
 
-Copies drift.db → drift_production.db with the following transformations:
+Copies drift.db → data/production/drift.db with the following transformations:
   - Drops pipeline-only tables: alembic_version, bullet_bc_source
   - Drops pipeline-only columns: data_source, is_locked, extraction_confidence,
     last_verified_at, created_at, updated_at, bc_source_notes,
@@ -11,7 +11,7 @@ Copies drift.db → drift_production.db with the following transformations:
   - VACUUMs for minimal file size
 
 Usage:
-    python scripts/export_production_db.py              # default output: data/drift_production.db
+    python scripts/export_production_db.py              # default output: data/production/drift.db
     python scripts/export_production_db.py -o path.db   # custom output path
 """
 
@@ -93,7 +93,7 @@ def rebuild_table_without_columns(conn: sqlite3.Connection, table: str, drop_col
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Export production SQLite DB for iOS app")
-    parser.add_argument("-o", "--output", default="data/drift_production.db", help="Output path")
+    parser.add_argument("-o", "--output", default="data/production/drift.db", help="Output path")
     args = parser.parse_args()
 
     output = Path(args.output)
@@ -103,6 +103,7 @@ def main() -> None:
         sys.exit(1)
 
     # Copy source to output
+    output.parent.mkdir(parents=True, exist_ok=True)
     shutil.copy2(SOURCE_DB, output)
     print(f"Copied {SOURCE_DB} → {output}")
 
