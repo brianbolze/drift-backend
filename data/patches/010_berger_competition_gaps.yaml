@@ -1,0 +1,100 @@
+patch:
+  id: 010_berger_competition_gaps
+  author: Brian Bolze
+  date: '2026-03-15'
+  description: Add missing Berger competition bullets identified in JBM coverage audit.
+    Key .224 VLD Target and .308 VLD Target/Hunting variants. BCs from bergerbullets.com product pages.
+operations:
+# .224 VLD Target — PRS/NRL staples
+- action: create_bullet
+  manufacturer: Berger
+  name: 22 Caliber 70 Grain Very Low Drag (VLD) Target
+  sku: '22418'
+  weight_grains: 70.0
+  bullet_diameter_inches: 0.224
+  source_url: https://bergerbullets.com/product/22-caliber-70-grain-very-low-drag-vld-target
+  product_line: VLD Target
+  bc_source: manufacturer
+  bc_source_methodology: published
+  bc_source_notes: Berger product page, March 2026
+  bc_g1: 0.374
+  bc_g7: 0.191
+- action: create_bullet
+  manufacturer: Berger
+  name: 22 Caliber 75 Grain Very Low Drag (VLD) Target
+  sku: '22421'
+  weight_grains: 75.0
+  bullet_diameter_inches: 0.224
+  source_url: https://bergerbullets.com/product/22-caliber-75-grain-very-low-drag-vld-target
+  product_line: VLD Target
+  bc_source: manufacturer
+  bc_source_methodology: published
+  bc_source_notes: Berger product page, March 2026
+  bc_g1: 0.421
+  bc_g7: 0.216
+- action: create_bullet
+  manufacturer: Berger
+  name: 22 Caliber 82 Grain Long Range Target (DISCONTINUED)
+  sku: '22424'
+  weight_grains: 82.0
+  bullet_diameter_inches: 0.224
+  source_url: https://bergerbullets.com/product/discontinued-22-caliber-82-grain-long-range-target
+  product_line: Long Range Target
+  bc_source: manufacturer
+  bc_source_methodology: published
+  bc_source_notes: Berger product page (discontinued), March 2026
+  bc_g1: 0.44
+  bc_g7: 0.225
+- action: create_bullet
+  manufacturer: Berger
+  name: 22 Caliber 90 Grain Very Low Drag (VLD) Target
+  sku: '22423'
+  weight_grains: 90.0
+  bullet_diameter_inches: 0.224
+  source_url: https://bergerbullets.com/product/22-caliber-90-grain-very-low-drag-vld-target
+  product_line: VLD Target
+  bc_source: manufacturer
+  bc_source_methodology: published
+  bc_source_notes: Berger product page, March 2026
+  bc_g1: 0.534
+  bc_g7: 0.274
+# .308 VLD variants — F-class and ELR
+- action: create_bullet
+  manufacturer: Berger
+  name: 30 Caliber 190 Grain Very Low Drag (VLD) Hunting
+  sku: '30514'
+  weight_grains: 190.0
+  bullet_diameter_inches: 0.308
+  source_url: https://bergerbullets.com/product/30-caliber-190-grain-very-low-drag-vld-hunting
+  product_line: VLD Hunting
+  bc_source: manufacturer
+  bc_source_methodology: published
+  bc_source_notes: Berger product page, March 2026
+  bc_g1: 0.566
+  bc_g7: 0.29
+- action: create_bullet
+  manufacturer: Berger
+  name: 30 Caliber 210 Grain Very Low Drag (VLD) Hunting
+  sku: '30515'
+  weight_grains: 210.0
+  bullet_diameter_inches: 0.308
+  source_url: https://bergerbullets.com/product/30-caliber-210-grain-very-low-drag-vld-hunting
+  product_line: VLD Hunting
+  bc_source: manufacturer
+  bc_source_methodology: published
+  bc_source_notes: Berger product page, March 2026
+  bc_g1: 0.625
+  bc_g7: 0.32
+- action: create_bullet
+  manufacturer: Berger
+  name: 30 Caliber 210 Grain Very Low Drag (VLD) Target
+  sku: '30415'
+  weight_grains: 210.0
+  bullet_diameter_inches: 0.308
+  source_url: https://bergerbullets.com/product/30-caliber-210-grain-very-low-drag-vld-target
+  product_line: VLD Target
+  bc_source: manufacturer
+  bc_source_methodology: published
+  bc_source_notes: Berger product page, March 2026
+  bc_g1: 0.621
+  bc_g7: 0.318

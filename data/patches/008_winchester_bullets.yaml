@@ -1,0 +1,127 @@
+patch:
+  id: 008_winchester_bullets
+  author: Brian Bolze
+  date: '2026-03-15'
+  description: Add Winchester component rifle bullets from winchester.com/Products/Ammunition/Components/Bullets.
+    No BC data published by Winchester. 15 rifle bullets across BC MAX, Power-Point, PSP, HP, and FMJ lines.
+operations:
+- action: create_bullet
+  manufacturer: Winchester
+  name: BC MAX 30 Cal 175gr
+  sku: WB30BC175
+  weight_grains: 175.0
+  bullet_diameter_inches: 0.308
+  source_url: https://winchester.com/Products/Ammunition/Components/Bullets
+  product_line: BC MAX
+- action: create_bullet
+  manufacturer: Winchester
+  name: BC MAX 30 Cal 195gr
+  sku: WB30BC195
+  weight_grains: 195.0
+  bullet_diameter_inches: 0.308
+  source_url: https://winchester.com/Products/Ammunition/Components/Bullets
+  product_line: BC MAX
+- action: create_bullet
+  manufacturer: Winchester
+  name: BC MAX 6.5mm 140gr
+  sku: WB65BC140
+  weight_grains: 140.0
+  bullet_diameter_inches: 0.264
+  source_url: https://winchester.com/Products/Ammunition/Components/Bullets
+  product_line: BC MAX
+- action: create_bullet
+  manufacturer: Winchester
+  name: Pointed Soft Point 22 Cal 50gr
+  sku: WB222PSP50
+  weight_grains: 50.0
+  bullet_diameter_inches: 0.224
+  source_url: https://winchester.com/Products/Ammunition/Components/Bullets
+  product_line: Pointed Soft Point
+- action: create_bullet
+  manufacturer: Winchester
+  name: Pointed Soft Point 22 Cal 55gr
+  sku: WB223PSP55
+  weight_grains: 55.0
+  bullet_diameter_inches: 0.224
+  source_url: https://winchester.com/Products/Ammunition/Components/Bullets
+  product_line: Pointed Soft Point
+- action: create_bullet
+  manufacturer: Winchester
+  name: Pointed Soft Point 243 Cal 80gr
+  sku: WB243PSP80
+  weight_grains: 80.0
+  bullet_diameter_inches: 0.243
+  source_url: https://winchester.com/Products/Ammunition/Components/Bullets
+  product_line: Pointed Soft Point
+- action: create_bullet
+  manufacturer: Winchester
+  name: Power-Point 22 Cal 64gr
+  sku: WB223PP64
+  weight_grains: 64.0
+  bullet_diameter_inches: 0.224
+  source_url: https://winchester.com/Products/Ammunition/Components/Bullets
+  product_line: Power-Point
+- action: create_bullet
+  manufacturer: Winchester
+  name: Power-Point 270 Cal 130gr
+  sku: WB270PP130
+  weight_grains: 130.0
+  bullet_diameter_inches: 0.277
+  source_url: https://winchester.com/Products/Ammunition/Components/Bullets
+  product_line: Power-Point
+- action: create_bullet
+  manufacturer: Winchester
+  name: Power-Point 30 Cal 180gr
+  sku: WB308SP180
+  weight_grains: 180.0
+  bullet_diameter_inches: 0.308
+  source_url: https://winchester.com/Products/Ammunition/Components/Bullets
+  product_line: Power-Point
+- action: create_bullet
+  manufacturer: Winchester
+  name: Power-Point 30 Cal 150gr
+  sku: WB30PP150
+  weight_grains: 150.0
+  bullet_diameter_inches: 0.308
+  source_url: https://winchester.com/Products/Ammunition/Components/Bullets
+  product_line: Power-Point
+- action: create_bullet
+  manufacturer: Winchester
+  name: Power-Point 7.62 Cal 123gr
+  sku: WB762PP123
+  weight_grains: 123.0
+  bullet_diameter_inches: 0.310
+  source_url: https://winchester.com/Products/Ammunition/Components/Bullets
+  product_line: Power-Point
+- action: create_bullet
+  manufacturer: Winchester
+  name: Power-Point 7mm 150gr
+  sku: WB7PP150
+  weight_grains: 150.0
+  bullet_diameter_inches: 0.284
+  source_url: https://winchester.com/Products/Ammunition/Components/Bullets
+  product_line: Power-Point
+- action: create_bullet
+  manufacturer: Winchester
+  name: Hollow Point 22 Cal 46gr
+  sku: WB22HP46
+  weight_grains: 46.0
+  bullet_diameter_inches: 0.224
+  source_url: https://winchester.com/Products/Ammunition/Components/Bullets
+  product_line: Hollow Point
+- action: create_bullet
+  manufacturer: Winchester
+  name: Full Metal Jacket 22 Cal 55gr
+  sku: WB556MC55
+  weight_grains: 55.0
+  bullet_diameter_inches: 0.224
+  source_url: https://winchester.com/Products/Ammunition/Components/Bullets
+  product_line: Full Metal Jacket
+- action: create_bullet
+  manufacturer: Winchester
+  name: Full Metal Jacket 30 Cal 147gr
+  sku: WB762MC147
+  weight_grains: 147.0
+  bullet_diameter_inches: 0.308
+  source_url: https://winchester.com/Products/Ammunition/Components/Bullets
+  product_line: Full Metal Jacket

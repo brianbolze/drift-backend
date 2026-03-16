@@ -1,0 +1,567 @@
+patch:
+  id: 007_norma_bullets
+  author: Brian Bolze
+  date: '2026-03-15'
+  description: Add Norma bullet lineup (Bondstrike, GTX, Diamond Line, Oryx, Tipstrike, Vulkan, Ecostrike) extracted from
+    norma-ammunition.com JSON-LD structured data
+operations:
+- action: create_bullet
+  manufacturer: Norma
+  name: Norma Oryx 9,3mm (.366) 15,0g
+  sku: '20693071'
+  weight_grains: 232.0
+  bullet_diameter_inches: 0.366
+  source_url: https://www.norma-ammunition.com/products/components/hunting-bullets/norma-oryx-9-3mm-366-232gr---20693071
+  bc_source: manufacturer
+  bc_source_methodology: published
+  bc_source_notes: Norma product page JSON-LD structured data, March 2026
+  product_line: Oryx
+  bc_g1: 0.267
+- action: create_bullet
+  manufacturer: Norma
+  name: Norma Oryx .30 (.308) 11,7g
+  sku: '20676441'
+  weight_grains: 180.0
+  bullet_diameter_inches: 0.308
+  source_url: https://www.norma-ammunition.com/products/components/hunting-bullets/norma-oryx-30-308-180gr---20676441
+  bc_source: manufacturer
+  bc_source_methodology: published
+  bc_source_notes: Norma product page JSON-LD structured data, March 2026
+  product_line: Oryx
+  bc_g1: 0.354
+- action: create_bullet
+  manufacturer: Norma
+  name: Norma Oryx 9,3mm (.366) 18,5g
+  sku: '20693081'
+  weight_grains: 286.0
+  bullet_diameter_inches: 0.366
+  source_url: https://www.norma-ammunition.com/products/components/hunting-bullets/norma-oryx-9-3mm-366-285gr---20693081
+  bc_source: manufacturer
+  bc_source_methodology: published
+  bc_source_notes: Norma product page JSON-LD structured data, March 2026
+  product_line: Oryx
+  bc_g1: 0.356
+- action: create_bullet
+  manufacturer: Norma
+  name: Norma Tipstrike 7mm (.284) 10,4g
+  sku: '20670141'
+  weight_grains: 160.0
+  bullet_diameter_inches: 0.284
+  source_url: https://www.norma-ammunition.com/products/components/hunting-bullets/norma-tipstrike-7mm-284-160gr---20670141
+  bc_source: manufacturer
+  bc_source_methodology: published
+  bc_source_notes: Norma product page JSON-LD structured data, March 2026
+  product_line: Tipstrike
+  tip_type: polymer_tip
+  bc_g1: 0.51
+- action: create_bullet
+  manufacturer: Norma
+  name: Norma Bondstrike 7 mm (.284) 10,7g
+  sku: '20670171'
+  weight_grains: 165.0
+  bullet_diameter_inches: 0.284
+  source_url: https://www.norma-ammunition.com/products/components/hunting-bullets/norma-bondstrike-7-mm-284-165gr---20670171
+  bc_source: manufacturer
+  bc_source_methodology: published
+  bc_source_notes: Norma product page JSON-LD structured data, March 2026
+  product_line: Bondstrike
+  base_type: boat_tail
+  tip_type: polymer_tip
+  bc_g1: 0.632
+- action: create_bullet
+  manufacturer: Norma
+  name: Norma Oryx .375 19,4g
+  sku: '20695071'
+  weight_grains: 300.0
+  bullet_diameter_inches: 0.375
+  source_url: https://www.norma-ammunition.com/products/components/hunting-bullets/norma-oryx-375-300gr---20695071
+  bc_source: manufacturer
+  bc_source_methodology: published
+  bc_source_notes: Norma product page JSON-LD structured data, March 2026
+  product_line: Oryx
+  bc_g1: 0.32
+- action: create_bullet
+  manufacturer: Norma
+  name: Norma GTX 6,5 mm (.264) 9,27g
+  sku: '10665681'
+  weight_grains: 143.0
+  bullet_diameter_inches: 0.264
+  source_url: https://www.norma-ammunition.com/products/components/shooting-bullets/norma-gtx-6-5-mm-264-143gr---10665681
+  bc_source: manufacturer
+  bc_source_methodology: published
+  bc_source_notes: Norma product page JSON-LD structured data, March 2026
+  product_line: Gtx
+  bc_g1: 0.635
+- action: create_bullet
+  manufacturer: Norma
+  name: Norma Diamond Line 6,5mm (.264) 8,4g
+  sku: '10665081'
+  weight_grains: 130.0
+  bullet_diameter_inches: 0.264
+  source_url: https://www.norma-ammunition.com/products/components/shooting-bullets/norma-diamond-line-6-5mm-264-130gr---10665081
+  bc_source: manufacturer
+  bc_source_methodology: published
+  bc_source_notes: Norma product page JSON-LD structured data, March 2026
+  product_line: Diamond Line
+  base_type: boat_tail
+  tip_type: polymer_tip
+  bc_g1: 0.548
+- action: create_bullet
+  manufacturer: Norma
+  name: Norma Tipstrike Varmint 5,7mm (.224) 3,6g
+  sku: '20657001'
+  weight_grains: 55.0
+  bullet_diameter_inches: 0.224
+  source_url: https://www.norma-ammunition.com/products/components/hunting-bullets/norma-tipstrike-varmint-5-7mm-224-55gr---20657001
+  bc_source: manufacturer
+  bc_source_methodology: published
+  bc_source_notes: Norma product page JSON-LD structured data, March 2026
+  product_line: Tipstrike
+  tip_type: polymer_tip
+  bc_g1: 0.245
+- action: create_bullet
+  manufacturer: Norma
+  name: Norma Oryx .270 9,7g
+  sku: '20669501'
+  weight_grains: 150.0
+  bullet_diameter_inches: 0.277
+  source_url: https://www.norma-ammunition.com/products/components/hunting-bullets/norma-oryx-270-150gr---20669501
+  bc_source: manufacturer
+  bc_source_methodology: published
+  bc_source_notes: Norma product page JSON-LD structured data, March 2026
+  product_line: Oryx
+  bc_g1: 0.373
+- action: create_bullet
+  manufacturer: Norma
+  name: Norma Oryx 9,3mm (.366) 21,1g
+  sku: '20693121'
+  weight_grains: 325.0
+  bullet_diameter_inches: 0.366
+  source_url: https://www.norma-ammunition.com/products/components/hunting-bullets/norma-oryx-9-3mm-366-325gr---20693121
+  bc_source: manufacturer
+  bc_source_methodology: published
+  bc_source_notes: Norma product page JSON-LD structured data, March 2026
+  product_line: Oryx
+  bc_g1: 0.383
+- action: create_bullet
+  manufacturer: Norma
+  name: Norma Tipstrike .30 (.308) 11,0g
+  sku: '20676891'
+  weight_grains: 170.0
+  bullet_diameter_inches: 0.308
+  source_url: https://www.norma-ammunition.com/products/components/hunting-bullets/norma-tipstrike-30-308-170gr---20676891
+  bc_source: manufacturer
+  bc_source_methodology: published
+  bc_source_notes: Norma product page JSON-LD structured data, March 2026
+  product_line: Tipstrike
+  tip_type: polymer_tip
+  bc_g1: 0.454
+- action: create_bullet
+  manufacturer: Norma
+  name: Norma Vulkan 8mm (.323) 12,7g
+  sku: '20680201'
+  weight_grains: 196.0
+  bullet_diameter_inches: 0.323
+  source_url: https://www.norma-ammunition.com/products/components/hunting-bullets/norma-vulkan-8mm-323-196gr---20680201
+  bc_source: manufacturer
+  bc_source_methodology: published
+  bc_source_notes: Norma product page JSON-LD structured data, March 2026
+  product_line: Vulkan
+  bc_g1: 0.347
+- action: create_bullet
+  manufacturer: Norma
+  name: Norma Oryx .30 (.308) 12,96g
+  sku: '20676391'
+  weight_grains: 200.0
+  bullet_diameter_inches: 0.308
+  source_url: https://www.norma-ammunition.com/products/components/hunting-bullets/norma-oryx-30-308-200gr---20676391
+  bc_source: manufacturer
+  bc_source_methodology: published
+  bc_source_notes: Norma product page JSON-LD structured data, March 2026
+  product_line: Oryx
+  bc_g1: 0.338
+- action: create_bullet
+  manufacturer: Norma
+  name: Norma GTX 5,7 mm (.224) 4,5g
+  sku: '10657401'
+  weight_grains: 69.0
+  bullet_diameter_inches: 0.224
+  source_url: https://www.norma-ammunition.com/products/components/shooting-bullets/norma-gtx-5-7-mm-224-69gr---10657401
+  bc_source: manufacturer
+  bc_source_methodology: published
+  bc_source_notes: Norma product page JSON-LD structured data, March 2026
+  product_line: Gtx
+  bc_g1: 0.393
+- action: create_bullet
+  manufacturer: Norma
+  name: Norma Vulkan .30 (.308) 11,7g
+  sku: '20676531'
+  weight_grains: 180.0
+  bullet_diameter_inches: 0.308
+  source_url: https://www.norma-ammunition.com/products/components/hunting-bullets/norma-vulkan-30-308-180gr---20676531
+  bc_source: manufacturer
+  bc_source_methodology: published
+  bc_source_notes: Norma product page JSON-LD structured data, March 2026
+  product_line: Vulkan
+  bc_g1: 0.315
+- action: create_bullet
+  manufacturer: Norma
+  name: Norma GTX .30 (.308) 10,0g
+  sku: '10676861'
+  weight_grains: 155.0
+  bullet_diameter_inches: 0.308
+  source_url: https://www.norma-ammunition.com/products/components/shooting-bullets/norma-gtx-30-308-155gr---10676861
+  bc_source: manufacturer
+  bc_source_methodology: published
+  bc_source_notes: Norma product page JSON-LD structured data, March 2026
+  product_line: Gtx
+  bc_g1: 0.384
+- action: create_bullet
+  manufacturer: Norma
+  name: Norma GTX 6,5 mm (.264) 6,5g
+  sku: '10665201'
+  weight_grains: 100.0
+  bullet_diameter_inches: 0.264
+  source_url: https://www.norma-ammunition.com/products/components/shooting-bullets/norma-gtx-6-5-mm-264-100gr---10665201
+  bc_source: manufacturer
+  bc_source_methodology: published
+  bc_source_notes: Norma product page JSON-LD structured data, March 2026
+  product_line: Gtx
+  bc_g1: 0.345
+- action: create_bullet
+  manufacturer: Norma
+  name: Norma Oryx 7mm (.284) 10,1g
+  sku: '20670041'
+  weight_grains: 156.0
+  bullet_diameter_inches: 0.284
+  source_url: https://www.norma-ammunition.com/products/components/hunting-bullets/norma-oryx-7mm-284-156gr---20670041
+  bc_source: manufacturer
+  bc_source_methodology: published
+  bc_source_notes: Norma product page JSON-LD structured data, March 2026
+  product_line: Oryx
+  bc_g1: 0.33
+- action: create_bullet
+  manufacturer: Norma
+  name: Norma GTX 6,5 mm (.264) 8,4g
+  sku: '10665091'
+  weight_grains: 130.0
+  bullet_diameter_inches: 0.264
+  source_url: https://www.norma-ammunition.com/products/components/shooting-bullets/norma-gtx-6-5-mm-264-130gr---10665091
+  bc_source: manufacturer
+  bc_source_methodology: published
+  bc_source_notes: Norma product page JSON-LD structured data, March 2026
+  product_line: Gtx
+  bc_g1: 0.548
+- action: create_bullet
+  manufacturer: Norma
+  name: Norma Oryx 8mm (.323) 12,7g
+  sku: '20680011'
+  weight_grains: 196.0
+  bullet_diameter_inches: 0.323
+  source_url: https://www.norma-ammunition.com/products/components/hunting-bullets/norma-oryx-8mm-323-196gr---20680011
+  bc_source: manufacturer
+  bc_source_methodology: published
+  bc_source_notes: Norma product page JSON-LD structured data, March 2026
+  product_line: Oryx
+  bc_g1: 0.331
+- action: create_bullet
+  manufacturer: Norma
+  name: Norma Oryx 6,5 mm (.264) 10,1g
+  sku: '20665241'
+  weight_grains: 156.0
+  bullet_diameter_inches: 0.264
+  source_url: https://www.norma-ammunition.com/products/components/hunting-bullets/norma-oryx-6-5-mm-264-156gr---20665241
+  bc_source: manufacturer
+  bc_source_methodology: published
+  bc_source_notes: Norma product page JSON-LD structured data, March 2026
+  product_line: Oryx
+  bc_g1: 0.348
+- action: create_bullet
+  manufacturer: Norma
+  name: Norma GTX .30 (.308) 11,3g
+  sku: '10677061'
+  weight_grains: 175.0
+  bullet_diameter_inches: 0.308
+  source_url: https://www.norma-ammunition.com/products/components/shooting-bullets/norma-gtx-30-308-175gr---10677061
+  bc_source: manufacturer
+  bc_source_methodology: published
+  bc_source_notes: Norma product page JSON-LD structured data, March 2026
+  product_line: Gtx
+  bc_g1: 0.547
+- action: create_bullet
+  manufacturer: Norma
+  name: Norma Oryx 5,7mm (.224) 3,6g
+  sku: '20657131'
+  weight_grains: 55.0
+  bullet_diameter_inches: 0.224
+  source_url: https://www.norma-ammunition.com/products/components/hunting-bullets/norma-oryx-5-7mm-224-55gr---20657131
+  bc_source: manufacturer
+  bc_source_methodology: published
+  bc_source_notes: Norma product page JSON-LD structured data, March 2026
+  product_line: Oryx
+  bc_g1: 0.185
+- action: create_bullet
+  manufacturer: Norma
+  name: Norma ECOSTRIKE 6,5 mm 7,8g
+  sku: '20665701'
+  weight_grains: 120.0
+  bullet_diameter_inches: 0.264
+  source_url: https://www.norma-ammunition.com/products/components/hunting-bullets/norma-ecostrike-6-5-mm-120gr---20665701
+  bc_source: manufacturer
+  bc_source_methodology: published
+  bc_source_notes: Norma product page JSON-LD structured data, March 2026
+  product_line: Ecostrike
+  is_lead_free: true
+- action: create_bullet
+  manufacturer: Norma
+  name: Norma GTX .30 (.308) 10,9g
+  sku: '10677031'
+  weight_grains: 168.0
+  bullet_diameter_inches: 0.308
+  source_url: https://www.norma-ammunition.com/products/components/shooting-bullets/norma-gtx-30-308-168gr---10677031
+  bc_source: manufacturer
+  bc_source_methodology: published
+  bc_source_notes: Norma product page JSON-LD structured data, March 2026
+  product_line: Gtx
+  bc_g1: 0.438
+- action: create_bullet
+  manufacturer: Norma
+  name: Norma Bondstrike .30 (.308) 11,7g
+  sku: '20676871'
+  weight_grains: 180.0
+  bullet_diameter_inches: 0.308
+  source_url: https://www.norma-ammunition.com/products/components/hunting-bullets/norma-bondstrike-30-308-180gr---20676871
+  bc_source: manufacturer
+  bc_source_methodology: published
+  bc_source_notes: Norma product page JSON-LD structured data, March 2026
+  product_line: Bondstrike
+  base_type: boat_tail
+  tip_type: polymer_tip
+  bc_g1: 0.615
+- action: create_bullet
+  manufacturer: Norma
+  name: Norma Ecostrike .30 (.308) 10,7g
+  sku: '20677071'
+  weight_grains: 165.0
+  bullet_diameter_inches: 0.308
+  source_url: https://www.norma-ammunition.com/products/components/hunting-bullets/norma-ecostrike-30-308-165-gr---20677071
+  bc_source: manufacturer
+  bc_source_methodology: published
+  bc_source_notes: Norma product page JSON-LD structured data, March 2026
+  product_line: Ecostrike
+  is_lead_free: true
+  bc_g1: 0.431
+- action: create_bullet
+  manufacturer: Norma
+  name: Norma Vulkan 7mm (.284) 11,0g
+  sku: '20670061'
+  weight_grains: 170.0
+  bullet_diameter_inches: 0.284
+  source_url: https://www.norma-ammunition.com/products/components/hunting-bullets/norma-vulkan-7mm-284-170gr---20670061
+  bc_source: manufacturer
+  bc_source_methodology: published
+  bc_source_notes: Norma product page JSON-LD structured data, March 2026
+  product_line: Vulkan
+  bc_g1: 0.353
+- action: create_bullet
+  manufacturer: Norma
+  name: Norma Tipstrike .270 9,1g
+  sku: '20669241'
+  weight_grains: 140.0
+  bullet_diameter_inches: 0.277
+  source_url: https://www.norma-ammunition.com/products/components/hunting-bullets/norma-tipstrike-270-140gr---20669241
+  bc_source: manufacturer
+  bc_source_methodology: published
+  bc_source_notes: Norma product page JSON-LD structured data, March 2026
+  product_line: Tipstrike
+  tip_type: polymer_tip
+  bc_g1: 0.48
+- action: create_bullet
+  manufacturer: Norma
+  name: Norma Vulkan 6,5mm (.264) 10,1g
+  sku: '20665351'
+  weight_grains: 156.0
+  bullet_diameter_inches: 0.264
+  source_url: https://www.norma-ammunition.com/products/components/hunting-bullets/norma-vulkan-6-5mm-264-156gr---20665351
+  bc_source: manufacturer
+  bc_source_methodology: published
+  bc_source_notes: Norma product page JSON-LD structured data, March 2026
+  product_line: Vulkan
+  bc_g1: 0.354
+- action: create_bullet
+  manufacturer: Norma
+  name: Norma GTX .338 16,2g
+  sku: '10685031'
+  weight_grains: 250.0
+  bullet_diameter_inches: 0.338
+  source_url: https://www.norma-ammunition.com/products/components/shooting-bullets/norma-gtx-338-250gr---10685031
+  bc_source: manufacturer
+  bc_source_methodology: published
+  bc_source_notes: Norma product page JSON-LD structured data, March 2026
+  product_line: Gtx
+  bc_g1: 0.684
+- action: create_bullet
+  manufacturer: Norma
+  name: Norma Tipstrike Varmint 6mm (.243) 4,9g
+  sku: '20660141'
+  weight_grains: 76.0
+  bullet_diameter_inches: 0.243
+  source_url: https://www.norma-ammunition.com/products/components/hunting-bullets/norma-tipstrike-varmint-6mm-243-76gr---20660141
+  bc_source: manufacturer
+  bc_source_methodology: published
+  bc_source_notes: Norma product page JSON-LD structured data, March 2026
+  product_line: Tipstrike
+  tip_type: polymer_tip
+  bc_g1: 0.332
+- action: create_bullet
+  manufacturer: Norma
+  name: Norma Oryx .338 14,9g
+  sku: '20686161'
+  weight_grains: 230.0
+  bullet_diameter_inches: 0.338
+  source_url: https://www.norma-ammunition.com/products/components/hunting-bullets/norma-oryx-338-230gr---20686161
+  bc_source: manufacturer
+  bc_source_methodology: published
+  bc_source_notes: Norma product page JSON-LD structured data, March 2026
+  product_line: Oryx
+  bc_g1: 0.37
+- action: create_bullet
+  manufacturer: Norma
+  name: Norma Diamond Line 6mm (.243) 6,8g
+  sku: '10660162'
+  weight_grains: 105.0
+  bullet_diameter_inches: 0.243
+  source_url: https://www.norma-ammunition.com/products/components/shooting-bullets/norma-diamond-line-6mm-243-105gr---10660162
+  bc_source: manufacturer
+  bc_source_methodology: published
+  bc_source_notes: Norma product page JSON-LD structured data, March 2026
+  product_line: Diamond Line
+  base_type: boat_tail
+  tip_type: polymer_tip
+  bc_g1: 0.517
+- action: create_bullet
+  manufacturer: Norma
+  name: Norma Oryx .30 (.308) 10,7g
+  sku: '20676161'
+  weight_grains: 165.0
+  bullet_diameter_inches: 0.308
+  source_url: https://www.norma-ammunition.com/products/components/hunting-bullets/norma-oryx-30-308-165gr---20676161
+  bc_source: manufacturer
+  bc_source_methodology: published
+  bc_source_notes: Norma product page JSON-LD structured data, March 2026
+  product_line: Oryx
+  bc_g1: 0.333
+- action: create_bullet
+  manufacturer: Norma
+  name: Norma Ecostrike .30 (.308) 9,7g
+  sku: '20676941'
+  weight_grains: 150.0
+  bullet_diameter_inches: 0.308
+  source_url: https://www.norma-ammunition.com/products/components/hunting-bullets/norma-ecostrike-30-308-150-gr---20676941
+  bc_source: manufacturer
+  bc_source_methodology: published
+  bc_source_notes: Norma product page JSON-LD structured data, March 2026
+  product_line: Ecostrike
+  is_lead_free: true
+  bc_g1: 0.376
+- action: create_bullet
+  manufacturer: Norma
+  name: Norma Vulkan 9,3mm (.366) 15,0g
+  sku: '20693051'
+  weight_grains: 232.0
+  bullet_diameter_inches: 0.366
+  source_url: https://www.norma-ammunition.com/products/components/hunting-bullets/norma-vulkan-9-3mm-366-232gr---20693051
+  bc_source: manufacturer
+  bc_source_methodology: published
+  bc_source_notes: Norma product page JSON-LD structured data, March 2026
+  product_line: Vulkan
+  bc_g1: 0.278
+- action: create_bullet
+  manufacturer: Norma
+  name: Norma Oryx 7mm (.284) 11,0g
+  sku: '20670051'
+  weight_grains: 170.0
+  bullet_diameter_inches: 0.284
+  source_url: https://www.norma-ammunition.com/products/components/hunting-bullets/norma-oryx-7mm-284-170gr---20670051
+  bc_source: manufacturer
+  bc_source_methodology: published
+  bc_source_notes: Norma product page JSON-LD structured data, March 2026
+  product_line: Oryx
+  bc_g1: 0.324
+- action: create_bullet
+  manufacturer: Norma
+  name: Norma Oryx 6mm (.243) 6,5g
+  sku: '20660501'
+  weight_grains: 100.0
+  bullet_diameter_inches: 0.243
+  source_url: https://www.norma-ammunition.com/products/components/hunting-bullets/norma-oryx-6mm-243-100gr---20660501
+  bc_source: manufacturer
+  bc_source_methodology: published
+  bc_source_notes: Norma product page JSON-LD structured data, March 2026
+  product_line: Oryx
+  bc_g1: 0.261
+- action: create_bullet
+  manufacturer: Norma
+  name: Norma Bondstrike 6,5 mm (.264) 9,27g
+  sku: '20665651'
+  weight_grains: 143.0
+  bullet_diameter_inches: 0.264
+  source_url: https://www.norma-ammunition.com/products/components/hunting-bullets/norma-bondstrike-6-5-mm-264-143gr---20665651
+  bc_source: manufacturer
+  bc_source_methodology: published
+  bc_source_notes: Norma product page JSON-LD structured data, March 2026
+  product_line: Bondstrike
+  base_type: boat_tail
+  tip_type: polymer_tip
+  bc_g1: 0.629
+- action: create_bullet
+  manufacturer: Norma
+  name: Norma Oryx .358 16,2g
+  sku: '20690071'
+  weight_grains: 250.0
+  bullet_diameter_inches: 0.358
+  source_url: https://www.norma-ammunition.com/products/components/hunting-bullets/norma-oryx-358-250gr---20690071
+  bc_source: manufacturer
+  bc_source_methodology: published
+  bc_source_notes: Norma product page JSON-LD structured data, March 2026
+  product_line: Oryx
+  bc_g1: 0.34
+- action: create_bullet
+  manufacturer: Norma
+  name: Norma Tipstrike 8mm (.323) 11,7g
+  sku: '20681001'
+  weight_grains: 180.0
+  bullet_diameter_inches: 0.323
+  source_url: https://www.norma-ammunition.com/products/components/hunting-bullets/norma-tipstrike-8mm-323-180gr---20681001
+  bc_source: manufacturer
+  bc_source_methodology: published
+  bc_source_notes: Norma product page JSON-LD structured data, March 2026
+  product_line: Tipstrike
+  tip_type: polymer_tip
+  bc_g1: 0.361
+- action: create_bullet
+  manufacturer: Norma
+  name: Norma Ecostrike 8 mm (.323) 10,4g
+  sku: '20680121'
+  weight_grains: 160.0
+  bullet_diameter_inches: 0.323
+  source_url: https://www.norma-ammunition.com/products/components/hunting-bullets/norma-ecostrike-8-mm-323-160-gr---20680121
+  bc_source: manufacturer
+  bc_source_methodology: published
+  bc_source_notes: Norma product page JSON-LD structured data, March 2026
+  product_line: Ecostrike
+  is_lead_free: true
+  bc_g1: 0.353
+- action: create_bullet
+  manufacturer: Norma
+  name: Norma Tipstrike 9,3mm (.366) 16,5g
+  sku: '20694001'
+  weight_grains: 255.0
+  bullet_diameter_inches: 0.366
+  source_url: https://www.norma-ammunition.com/products/components/hunting-bullets/norma-tipstrike-9-3mm-366-255gr---20694001
+  bc_source: manufacturer
+  bc_source_methodology: published
+  bc_source_notes: Norma product page JSON-LD structured data, March 2026
+  product_line: Tipstrike
+  tip_type: polymer_tip
+  bc_g1: 0.428

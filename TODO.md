@@ -55,12 +55,12 @@ Lightweight tech debt and engineering improvement tracker. Agents and humans app
 
 ## Coverage Gaps (JBM Audit 2026-03-15)
 
-- [ ] Winchester missing entirely — 185 rifle bullets in JBM, 0 in Drift. Major ammo + component bullet maker. (source: JBM coverage audit, 2026-03-15)
-- [ ] Swift missing entirely — 55 rifle bullets in JBM (A-Frame, Scirocco II). Blocks ~182 flagged cartridge resolutions. (source: JBM coverage audit, 2026-03-15)
-- [ ] Berger 53 rifle bullet gaps — 19 in .224, 14 in .308. Core competition bullets (Match/VLD/Hybrid). (source: JBM coverage audit, 2026-03-15)
+- [x] Winchester — 15 component rifle bullets added via curation patch (BC MAX, Power-Point, PSP, HP, FMJ). JBM's 185 count includes loaded-ammo-only designs; Winchester publishes no BCs. (source: agent, 2026-03-15)
+- [x] Swift — 20 bullets stored via pipeline (A-Frame, Scirocco II, Break-Away Solids). Manufacturer + product-line aliases added. (source: agent, 2026-03-15)
+- [x] Berger key competition gaps — 7 high-priority VLD bullets added (.224 70/75/82/90gr, .308 190/210gr) with G1+G7 BCs from bergerbullets.com. Remaining 46 gaps are discontinued/legacy variants not on current site. (source: agent, 2026-03-15)
 - [ ] Scrape JBM BC values as supplementary BulletBCSource — 3,520 entries with BCs, 261 Litz-measured (gold standard). Could fill 66 Drift bullets missing BCs. (source: JBM coverage audit, 2026-03-15)
-- [ ] Sako missing entirely — 63 rifle bullets in JBM. Popular European brand. (source: JBM coverage audit, 2026-03-15)
-- [ ] Norma missing entirely — 38 rifle bullets in JBM despite being in manifest. Pipeline may not have stored. (source: JBM coverage audit, 2026-03-15)
+- [x] Sako — 74 bullets added via curation patch from sako.global ammunition pages (Gamehead, Gamehead Pro, Hammerhead, Powerhead Blade, Speedhead, TRG Precision). All with G1 BCs. (source: agent, 2026-03-15)
+- [x] Norma — 45 bullets added via curation patch from JSON-LD structured data (Bondstrike, GTX, Diamond Line, Oryx, Tipstrike, Vulkan, Ecostrike). Pipeline failed due to 2.3MB SPA pages exceeding 200K token limit. (source: agent, 2026-03-15)
 
 ## Documentation
 

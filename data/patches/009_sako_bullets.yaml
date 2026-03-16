@@ -1,0 +1,822 @@
+patch:
+  id: 009_sako_bullets
+  author: Brian Bolze
+  date: '2026-03-15'
+  description: Add Sako bullet lineup extracted from sako.global ammunition product pages.
+    Includes Gamehead, Gamehead Pro, Gamehead Varmint, Hammerhead, Powerhead Blade,
+    Speedhead, Super Hammerhead, and TRG Precision lines. All BCs are G1 from Sako product pages.
+operations:
+- action: create_bullet
+  manufacturer: Sako
+  name: "Sako Gamehead .224 49gr"
+  weight_grains: 49.0
+  bullet_diameter_inches: 0.224
+  source_url: https://www.sako.global/ammunition/gamehead
+  product_line: Gamehead
+  bc_source: manufacturer
+  bc_source_methodology: published
+  bc_source_notes: Sako product page ballistic coefficient table, March 2026
+  bc_g1: 0.179
+- action: create_bullet
+  manufacturer: Sako
+  name: "Sako Gamehead .224 55gr"
+  weight_grains: 55.0
+  bullet_diameter_inches: 0.224
+  source_url: https://www.sako.global/ammunition/gamehead
+  product_line: Gamehead
+  bc_source: manufacturer
+  bc_source_methodology: published
+  bc_source_notes: Sako product page ballistic coefficient table, March 2026
+  bc_g1: 0.202
+- action: create_bullet
+  manufacturer: Sako
+  name: "Sako Gamehead .224 56gr"
+  weight_grains: 56.0
+  bullet_diameter_inches: 0.224
+  source_url: https://www.sako.global/ammunition/gamehead
+  product_line: Gamehead
+  bc_source: manufacturer
+  bc_source_methodology: published
+  bc_source_notes: Sako product page ballistic coefficient table, March 2026
+  bc_g1: 0.216
+- action: create_bullet
+  manufacturer: Sako
+  name: "Sako Gamehead .243 90gr"
+  weight_grains: 90.0
+  bullet_diameter_inches: 0.243
+  source_url: https://www.sako.global/ammunition/gamehead
+  product_line: Gamehead
+  bc_source: manufacturer
+  bc_source_methodology: published
+  bc_source_notes: Sako product page ballistic coefficient table, March 2026
+  bc_g1: 0.31
+- action: create_bullet
+  manufacturer: Sako
+  name: "Sako Gamehead .243 100gr"
+  weight_grains: 100.0
+  bullet_diameter_inches: 0.243
+  source_url: https://www.sako.global/ammunition/gamehead
+  product_line: Gamehead
+  bc_source: manufacturer
+  bc_source_methodology: published
+  bc_source_notes: Sako product page ballistic coefficient table, March 2026
+  bc_g1: 0.365
+- action: create_bullet
+  manufacturer: Sako
+  name: "Sako Gamehead .257 117gr"
+  weight_grains: 117.0
+  bullet_diameter_inches: 0.257
+  source_url: https://www.sako.global/ammunition/gamehead
+  product_line: Gamehead
+  bc_source: manufacturer
+  bc_source_methodology: published
+  bc_source_notes: Sako product page ballistic coefficient table, March 2026
+  bc_g1: 0.381
+- action: create_bullet
+  manufacturer: Sako
+  name: "Sako Gamehead .264 140gr"
+  weight_grains: 140.0
+  bullet_diameter_inches: 0.264
+  source_url: https://www.sako.global/ammunition/gamehead
+  product_line: Gamehead
+  bc_source: manufacturer
+  bc_source_methodology: published
+  bc_source_notes: Sako product page ballistic coefficient table, March 2026
+  bc_g1: 0.471
+- action: create_bullet
+  manufacturer: Sako
+  name: "Sako Gamehead .277 130gr"
+  weight_grains: 130.0
+  bullet_diameter_inches: 0.277
+  source_url: https://www.sako.global/ammunition/gamehead
+  product_line: Gamehead
+  bc_source: manufacturer
+  bc_source_methodology: published
+  bc_source_notes: Sako product page ballistic coefficient table, March 2026
+  bc_g1: 0.41
+- action: create_bullet
+  manufacturer: Sako
+  name: "Sako Gamehead .284 120gr"
+  weight_grains: 120.0
+  bullet_diameter_inches: 0.284
+  source_url: https://www.sako.global/ammunition/gamehead
+  product_line: Gamehead
+  bc_source: manufacturer
+  bc_source_methodology: published
+  bc_source_notes: Sako product page ballistic coefficient table, March 2026
+  bc_g1: 0.328
+- action: create_bullet
+  manufacturer: Sako
+  name: "Sako Gamehead .284 140gr"
+  weight_grains: 140.0
+  bullet_diameter_inches: 0.284
+  source_url: https://www.sako.global/ammunition/gamehead
+  product_line: Gamehead
+  bc_source: manufacturer
+  bc_source_methodology: published
+  bc_source_notes: Sako product page ballistic coefficient table, March 2026
+  bc_g1: 0.394
+- action: create_bullet
+  manufacturer: Sako
+  name: "Sako Gamehead .308 123gr"
+  weight_grains: 123.0
+  bullet_diameter_inches: 0.308
+  source_url: https://www.sako.global/ammunition/gamehead
+  product_line: Gamehead
+  bc_source: manufacturer
+  bc_source_methodology: published
+  bc_source_notes: Sako product page ballistic coefficient table, March 2026
+  bc_g1: 0.271
+- action: create_bullet
+  manufacturer: Sako
+  name: "Sako Gamehead .308 130gr"
+  weight_grains: 130.0
+  bullet_diameter_inches: 0.308
+  source_url: https://www.sako.global/ammunition/gamehead
+  product_line: Gamehead
+  bc_source: manufacturer
+  bc_source_methodology: published
+  bc_source_notes: Sako product page ballistic coefficient table, March 2026
+  bc_g1: 0.216
+- action: create_bullet
+  manufacturer: Sako
+  name: "Sako Gamehead .308 150gr"
+  weight_grains: 150.0
+  bullet_diameter_inches: 0.308
+  source_url: https://www.sako.global/ammunition/gamehead
+  product_line: Gamehead
+  bc_source: manufacturer
+  bc_source_methodology: published
+  bc_source_notes: Sako product page ballistic coefficient table, March 2026
+  bc_g1: 0.322
+- action: create_bullet
+  manufacturer: Sako
+  name: "Sako Gamehead .308 181gr"
+  weight_grains: 181.0
+  bullet_diameter_inches: 0.308
+  source_url: https://www.sako.global/ammunition/gamehead
+  product_line: Gamehead
+  bc_source: manufacturer
+  bc_source_methodology: published
+  bc_source_notes: Sako product page ballistic coefficient table, March 2026
+  bc_g1: 0.387
+- action: create_bullet
+  manufacturer: Sako
+  name: "Sako Gamehead .310 123gr"
+  weight_grains: 123.0
+  bullet_diameter_inches: 0.31
+  source_url: https://www.sako.global/ammunition/gamehead
+  product_line: Gamehead
+  bc_source: manufacturer
+  bc_source_methodology: published
+  bc_source_notes: Sako product page ballistic coefficient table, March 2026
+  bc_g1: 0.222
+- action: create_bullet
+  manufacturer: Sako
+  name: "Sako Gamehead .323 150gr"
+  weight_grains: 150.0
+  bullet_diameter_inches: 0.323
+  source_url: https://www.sako.global/ammunition/gamehead
+  product_line: Gamehead
+  bc_source: manufacturer
+  bc_source_methodology: published
+  bc_source_notes: Sako product page ballistic coefficient table, March 2026
+  bc_g1: 0.33
+- action: create_bullet
+  manufacturer: Sako
+  name: "Sako Gamehead .323 174gr"
+  weight_grains: 174.0
+  bullet_diameter_inches: 0.323
+  source_url: https://www.sako.global/ammunition/gamehead
+  product_line: Gamehead
+  bc_source: manufacturer
+  bc_source_methodology: published
+  bc_source_notes: Sako product page ballistic coefficient table, March 2026
+  bc_g1: 0.374
+- action: create_bullet
+  manufacturer: Sako
+  name: "Sako Gamehead .366 256gr"
+  weight_grains: 256.0
+  bullet_diameter_inches: 0.366
+  source_url: https://www.sako.global/ammunition/gamehead
+  product_line: Gamehead
+  bc_source: manufacturer
+  bc_source_methodology: published
+  bc_source_notes: Sako product page ballistic coefficient table, March 2026
+  bc_g1: 0.244
+- action: create_bullet
+  manufacturer: Sako
+  name: "Sako Gamehead Pro .243 90gr"
+  weight_grains: 90.0
+  bullet_diameter_inches: 0.243
+  source_url: https://www.sako.global/ammunition/gamehead-pro
+  product_line: Gamehead Pro
+  bc_source: manufacturer
+  bc_source_methodology: published
+  bc_source_notes: Sako product page ballistic coefficient table, March 2026
+  bc_g1: 0.398
+- action: create_bullet
+  manufacturer: Sako
+  name: "Sako Gamehead Pro .264 130gr"
+  weight_grains: 130.0
+  bullet_diameter_inches: 0.264
+  source_url: https://www.sako.global/ammunition/gamehead-pro
+  product_line: Gamehead Pro
+  bc_source: manufacturer
+  bc_source_methodology: published
+  bc_source_notes: Sako product page ballistic coefficient table, March 2026
+  bc_g1: 0.498
+- action: create_bullet
+  manufacturer: Sako
+  name: "Sako Gamehead Pro .264 140gr"
+  weight_grains: 140.0
+  bullet_diameter_inches: 0.264
+  source_url: https://www.sako.global/ammunition/gamehead-pro
+  product_line: Gamehead Pro
+  bc_source: manufacturer
+  bc_source_methodology: published
+  bc_source_notes: Sako product page ballistic coefficient table, March 2026
+  bc_g1: 0.546
+- action: create_bullet
+  manufacturer: Sako
+  name: "Sako Gamehead Pro .277 140gr"
+  weight_grains: 140.0
+  bullet_diameter_inches: 0.277
+  source_url: https://www.sako.global/ammunition/gamehead-pro
+  product_line: Gamehead Pro
+  bc_source: manufacturer
+  bc_source_methodology: published
+  bc_source_notes: Sako product page ballistic coefficient table, March 2026
+  bc_g1: 0.487
+- action: create_bullet
+  manufacturer: Sako
+  name: "Sako Gamehead Pro .284 150gr"
+  weight_grains: 150.0
+  bullet_diameter_inches: 0.284
+  source_url: https://www.sako.global/ammunition/gamehead-pro
+  product_line: Gamehead Pro
+  bc_source: manufacturer
+  bc_source_methodology: published
+  bc_source_notes: Sako product page ballistic coefficient table, March 2026
+  bc_g1: 0.545
+- action: create_bullet
+  manufacturer: Sako
+  name: "Sako Gamehead Pro .284 165gr"
+  weight_grains: 165.0
+  bullet_diameter_inches: 0.284
+  source_url: https://www.sako.global/ammunition/gamehead-pro
+  product_line: Gamehead Pro
+  bc_source: manufacturer
+  bc_source_methodology: published
+  bc_source_notes: Sako product page ballistic coefficient table, March 2026
+  bc_g1: 0.59
+- action: create_bullet
+  manufacturer: Sako
+  name: "Sako Gamehead Pro .308 150gr"
+  weight_grains: 150.0
+  bullet_diameter_inches: 0.308
+  source_url: https://www.sako.global/ammunition/gamehead-pro
+  product_line: Gamehead Pro
+  bc_source: manufacturer
+  bc_source_methodology: published
+  bc_source_notes: Sako product page ballistic coefficient table, March 2026
+  bc_g1: 0.443
+- action: create_bullet
+  manufacturer: Sako
+  name: "Sako Gamehead Pro .308 165gr"
+  weight_grains: 165.0
+  bullet_diameter_inches: 0.308
+  source_url: https://www.sako.global/ammunition/gamehead-pro
+  product_line: Gamehead Pro
+  bc_source: manufacturer
+  bc_source_methodology: published
+  bc_source_notes: Sako product page ballistic coefficient table, March 2026
+  bc_g1: 0.508
+- action: create_bullet
+  manufacturer: Sako
+  name: "Sako Gamehead Varmint .224 40gr"
+  weight_grains: 40.0
+  bullet_diameter_inches: 0.224
+  source_url: https://www.sako.global/ammunition/gamehead-varmint
+  product_line: Gamehead Varmint
+  bc_source: manufacturer
+  bc_source_methodology: published
+  bc_source_notes: Sako product page ballistic coefficient table, March 2026
+  bc_g1: 0.196
+- action: create_bullet
+  manufacturer: Sako
+  name: "Sako Gamehead Varmint .224 49gr"
+  weight_grains: 49.0
+  bullet_diameter_inches: 0.224
+  source_url: https://www.sako.global/ammunition/gamehead-varmint
+  product_line: Gamehead Varmint
+  bc_source: manufacturer
+  bc_source_methodology: published
+  bc_source_notes: Sako product page ballistic coefficient table, March 2026
+  bc_g1: 0.248
+- action: create_bullet
+  manufacturer: Sako
+  name: "Sako Gamehead Varmint .243 69gr"
+  weight_grains: 69.0
+  bullet_diameter_inches: 0.243
+  source_url: https://www.sako.global/ammunition/gamehead-varmint
+  product_line: Gamehead Varmint
+  bc_source: manufacturer
+  bc_source_methodology: published
+  bc_source_notes: Sako product page ballistic coefficient table, March 2026
+  bc_g1: 0.316
+- action: create_bullet
+  manufacturer: Sako
+  name: "Sako Gamehead Varmint RX .308 130gr"
+  weight_grains: 130.0
+  bullet_diameter_inches: 0.308
+  source_url: https://www.sako.global/ammunition/gamehead-varmint-rx
+  product_line: Gamehead Varmint RX
+  bc_source: manufacturer
+  bc_source_methodology: published
+  bc_source_notes: Sako product page ballistic coefficient table, March 2026
+  bc_g1: 0.216
+- action: create_bullet
+  manufacturer: Sako
+  name: "Sako Hammerhead .277 156gr"
+  weight_grains: 156.0
+  bullet_diameter_inches: 0.277
+  source_url: https://www.sako.global/ammunition/hammerhead
+  product_line: Hammerhead
+  bc_source: manufacturer
+  bc_source_methodology: published
+  bc_source_notes: Sako product page ballistic coefficient table, March 2026
+  bc_g1: 0.31
+- action: create_bullet
+  manufacturer: Sako
+  name: "Sako Hammerhead .284 170gr"
+  weight_grains: 170.0
+  bullet_diameter_inches: 0.284
+  source_url: https://www.sako.global/ammunition/hammerhead
+  product_line: Hammerhead
+  bc_source: manufacturer
+  bc_source_methodology: published
+  bc_source_notes: Sako product page ballistic coefficient table, March 2026
+  bc_g1: 0.371
+- action: create_bullet
+  manufacturer: Sako
+  name: "Sako Hammerhead .308 181gr"
+  weight_grains: 181.0
+  bullet_diameter_inches: 0.308
+  source_url: https://www.sako.global/ammunition/hammerhead
+  product_line: Hammerhead
+  bc_source: manufacturer
+  bc_source_methodology: published
+  bc_source_notes: Sako product page ballistic coefficient table, March 2026
+  bc_g1: 0.222
+- action: create_bullet
+  manufacturer: Sako
+  name: "Sako Hammerhead .308 201gr"
+  weight_grains: 201.0
+  bullet_diameter_inches: 0.308
+  source_url: https://www.sako.global/ammunition/hammerhead
+  product_line: Hammerhead
+  bc_source: manufacturer
+  bc_source_methodology: published
+  bc_source_notes: Sako product page ballistic coefficient table, March 2026
+  bc_g1: 0.324
+- action: create_bullet
+  manufacturer: Sako
+  name: "Sako Hammerhead .308 221gr"
+  weight_grains: 221.0
+  bullet_diameter_inches: 0.308
+  source_url: https://www.sako.global/ammunition/hammerhead
+  product_line: Hammerhead
+  bc_source: manufacturer
+  bc_source_methodology: published
+  bc_source_notes: Sako product page ballistic coefficient table, March 2026
+  bc_g1: 0.376
+- action: create_bullet
+  manufacturer: Sako
+  name: "Sako Hammerhead .310 181gr"
+  weight_grains: 181.0
+  bullet_diameter_inches: 0.31
+  source_url: https://www.sako.global/ammunition/hammerhead
+  product_line: Hammerhead
+  bc_source: manufacturer
+  bc_source_methodology: published
+  bc_source_notes: Sako product page ballistic coefficient table, March 2026
+  bc_g1: 0.221
+- action: create_bullet
+  manufacturer: Sako
+  name: "Sako Hammerhead .310 201gr"
+  weight_grains: 201.0
+  bullet_diameter_inches: 0.31
+  source_url: https://www.sako.global/ammunition/hammerhead
+  product_line: Hammerhead
+  bc_source: manufacturer
+  bc_source_methodology: published
+  bc_source_notes: Sako product page ballistic coefficient table, March 2026
+  bc_g1: 0.324
+- action: create_bullet
+  manufacturer: Sako
+  name: "Sako Hammerhead .323 201gr"
+  weight_grains: 201.0
+  bullet_diameter_inches: 0.323
+  source_url: https://www.sako.global/ammunition/hammerhead
+  product_line: Hammerhead
+  bc_source: manufacturer
+  bc_source_methodology: published
+  bc_source_notes: Sako product page ballistic coefficient table, March 2026
+  bc_g1: 0.253
+- action: create_bullet
+  manufacturer: Sako
+  name: "Sako Hammerhead .338 250gr"
+  weight_grains: 250.0
+  bullet_diameter_inches: 0.338
+  source_url: https://www.sako.global/ammunition/hammerhead
+  product_line: Hammerhead
+  bc_source: manufacturer
+  bc_source_methodology: published
+  bc_source_notes: Sako product page ballistic coefficient table, March 2026
+  bc_g1: 0.342
+- action: create_bullet
+  manufacturer: Sako
+  name: "Sako Hammerhead .366 285gr"
+  weight_grains: 285.0
+  bullet_diameter_inches: 0.366
+  source_url: https://www.sako.global/ammunition/hammerhead
+  product_line: Hammerhead
+  bc_source: manufacturer
+  bc_source_methodology: published
+  bc_source_notes: Sako product page ballistic coefficient table, March 2026
+  bc_g1: 0.286
+- action: create_bullet
+  manufacturer: Sako
+  name: "Sako Powerhead Blade .224 55gr"
+  weight_grains: 55.0
+  bullet_diameter_inches: 0.224
+  source_url: https://www.sako.global/ammunition/powerhead-blade
+  product_line: Powerhead Blade
+  bc_source: manufacturer
+  bc_source_methodology: published
+  bc_source_notes: Sako product page ballistic coefficient table, March 2026
+  bc_g1: 0.239
+- action: create_bullet
+  manufacturer: Sako
+  name: "Sako Powerhead Blade .243 80gr"
+  weight_grains: 80.0
+  bullet_diameter_inches: 0.243
+  source_url: https://www.sako.global/ammunition/powerhead-blade
+  product_line: Powerhead Blade
+  bc_source: manufacturer
+  bc_source_methodology: published
+  bc_source_notes: Sako product page ballistic coefficient table, March 2026
+  bc_g1: 0.251
+- action: create_bullet
+  manufacturer: Sako
+  name: "Sako Powerhead Blade .264 120gr"
+  weight_grains: 120.0
+  bullet_diameter_inches: 0.264
+  source_url: https://www.sako.global/ammunition/powerhead-blade
+  product_line: Powerhead Blade
+  bc_source: manufacturer
+  bc_source_methodology: published
+  bc_source_notes: Sako product page ballistic coefficient table, March 2026
+  bc_g1: 0.348
+- action: create_bullet
+  manufacturer: Sako
+  name: "Sako Powerhead Blade .277 120gr"
+  weight_grains: 120.0
+  bullet_diameter_inches: 0.277
+  source_url: https://www.sako.global/ammunition/powerhead-blade
+  product_line: Powerhead Blade
+  bc_source: manufacturer
+  bc_source_methodology: published
+  bc_source_notes: Sako product page ballistic coefficient table, March 2026
+  bc_g1: 0.34
+- action: create_bullet
+  manufacturer: Sako
+  name: "Sako Powerhead Blade .284 140gr"
+  weight_grains: 140.0
+  bullet_diameter_inches: 0.284
+  source_url: https://www.sako.global/ammunition/powerhead-blade
+  product_line: Powerhead Blade
+  bc_source: manufacturer
+  bc_source_methodology: published
+  bc_source_notes: Sako product page ballistic coefficient table, March 2026
+  bc_g1: 0.362
+- action: create_bullet
+  manufacturer: Sako
+  name: "Sako Powerhead Blade .308 150gr"
+  weight_grains: 150.0
+  bullet_diameter_inches: 0.308
+  source_url: https://www.sako.global/ammunition/powerhead-blade
+  product_line: Powerhead Blade
+  bc_source: manufacturer
+  bc_source_methodology: published
+  bc_source_notes: Sako product page ballistic coefficient table, March 2026
+  bc_g1: 0.401
+- action: create_bullet
+  manufacturer: Sako
+  name: "Sako Powerhead Blade .308 162gr"
+  weight_grains: 162.0
+  bullet_diameter_inches: 0.308
+  source_url: https://www.sako.global/ammunition/powerhead-blade
+  product_line: Powerhead Blade
+  bc_source: manufacturer
+  bc_source_methodology: published
+  bc_source_notes: Sako product page ballistic coefficient table, March 2026
+  bc_g1: 0.416
+- action: create_bullet
+  manufacturer: Sako
+  name: "Sako Powerhead Blade .308 170gr"
+  weight_grains: 170.0
+  bullet_diameter_inches: 0.308
+  source_url: https://www.sako.global/ammunition/powerhead-blade
+  product_line: Powerhead Blade
+  bc_source: manufacturer
+  bc_source_methodology: published
+  bc_source_notes: Sako product page ballistic coefficient table, March 2026
+  bc_g1: 0.41
+- action: create_bullet
+  manufacturer: Sako
+  name: "Sako Powerhead Blade .308 174gr"
+  weight_grains: 174.0
+  bullet_diameter_inches: 0.308
+  source_url: https://www.sako.global/ammunition/powerhead-blade
+  product_line: Powerhead Blade
+  bc_source: manufacturer
+  bc_source_methodology: published
+  bc_source_notes: Sako product page ballistic coefficient table, March 2026
+  bc_g1: 0.429
+- action: create_bullet
+  manufacturer: Sako
+  name: "Sako Powerhead Blade .323 181gr"
+  weight_grains: 181.0
+  bullet_diameter_inches: 0.323
+  source_url: https://www.sako.global/ammunition/powerhead-blade
+  product_line: Powerhead Blade
+  bc_source: manufacturer
+  bc_source_methodology: published
+  bc_source_notes: Sako product page ballistic coefficient table, March 2026
+  bc_g1: 0.384
+- action: create_bullet
+  manufacturer: Sako
+  name: "Sako Powerhead Blade .366 230gr"
+  weight_grains: 230.0
+  bullet_diameter_inches: 0.366
+  source_url: https://www.sako.global/ammunition/powerhead-blade
+  product_line: Powerhead Blade
+  bc_source: manufacturer
+  bc_source_methodology: published
+  bc_source_notes: Sako product page ballistic coefficient table, March 2026
+  bc_g1: 0.342
+- action: create_bullet
+  manufacturer: Sako
+  name: "Sako Powerhead Blade .375 261gr"
+  weight_grains: 261.0
+  bullet_diameter_inches: 0.375
+  source_url: https://www.sako.global/ammunition/powerhead-blade
+  product_line: Powerhead Blade
+  bc_source: manufacturer
+  bc_source_methodology: published
+  bc_source_notes: Sako product page ballistic coefficient table, March 2026
+  bc_g1: 0.364
+- action: create_bullet
+  manufacturer: Sako
+  name: "Sako Powerhead Blade Pro .264 123gr"
+  weight_grains: 123.0
+  bullet_diameter_inches: 0.264
+  source_url: https://www.sako.global/ammunition/powerhead-blade-pro
+  product_line: Powerhead Blade Pro
+  bc_source: manufacturer
+  bc_source_methodology: published
+  bc_source_notes: Sako product page ballistic coefficient table, March 2026
+  bc_g1: 0.431
+- action: create_bullet
+  manufacturer: Sako
+  name: "Sako Powerhead Blade Pro .277 120gr"
+  weight_grains: 120.0
+  bullet_diameter_inches: 0.277
+  source_url: https://www.sako.global/ammunition/powerhead-blade-pro
+  product_line: Powerhead Blade Pro
+  bc_source: manufacturer
+  bc_source_methodology: published
+  bc_source_notes: Sako product page ballistic coefficient table, March 2026
+  bc_g1: 0.37
+- action: create_bullet
+  manufacturer: Sako
+  name: "Sako Powerhead Blade Pro .284 140gr"
+  weight_grains: 140.0
+  bullet_diameter_inches: 0.284
+  source_url: https://www.sako.global/ammunition/powerhead-blade-pro
+  product_line: Powerhead Blade Pro
+  bc_source: manufacturer
+  bc_source_methodology: published
+  bc_source_notes: Sako product page ballistic coefficient table, March 2026
+  bc_g1: 0.442
+- action: create_bullet
+  manufacturer: Sako
+  name: "Sako Powerhead Blade Pro .308 120gr"
+  weight_grains: 120.0
+  bullet_diameter_inches: 0.308
+  source_url: https://www.sako.global/ammunition/powerhead-blade-pro
+  product_line: Powerhead Blade Pro
+  bc_source: manufacturer
+  bc_source_methodology: published
+  bc_source_notes: Sako product page ballistic coefficient table, March 2026
+  bc_g1: 0.345
+- action: create_bullet
+  manufacturer: Sako
+  name: "Sako Powerhead Blade Pro .308 130gr"
+  weight_grains: 130.0
+  bullet_diameter_inches: 0.308
+  source_url: https://www.sako.global/ammunition/powerhead-blade-pro
+  product_line: Powerhead Blade Pro
+  bc_source: manufacturer
+  bc_source_methodology: published
+  bc_source_notes: Sako product page ballistic coefficient table, March 2026
+  bc_g1: 0.401
+- action: create_bullet
+  manufacturer: Sako
+  name: "Sako Powerhead Blade Pro .308 162gr"
+  weight_grains: 162.0
+  bullet_diameter_inches: 0.308
+  source_url: https://www.sako.global/ammunition/powerhead-blade-pro
+  product_line: Powerhead Blade Pro
+  bc_source: manufacturer
+  bc_source_methodology: published
+  bc_source_notes: Sako product page ballistic coefficient table, March 2026
+  bc_g1: 0.48
+- action: create_bullet
+  manufacturer: Sako
+  name: "Sako Powerhead Blade Pro .308 174gr"
+  weight_grains: 174.0
+  bullet_diameter_inches: 0.308
+  source_url: https://www.sako.global/ammunition/powerhead-blade-pro
+  product_line: Powerhead Blade Pro
+  bc_source: manufacturer
+  bc_source_methodology: published
+  bc_source_notes: Sako product page ballistic coefficient table, March 2026
+  bc_g1: 0.477
+- action: create_bullet
+  manufacturer: Sako
+  name: "Sako Powerhead Blade Pro .366 201gr"
+  weight_grains: 201.0
+  bullet_diameter_inches: 0.366
+  source_url: https://www.sako.global/ammunition/powerhead-blade-pro
+  product_line: Powerhead Blade Pro
+  bc_source: manufacturer
+  bc_source_methodology: published
+  bc_source_notes: Sako product page ballistic coefficient table, March 2026
+  bc_g1: 0.329
+- action: create_bullet
+  manufacturer: Sako
+  name: "Sako Speedhead .224 49gr"
+  weight_grains: 49.0
+  bullet_diameter_inches: 0.224
+  source_url: https://www.sako.global/ammunition/speedhead
+  product_line: Speedhead
+  bc_source: manufacturer
+  bc_source_methodology: published
+  bc_source_notes: Sako product page ballistic coefficient table, March 2026
+  bc_g1: 0.189
+- action: create_bullet
+  manufacturer: Sako
+  name: "Sako Speedhead .243 90gr"
+  weight_grains: 90.0
+  bullet_diameter_inches: 0.243
+  source_url: https://www.sako.global/ammunition/speedhead
+  product_line: Speedhead
+  bc_source: manufacturer
+  bc_source_methodology: published
+  bc_source_notes: Sako product page ballistic coefficient table, March 2026
+  bc_g1: 0.352
+- action: create_bullet
+  manufacturer: Sako
+  name: "Sako Speedhead .264 144gr"
+  weight_grains: 144.0
+  bullet_diameter_inches: 0.264
+  source_url: https://www.sako.global/ammunition/speedhead
+  product_line: Speedhead
+  bc_source: manufacturer
+  bc_source_methodology: published
+  bc_source_notes: Sako product page ballistic coefficient table, March 2026
+  bc_g1: 0.532
+- action: create_bullet
+  manufacturer: Sako
+  name: "Sako Speedhead .308 123gr"
+  weight_grains: 123.0
+  bullet_diameter_inches: 0.308
+  source_url: https://www.sako.global/ammunition/speedhead
+  product_line: Speedhead
+  bc_source: manufacturer
+  bc_source_methodology: published
+  bc_source_notes: Sako product page ballistic coefficient table, March 2026
+  bc_g1: 0.273
+- action: create_bullet
+  manufacturer: Sako
+  name: "Sako Speedhead .310 123gr"
+  weight_grains: 123.0
+  bullet_diameter_inches: 0.31
+  source_url: https://www.sako.global/ammunition/speedhead
+  product_line: Speedhead
+  bc_source: manufacturer
+  bc_source_methodology: published
+  bc_source_notes: Sako product page ballistic coefficient table, March 2026
+  bc_g1: 0.273
+- action: create_bullet
+  manufacturer: Sako
+  name: "Sako Super Hammerhead .264 140gr"
+  weight_grains: 140.0
+  bullet_diameter_inches: 0.264
+  source_url: https://www.sako.global/ammunition/super-hammerhead
+  product_line: Super Hammerhead
+  bc_source: manufacturer
+  bc_source_methodology: published
+  bc_source_notes: Sako product page ballistic coefficient table, March 2026
+  bc_g1: 0.437
+- action: create_bullet
+  manufacturer: Sako
+  name: "Sako Super Hammerhead .277 130gr"
+  weight_grains: 130.0
+  bullet_diameter_inches: 0.277
+  source_url: https://www.sako.global/ammunition/super-hammerhead
+  product_line: Super Hammerhead
+  bc_source: manufacturer
+  bc_source_methodology: published
+  bc_source_notes: Sako product page ballistic coefficient table, March 2026
+  bc_g1: 0.4
+- action: create_bullet
+  manufacturer: Sako
+  name: "Sako Super Hammerhead .308 150gr"
+  weight_grains: 150.0
+  bullet_diameter_inches: 0.308
+  source_url: https://www.sako.global/ammunition/super-hammerhead
+  product_line: Super Hammerhead
+  bc_source: manufacturer
+  bc_source_methodology: published
+  bc_source_notes: Sako product page ballistic coefficient table, March 2026
+  bc_g1: 0.263
+- action: create_bullet
+  manufacturer: Sako
+  name: "Sako Super Hammerhead .308 181gr"
+  weight_grains: 181.0
+  bullet_diameter_inches: 0.308
+  source_url: https://www.sako.global/ammunition/super-hammerhead
+  product_line: Super Hammerhead
+  bc_source: manufacturer
+  bc_source_methodology: published
+  bc_source_notes: Sako product page ballistic coefficient table, March 2026
+  bc_g1: 0.342
+- action: create_bullet
+  manufacturer: Sako
+  name: "Sako Super Hammerhead .310 181gr"
+  weight_grains: 181.0
+  bullet_diameter_inches: 0.31
+  source_url: https://www.sako.global/ammunition/super-hammerhead
+  product_line: Super Hammerhead
+  bc_source: manufacturer
+  bc_source_methodology: published
+  bc_source_notes: Sako product page ballistic coefficient table, March 2026
+  bc_g1: 0.342
+- action: create_bullet
+  manufacturer: Sako
+  name: "Sako TRG Precision .264 136gr"
+  weight_grains: 136.0
+  bullet_diameter_inches: 0.264
+  source_url: https://www.sako.global/ammunition/trg-precision
+  product_line: TRG Precision
+  bc_source: manufacturer
+  bc_source_methodology: published
+  bc_source_notes: Sako product page ballistic coefficient table, March 2026
+  bc_g1: 0.526
+- action: create_bullet
+  manufacturer: Sako
+  name: "Sako TRG Precision .264 140gr"
+  weight_grains: 140.0
+  bullet_diameter_inches: 0.264
+  source_url: https://www.sako.global/ammunition/trg-precision
+  product_line: TRG Precision
+  bc_source: manufacturer
+  bc_source_methodology: published
+  bc_source_notes: Sako product page ballistic coefficient table, March 2026
+  bc_g1: 0.535
+- action: create_bullet
+  manufacturer: Sako
+  name: "Sako TRG Precision .308 174gr"
+  weight_grains: 174.0
+  bullet_diameter_inches: 0.308
+  source_url: https://www.sako.global/ammunition/trg-precision
+  product_line: TRG Precision
+  bc_source: manufacturer
+  bc_source_methodology: published
+  bc_source_notes: Sako product page ballistic coefficient table, March 2026
+  bc_g1: 0.472
+- action: create_bullet
+  manufacturer: Sako
+  name: "Sako TRG Precision .338 299gr"
+  weight_grains: 299.0
+  bullet_diameter_inches: 0.338
+  source_url: https://www.sako.global/ammunition/trg-precision
+  product_line: TRG Precision
+  bc_source: manufacturer
+  bc_source_methodology: published
+  bc_source_notes: Sako product page ballistic coefficient table, March 2026
+  bc_g1: 0.738
