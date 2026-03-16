@@ -14,6 +14,7 @@ make curate-commit            # Apply curation patches to database
 make pipeline-status          # Pipeline execution status
 make pipeline-store           # Dry-run resolve (preview DB changes)
 make pipeline-store-commit    # Commit resolved data to DB
+make export-production-db     # Export production SQLite for iOS app
 python scripts/describe_db.py # Database schema + row counts
 ```
 
@@ -31,6 +32,7 @@ MANIFEST -> FETCH -> REDUCE -> EXTRACT -> RESOLVE -> STORE
 - **Scripts**: `scripts/` (CLI entry points, called via Makefile)
 - **Curation**: `src/drift/curation.py` (YAML patch applier), `data/patches/` (numbered YAML patches)
 - **Database**: `data/drift.db` (SQLite, source of truth)
+- **Production DB**: `data/drift_production.db` (stripped copy for iOS app)
 - **Pipeline cache**: `data/pipeline/{fetched,reduced,extracted,review,batches}/`
 
 ## Code Style
@@ -88,6 +90,17 @@ make curate-commit    # Write to DB
 - Name resolution uses EntityAlias table (same as pipeline)
 - Idempotent: safe to re-run — existing records are skipped
 - See `curation_plan.md` for full design and YAML format spec
+
+## Production Export
+
+`scripts/export_production_db.py` creates `data/drift_production.db` — a stripped-down copy of `drift.db` for the iOS app. Drops pipeline-only tables (`alembic_version`, `bullet_bc_source`), removes pipeline metadata columns (`data_source`, `is_locked`, `extraction_confidence`, etc.), filters out bad records (zero-MV, weight-mismatched, bogus-diameter), and VACUUMs.
+
+```bash
+make export-production-db                              # Default: data/drift_production.db
+python scripts/export_production_db.py -o path.db      # Custom output path
+```
+
+Re-run after any data changes (curation patches, pipeline store, etc.) to keep the production DB current.
 
 ## TODO.md — Tech Debt Backlog
 
