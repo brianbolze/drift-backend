@@ -1,0 +1,84 @@
+patch:
+  id: "011_launch_critical_fixes"
+  author: "Brian Bolze"
+  date: "2026-03-16"
+  description: "Launch-readiness critical data fixes: C6, C7, C8, W5, W7, W10"
+
+operations:
+  # C6: Sierra 22 CAL 60gr TMK — bad record with diam=0.220 (should be 0.224)
+  # Good copy exists: 6bd41d2e with correct diameter and BCs.
+  - action: delete_bullet
+    manufacturer: "Sierra Bullets"
+    name: "22 CAL 60 GR Tipped MatchKing (TMK)"
+    id: "f4facb6b-4b78-4a5f-996a-10a3bc20150d"
+    reason: "Bad record with diam=0.220 instead of 0.224. Corrected copy is 6bd41d2e with G1=0.323, G7=0.151."
+
+  # C7: Hornady .308 220gr RN Custom International — barrel stored as 9.45" (from 24cm metric)
+  - action: update_cartridge
+    manufacturer: "Hornady"
+    name: "308 Win 220 gr RN Custom International™"
+    set:
+      test_barrel_length_inches: 24
+
+  # C8: Sako Gamehead .308 150gr — BC G1=0.322 should be 0.304
+  # The 0.322 value was from the 30-06 150gr row; .308 Win 150gr is 0.304 per sako.global
+  - action: update_bullet
+    manufacturer: "Sako"
+    name: "Sako Gamehead .308 150gr"
+    set:
+      bc_g1_published: 0.304
+
+  - action: add_bc_source
+    manufacturer: "Sako"
+    bullet_name: "Sako Gamehead .308 150gr"
+    bc_type: "g1"
+    bc_value: 0.304
+    source: "manufacturer"
+    source_url: "https://www.sako.global/cartridges/gamehead"
+    source_methodology: "published"
+    notes: "Corrected from 0.322 (which was the 30-06 150gr value). sako.global Gamehead .308 Win row, verified March 2026."
+
+  # W5: Delete 5 Federal Custom Rifle Ammo placeholder cartridges (zero weight, zero MV)
+  - action: delete_cartridge
+    manufacturer: "Federal"
+    name: "Custom Rifle Ammo 6.5-284 Norma"
+    id: "551f5fda-01d2-4e5a-87b6-a5aa931939cf"
+    reason: "Placeholder with zero weight and zero MV — no usable load data"
+
+  - action: delete_cartridge
+    manufacturer: "Federal"
+    name: "Custom Rifle Ammo 270 WSM"
+    id: "c75c2f48-8c54-4f40-acd0-9a53f38c1b3c"
+    reason: "Placeholder with zero weight and zero MV — no usable load data"
+
+  - action: delete_cartridge
+    manufacturer: "Federal"
+    name: "Custom Rifle Ammo 264 Win"
+    id: "55f3747e-987c-49da-abeb-a2d571e66ab0"
+    reason: "Placeholder with zero weight and zero MV — no usable load data"
+
+  - action: delete_cartridge
+    manufacturer: "Federal"
+    name: "Custom Rifle Ammo 26 Nosler"
+    id: "7c583c2c-60f7-4d56-89f1-988b2bae222f"
+    reason: "Placeholder with zero weight and zero MV — no usable load data"
+
+  - action: delete_cartridge
+    manufacturer: "Federal"
+    name: "Custom Rifle Ammo 284 Win"
+    id: "0b5ebe1b-3792-4e34-802f-9c48d66e58ce"
+    reason: "Placeholder with zero weight and zero MV — no usable load data"
+
+  # W7: Hornady 8x57 JS 195gr SP Custom International — barrel=9.45" (from 24cm metric)
+  - action: update_cartridge
+    manufacturer: "Hornady"
+    name: "8x57 JS 195 gr SP Custom International™"
+    set:
+      test_barrel_length_inches: 24
+
+  # W10: Sierra 6.5mm 107gr TMK misnamed as "6MM" — diameter and BCs are correct for 6.5mm
+  - action: update_bullet
+    manufacturer: "Sierra Bullets"
+    name: "6MM 107 GR Tipped MatchKing (TMK)"
+    set:
+      name: "6.5MM 107 GR Tipped MatchKing (TMK)"

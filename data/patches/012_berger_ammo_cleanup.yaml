@@ -1,0 +1,96 @@
+patch:
+  id: "012_berger_ammo_cleanup"
+  author: "Brian Bolze"
+  date: "2026-03-16"
+  description: "W8: Clean up 13 Berger loaded-ammunition product pages stored as bullet records. Delete 7 that duplicate existing component bullets; rename 6 unique ones to proper bullet names."
+
+operations:
+  # ── Delete duplicates (component bullet already exists) ──────────────────────
+
+  # Dupe of 30 Caliber 230 Grain Hybrid OTM Tactical Rifle Bullet (e0ab2ebb)
+  - action: delete_bullet
+    manufacturer: "Berger Bullets"
+    name: "300 Norma Magnum 230gr Hybrid OTM Tactical Rifle Ammunition"
+    id: "d1e7d222-7959-44c6-8189-a39051820fad"
+    reason: "Ammo product page duplicate. Component bullet exists: e0ab2ebb (230gr Hybrid OTM Tactical)."
+
+  # Dupe of 30 Caliber 168 Grain Classic Hunter Rifle Bullet (1ddcec93)
+  - action: delete_bullet
+    manufacturer: "Berger Bullets"
+    name: "300 Winchester Magnum 168 Grain Classic Hunter Rifle Ammunition"
+    id: "6b966f6f-8fa8-4868-90a9-daea49adc09d"
+    reason: "Ammo product page duplicate. Component bullet exists: 1ddcec93 (168gr Classic Hunter)."
+
+  # Dupe of 30 Caliber 185 Grain Classic Hunter Rifle Bullet (a45bbd49)
+  - action: delete_bullet
+    manufacturer: "Berger Bullets"
+    name: "300 Winchester Magnum 185 Grain Classic Hunter Rifle Ammunition"
+    id: "2b46e08d-100f-4708-96ca-498df3c0dd31"
+    reason: "Ammo product page duplicate. Component bullet exists: a45bbd49 (185gr Classic Hunter)."
+
+  # Dupe of 30 Caliber 185 Grain Juggernaut Target Rifle Bullet (a45bbd49 by weight/diam)
+  - action: delete_bullet
+    manufacturer: "Berger Bullets"
+    name: "300 Winchester Magnum 185gr Juggernaut OTM Tactical Rifle Ammunition"
+    id: "f417e8ea-977f-45ba-9cf6-c07686d17606"
+    reason: "Ammo product page duplicate. Component bullet exists: a45bbd49 (185gr Juggernaut Target)."
+
+  # Dupe of 338 Caliber 250 Grain Elite Hunter Rifle Bullet (efff993e)
+  - action: delete_bullet
+    manufacturer: "Berger Bullets"
+    name: "338 Lapua Magnum 250gr Elite Hunter Rifle Ammunition"
+    id: "e93cb767-0ce9-4de7-a4b9-e0a134821462"
+    reason: "Ammo product page duplicate. Component bullet exists: efff993e (250gr Elite Hunter)."
+
+  # Dupe of 338 Caliber 300 Grain Elite Hunter Rifle Bullet (d987b0d6)
+  - action: delete_bullet
+    manufacturer: "Berger Bullets"
+    name: "338 Lapua Magnum 300 Grain Elite Hunter Rifle Ammunition"
+    id: "48380714-ac5b-41b3-b729-6d9f2c389417"
+    reason: "Ammo product page duplicate. Component bullet exists: d987b0d6 (300gr Elite Hunter)."
+
+  # Same bullet as 263697a0 (215gr Hybrid Target) — identical specs and BCs
+  - action: delete_bullet
+    manufacturer: "Berger Bullets"
+    name: "300 Norma Magnum 215 Grain Hybrid OTM Tactical Rifle Ammunition"
+    id: "10bf2ae2-2169-4aa1-9e12-2b66c7b25308"
+    reason: "Ammo product page duplicate of 263697a0 (same .308/215gr, identical G1=0.691/G7=0.354)."
+
+  # ── Rename unique records to proper bullet names ─────────────────────────────
+
+  # Has 1 cartridge reference — rename only, don't delete
+  - action: update_bullet
+    manufacturer: "Berger Bullets"
+    name: "223 Remington 73 Grain Boat Tail Target Rifle Ammunition"
+    set:
+      name: "22 Caliber 73 Grain Boat Tail Target Rifle Bullet"
+
+  - action: update_bullet
+    manufacturer: "Berger Bullets"
+    name: "300 Winchester Magnum 215gr Hybrid Target"
+    set:
+      name: "30 Caliber 215 Grain Hybrid Target Rifle Bullet"
+
+  - action: update_bullet
+    manufacturer: "Berger Bullets"
+    name: "6 mm Creedmoor 109 Grain Long Range Hybrid Target Rifle Ammunition"
+    set:
+      name: "6 mm 109 Grain Long Range Hybrid Target Rifle Bullet"
+
+  - action: update_bullet
+    manufacturer: "Berger Bullets"
+    name: "6 mm Creedmoor 95 Grain Classic Hunter Rifle Ammunition"
+    set:
+      name: "6 mm 95 Grain Classic Hunter Rifle Bullet"
+
+  - action: update_bullet
+    manufacturer: "Berger Bullets"
+    name: "6.5 mm Creedmoor 135 Grain Classic Hunter Rifle Ammunition"
+    set:
+      name: "6.5 mm 135 Grain Classic Hunter Rifle Bullet"
+
+  - action: update_bullet
+    manufacturer: "Berger Bullets"
+    name: "6.5 mm Creedmoor 153.5 Grain Long Range Hybrid Target Rifle Ammunition"
+    set:
+      name: "6.5 mm 153.5 Grain Long Range Hybrid Target Rifle Bullet"

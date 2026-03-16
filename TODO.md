@@ -20,19 +20,18 @@ Lightweight tech debt and engineering improvement tracker. Agents and humans app
 ## Data Quality
 
 - [ ] Populate cartridge.bc_g1, bc_g7, bullet_length_inches — columns added via migration but not yet extracted/populated from manufacturer pages (source: human, 2026-03-06)
-
-- [ ] 8 cartridge-bullet weight mismatches — 5 Federal Custom Rifle Ammo placeholders + .22 WMR 30gr→35gr + .308 155gr Critical Defense→160gr FTX + Federal 250th Anniversary 30-06 150gr→147gr FMJ (source: QA report, 2026-03-06, updated 2026-03-15)
+- [ ] 3 cartridge-bullet weight mismatches — .22 WMR 30gr→35gr + .308 155gr Critical Defense→160gr FTX + Federal 250th Anniversary 30-06 150gr→147gr FMJ. Need to determine whether cartridge or bullet record is wrong. (source: QA report, 2026-03-06, updated 2026-03-16)
 - [ ] 99 existing cartridges with wrong bullet_id — re-run pipeline-store-commit after ensuring correct bullets exist in DB (source: pipeline working notes)
-- [ ] 14 cartridges with zero velocity — 9 Hornady ECX/International (pages don't publish MV) + 5 Federal Custom Rifle Ammo placeholders (source: QA report, 2026-03-06, updated 2026-03-15)
+- [ ] 9 cartridges with zero velocity — all Hornady ECX/International pages that don't publish MV. Not fixable at extraction level. (source: QA report, 2026-03-06, updated 2026-03-16)
 - [ ] 4 MatchKing->Nosler HPBT false matches — Sierra MatchKing bullets missing at certain weights, causing cross-manufacturer false positives (source: pipeline working notes)
-- [ ] 33 rifle bullets (diam ≤ .375) missing all BC fields, excl CE/Nosler — Winchester 15, Sierra 5, Federal 4, Lehigh 4, Lapua 3, Swift 1, Norma 1. Winchester does not publish component bullet BCs. (source: QA report, 2026-03-06, updated 2026-03-15)
-- [ ] Sierra 22 CAL 60gr TMK (f4facb6b) — bad record with diam=0.220 still in DB as of 2026-03-15. Previously marked resolved but re-confirmed present. Needs deletion via curation patch. (source: QA report, 2026-03-15)
-- [ ] Sierra 6.5mm 107gr TMK (adb2ba7f) misnamed as "6MM" — diameter and BCs correct for 6.5mm, only display name wrong. Fix name to "6.5MM 107 GR Tipped MatchKing (TMK)" via curation patch. (source: QA report, 2026-03-15)
-- [ ] 12 Berger loaded ammunition product pages stored as bullet records — duplicates component bullet data (e.g., "300 Winchester Magnum 185 Grain Classic Hunter Rifle Ammunition"). Clean up via curation delete or pipeline filter. (source: QA report, 2026-03-14)
-- [ ] Hornady .308 220gr RN Custom International — barrel=9.45" (from "24cm" mislabel), should be 24". Same Hornady Intl metric pattern as C5. Fix via curation patch. (source: QA report, 2026-03-06)
-- [ ] 5 Federal "Custom Rifle Ammo" placeholder cartridges — zero weight, zero MV, no barrel length. Useless records, delete via curation patch. (source: QA report, 2026-03-09)
-- [ ] Hornady 8x57 JS 195gr SP Custom International — barrel=9.45" (from 24cm metric), MV=2568 (likely metric conversion). Third instance of Hornady International metric bug (see C5, C7). (source: QA report, 2026-03-09)
-- [ ] Sako Gamehead .308 150gr (6eabdcb4) wrong BC — G1=0.322 in DB, website shows 0.304. The 0.322 value was copied from the 30-06 150gr row. Fix via curation patch. (source: QA report, 2026-03-15)
+- [ ] 18 rifle bullets (diam ≤ .375) missing all BC fields, excl CE/Nosler/Winchester — Sierra 4 (2026 new products, BCs not yet published), Federal 4, Lehigh 4, Lapua 3, Norma 1, Swift 1. None are match/LR-critical. (source: QA report, 2026-03-06, updated 2026-03-16)
+- [x] Sierra 22 CAL 60gr TMK (f4facb6b) — deleted via patch 011 (2026-03-16)
+- [x] Sierra 6.5mm 107gr TMK (adb2ba7f) misnamed as "6MM" — renamed via patch 011 (2026-03-16)
+- [x] 13 Berger loaded ammunition product pages stored as bullet records — 7 deleted, 6 renamed via patch 012 (2026-03-16)
+- [x] Hornady .308 220gr RN Custom International barrel=9.45" — fixed to 24" via patch 011 (2026-03-16)
+- [x] 5 Federal "Custom Rifle Ammo" placeholder cartridges — deleted via patch 011 (2026-03-16)
+- [x] Hornady 8x57 JS 195gr SP Custom International barrel=9.45" — fixed to 24" via patch 011 (2026-03-16)
+- [x] Sako Gamehead .308 150gr wrong BC 0.322 — corrected to 0.304 via patch 011 (2026-03-16)
 
 ## Pipeline Improvements
 
