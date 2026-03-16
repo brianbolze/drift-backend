@@ -57,12 +57,7 @@ For each run, do the following in order:
 Run these checks via SQL queries on drift.db. Curated queries for most checks are in `.claude/skills/data-quality/SKILL.md` — use them as a starting point. After completing all checks, compare findings against `known_issues.json` to classify each finding as **new** or **known** (see Persistent State Files above).
 
 **Referential integrity:**
-_Low Priority_: Foreign Key constraints should handle this at the database level.
-- Every `cartridge.bullet_id` exists in `bullet`
-- Every `cartridge.caliber_id` exists in `caliber`
-- Every `bullet.manufacturer_id` exists in `manufacturer`
-- Every `cartridge.manufacturer_id` exists in `manufacturer`
-- Every `bullet_bc_source.bullet_id` exists in `bullet`
+_Low Priority_: Run as a single combined query. FK constraints should handle this at the DB level, so just confirm zero orphans and move on. Only itemize results if orphans are found.
 
 **Cross-entity consistency:**
 - For each cartridge, verify `cartridge.bullet_weight_grains` matches the linked `bullet.weight_grains`. Flag mismatches.
@@ -72,9 +67,9 @@ _Low Priority_: Foreign Key constraints should handle this at the database level
 - Find bullet pairs sharing the same `manufacturer_id` + `bullet_diameter_inches` + `weight_grains`. List both names and source_urls. If their BC values also match, it's almost certainly a duplicate. Group by manufacturer.
 
 **Implausible values:**
-- BC values: G1 should be 0.100–0.800, G7 should be 0.050–0.450. Flag anything outside these ranges.
+- BC values: G1 should be 0.100–0.800, G7 should be 0.050–0.450. Flag anything outside these ranges. **Known exceptions** (verified correct, do not re-flag): Hornady 38cal 148gr HBWC G1=0.047 (pistol wadcutter), Cutting Edge .510 1002gr MTAC G1=1.175/G7=0.601 (massive ELR bullet).
 - G1/G7 ratio: For bullets with both, the ratio G1/G7 typically falls between 1.5 and 2.5. Outliers may indicate a G1/G7 swap.
-- Muzzle velocity: Flag cartridges with `muzzle_velocity_fps = 0`. Also flag rifle cartridges (non-handgun calibers) with velocity outside 1,600–4,200 fps, and handgun cartridges outside 600–2,200 fps. The exception would be subsonic cartridges like .300 blackout or 8.6 blackout.
+- Muzzle velocity: Flag cartridges with `muzzle_velocity_fps = 0`. Also flag rifle cartridges (non-handgun calibers) with velocity outside 1,600–4,200 fps, and handgun cartridges outside 600–2,200 fps. The exception would be subsonic cartridges like .300 blackout, 8.6 blackout, .45-70 Sub-X, and .350 Legend Sub-X.
 - Bullet weight vs diameter: A .224 bullet over 90gr or a .308 bullet under 80gr is suspicious. Use your domain knowledge to flag implausible weight/diameter combinations.
 
 **Missing critical fields:**
@@ -85,14 +80,21 @@ _Low Priority_: Foreign Key constraints should handle this at the database level
 
 **Before sampling**, read `data/data_qa/spot_check_log.json`. Exclude any record verified in the last 30 days. Prioritize never-verified records, then oldest-verified.
 
-Sample **10 bullets** and **10 cartridges** for web-based cross-referencing. Pick a mix:
-- 6-8 bullets from high-priority calibers (.264, .308, .284 diameter) from major manufacturers (Hornady, Sierra, Berger, Lapua)
-- 6-8 cartridges from top LR calibers (6.5 Creedmoor, .308 Win, 6.5 PRC)
-- 2 bullets that had unusual values flagged in Phase 1
-- 2 randomly selected records
-- Fill remaining slots from never-verified or oldest-verified records across any manufacturer
+Sample **15 bullets** and **15 cartridges** for web-based cross-referencing. Pick a mix:
 
-For the 10 bullets and 10 cartridges, it's okay to do similar sets of 2-3 — say, 2-3 bullets from the same manufacturer & family, 3-5 sets — to make the searching efficient.
+**Bullets (15):**
+- 5-6 from high-priority calibers (.264, .308, .284) from pipeline-extracted manufacturers (Hornady, Sierra, Berger, Lapua)
+- 3-4 from curated/manual data (`data_source='manual'`) — these bypass LLM extraction and have different error modes (typos, copy-paste errors). Prioritize Sako, Norma, Swift, and Winchester entries from gap-fill patches.
+- 2 that had unusual values flagged in Phase 1
+- 2-3 from underrepresented manufacturers (check spot_check_log.json for manufacturers with low verification counts)
+- Fill remaining slots from never-verified records
+
+**Cartridges (15):**
+- 8-10 from top LR calibers (6.5 Creedmoor, .308 Win, 6.5 PRC, .300 Win Mag, 7mm PRC)
+- 2-3 from less-verified calibers or manufacturers
+- Fill remaining slots from never-verified records
+
+For bullets and cartridges, it's okay to do similar sets of 2-3 from the same manufacturer & family (3-5 sets) to make searching efficient. Launch parallel research agents grouped by manufacturer.
 
 For each sampled record:
 1. Visit the `source_url` (if available) or search the manufacturer's site
@@ -102,6 +104,16 @@ For each sampled record:
 **BC verification is exact-match.** Published BC values are physical constants printed by the manufacturer — they must match the website exactly to the published precision (typically 3 decimal places). ANY discrepancy is **CRITICAL**, even 0.001. A BC of 0.507 stored as 0.508 means the extraction or storage was wrong and will produce incorrect ballistic solutions. Do not apply tolerance.
 
 **After verification**, append all results to `data/data_qa/spot_check_log.json`.
+
+### Phase 2b: BC Source Audit (SQL only)
+
+Verify consistency between `bullet` published BC fields and `bullet_bc_source` audit trail records. Run these checks:
+
+1. **Divergence check**: Find bullets where `bc_g1_published` or `bc_g7_published` diverges from the corresponding `bullet_bc_source` record by more than 10% relative difference. Multi-source bullets (e.g., Barnes LRX with weight-dependent BCs) legitimately have spread — focus on single-source bullets with divergence.
+2. **Missing audit trail**: Find bullets that have a published BC on the bullet row but no corresponding `bullet_bc_source` record. These are missing provenance.
+3. **Orphan sources**: Find `bullet_bc_source` records where the BC value doesn't match any published field on the parent bullet (and the bullet only has one source). This may indicate a stale source or update that wasn't propagated.
+
+Report findings in a "BC Source Audit" subsection. These are typically warnings, not critical issues — the bullet row values are what the app uses.
 
 **Tips for specific manufacturer sites:**
 From earlier AI research agent runs, here are some guidelines from what we've found so far:
@@ -117,9 +129,11 @@ From earlier AI research agent runs, here are some guidelines from what we've fo
 - **Lehigh Defense** (`lehighdefense.com`): Pages should have BC, sectional density, diameter, velocity data. Clean URL pattern.
 - **Norma** (`norma.cc`): Usually only publishes G1 BC, no G7 anywhere on site. Specs are in structured JSON-LD on product pages.
 
-### Phase 3: Bullet Name Quality (informational)
+### Phase 3: Bullet Name Quality (quarterly only)
 
-Scan for these patterns and report counts by manufacturer:
+**Skip this phase unless it's the first run of the month.** Name quality counts are stable and only change when cleanup patches are applied.
+
+When run, scan for these patterns and report counts by manufacturer:
 - Pack counts in name: `(100ct)`, `(50ct)`, etc.
 - ALL CAPS names
 - Caliber/diameter redundantly in name: "30 CAL", "6.5mm .264", etc.
@@ -143,7 +157,6 @@ NOTE: If there's an existing file with that same name, don't overwrite it. Just 
 - **New** critical issues: N | **New** warnings: N
 - Known open issues: N (X resolved since last run)
 - Spot-check coverage: N/Z bullets verified (X%), N/W cartridges verified (X%)
-- Informational: N
 
 ## New Critical Issues
 [Only issues NOT in known_issues.json — wrong values, broken linkages, BC mismatches]
@@ -152,15 +165,21 @@ NOTE: If there's an existing file with that same name, don't overwrite it. Just 
 [Only issues NOT in known_issues.json — duplicates, missing BCs, implausible values]
 
 ## Known Issues Status
-[For each issue in known_issues.json: still present / count changed / resolved]
+[Compact table: ID | severity | status | count | change (unchanged/improved/worsened/resolved)]
+[Only call out issues whose count changed or resolved — don't narrate unchanged ones]
 [Update known_issues.json accordingly]
 
 ## Spot-Check Results
-[Table of 10 bullets + 10 cartridges with verification status]
+[Table of 15 bullets + 15 cartridges with verification status]
+[Note data_source (pipeline vs manual) for each record]
 [Note which records were new-to-verify vs re-verification]
 
+## BC Source Audit
+[Divergence, missing audit trail, orphan source findings from Phase 2b]
+
 ## Informational
-[Name quality stats, coverage gaps, expected manufacturer limitations]
+[Coverage gaps, expected manufacturer limitations]
+[Name quality stats — only if Phase 3 was run this month]
 
 ## Queries Run
 [Include key SQL queries and their results for reproducibility]

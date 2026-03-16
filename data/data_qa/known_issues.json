@@ -2,10 +2,10 @@
   {
     "id": "C1-cartridge-bullet-weight-mismatches",
     "severity": "critical",
-    "summary": "7 cartridge-bullet weight mismatches: 5 Federal Custom Rifle Ammo placeholders (W5) + .22 WMR 30gr→35gr + .308 155gr Critical Defense→160gr FTX 30-30",
+    "summary": "8 cartridge-bullet weight mismatches: 5 Federal Custom Rifle Ammo placeholders (W5) + .22 WMR 30gr\u219235gr + .308 155gr Critical Defense\u2192160gr FTX + Federal 250th Anniversary 30-06 150gr\u2192147gr FMJ",
     "first_seen": "2026-03-06",
     "last_seen": "2026-03-15",
-    "count": 7,
+    "count": 8,
     "status": "open"
   },
   {
@@ -50,7 +50,7 @@
     "count": 0,
     "status": "resolved",
     "resolved_date": "2026-03-15",
-    "resolution": "Record no longer found in database — removed during pipeline re-run or data cleanup"
+    "resolution": "Record no longer found in database \u2014 removed during pipeline re-run or data cleanup"
   },
   {
     "id": "C6-sierra-tmk-22cal-data-errors",
@@ -83,10 +83,10 @@
   {
     "id": "W2-missing-bc-rifle-bullets",
     "severity": "warning",
-    "summary": "16 rifle bullets (diameter <= .375) missing all BC fields, excluding CE and Nosler. Sierra 5, Federal 4, Lehigh 4, Lapua 3.",
+    "summary": "33 rifle bullets (diameter <= .375) missing all BC fields, excluding CE and Nosler. Winchester 15, Sierra 5, Federal 4, Lehigh 4, Lapua 3, Swift 1, Norma 1. Winchester increase from gap-fill session (Winchester does not publish component bullet BCs).",
     "first_seen": "2026-03-06",
     "last_seen": "2026-03-15",
-    "count": 16,
+    "count": 33,
     "status": "open"
   },
   {
@@ -112,7 +112,7 @@
   {
     "id": "W5-federal-custom-rifle-ammo-placeholders",
     "severity": "warning",
-    "summary": "5 Federal Custom Rifle Ammo cartridges with zero weight and zero MV — placeholder records with no load data",
+    "summary": "5 Federal Custom Rifle Ammo cartridges with zero weight and zero MV \u2014 placeholder records with no load data",
     "first_seen": "2026-03-09",
     "last_seen": "2026-03-15",
     "count": 5,
@@ -124,9 +124,11 @@
     "summary": "Speer .264 140gr Impact bullet source_url points to dead DeepCurl handgun page instead of correct Impact rifle bullet page",
     "first_seen": "2026-03-09",
     "last_seen": "2026-03-15",
-    "count": 1,
-    "status": "open",
-    "notes": "URL now shows rifle-bullets/impact-bullet path — may have been corrected during pipeline re-run. Needs re-verification."
+    "count": 0,
+    "status": "resolved",
+    "notes": "URL now shows rifle-bullets/impact-bullet path \u2014 may have been corrected during pipeline re-run. Needs re-verification.",
+    "resolved_date": "2026-03-15",
+    "resolution": "source_url now points to correct rifle-bullets/impact-bullet path"
   },
   {
     "id": "W7-hornady-8x57-intl-metric-barrel",
@@ -140,7 +142,7 @@
   {
     "id": "W8-berger-ammo-pages-as-bullets",
     "severity": "warning",
-    "summary": "12 Berger loaded ammunition product pages stored as bullet records — duplicates component bullet data",
+    "summary": "12 Berger loaded ammunition product pages stored as bullet records \u2014 duplicates component bullet data",
     "first_seen": "2026-03-14",
     "last_seen": "2026-03-15",
     "count": 12,
@@ -149,7 +151,7 @@
   {
     "id": "W9-hornady-65cm-eldvt-source-url-mismatch",
     "severity": "warning",
-    "summary": "Hornady 6.5 Creedmoor 100gr ELD-VT V-Match source_url slug says '6mm-creedmoor' — Hornady website routing issue, data is correct",
+    "summary": "Hornady 6.5 Creedmoor 100gr ELD-VT V-Match source_url slug says '6mm-creedmoor' \u2014 Hornady website routing issue, data is correct",
     "first_seen": "2026-03-14",
     "last_seen": "2026-03-15",
     "count": 1,
@@ -158,7 +160,7 @@
   {
     "id": "W10-sierra-65mm-107gr-tmk-misnamed",
     "severity": "warning",
-    "summary": "Sierra 6.5mm 107gr TMK (id=adb2ba7f) misnamed as '6MM' in DB — actually 6.5mm (.264). Diameter and BCs correct, only display name wrong.",
+    "summary": "Sierra 6.5mm 107gr TMK (id=adb2ba7f) misnamed as '6MM' in DB \u2014 actually 6.5mm (.264). Diameter and BCs correct, only display name wrong.",
     "first_seen": "2026-03-15",
     "last_seen": "2026-03-15",
     "count": 1,
