@@ -165,5 +165,14 @@
     "last_seen": "2026-03-15",
     "count": 1,
     "status": "open"
+  },
+  {
+    "id": "C8-sako-gamehead-308-150gr-wrong-bc",
+    "severity": "critical",
+    "summary": "Sako Gamehead .308 150gr (id=6eabdcb4) has BC G1=0.322 but website shows 0.304. The 0.322 value was copied from the 30-06 150gr row in the same Sako product table.",
+    "first_seen": "2026-03-15",
+    "last_seen": "2026-03-15",
+    "count": 1,
+    "status": "open"
   }
 ]

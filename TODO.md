@@ -34,6 +34,7 @@ Lightweight tech debt and engineering improvement tracker. Agents and humans app
 - [ ] 5 Federal "Custom Rifle Ammo" placeholder cartridges — zero weight, zero MV, no barrel length. Useless records, delete via curation patch. (source: QA report, 2026-03-09)
 - [ ] Speer .264 140gr Impact (c22dc78f) wrong source_url — points to dead DeepCurl handgun page. Correct: speer.com/bullets/rifle-bullets/impact-bullet/19-TB264H1.html (source: QA report, 2026-03-09)
 - [ ] Hornady 8x57 JS 195gr SP Custom International — barrel=9.45" (from 24cm metric), MV=2568 (likely metric conversion). Third instance of Hornady International metric bug (see C5, C7). (source: QA report, 2026-03-09)
+- [ ] Sako Gamehead .308 150gr (6eabdcb4) wrong BC — G1=0.322 in DB, website shows 0.304. The 0.322 value was copied from the 30-06 150gr row. Fix via curation patch. (source: QA report, 2026-03-15)
 
 ## Pipeline Improvements
 
@@ -55,12 +56,7 @@ Lightweight tech debt and engineering improvement tracker. Agents and humans app
 
 ## Coverage Gaps (JBM Audit 2026-03-15)
 
-- [x] Winchester — 15 component rifle bullets added via curation patch (BC MAX, Power-Point, PSP, HP, FMJ). JBM's 185 count includes loaded-ammo-only designs; Winchester publishes no BCs. (source: agent, 2026-03-15)
-- [x] Swift — 20 bullets stored via pipeline (A-Frame, Scirocco II, Break-Away Solids). Manufacturer + product-line aliases added. (source: agent, 2026-03-15)
-- [x] Berger key competition gaps — 7 high-priority VLD bullets added (.224 70/75/82/90gr, .308 190/210gr) with G1+G7 BCs from bergerbullets.com. Remaining 46 gaps are discontinued/legacy variants not on current site. (source: agent, 2026-03-15)
 - [ ] Scrape JBM BC values as supplementary BulletBCSource — 3,520 entries with BCs, 261 Litz-measured (gold standard). Could fill 66 Drift bullets missing BCs. (source: JBM coverage audit, 2026-03-15)
-- [x] Sako — 74 bullets added via curation patch from sako.global ammunition pages (Gamehead, Gamehead Pro, Hammerhead, Powerhead Blade, Speedhead, TRG Precision). All with G1 BCs. (source: agent, 2026-03-15)
-- [x] Norma — 45 bullets added via curation patch from JSON-LD structured data (Bondstrike, GTX, Diamond Line, Oryx, Tipstrike, Vulkan, Ecostrike). Pipeline failed due to 2.3MB SPA pages exceeding 200K token limit. (source: agent, 2026-03-15)
 
 ## Documentation
 
