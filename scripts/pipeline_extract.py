@@ -36,6 +36,7 @@ from drift.pipeline.extraction.providers import (
     LLMRateLimitError,
     create_provider,
 )
+from drift.pipeline.extraction.schemas import SCHEMA_VERSIONS
 from drift.pipeline.utils import url_hash
 
 logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
@@ -88,7 +89,7 @@ def _load_pending_items(  # noqa: C901
     for reduced_json_path in reduced_files:
         uhash = reduced_json_path.stem
 
-        # Check cache — re-extract if previous run returned 0 entities
+        # Check cache — re-extract if previous run returned 0 entities or schema is stale
         extracted_cache = EXTRACTED_DIR / f"{uhash}.json"
         if extracted_cache.exists() and not reextract:
             try:
@@ -96,7 +97,20 @@ def _load_pending_items(  # noqa: C901
                 if cached.get("entity_count", 0) == 0:
                     logger.info("Re-extracting %s (previous run returned 0 entities)", uhash)
                 else:
-                    continue
+                    # Check schema version — re-extract if stale
+                    cached_entity_type = cached.get("entity_type")
+                    cached_version = cached.get("schema_version", 1)
+                    current_version = SCHEMA_VERSIONS.get(cached_entity_type, 1)
+                    if cached_version < current_version:
+                        logger.info(
+                            "Re-extracting %s (schema v%d → v%d for %s)",
+                            uhash,
+                            cached_version,
+                            current_version,
+                            cached_entity_type,
+                        )
+                    else:
+                        continue
             except json.JSONDecodeError:
                 logger.warning("Corrupt cache file %s — re-extracting", extracted_cache)
                 # Fall through to re-extract
@@ -141,6 +155,7 @@ def _save_extraction(uhash: str, url: str, entity_type: str, result, flagged_ite
         "url": url,
         "url_hash": uhash,
         "entity_type": entity_type,
+        "schema_version": SCHEMA_VERSIONS.get(entity_type, 1),
         "model": result.model,
         "usage": result.usage,
         "entity_count": len(result.entities),

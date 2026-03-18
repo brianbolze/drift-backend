@@ -1,0 +1,1395 @@
+patch:
+  id: 013_cartridge_bc_values
+  author: agent
+  date: '2026-03-18'
+  description: Add BC G1/G7 values to cartridges from manufacturer product pages (152 Hornady, 113 Federal)
+operations:
+- action: update_cartridge
+  manufacturer: Federal
+  name: 250th Anniversary USA Rifle, 30-06 Springfield, 150 Grain, Full Metal Jacket, 2740 fps
+  set:
+    bc_g1: 0.41
+- action: update_cartridge
+  manufacturer: Federal
+  name: American Eagle Rifle Suppressor, 300 Blackout, 220 Grain, Open Tip Match, 1000 fps
+  set:
+    bc_g1: 0.65
+- action: update_cartridge
+  manufacturer: Federal
+  name: American Eagle Rifle, 223 Rem, 55 Grain, Full Metal Jacket Boat-Tail, 3240 fps
+  set:
+    bc_g1: 0.269
+- action: update_cartridge
+  manufacturer: Federal
+  name: American Eagle Rifle, 223 Rem, 62 Grain, Full Metal Jacket Boat-Tail, 3020 fps
+  set:
+    bc_g1: 0.307
+- action: update_cartridge
+  manufacturer: Federal
+  name: American Eagle Rifle, 6.5 Creedmoor, 120 Grain, Open Tip Match, 2900 fps
+  set:
+    bc_g1: 0.421
+- action: update_cartridge
+  manufacturer: Federal
+  name: American Eagle Rifle, 6.5 Grendel, 120 Grain, Open Tip Match, 2610 fps
+  set:
+    bc_g1: 0.421
+- action: update_cartridge
+  manufacturer: Federal
+  name: American Eagle Rifle, 7.62x39, 124 Grain, Full Metal Jacket, 2350 fps
+  set:
+    bc_g1: 0.298
+- action: update_cartridge
+  manufacturer: Federal
+  name: Barnes LRX, 7mm Backcountry, 168 Grain, Barnes LRX, 3150 fps
+  set:
+    bc_g1: 0.513
+    bc_g7: 0.257
+- action: update_cartridge
+  manufacturer: Federal
+  name: Barnes TSX, 30-30 Win, 150 Grain, Barnes Triple-Shock X Bullet (TSX), 2220 fps
+  set:
+    bc_g1: 0.184
+- action: update_cartridge
+  manufacturer: Federal
+  name: Barnes TSX, 308 Win, 150 Grain, Barnes Triple-Shock X Bullet (TSX), 2820 fps
+  set:
+    bc_g1: 0.369
+- action: update_cartridge
+  manufacturer: Federal
+  name: Barnes TSX, 7mm Rem Mag, 160 Grain, Barnes Triple-Shock X Bullet (TSX), 2940 fps
+  set:
+    bc_g1: 0.392
+- action: update_cartridge
+  manufacturer: Federal
+  name: Barnes TSX, 7mm-08 Rem, 140 Grain, Barnes Triple-Shock X Bullet (TSX), 2820 fps
+  set:
+    bc_g1: 0.394
+- action: update_cartridge
+  manufacturer: Federal
+  name: ELD-X, 270 Win, 145 Grain, ELD-X, 2890 fps
+  set:
+    bc_g1: 0.536
+- action: update_cartridge
+  manufacturer: Federal
+  name: ELD-X, 30-06 Springfield, 178 Grain, ELD-X, 2750 fps
+  set:
+    bc_g1: 0.552
+- action: update_cartridge
+  manufacturer: Federal
+  name: ELD-X, 300 PRC, 212 Grain, ELD-X, 2860 fps
+  set:
+    bc_g1: 0.663
+- action: update_cartridge
+  manufacturer: Federal
+  name: ELD-X, 300 WSM, 200 Grain, ELD-X, 2820 fps
+  set:
+    bc_g1: 0.597
+- action: update_cartridge
+  manufacturer: Federal
+  name: ELD-X, 308 Win, 178 Grain, ELD-X, 2610 fps
+  set:
+    bc_g1: 0.552
+- action: update_cartridge
+  manufacturer: Federal
+  name: ELD-X, 6.5 Creedmoor, 143 Grain, ELD-X, 2700 fps
+  set:
+    bc_g1: 0.625
+- action: update_cartridge
+  manufacturer: Federal
+  name: ELD-X, 6.5 PRC, 143 Grain, ELD-X, 2900 fps
+  set:
+    bc_g1: 0.625
+- action: update_cartridge
+  manufacturer: Federal
+  name: ELD-X, 7MM PRC, 175 Grain, ELD-X, 3000 fps
+  set:
+    bc_g1: 0.689
+- action: update_cartridge
+  manufacturer: Federal
+  name: Elite Hunter, 7mm Backcountry, 195 Grain, Berger Elite Hunter, 3000 fps
+  set:
+    bc_g1: 0.755
+    bc_g7: 0.387
+- action: update_cartridge
+  manufacturer: Federal
+  name: Federal x Henry Cattleman Edition, 30-30 Win, 150 Grain, Bonded Soft Point, 2390 fps
+  set:
+    bc_g1: 0.268
+- action: update_cartridge
+  manufacturer: Federal
+  name: Fusion MSR, 223 Rem, 62 Grain, Fusion Soft Point, 2750 fps
+  set:
+    bc_g1: 0.31
+- action: update_cartridge
+  manufacturer: Federal
+  name: Fusion MSR, 224 Valkyrie, 90 Grain, Fusion Soft Point, 2700 fps
+  set:
+    bc_g1: 0.424
+- action: update_cartridge
+  manufacturer: Federal
+  name: Fusion MSR, 300 Blackout, 150 Grain, Fusion Soft Point, 1900 fps
+  set:
+    bc_g1: 0.33
+- action: update_cartridge
+  manufacturer: Federal
+  name: Fusion Rifle, 270 WSM, 150 Grain, Fusion Soft Point, 3060 fps
+  set:
+    bc_g1: 0.499
+- action: update_cartridge
+  manufacturer: Federal
+  name: Fusion Rifle, 270 Win, 150 Grain, Fusion Soft Point, 2850 fps
+  set:
+    bc_g1: 0.471
+- action: update_cartridge
+  manufacturer: Federal
+  name: Fusion Rifle, 280 Rem, 140 Grain, Fusion Soft Point, 2990 fps
+  set:
+    bc_g1: 0.485
+- action: update_cartridge
+  manufacturer: Federal
+  name: Fusion Rifle, 300 WSM, 180 Grain, Fusion Soft Point, 2950 fps
+  set:
+    bc_g1: 0.484
+- action: update_cartridge
+  manufacturer: Federal
+  name: Fusion Rifle, 300 Win Mag, 180 Grain, Fusion Soft Point, 2960 fps
+  set:
+    bc_g1: 0.485
+- action: update_cartridge
+  manufacturer: Federal
+  name: Fusion Rifle, 308 Win, 150 Grain, Fusion Soft Point, 2820 fps
+  set:
+    bc_g1: 0.414
+- action: update_cartridge
+  manufacturer: Federal
+  name: Fusion Rifle, 7mm-08 Rem, 140 Grain, Fusion Soft Point, 2850 fps
+  set:
+    bc_g1: 0.39
+- action: update_cartridge
+  manufacturer: Federal
+  name: Fusion Tipped Rifle, 30-06 Springfield, 180 Grain, Fusion Tipped, 2725 fps
+  set:
+    bc_g1: 0.501
+- action: update_cartridge
+  manufacturer: Federal
+  name: Fusion Tipped Rifle, 308 Win, 180 Grain, Fusion Tipped, 2600 fps
+  set:
+    bc_g1: 0.501
+- action: update_cartridge
+  manufacturer: Federal
+  name: Fusion Tipped Rifle, 6.5 Creedmoor, 140 Grain, Fusion Tipped, 2715 fps
+  set:
+    bc_g1: 0.529
+- action: update_cartridge
+  manufacturer: Federal
+  name: Fusion Tipped Rifle, 6.5 PRC, 140 Grain, Fusion Tipped, 2975 fps
+  set:
+    bc_g1: 0.529
+- action: update_cartridge
+  manufacturer: Federal
+  name: Gold Medal Berger, 223 Rem, 73 Grain, Berger BT Target, 2800 fps
+  set:
+    bc_g1: 0.348
+    bc_g7: 0.178
+- action: update_cartridge
+  manufacturer: Federal
+  name: Gold Medal Berger, 224 Valkyrie, 80.5 Grain, Berger BT Target, 2925 fps
+  set:
+    bc_g1: 0.441
+    bc_g7: 0.226
+- action: update_cartridge
+  manufacturer: Federal
+  name: Gold Medal Berger, 308 Win, 185 Grain, Berger Jugernaught OTM, 2600 fps
+  set:
+    bc_g1: 0.552
+    bc_g7: 0.283
+- action: update_cartridge
+  manufacturer: Federal
+  name: Gold Medal Berger, 6.5 Creedmoor, 130 Grain, Berger AR Hybrid OTM, 2875 fps
+  set:
+    bc_g1: 0.56
+    bc_g7: 0.287
+- action: update_cartridge
+  manufacturer: Federal
+  name: Gold Medal CenterStrike, 223 Rem, 77 Grain, Centerstrike Open Tipped Match, 2720 fps
+  set:
+    bc_g1: 0.356
+- action: update_cartridge
+  manufacturer: Federal
+  name: Gold Medal Sierra MatchKing, 223 Rem, 69 Grain, Sierra Matchking Boat-Tail Hollow Point, 2950 fps
+  set:
+    bc_g1: 0.301
+    bc_g7: 0.165
+- action: update_cartridge
+  manufacturer: Federal
+  name: Gold Medal Sierra MatchKing, 223 Rem, 77 Grain, Sierra Matchking Boat-Tail Hollow Point, 2720 fps
+  set:
+    bc_g1: 0.372
+    bc_g7: 0.188
+- action: update_cartridge
+  manufacturer: Federal
+  name: Gold Medal Sierra MatchKing, 224 Valkyrie, 90 Grain, Sierra Matchking Boat-Tail Hollow Point, 2700 fps
+  set:
+    bc_g1: 0.563
+    bc_g7: 0.274
+- action: update_cartridge
+  manufacturer: Federal
+  name: Gold Medal Sierra MatchKing, 30-06 Springfield, 168 Grain, Sierra Matchking Boat-Tail Hollow Point, 2700 fps
+  set:
+    bc_g1: 0.463
+    bc_g7: 0.224
+- action: update_cartridge
+  manufacturer: Federal
+  name: Gold Medal Sierra MatchKing, 300 Win Mag, 190 Grain, Sierra Matchking Boat-Tail Hollow Point, 2900 fps
+  set:
+    bc_g1: 0.533
+    bc_g7: 0.275
+- action: update_cartridge
+  manufacturer: Federal
+  name: Gold Medal Sierra MatchKing, 308 Win, 168 Grain, Sierra Matchking Boat-Tail Hollow Point, 2650 fps
+  set:
+    bc_g1: 0.462
+    bc_g7: 0.224
+- action: update_cartridge
+  manufacturer: Federal
+  name: Gold Medal Sierra MatchKing, 338 Lapua Mag, 250 Grain, Sierra Matchking Boat-Tail Hollow Point, 2950 fps
+  set:
+    bc_g1: 0.587
+    bc_g7: 0.318
+- action: update_cartridge
+  manufacturer: Federal
+  name: Gold Medal Sierra MatchKing, 338 Lapua Mag, 300 Grain, Sierra Matchking Boat-Tail Hollow Point, 2580 fps
+  set:
+    bc_g1: 0.768
+    bc_g7: 0.387
+- action: update_cartridge
+  manufacturer: Federal
+  name: Gold Medal Sierra MatchKing, 6.5 Creedmoor, 140 Grain, Sierra Matchking Boat-Tail Hollow Point, 2675 fps
+  set:
+    bc_g1: 0.535
+    bc_g7: 0.261
+- action: update_cartridge
+  manufacturer: Federal
+  name: Gold Medal Sierra MatchKing, 6mm Creedmoor, 107 Grain, Sierra Matchking Boat-Tail Hollow Point, 3000 fps
+  set:
+    bc_g1: 0.547
+    bc_g7: 0.271
+- action: update_cartridge
+  manufacturer: Federal
+  name: Gold Medal Sierra MatchKing, 7.62x51mm NATO, 175 Grain, Sierra Matchking Boat-Tail Hollow Point, 2600 fps
+  set:
+    bc_g1: 0.505
+    bc_g7: 0.25
+- action: update_cartridge
+  manufacturer: Federal
+  name: Henry 250th Anniversary, 45-70 Government, 300 Grain, Hollow Point, 1850 fps
+  set:
+    bc_g1: 0.289
+- action: update_cartridge
+  manufacturer: Federal
+  name: Nosler Partition, 243 Win, 100 Grain, Nosler Partition, 2850 fps
+  set:
+    bc_g1: 0.384
+- action: update_cartridge
+  manufacturer: Federal
+  name: Nosler Partition, 30-30 Win, 170 Grain, Nosler Partition, 2200 fps
+  set:
+    bc_g1: 0.254
+- action: update_cartridge
+  manufacturer: Federal
+  name: Power-Shok Copper Rifle, 243 Win, 85 Grain, Copper HP, 3200 fps
+  set:
+    bc_g1: 0.233
+- action: update_cartridge
+  manufacturer: Federal
+  name: Power-Shok Copper Rifle, 270 Win, 130 Grain, Copper HP, 3060 fps
+  set:
+    bc_g1: 0.287
+- action: update_cartridge
+  manufacturer: Federal
+  name: Power-Shok Copper Rifle, 300 WSM, 180 Grain, Copper HP, 2850 fps
+  set:
+    bc_g1: 0.33
+- action: update_cartridge
+  manufacturer: Federal
+  name: Power-Shok Copper Rifle, 300 Win Mag, 180 Grain, Copper HP, 2850 fps
+  set:
+    bc_g1: 0.33
+- action: update_cartridge
+  manufacturer: Federal
+  name: Power-Shok Copper Rifle, 308 Win, 150 Grain, Copper HP, 2820 fps
+  set:
+    bc_g1: 0.278
+- action: update_cartridge
+  manufacturer: Federal
+  name: Power-Shok Rifle, 22-250 Rem, 55 Grain, Jacketed Soft Point, 3650 fps
+  set:
+    bc_g1: 0.208
+- action: update_cartridge
+  manufacturer: Federal
+  name: Power-Shok Rifle, 222 Rem, 50 Grain, Jacketed Soft Point, 3140 fps
+  set:
+    bc_g1: 0.184
+- action: update_cartridge
+  manufacturer: Federal
+  name: Power-Shok Rifle, 223 Rem, 55 Grain, Jacketed Soft Point, 3240 fps
+  set:
+    bc_g1: 0.222
+- action: update_cartridge
+  manufacturer: Federal
+  name: Power-Shok Rifle, 243 Win, 80 Grain, Jacketed Soft Point, 3330 fps
+  set:
+    bc_g1: 0.365
+- action: update_cartridge
+  manufacturer: Federal
+  name: Power-Shok Rifle, 30 Carbine, 110 Grain, Jacketed Soft Point, 1990 fps
+  set:
+    bc_g1: 0.165
+- action: update_cartridge
+  manufacturer: Federal
+  name: Power-Shok Rifle, 30-06 Springfield, 150 Grain, Jacketed Soft Point, 2910 fps
+  set:
+    bc_g1: 0.313
+- action: update_cartridge
+  manufacturer: Federal
+  name: Power-Shok Rifle, 300 Savage, 150 Grain, Jacketed Soft Point, 2630 fps
+  set:
+    bc_g1: 0.313
+- action: update_cartridge
+  manufacturer: Federal
+  name: Power-Shok Rifle, 300 Win Mag, 150 Grain, Jacketed Soft Point, 3150 fps
+  set:
+    bc_g1: 0.389
+- action: update_cartridge
+  manufacturer: Federal
+  name: Power-Shok Rifle, 303 British, 150 Grain, Jacketed Soft Point, 2690 fps
+  set:
+    bc_g1: 0.356
+- action: update_cartridge
+  manufacturer: Federal
+  name: Power-Shok Rifle, 375 H&H Magnum, 270 Grain, Jacketed Soft Point, 2690 fps
+  set:
+    bc_g1: 0.323
+- action: update_cartridge
+  manufacturer: Federal
+  name: Power-Shok Rifle, 6.5 Creedmoor, 140 Grain, Jacketed Soft Point, 2725 fps
+  set:
+    bc_g1: 0.439
+- action: update_cartridge
+  manufacturer: Federal
+  name: Safari Swift A-Frame, 416 Rigby, 400 Grain, Swift A-Frame, 2350 fps
+  set:
+    bc_g1: 0.367
+- action: update_cartridge
+  manufacturer: Federal
+  name: Safari Trophy Bonded Sledgehammer Solid, 375 H&H Magnum, 300 Grain, Trophy Bonded Sledgehammer Solid, 2440 fps
+  set:
+    bc_g1: 0.253
+- action: update_cartridge
+  manufacturer: Federal
+  name: Safari Trophy Bonded Sledgehammer Solid, 416 Rem Magnum, 400 Grain, Trophy Bonded Sledgehammer Solid, 2400 fps
+  set:
+    bc_g1: 0.273
+- action: update_cartridge
+  manufacturer: Federal
+  name: Safari Trophy Bonded Sledgehammer Solid, 416 Rigby, 400 Grain, Trophy Bonded Sledgehammer Solid, 2370 fps
+  set:
+    bc_g1: 0.273
+- action: update_cartridge
+  manufacturer: Federal
+  name: Safari Trophy Bonded Sledgehammer Solid, 458 Lott, 500 Grain, Trophy Bonded Sledgehammer Solid, 2300 fps
+  set:
+    bc_g1: 0.328
+- action: update_cartridge
+  manufacturer: Federal
+  name: Safari Trophy Bonded Sledgehammer Solid, 458 Win Magnum, 500 Grain, Trophy Bonded Sledgehammer Solid, 1950 fps
+  set:
+    bc_g1: 0.328
+- action: update_cartridge
+  manufacturer: Federal
+  name: Swift Scirocco II, 270 Win, 130 Grain, Swift Scirocco, 3050 fps
+  set:
+    bc_g1: 0.45
+- action: update_cartridge
+  manufacturer: Federal
+  name: Swift Scirocco II, 7mm Rem Mag, 150 Grain, Swift Scirocco, 3050 fps
+  set:
+    bc_g1: 0.515
+- action: update_cartridge
+  manufacturer: Federal
+  name: Terminal Ascent, 270 WSM, 136 Grain, Terminal Ascent, 3240 fps
+  set:
+    bc_g1: 0.493
+    bc_g7: 0.247
+- action: update_cartridge
+  manufacturer: Federal
+  name: Terminal Ascent, 270 Win, 136 Grain, Terminal Ascent, 3000 fps
+  set:
+    bc_g1: 0.493
+    bc_g7: 0.247
+- action: update_cartridge
+  manufacturer: Federal
+  name: Terminal Ascent, 28 Nosler, 155 Grain, Terminal Ascent, 3200 fps
+  set:
+    bc_g1: 0.586
+    bc_g7: 0.3
+- action: update_cartridge
+  manufacturer: Federal
+  name: Terminal Ascent, 280 Ackley Improved, 155 Grain, Terminal Ascent, 2930 fps
+  set:
+    bc_g1: 0.586
+    bc_g7: 0.3
+- action: update_cartridge
+  manufacturer: Federal
+  name: Terminal Ascent, 30-06 Springfield, 175 Grain, Terminal Ascent, 2730 fps
+  set:
+    bc_g1: 0.52
+    bc_g7: 0.258
+- action: update_cartridge
+  manufacturer: Federal
+  name: Terminal Ascent, 300 WSM, 200 Grain, Terminal Ascent, 2810 fps
+  set:
+    bc_g1: 0.608
+    bc_g7: 0.304
+- action: update_cartridge
+  manufacturer: Federal
+  name: Terminal Ascent, 300 Win Mag, 175 Grain, Terminal Ascent, 3030 fps
+  set:
+    bc_g1: 0.52
+    bc_g7: 0.258
+- action: update_cartridge
+  manufacturer: Federal
+  name: Terminal Ascent, 300 Win Mag, 200 Grain, Terminal Ascent, 2810 fps
+  set:
+    bc_g1: 0.608
+    bc_g7: 0.304
+- action: update_cartridge
+  manufacturer: Federal
+  name: Terminal Ascent, 308 Win, 175 Grain, Terminal Ascent, 2600 fps
+  set:
+    bc_g1: 0.52
+    bc_g7: 0.258
+- action: update_cartridge
+  manufacturer: Federal
+  name: Terminal Ascent, 6.5 Creedmoor, 130 Grain, Terminal Ascent, 2800 fps
+  set:
+    bc_g1: 0.532
+    bc_g7: 0.263
+- action: update_cartridge
+  manufacturer: Federal
+  name: Terminal Ascent, 6.5 PRC, 130 Grain, Terminal Ascent, 3000 fps
+  set:
+    bc_g1: 0.532
+- action: update_cartridge
+  manufacturer: Federal
+  name: Terminal Ascent, 7MM PRC, 155 Grain, Terminal Ascent, 3100 fps
+  set:
+    bc_g1: 0.586
+- action: update_cartridge
+  manufacturer: Federal
+  name: Terminal Ascent, 7MM PRC, 170 Grain, Terminal Ascent, 2950 fps
+  set:
+    bc_g1: 0.646
+- action: update_cartridge
+  manufacturer: Federal
+  name: Terminal Ascent, 7mm Backcountry, 155 Grain, Terminal Ascent, 3300 fps
+  set:
+    bc_g1: 0.586
+    bc_g7: 0.3
+- action: update_cartridge
+  manufacturer: Federal
+  name: Terminal Ascent, 7mm Backcountry, 170 Grain, Terminal Ascent, 3150 fps
+  set:
+    bc_g1: 0.646
+- action: update_cartridge
+  manufacturer: Federal
+  name: Terminal Ascent, 7mm Rem Mag, 155 Grain, Terminal Ascent, 3000 fps
+  set:
+    bc_g1: 0.586
+    bc_g7: 0.3
+- action: update_cartridge
+  manufacturer: Federal
+  name: Trophy Bonded Tip, 270 Win, 130 Grain, Trophy Bonded Tip, 3060 fps
+  set:
+    bc_g1: 0.44
+- action: update_cartridge
+  manufacturer: Federal
+  name: Trophy Bonded Tip, 270 Win, 140 Grain, Trophy Bonded Tip, 2950 fps
+  set:
+    bc_g1: 0.455
+- action: update_cartridge
+  manufacturer: Federal
+  name: Trophy Bonded Tip, 30-06 Springfield, 165 Grain, Trophy Bonded Tip, 2800 fps
+  set:
+    bc_g1: 0.45
+- action: update_cartridge
+  manufacturer: Federal
+  name: Trophy Bonded Tip, 300 WSM, 180 Grain, Trophy Bonded Tip, 2960 fps
+  set:
+    bc_g1: 0.5
+- action: update_cartridge
+  manufacturer: Federal
+  name: Trophy Bonded Tip, 300 Win Mag, 165 Grain, Trophy Bonded Tip, 3050 fps
+  set:
+    bc_g1: 0.45
+- action: update_cartridge
+  manufacturer: Federal
+  name: Trophy Bonded Tip, 308 Win, 165 Grain, Trophy Bonded Tip, 2700 fps
+  set:
+    bc_g1: 0.45
+- action: update_cartridge
+  manufacturer: Federal
+  name: Trophy Bonded Tip, 338 Federal, 200 Grain, Trophy Bonded Tip, 2630 fps
+  set:
+    bc_g1: 0.44
+- action: update_cartridge
+  manufacturer: Federal
+  name: Trophy Bonded Tip, 338 Win Mag, 200 Grain, Trophy Bonded Tip, 2930 fps
+  set:
+    bc_g1: 0.44
+- action: update_cartridge
+  manufacturer: Federal
+  name: Trophy Bonded Tip, 7mm Rem Mag, 160 Grain, Trophy Bonded Tip, 2900 fps
+  set:
+    bc_g1: 0.52
+- action: update_cartridge
+  manufacturer: Federal
+  name: Trophy Copper, 270 WSM, 130 Grain, Trophy Copper, 3280 fps
+  set:
+    bc_g1: 0.459
+- action: update_cartridge
+  manufacturer: Federal
+  name: Varmint & Predator, 17 Hornet, 20 Grain, Tipped Varmint, 3610 fps
+  set:
+    bc_g1: 0.185
+- action: update_cartridge
+  manufacturer: Federal
+  name: Varmint & Predator, 204 Ruger, 32 Grain, Hornady® V-Max®, 4100 fps
+  set:
+    bc_g1: 0.21
+- action: update_cartridge
+  manufacturer: Federal
+  name: Varmint & Predator, 223 Rem, 53 Grain, Hornady® V-Max®, 3400 fps
+  set:
+    bc_g1: 0.29
+- action: update_cartridge
+  manufacturer: Federal
+  name: Varmint & Predator, 224 Valkyrie, 60 Grain, Hornady® V-Max®, 3300 fps
+  set:
+    bc_g1: 0.265
+- action: update_cartridge
+  manufacturer: Federal
+  name: Varmint & Predator, 243 Win, 75 Grain, Hornady® V-Max®, 3425 fps
+  set:
+    bc_g1: 0.33
+- action: update_cartridge
+  manufacturer: Federal
+  name: Varmint & Predator, 243 Win, 75 Grain, Jacketed Hollow Point, 3375 fps
+  set:
+    bc_g1: 0.234
+- action: update_cartridge
+  manufacturer: Federal
+  name: Varmint & Predator, 308 Win, 130 Grain, Jacketed Hollow Point, 3050 fps
+  set:
+    bc_g1: 0.263
+- action: update_cartridge
+  manufacturer: Federal
+  name: Varmint & Predator, 6.5 Creedmoor, 95 Grain, Hornady® V-Max®, 3300 fps
+  set:
+    bc_g1: 0.365
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 17 HMR 17 gr V-MAX Varmint Express Rimfire
+  set:
+    bc_g1: 0.125
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 17 Hornet 20 gr V‑MAX® Superformance® Varmint
+  set:
+    bc_g1: 0.185
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 204 Ruger 24 gr NTX® Superformance® Varmint
+  set:
+    bc_g1: 0.17
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 204 Ruger 32 gr V-MAX Superformance
+  set:
+    bc_g1: 0.21
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 204 Ruger 40 gr V-MAX Superformance
+  set:
+    bc_g1: 0.275
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 22 Creedmoor 65 gr CX Superformance
+  set:
+    bc_g1: 0.392
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 22 Creedmoor 80 gr. ELD® Match
+  set:
+    bc_g1: 0.485
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 22 Hornet 35 gr V‑MAX®
+  set:
+    bc_g1: 0.109
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 22 WMR 30 gr V-MAX® Varmint Express® Rimfire
+  set:
+    bc_g1: 0.095
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 223 Rem 53 gr V-MAX Superformance
+  set:
+    bc_g1: 0.29
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 223 Rem 55 gr HP American Gunner®
+  set:
+    bc_g1: 0.254
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 223 Rem 75 gr BTHP Superformance® Match™
+  set:
+    bc_g1: 0.395
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 223 Remington 55 gr FMJ Frontier®
+  set:
+    bc_g1: 0.243
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 223 Remington 55 gr SP Custom™
+  set:
+    bc_g1: 0.235
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 223 Remington 62 gr FMJ Hornady BLACK®
+  set:
+    bc_g1: 0.274
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 223 Remington 68 gr BTHP Match™ Frontier®
+  set:
+    bc_g1: 0.355
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 224 Valkyrie 60 gr V-MAX® Varmint Express®
+  set:
+    bc_g1: 0.265
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 224 Valkyrie 75 gr BTHP Hornady BLACK®
+  set:
+    bc_g1: 0.395
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 224 Valkyrie 88 gr ELD® Match
+  set:
+    bc_g1: 0.545
+    bc_g7: 0.274
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 243 WSSM 75 gr V-MAX® Superformance® Varmint
+  set:
+    bc_g1: 0.33
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 243 Win 100 gr InterLock® BTSP American Whitetail®
+  set:
+    bc_g1: 0.405
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 243 Win 58 gr V-MAX Superformance
+  set:
+    bc_g1: 0.25
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 243 Win 75 gr V-MAX Superformance Varmint
+  set:
+    bc_g1: 0.33
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 243 Win 87 gr V‑MAX® Custom
+  set:
+    bc_g1: 0.4
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 243 Win 95 gr SST® American Whitetail® TIPPED
+  set:
+    bc_g1: 0.355
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 25 Creedmoor 112 gr CX® Superformance®
+  set:
+    bc_g1: 0.524
+    bc_g7: 0.264
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 25 Creedmoor 128 gr ELD-X Precision Hunter
+  set:
+    bc_g1: 0.633
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 25 Creedmoor 134 gr ELD® Match
+  set:
+    bc_g1: 0.645
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 25 Creedmoor 95 gr ELD-VT® V-MATCH®
+  set:
+    bc_g1: 0.453
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 25-06 Rem 117 gr InterLock® BTSP American Whitetail®
+  set:
+    bc_g1: 0.391
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 25-06 Rem 90 gr. CX® Superformance®
+  set:
+    bc_g1: 0.273
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 25-06 Remington 110 gr ELD-X® Precision Hunter®
+  set:
+    bc_g1: 0.465
+    bc_g7: 0.234
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 257 Wby Mag 90 gr. CX® Outfitter®
+  set:
+    bc_g1: 0.273
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 257 Wby Magnum 110 gr ELD-X Precision Hunter
+  set:
+    bc_g1: 0.465
+    bc_g7: 0.234
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 270 WSM 145 gr ELD-X Precision Hunter
+  set:
+    bc_g1: 0.536
+    bc_g7: 0.27
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 270 Win 130 gr. CX® Superformance®
+  set:
+    bc_g1: 0.403
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 270 Win 140 gr InterLock® SP American Whitetail®
+  set:
+    bc_g1: 0.486
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 270 Win 145 gr ELD-X Precision Hunter
+  set:
+    bc_g1: 0.536
+    bc_g7: 0.27
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 270 Winchester 130 gr. CX® Outfitter®
+  set:
+    bc_g1: 0.403
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 270 Winchester Short Magnum 130 gr. CX® Outfitter®
+  set:
+    bc_g1: 0.403
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 30-06 Sprg 165 gr ECX™ Hornady International™
+  set:
+    bc_g1: 0.251
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 30-06 Sprg 165 gr SST® American Whitetail® TIPPED
+  set:
+    bc_g1: 0.447
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 30-06 Springfield 150 gr CX Outfitter
+  set:
+    bc_g1: 0.418
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 30-06 Springfield 150 gr InterLock SP American Whitetail
+  set:
+    bc_g1: 0.338
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 30-06 Springfield 165 gr SST Superformance
+  set:
+    bc_g1: 0.447
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 30-06 Springfield 178 gr ELD-X Precision Hunter
+  set:
+    bc_g1: 0.552
+    bc_g7: 0.278
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 30-06 Springfield 180 gr SST® Superformance®
+  set:
+    bc_g1: 0.48
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 30-30 Win 140 gr MonoFlex LEVERevolution
+  set:
+    bc_g1: 0.295
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 30-30 Win 150 gr RN Interlock American Whitetail
+  set:
+    bc_g1: 0.186
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 30-30 Win 160 gr FTX LEVERevolution
+  set:
+    bc_g1: 0.33
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 300 Blackout 125 gr FMJ Frontier®
+  set:
+    bc_g1: 0.25
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 300 Blackout 125 gr HP American Gunner®
+  set:
+    bc_g1: 0.32
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 300 Blackout 135 gr FTX®
+  set:
+    bc_g1: 0.274
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 300 Blackout 190 gr Sub-X® Subsonic
+  set:
+    bc_g1: 0.437
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 300 PRC 165 gr SST® American Whitetail® TIPPED
+  set:
+    bc_g1: 0.447
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 300 PRC 174 gr ELD-VT® V-MATCH®
+  set:
+    bc_g1: 0.573
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 300 PRC 212 gr ELD-X Precision Hunter
+  set:
+    bc_g1: 0.663
+    bc_g7: 0.334
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 300 PRC 225 gr ELD® Match
+  set:
+    bc_g1: 0.777
+    bc_g7: 0.391
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 300 RCM 178 gr ELD-X Precision Hunter
+  set:
+    bc_g1: 0.552
+    bc_g7: 0.278
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 300 Remington Short Action Ultra Mag 178 gr ELD-X Precision Hunter
+  set:
+    bc_g1: 0.552
+    bc_g7: 0.278
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 300 WSM 200 gr ELD‑X® Precision Hunter®
+  set:
+    bc_g1: 0.597
+    bc_g7: 0.301
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 300 Weatherby Mag 200 gr ELD-X Precision Hunter
+  set:
+    bc_g1: 0.597
+    bc_g7: 0.301
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 300 Win Mag 150 gr InterLock® SP American Whitetail®
+  set:
+    bc_g1: 0.338
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 300 Win Mag 165 gr ECX™ Hornady International™
+  set:
+    bc_g1: 0.251
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 300 Win Mag 165 gr SST® American Whitetail® TIPPED
+  set:
+    bc_g1: 0.447
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 300 Win Mag 178 gr ELD-X Precision Hunter
+  set:
+    bc_g1: 0.552
+    bc_g7: 0.278
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 300 Win Mag 180 gr SST® Superformance®
+  set:
+    bc_g1: 0.48
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 300 Win Mag 195 gr ELD® Match
+  set:
+    bc_g1: 0.584
+    bc_g7: 0.292
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 300 Win Mag 200 gr ELD-X Precision Hunter
+  set:
+    bc_g1: 0.597
+    bc_g7: 0.301
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 303 British 150 gr InterLock® SP
+  set:
+    bc_g1: 0.361
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 308 Marlin Express 160 gr FTX® LEVERevolution®
+  set:
+    bc_g1: 0.395
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 308 Win 125 gr ECX™ Hornady International™
+  set:
+    bc_g1: 0.181
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 308 Win 150 gr CX™ Outfitter®
+  set:
+    bc_g1: 0.418
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 308 Win 150 gr InterLock® SP American Whitetail®
+  set:
+    bc_g1: 0.338
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 308 Win 155 gr BTHP American Gunner®
+  set:
+    bc_g1: 0.405
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 308 Win 155 gr Critical Defense®
+  set:
+    bc_g1: 0.313
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 308 Win 165 gr ECX™ Hornady International™
+  set:
+    bc_g1: 0.251
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 308 Win 165 gr. CX® Superformance®
+  set:
+    bc_g1: 0.44
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 308 Win 168 gr ELD® Match
+  set:
+    bc_g1: 0.523
+    bc_g7: 0.263
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 308 Win 220 gr RN Custom International™
+  set:
+    bc_g1: 0.3
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 30‑06 Springfield 220 gr RN Custom International™
+  set:
+    bc_g1: 0.22
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 338 Lapua 250 gr BTHP Match™
+  set:
+    bc_g1: 0.67
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 338 Lapua 285 gr ELD® Match
+  set:
+    bc_g1: 0.789
+    bc_g7: 0.394
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 338 Lapua Magnum 240 gr CX® Custom®
+  set:
+    bc_g1: 0.611
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 338 Lapua Magnum 270 gr ELD-X Precision Hunter
+  set:
+    bc_g1: 0.757
+    bc_g7: 0.381
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 338 Win Mag 200 gr SST® Superformance®
+  set:
+    bc_g1: 0.455
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 338 Win Mag 225 gr. CX® Outfitter®
+  set:
+    bc_g1: 0.49
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 338 Win Mag 230 gr ELD-X Precision Hunter
+  set:
+    bc_g1: 0.616
+    bc_g7: 0.31
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 35 Whelen 200 gr SP Superformance®
+  set:
+    bc_g1: 0.282
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 350 Legend 250 gr. Sub-X® Subsonic
+  set:
+    bc_g1: 0.265
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 375 H&H 270 gr SP-RP Superformance®
+  set:
+    bc_g1: 0.38
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 375 H&H 300 gr DGS®
+  set:
+    bc_g1: 0.275
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 375 H&H Mag 250 gr. CX® Outfitter®
+  set:
+    bc_g1: 0.403
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 375 H&H Magnum 300 gr DGX® Bonded
+  set:
+    bc_g1: 0.275
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 375 Ruger 250 gr. CX® Outfitter®
+  set:
+    bc_g1: 0.403
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 375 Ruger 270 gr InterLock® SP‑RP
+  set:
+    bc_g1: 0.38
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 375 Ruger 300 gr DGX® Bonded
+  set:
+    bc_g1: 0.275
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 416 Rem Mag 400 GR DGS®
+  set:
+    bc_g1: 0.319
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 416 Rigby 400 gr DGX® Bonded
+  set:
+    bc_g1: 0.319
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 45-70 Government 325 gr FTX® LEVERevolution®
+  set:
+    bc_g1: 0.23
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 45-70 Government 410 gr Sub-X® Subsonic
+  set:
+    bc_g1: 0.285
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 450 Bushmaster 245 gr InterLock® American Whitetail®
+  set:
+    bc_g1: 0.165
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 450 Bushmaster 250 gr FTX® American Whitetail® TIPPED
+  set:
+    bc_g1: 0.21
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 450 Bushmaster 250 gr FTX® Hornady BLACK®
+  set:
+    bc_g1: 0.21
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 458 Lott 500 gr DGX® Bonded
+  set:
+    bc_g1: 0.295
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 458 Win Mag 500 gr DGX® Bonded SPF
+  set:
+    bc_g1: 0.295
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 45‑70 Government 250 gr MonoFlex® LEVERevolution®
+  set:
+    bc_g1: 0.175
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 5.56 NATO 55 gr FMJ (M193) Frontier®
+  set:
+    bc_g1: 0.243
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 5.56 NATO 62 gr FMJ Frontier®
+  set:
+    bc_g1: 0.274
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 5.56 NATO 75 gr BTHP Superformance® Match™
+  set:
+    bc_g1: 0.395
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 50 BMG 750 gr A‑MAX® Match™
+  set:
+    bc_g1: 1.05
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 6.5 Creedmoor 100 gr ELD‑VT™ V‑Match™
+  set:
+    bc_g1: 0.448
+    bc_g7: 0.226
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 6.5 Creedmoor 120 gr. CX® Outfitter®
+  set:
+    bc_g1: 0.428
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 6.5 Creedmoor 129 gr SST® American Whitetail® TIPPED
+  set:
+    bc_g1: 0.485
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 6.5 Creedmoor 140 gr BTHP American Gunner®
+  set:
+    bc_g1: 0.58
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 6.5 Creedmoor 140 gr SP Custom International™
+  set:
+    bc_g1: 0.445
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 6.5 Creedmoor 143 gr ELD-X Precision Hunter
+  set:
+    bc_g1: 0.623
+    bc_g7: 0.314
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 6.5 Creedmoor 147 gr ELD® Match
+  set:
+    bc_g1: 0.697
+    bc_g7: 0.351
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 6.5 Creedmoor 95 gr V-MAX Varmint Express
+  set:
+    bc_g1: 0.365
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 6.5 Grendel 100 gr ELD-VT V-Match
+  set:
+    bc_g1: 0.448
+    bc_g7: 0.266
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 6.5 Grendel 123 gr ELD® Match™ Hornady BLACK®
+  set:
+    bc_g1: 0.506
+    bc_g7: 0.255
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 6.5 Grendel 123 gr SST®
+  set:
+    bc_g1: 0.51
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 6.5 Grendel 90 gr CX® Custom
+  set:
+    bc_g1: 0.356
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 6.5 PRC 130 gr. CX® Outfitter®
+  set:
+    bc_g1: 0.489
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 6.5 PRC 143 gr ELD-X Precision Hunter
+  set:
+    bc_g1: 0.625
+    bc_g7: 0.315
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 6.5 PRC 147 gr ELD® Match
+  set:
+    bc_g1: 0.697
+    bc_g7: 0.351
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 6.5mm PRC 100 gr ELD-VT® V-MATCH®
+  set:
+    bc_g1: 0.448
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 6.8mm Rem SPC 100 gr. CX® Custom™
+  set:
+    bc_g1: 0.262
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 6mm ARC 103 gr ELD-X Precision Hunter
+  set:
+    bc_g1: 0.512
+    bc_g7: 0.258
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 6mm ARC 105 gr BTHP Hornady BLACK®
+  set:
+    bc_g1: 0.53
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 6mm ARC 108 gr ELD® Match
+  set:
+    bc_g1: 0.536
+    bc_g7: 0.27
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 6mm ARC 80 gr ELD‑VT™ V‑Match™
+  set:
+    bc_g1: 0.41
+    bc_g7: 0.206
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 6mm ARC 90 gr CX® Custom™
+  set:
+    bc_g1: 0.418
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 6mm Creedmoor 103 gr ELD-X Precision Hunter
+  set:
+    bc_g1: 0.512
+    bc_g7: 0.258
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 6mm Creedmoor 105 gr BTHP Hornady BLACK®
+  set:
+    bc_g1: 0.53
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 6mm Creedmoor 108 gr ELD® Match
+  set:
+    bc_g1: 0.536
+    bc_g7: 0.27
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 6mm Creedmoor 80 gr ELD-VT V-Match
+  set:
+    bc_g1: 0.41
+    bc_g7: 0.206
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 6mm Creedmoor 87 gr V-MAX
+  set:
+    bc_g1: 0.4
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 6mm Creedmoor 90 gr. CX® Superformance®
+  set:
+    bc_g1: 0.418
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 6mm GT 109 gr ELD® Match
+  set:
+    bc_g1: 0.557
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 6mm Rem 95 gr SST® Superformance®
+  set:
+    bc_g1: 0.355
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 7.62x39 123 gr FMJ Frontier®
+  set:
+    bc_g1: 0.266
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 7mm PRC 160 gr CX® Outfitter®
+  set:
+    bc_g1: 0.596
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 7mm PRC 175 gr ELD-X Precision Hunter
+  set:
+    bc_g1: 0.689
+    bc_g7: 0.347
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 7mm PRC 180 gr ELD® Match
+  set:
+    bc_g1: 0.796
+    bc_g7: 0.401
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 7mm Rem Mag 154 gr InterLock® SP American Whitetail®
+  set:
+    bc_g1: 0.433
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 7mm-08 Rem 139 gr. CX® Superformance®
+  set:
+    bc_g1: 0.429
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 7x57mm 150 gr ECX™ Hornady International™
+  set:
+    bc_g1: 0.287
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 8x57 JS (IS) 180 gr ECX™ Hornady International™
+  set:
+    bc_g1: 0.257
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 8x57 JS 195 gr SP Custom International™
+  set:
+    bc_g1: 0.41
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 9.3X62 286 gr InterLock® SP‑RP
+  set:
+    bc_g1: 0.4
+- action: update_cartridge
+  manufacturer: Hornady
+  name: 9.3x62 250 gr ECX™ Hornady International™
+  set:
+    bc_g1: 0.315

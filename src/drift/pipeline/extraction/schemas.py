@@ -12,6 +12,15 @@ from pydantic import BaseModel, ConfigDict, Field
 
 T = TypeVar("T")
 
+# Per-entity-type schema versions. Bump when extraction schema fields change
+# to trigger re-extraction of cached items for that entity type.
+# Existing cache files without a schema_version are treated as version 0.
+SCHEMA_VERSIONS: dict[str, int] = {
+    "bullet": 1,
+    "cartridge": 2,  # v2: added bc_g1, bc_g7
+    "rifle": 1,
+}
+
 
 class Fields:
     """Field definitions for extraction schemas."""
