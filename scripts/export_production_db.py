@@ -1,10 +1,12 @@
 """Export a production-ready SQLite database for the iOS app.
 
 Copies drift.db → data/production/drift.db with the following transformations:
-  - Drops pipeline-only tables: alembic_version, bullet_bc_source
+  - Flattens bullet_product_line aliases into bullet.alt_names JSON
+  - Drops pipeline-only tables: alembic_version, bullet_bc_source, bullet_product_line
   - Drops pipeline-only columns: data_source, is_locked, extraction_confidence,
     last_verified_at, created_at, updated_at, bc_source_notes,
-    bullet_match_confidence, bullet_match_method
+    bullet_match_confidence, bullet_match_method, product_line_id
+  - Removes orphaned entity_alias rows (bullet_product_line references)
   - Computes display_name for bullets and cartridges
   - Removes zero-MV cartridges (no trajectory data)
   - Removes weight-mismatched cartridges (incorrect bullet linkage)
@@ -198,11 +200,13 @@ def _flatten_product_line_aliases(conn: sqlite3.Connection) -> None:  # noqa: C9
         existing = []
         if existing_alt_names_json:
             try:
-                existing = _json.loads(existing_alt_names_json)
-                if not isinstance(existing, list):
-                    existing = []
-            except (ValueError, TypeError):
-                existing = []
+                parsed = _json.loads(existing_alt_names_json)
+                if isinstance(parsed, list):
+                    existing = parsed
+                else:
+                    print(f"  WARN: bullet {bullet_id} alt_names is {type(parsed).__name__}, not list — resetting")
+            except (ValueError, TypeError) as e:
+                print(f"  WARN: bullet {bullet_id} alt_names malformed: {e} — resetting")
 
         # Merge, deduped (case-insensitive)
         existing_lower = {s.lower() for s in existing if isinstance(s, str)}
@@ -219,7 +223,9 @@ def _flatten_product_line_aliases(conn: sqlite3.Connection) -> None:  # noqa: C9
             )
             updated += 1
 
-    print(f"  Flattened product line aliases into {updated} bullets' alt_names")
+    # Clean up entity_alias rows that reference bullet_product_line (table will be dropped)
+    cursor = conn.execute("DELETE FROM entity_alias WHERE entity_type = 'bullet_product_line'")
+    print(f"  Flattened product line aliases into {updated} bullets' alt_names ({cursor.rowcount} alias rows removed)")
 
 
 def main() -> None:

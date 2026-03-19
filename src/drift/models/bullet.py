@@ -39,11 +39,11 @@ class Bullet(TimestampMixin, Base):
     type_tags: Mapped[list | None] = mapped_column(JSON, nullable=True)
     used_for: Mapped[list | None] = mapped_column(JSON, nullable=True)
 
-    # Product family name (e.g. "ELD-X", "MatchKing", "TSX") — used for cartridge→bullet matching.
-    # Null for generic bullets without a named product line (plain soft points, FMJs, etc.)
+    # Product family — three related fields:
+    #   product_line      — human-readable string ("ELD-X"), used by display_name and extraction
+    #   product_line_id   — FK to bullet_product_line entity, used for alias lookup and structured matching
+    #   product_line_rel  — ORM relationship to BulletProductLine (navigational)
     product_line: Mapped[str | None] = mapped_column(String(100), nullable=True, index=True)
-
-    # FK to canonical product line entity (for structured matching and alias lookup)
     product_line_id: Mapped[str | None] = uuid_fk_nullable("bullet_product_line.id")
 
     # Cleaned display name for iOS app UI (computed at export time)
@@ -69,7 +69,7 @@ class Bullet(TimestampMixin, Base):
     manufacturer: Mapped["Manufacturer"] = relationship(back_populates="bullets")  # noqa: F821
     cartridges: Mapped[list["Cartridge"]] = relationship(back_populates="bullet")  # noqa: F821
     bc_sources: Mapped[list["BulletBCSource"]] = relationship(back_populates="bullet")
-    product_line_ref: Mapped["BulletProductLine | None"] = relationship(back_populates="bullets")  # noqa: F821
+    product_line_rel: Mapped["BulletProductLine | None"] = relationship(back_populates="bullets")  # noqa: F821
 
 
 class BulletBCSource(TimestampMixin, Base):

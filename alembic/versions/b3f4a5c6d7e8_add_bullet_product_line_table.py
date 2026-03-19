@@ -38,7 +38,12 @@ def upgrade() -> None:
         if_not_exists=True,
     )
 
-    # Add product_line_id FK to bullet
+    # Add product_line_id to bullet.
+    # Note: FK constraint omitted from migration because SQLite batch_alter_table
+    # raises "Constraint must have a name" when adding ForeignKey inline. The ORM
+    # model declares the FK via uuid_fk_nullable("bullet_product_line.id"), so
+    # referential integrity is enforced at the application layer. SQLite doesn't
+    # enforce FK constraints by default anyway (requires PRAGMA foreign_keys = ON).
     with op.batch_alter_table("bullet", schema=None) as batch_op:
         batch_op.add_column(
             sa.Column("product_line_id", sa.String(36), nullable=True),

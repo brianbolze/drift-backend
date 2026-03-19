@@ -59,15 +59,13 @@ def main() -> None:  # noqa: C901
         )
         logger.info("Found %d distinct (manufacturer, product_line) pairs", len(pairs))
 
-        # Index existing BPL rows to avoid dupes
-        existing = {(row.manufacturer_id, row.slug) for row in session.scalars(select(BulletProductLine))}
-
+        # Single pass: index existing BPL rows for both slug dedup and name lookup
         created = skipped = 0
-        bpl_lookup: dict[tuple[str, str], str] = {}  # (manufacturer_id, product_line) → bpl.id
+        existing: set[tuple[str, str]] = set()  # (manufacturer_id, slug)
+        bpl_lookup: dict[tuple[str, str], str] = {}  # (manufacturer_id, product_line_lower) → bpl.id
 
-        # Load any existing BPL rows into lookup
         for bpl in session.scalars(select(BulletProductLine)):
-            # Match by manufacturer_id + name (case-insensitive)
+            existing.add((bpl.manufacturer_id, bpl.slug))
             bpl_lookup[(bpl.manufacturer_id, bpl.name.lower())] = bpl.id
 
         for mfr_id, product_line in pairs:

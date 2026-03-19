@@ -20,7 +20,6 @@ from typing import Annotated, Literal, Union
 import yaml
 from pydantic import BaseModel, ConfigDict, Discriminator, Field, field_validator
 from sqlalchemy import func
-from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
 from drift.models import (
@@ -294,7 +293,8 @@ def _resolve_entity(session: Session, entity_type: str, name: str, *, manufactur
 
     1. Exact match on the model's name field (case-insensitive).
     2. Fallback: query EntityAlias table for (entity_type, alias) → entity_id.
-    3. For bullets: optionally filter by manufacturer_id for disambiguation.
+    3. For entities with manufacturer_id (bullet, bullet_product_line, cartridge, etc.):
+       optionally filter by manufacturer_id for disambiguation.
 
     Raises ValueError if not found.
     """
@@ -686,23 +686,33 @@ def _apply_add_entity_alias(session: Session, op: AddEntityAliasOp, stats: Apply
     manufacturer_id = _resolve_manufacturer(session, op.manufacturer) if op.manufacturer else None
     entity_id = _resolve_entity(session, op.entity_type, op.entity_name, manufacturer_id=manufacturer_id)
 
-    try:
-        session.add(
-            EntityAlias(
-                id=str(uuid.uuid4()),
-                entity_type=op.entity_type,
-                entity_id=entity_id,
-                alias=op.alias,
-                alias_type=op.alias_type,
-            )
+    # Idempotency check — avoids IntegrityError which would break the savepoint
+    existing = (
+        session.query(EntityAlias)
+        .filter(
+            EntityAlias.entity_type == op.entity_type,
+            EntityAlias.entity_id == entity_id,
+            EntityAlias.alias == op.alias,
         )
-        session.flush()
-        stats.created += 1
-        stats.details.append(f"  [{index}] CREATE alias: {op.entity_type} {op.entity_name!r} → {op.alias!r}")
-    except IntegrityError:
-        session.rollback()
+        .first()
+    )
+    if existing:
         stats.skipped += 1
         stats.details.append(f"  [{index}] SKIP alias: {op.alias!r} already exists for {op.entity_type}")
+        return
+
+    session.add(
+        EntityAlias(
+            id=str(uuid.uuid4()),
+            entity_type=op.entity_type,
+            entity_id=entity_id,
+            alias=op.alias,
+            alias_type=op.alias_type,
+        )
+    )
+    session.flush()
+    stats.created += 1
+    stats.details.append(f"  [{index}] CREATE alias: {op.entity_type} {op.entity_name!r} → {op.alias!r}")
 
 
 _HANDLERS = {

@@ -28,6 +28,6 @@ class BulletProductLine(TimestampMixin, Base):
 
     # Relationships
     manufacturer: Mapped["Manufacturer"] = relationship()
-    bullets: Mapped[list["Bullet"]] = relationship(back_populates="product_line_ref")
+    bullets: Mapped[list["Bullet"]] = relationship(back_populates="product_line_rel")
 
     __table_args__ = (UniqueConstraint("manufacturer_id", "slug", name="uq_bpl_manufacturer_slug"),)

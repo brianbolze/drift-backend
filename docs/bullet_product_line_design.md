@@ -1,6 +1,6 @@
 # Bullet Product Line as First-Class Entity
 
-**Status**: Phase 1-2 implemented, Phase 3 planned
+**Status**: Phase 1 implemented (schema, seed, aliases, export), Phase 2 planned (resolver integration)
 **Date**: 2026-03-18 (updated)
 **Authors**: Brian, Claude Agent
 **Supersedes**: `docs/bullet_matching_design.md` (partially implemented — Tier 2 product-line matching exists, but product_line is still a bare string)
@@ -155,14 +155,11 @@ UPDATE bullet SET alt_names = '["ELDM", "ELD-M"]'
 WHERE product_line_id = (SELECT id FROM bullet_product_line WHERE slug = 'eld-match');
 ```
 
-**The `bullet_product_line` table itself is NOT exported** — it's a backend-only entity. The iOS app sees:
+**The `bullet_product_line` table is NOT exported** — it's a backend-only entity. At export time, the script also deletes `entity_alias` rows with `entity_type = 'bullet_product_line'` to avoid orphaned references. The iOS app sees:
 - `bullet.alt_names` JSON with abbreviation strings (for search)
-- `entity_alias` table with bullet_product_line entries (queryable for advanced search)
 - No new tables or schema changes on the iOS side
 
-Actually, reconsider: we should **drop** `bullet_product_line` from the export (add to `PIPELINE_ONLY_TABLES` in export script). The iOS app doesn't need it — the aliases are baked into `alt_names`.
-
-Alternatively, we **do** export it as a lightweight lookup for the iOS app to group bullets by product line in the UI. This is a nice-to-have, not a requirement. Decision: export it. It's small (~137 rows) and useful for filtering/grouping.
+If we later need product-line grouping in the iOS UI, we can export the table then (~139 rows). For now, `alt_names` is sufficient.
 
 ### 3.6 Curation system changes
 
@@ -222,7 +219,7 @@ No new curation operation needed — `add_entity_alias` already handles it once 
 
 ### Q2: Export `bullet_product_line` table to iOS?
 
-**Recommendation: Yes.** It's 137 rows, adds useful grouping/filtering capability. Drop `created_at`/`updated_at` columns per standard export practice. The iOS app can show "ELD Match (12 bullets)" as a filter category.
+**Decision: No (for now).** The table is dropped at export time. Aliases are baked into `bullet.alt_names` which is sufficient for search. If the iOS app needs product-line grouping in the UI later (e.g., "ELD Match (12 bullets)" as a filter), we can revisit and export the table then.
 
 ### Q3: How to handle generics ("Soft Point", "FMJ", "HP")?
 
