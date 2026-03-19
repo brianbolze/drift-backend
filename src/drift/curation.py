@@ -59,6 +59,8 @@ _BULLET_UPDATE_FIELDS = frozenset(
         "is_lead_free",
         "product_line",
         "source_url",
+        "overall_popularity_rank",
+        "lr_popularity_rank",
     }
 )
 
@@ -73,6 +75,8 @@ _CARTRIDGE_UPDATE_FIELDS = frozenset(
         "product_line",
         "source_url",
         "sku",
+        "overall_popularity_rank",
+        "lr_popularity_rank",
     }
 )
 

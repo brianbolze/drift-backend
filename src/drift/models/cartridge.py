@@ -47,7 +47,8 @@ class Cartridge(TimestampMixin, Base):
     bullet_match_method: Mapped[str | None] = mapped_column(String(50), nullable=True)
 
     # Ranking
-    popularity_rank: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    overall_popularity_rank: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    lr_popularity_rank: Mapped[int | None] = mapped_column(Integer, nullable=True)
 
     # Provenance & curation
     source_url: Mapped[str | None] = mapped_column(String(500), nullable=True)

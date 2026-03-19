@@ -56,7 +56,8 @@ class Bullet(TimestampMixin, Base):
     is_lead_free: Mapped[bool] = mapped_column(default=False, server_default="0")
 
     # Ranking
-    popularity_rank: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    overall_popularity_rank: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    lr_popularity_rank: Mapped[int | None] = mapped_column(Integer, nullable=True)
 
     # Provenance & curation
     source_url: Mapped[str | None] = mapped_column(String(500), nullable=True)
