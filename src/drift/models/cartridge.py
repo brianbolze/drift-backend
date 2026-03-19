@@ -18,6 +18,7 @@ class Cartridge(TimestampMixin, Base):
     id: Mapped[str] = uuid_pk()
     manufacturer_id: Mapped[str] = uuid_fk("manufacturer.id")
     product_line: Mapped[str | None] = mapped_column(String(255), nullable=True)
+    display_name: Mapped[str | None] = mapped_column(String(255), nullable=True)
     name: Mapped[str] = mapped_column(String(500), index=True)
     alt_names: Mapped[list | None] = mapped_column(JSON, nullable=True)
     sku: Mapped[str | None] = mapped_column(String(100), nullable=True, index=True)

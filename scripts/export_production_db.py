@@ -5,6 +5,7 @@ Copies drift.db → data/production/drift.db with the following transformations:
   - Drops pipeline-only columns: data_source, is_locked, extraction_confidence,
     last_verified_at, created_at, updated_at, bc_source_notes,
     bullet_match_confidence, bullet_match_method
+  - Computes display_name for bullets and cartridges
   - Removes zero-MV cartridges (no trajectory data)
   - Removes weight-mismatched cartridges (incorrect bullet linkage)
   - Removes bogus-diameter bullets (0.223" Sierra Hornet)
@@ -22,6 +23,8 @@ import shutil
 import sqlite3
 import sys
 from pathlib import Path
+
+from drift.display_name import compute_bullet_display_name, compute_cartridge_display_name
 
 SOURCE_DB = Path("data/drift.db")
 
@@ -91,6 +94,46 @@ def rebuild_table_without_columns(conn: sqlite3.Connection, table: str, drop_col
     return len(all_cols) - len(keep_cols)
 
 
+def _populate_display_names(conn: sqlite3.Connection) -> None:
+    """Compute and populate display_name for all bullets and cartridges."""
+    # Ensure display_name column exists (idempotent)
+    for table in ("bullet", "cartridge"):
+        cols = get_table_columns(conn, table)
+        if "display_name" not in cols:
+            conn.execute(f"ALTER TABLE {table} ADD COLUMN display_name TEXT")
+
+    # -- Bullets --
+    rows = conn.execute("""
+        SELECT b.id, b.name, b.product_line, m.name
+        FROM bullet b
+        JOIN manufacturer m ON b.manufacturer_id = m.id
+    """).fetchall()
+
+    bullet_count = 0
+    for bullet_id, name, product_line, mfr_name in rows:
+        display_name = compute_bullet_display_name(name, product_line, mfr_name)
+        if display_name:
+            conn.execute("UPDATE bullet SET display_name = ? WHERE id = ?", (display_name, bullet_id))
+            bullet_count += 1
+    print(f"  Computed display_name for {bullet_count} bullets")
+
+    # -- Cartridges --
+    rows = conn.execute("""
+        SELECT c.id, c.name, c.product_line, b.product_line, m.name
+        FROM cartridge c
+        JOIN manufacturer m ON c.manufacturer_id = m.id
+        LEFT JOIN bullet b ON c.bullet_id = b.id
+    """).fetchall()
+
+    cart_count = 0
+    for cart_id, name, cart_pl, bullet_pl, mfr_name in rows:
+        display_name = compute_cartridge_display_name(name, cart_pl, bullet_pl, mfr_name)
+        if display_name:
+            conn.execute("UPDATE cartridge SET display_name = ? WHERE id = ?", (display_name, cart_id))
+            cart_count += 1
+    print(f"  Computed display_name for {cart_count} cartridges")
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description="Export production SQLite DB for iOS app")
     parser.add_argument("-o", "--output", default="data/production/drift.db", help="Output path")
@@ -134,6 +177,9 @@ def main() -> None:
     # Bogus-diameter bullet (Sierra .223 Hornet — should be .224)
     cursor = conn.execute("DELETE FROM bullet WHERE bullet_diameter_inches = 0.223")
     print(f"  Removed {cursor.rowcount} bogus-diameter bullets")
+
+    # ── Compute display_name ────────────────────────────────────────────────
+    _populate_display_names(conn)
 
     # ── Drop columns ───────────────────────────────────────────────────────
     total_cols_dropped = 0

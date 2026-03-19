@@ -42,6 +42,9 @@ class Bullet(TimestampMixin, Base):
     # Null for generic bullets without a named product line (plain soft points, FMJs, etc.)
     product_line: Mapped[str | None] = mapped_column(String(100), nullable=True, index=True)
 
+    # Cleaned display name for iOS app UI (computed at export time)
+    display_name: Mapped[str | None] = mapped_column(String(255), nullable=True)
+
     # Structured classification (nullable, V2 filtering)
     base_type: Mapped[str | None] = mapped_column(String(50), nullable=True)
     tip_type: Mapped[str | None] = mapped_column(String(50), nullable=True)
