@@ -20,9 +20,10 @@ Lightweight tech debt and engineering improvement tracker. Agents and humans app
 ## Data Quality
 
 - [ ] Populate cartridge.bc_g1, bc_g7, bullet_length_inches — columns added via migration but not yet extracted/populated from manufacturer pages (source: human, 2026-03-06) -- IN PROGRESS
-- [ ] 3 cartridge-bullet weight mismatches — .22 WMR 30gr→35gr + .308 155gr Critical Defense→160gr FTX + Federal 250th Anniversary 30-06 150gr→147gr FMJ. Need to determine whether cartridge or bullet record is wrong. (source: QA report, 2026-03-06, updated 2026-03-16)
+- [ ] 6 cartridge-bullet weight mismatches (non-placeholder) — .22 WMR 30→35gr + .308 155→160gr Critical Defense + Federal 250th 30-06 150→147gr + Winchester M1 Garand 30-06 150→147gr + Winchester 308 185→180gr + Winchester 7.62 NATO 149→147gr. (source: QA report, 2026-03-06, updated 2026-03-19)
 - [ ] 99 existing cartridges with wrong bullet_id — re-run pipeline-store-commit after ensuring correct bullets exist in DB (source: pipeline working notes)
-- [ ] 9 cartridges with zero velocity — all Hornady ECX/International pages that don't publish MV. Not fixable at extraction level. (source: QA report, 2026-03-06, updated 2026-03-16)
+- [ ] 104 cartridges with zero velocity — 10 Hornady ECX/International (unfixable at extraction), 43 Winchester + 33 Barnes + 13 Nosler from new ingestion batch (sites don't publish MV on product pages). Need curation patches with retailer-sourced MV data. (source: QA report, 2026-03-06, updated 2026-03-19)
+- [ ] Lapua G580 100gr bullet (id=8e35868b) has wrong diameter 0.264, should be 0.308 — pipeline confused "6,5 g" weight with 6.5mm caliber. Fix via curation patch. (source: QA report C9, 2026-03-19)
 - [ ] 4 MatchKing->Nosler HPBT false matches — Sierra MatchKing bullets missing at certain weights, causing cross-manufacturer false positives (source: pipeline working notes)
 - [ ] 18 rifle bullets (diam ≤ .375) missing all BC fields, excl CE/Nosler/Winchester — Sierra 4 (2026 new products, BCs not yet published), Federal 4, Lehigh 4, Lapua 3, Norma 1, Swift 1. None are match/LR-critical. (source: QA report, 2026-03-06, updated 2026-03-16)
 

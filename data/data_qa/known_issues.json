@@ -2,11 +2,12 @@
   {
     "id": "C1-cartridge-bullet-weight-mismatches",
     "severity": "critical",
-    "summary": "8 cartridge-bullet weight mismatches: 5 Federal Custom Rifle Ammo placeholders (W5) + .22 WMR 30gr\u219235gr + .308 155gr Critical Defense\u2192160gr FTX + Federal 250th Anniversary 30-06 150gr\u2192147gr FMJ",
+    "summary": "5 remaining cartridge-bullet weight mismatches: all Federal Custom Rifle Ammo placeholders (W5). 6 non-placeholder mismatches resolved via curation patch 018 — created missing bullets (30gr V-MAX, 155gr FTX, 185gr PP, 2x 150gr FMJ) and relinked cartridges.",
     "first_seen": "2026-03-06",
-    "last_seen": "2026-03-15",
-    "count": 8,
-    "status": "open"
+    "last_seen": "2026-03-19",
+    "count": 5,
+    "status": "open",
+    "notes": "Remaining 5 are Federal Custom Rifle Ammo placeholders with zero weight — tracked separately as W5."
   },
   {
     "id": "C2-lapua-g573-weight-error",
@@ -55,12 +56,13 @@
   {
     "id": "C6-sierra-tmk-22cal-data-errors",
     "severity": "critical",
-    "summary": "Sierra 22 CAL 60gr TMK: bad record (diam=0.220, id=f4facb6b) still exists alongside corrected record (diam=0.224, id=6bd41d2e). Bad record needs deletion.",
+    "summary": "Sierra 22 CAL 60gr TMK: bad record with diam=0.220 still exists (new id=04535564, old f4facb6b gone after pipeline re-run). Correct record (diam=0.224, id=6bd41d2e) also exists. Bad record has wrong diam, null BCs (should be G1=0.323/G7=0.151), and wrong source URL.",
     "first_seen": "2026-03-06",
-    "last_seen": "2026-03-15",
-    "count": 1,
-    "status": "open",
-    "notes": "Previously marked resolved on 2026-03-14 but bad 0.220 record confirmed still present on 2026-03-15"
+    "last_seen": "2026-03-19",
+    "count": 0,
+    "status": "resolved",
+    "resolved_date": "2026-03-19",
+    "resolution": "Bad record (id=04535564) deleted via curation patch 018. Good record (id=6bd41d2e, diam=0.224, G1=0.323, G7=0.151) remains."
   },
   {
     "id": "C7-hornady-308-220gr-intl-metric-barrel",
@@ -68,24 +70,27 @@
     "summary": "Hornady .308 220gr RN Custom International: barrel=9.45\" (from 24cm, should be 24\")",
     "first_seen": "2026-03-06",
     "last_seen": "2026-03-15",
-    "count": 1,
-    "status": "open"
+    "count": 0,
+    "status": "resolved",
+    "resolved_date": "2026-03-19",
+    "resolution": "Barrel now correctly shows 24.0\" \u2014 fixed during pipeline re-run"
   },
   {
     "id": "W1-hornady-zero-mv",
     "severity": "warning",
-    "summary": "14 cartridges with MV=0: 9 Hornady ECX/International + 5 Federal Custom Rifle Ammo placeholders",
+    "summary": "104 cartridges with MV=0: Winchester 43, Barnes 33, Nosler 13, Hornady 10 (ECX/International), Federal 5 (Custom Rifle Ammo placeholders)",
     "first_seen": "2026-03-06",
-    "last_seen": "2026-03-15",
-    "count": 14,
-    "status": "open"
+    "last_seen": "2026-03-19",
+    "count": 104,
+    "status": "open",
+    "notes": "90 new zero-MV from Barnes/Winchester/Nosler cartridge ingestion batch. Barnes and Winchester don't publish MV on product pages."
   },
   {
     "id": "W2-missing-bc-rifle-bullets",
     "severity": "warning",
-    "summary": "33 rifle bullets (diameter <= .375) missing all BC fields, excluding CE and Nosler. Winchester 15, Sierra 5, Federal 4, Lehigh 4, Lapua 3, Swift 1, Norma 1. Winchester increase from gap-fill session (Winchester does not publish component bullet BCs).",
+    "summary": "33 rifle bullets (diameter <= .375) missing all BC fields, excluding CE and Nosler. Winchester 15, Sierra 5, Federal 4, Lehigh 4, Lapua 3, Swift 1, Norma 1.",
     "first_seen": "2026-03-06",
-    "last_seen": "2026-03-15",
+    "last_seen": "2026-03-19",
     "count": 33,
     "status": "open"
   },
@@ -94,7 +99,7 @@
     "severity": "warning",
     "summary": ".204 Ruger: 24gr NTX at 4400fps and 32gr V-MAX at 4225fps exceed 4200fps threshold (plausible for lightweight .204 Ruger Superformance)",
     "first_seen": "2026-03-06",
-    "last_seen": "2026-03-15",
+    "last_seen": "2026-03-19",
     "count": 2,
     "status": "open"
   },
@@ -114,7 +119,7 @@
     "severity": "warning",
     "summary": "5 Federal Custom Rifle Ammo cartridges with zero weight and zero MV \u2014 placeholder records with no load data",
     "first_seen": "2026-03-09",
-    "last_seen": "2026-03-15",
+    "last_seen": "2026-03-19",
     "count": 5,
     "status": "open"
   },
@@ -126,34 +131,36 @@
     "last_seen": "2026-03-15",
     "count": 0,
     "status": "resolved",
-    "notes": "URL now shows rifle-bullets/impact-bullet path \u2014 may have been corrected during pipeline re-run. Needs re-verification.",
     "resolved_date": "2026-03-15",
     "resolution": "source_url now points to correct rifle-bullets/impact-bullet path"
   },
   {
     "id": "W7-hornady-8x57-intl-metric-barrel",
     "severity": "warning",
-    "summary": "Hornady 8x57 JS 195gr SP Custom International: barrel=9.45\" (from 24cm), MV=2568 (likely from metric conversion). Third instance of Hornady International metric bug (see C5, C7).",
+    "summary": "Hornady 8x57 JS 195gr SP Custom International: barrel was 9.45\" (from 24cm)",
     "first_seen": "2026-03-09",
     "last_seen": "2026-03-15",
-    "count": 1,
-    "status": "open"
+    "count": 0,
+    "status": "resolved",
+    "resolved_date": "2026-03-19",
+    "resolution": "Barrel now correctly shows 24.0\" \u2014 fixed during pipeline re-run"
   },
   {
     "id": "W8-berger-ammo-pages-as-bullets",
     "severity": "warning",
-    "summary": "12 Berger loaded ammunition product pages stored as bullet records \u2014 duplicates component bullet data",
+    "summary": "6 Berger loaded ammunition product pages stored as bullet records \u2014 duplicates component bullet data",
     "first_seen": "2026-03-14",
-    "last_seen": "2026-03-15",
-    "count": 12,
-    "status": "open"
+    "last_seen": "2026-03-19",
+    "count": 6,
+    "status": "open",
+    "notes": "Improved from 12 to 6 since last run"
   },
   {
     "id": "W9-hornady-65cm-eldvt-source-url-mismatch",
     "severity": "warning",
     "summary": "Hornady 6.5 Creedmoor 100gr ELD-VT V-Match source_url slug says '6mm-creedmoor' \u2014 Hornady website routing issue, data is correct",
     "first_seen": "2026-03-14",
-    "last_seen": "2026-03-15",
+    "last_seen": "2026-03-19",
     "count": 1,
     "status": "open"
   },
@@ -163,16 +170,40 @@
     "summary": "Sierra 6.5mm 107gr TMK (id=adb2ba7f) misnamed as '6MM' in DB \u2014 actually 6.5mm (.264). Diameter and BCs correct, only display name wrong.",
     "first_seen": "2026-03-15",
     "last_seen": "2026-03-15",
-    "count": 1,
-    "status": "open"
+    "count": 0,
+    "status": "resolved",
+    "resolved_date": "2026-03-19",
+    "resolution": "Name now correctly shows '6.5MM' \u2014 fixed during pipeline re-run"
   },
   {
     "id": "C8-sako-gamehead-308-150gr-wrong-bc",
     "severity": "critical",
-    "summary": "Sako Gamehead .308 150gr (id=6eabdcb4) has BC G1=0.322 but website shows 0.304. The 0.322 value was copied from the 30-06 150gr row in the same Sako product table.",
+    "summary": "Sako Gamehead .308 150gr (id=6eabdcb4) had BC G1=0.322 but website shows 0.304",
     "first_seen": "2026-03-15",
     "last_seen": "2026-03-15",
-    "count": 1,
+    "count": 0,
+    "status": "resolved",
+    "resolved_date": "2026-03-19",
+    "resolution": "BC now correctly shows 0.304 \u2014 fixed via curation patch"
+  },
+  {
+    "id": "C9-lapua-g580-wrong-diameter",
+    "severity": "critical",
+    "summary": "Lapua 100gr Open Tip G580 (id=8e35868b) was reported with diameter=0.264 but is actually a .30 cal (0.308\") bullet. The '6,5 g' in the name is weight in grams, not caliber.",
+    "first_seen": "2026-03-19",
+    "last_seen": "2026-03-19",
+    "count": 0,
+    "status": "resolved",
+    "resolved_date": "2026-03-19",
+    "resolution": "DB already has correct diameter=0.308 and source URL says '30-cal'. QA report was against stale data snapshot."
+  },
+  {
+    "id": "W11-new-cartridges-zero-mv",
+    "severity": "warning",
+    "summary": "90 newly ingested cartridges (Barnes 33, Winchester 43, Nosler 13) have MV=0. Barnes/Winchester don't publish velocity on product pages. Velocity data available from third-party retailers.",
+    "first_seen": "2026-03-19",
+    "last_seen": "2026-03-19",
+    "count": 90,
     "status": "open"
   }
 ]

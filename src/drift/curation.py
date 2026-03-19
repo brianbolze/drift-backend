@@ -68,7 +68,10 @@ _CARTRIDGE_UPDATE_FIELDS = frozenset(
     {
         "bc_g1",
         "bc_g7",
+        "bullet",
+        "bullet_manufacturer",
         "bullet_length_inches",
+        "bullet_weight_grains",
         "muzzle_velocity_fps",
         "test_barrel_length_inches",
         "round_count",
@@ -592,7 +595,17 @@ def _apply_update_cartridge(session: Session, op: UpdateCartridgeOp, stats: Appl
     if not cartridge:
         raise ValueError(f"Cartridge not found: {op.name!r} (manufacturer={op.manufacturer})")
 
-    changed = {k: v for k, v in op.set.items() if getattr(cartridge, k) != v}
+    # Resolve bullet + bullet_manufacturer → bullet_id
+    updates = dict(op.set)
+    if "bullet" in updates:
+        bullet_name = updates.pop("bullet")
+        bullet_mfr_name = updates.pop("bullet_manufacturer", None)
+        bullet_mfr_id = _resolve_manufacturer(session, bullet_mfr_name) if bullet_mfr_name else mfr_id
+        updates["bullet_id"] = _resolve_bullet(session, bullet_mfr_id, bullet_name)
+    elif "bullet_manufacturer" in updates:
+        raise ValueError("'bullet_manufacturer' requires 'bullet' to also be set")
+
+    changed = {k: v for k, v in updates.items() if getattr(cartridge, k) != v}
     if not changed:
         stats.skipped += 1
         stats.details.append(f"  [{index}] SKIP update_cartridge: {op.name!r} (already up to date)")

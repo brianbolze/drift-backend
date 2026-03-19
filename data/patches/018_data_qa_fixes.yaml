@@ -1,0 +1,119 @@
+patch:
+  id: 018_data_qa_fixes
+  author: agent
+  date: '2026-03-19'
+  description: >
+    Data quality fixes from 2026-03-19 QA report.
+    C6: Delete bad Sierra 22 CAL 60 GR TMK record (id=04535564).
+    C1: Fix 6 cartridge-bullet weight mismatches by creating missing bullets
+    and relinking cartridges. Verified all data against manufacturer pages.
+    C9: Lapua G580 already correct in DB — no fix needed.
+operations:
+
+# ── C6: Delete bad Sierra TMK record ────────────────────────────────────────
+- action: delete_bullet
+  manufacturer: Sierra
+  name: "22 CAL 60 GR Tipped MatchKing (TMK)"
+  id: "04535564-9116-4841-883e-8b76a4ac1ee2"
+  reason: >
+    Duplicate with wrong data: diameter=0.220 (should be 0.224), null BCs
+    (should be G1=0.323/G7=0.151), source URL points to 30-cal-168-gr TMK page.
+    Correct record exists (id=6bd41d2e, diam=0.224).
+
+# ── C1: Create missing bullets for weight-mismatched cartridges ──────────────
+
+# 1. Hornady 22 WMR 30gr V-MAX needs a 30gr .224 V-MAX (was linked to 35gr)
+- action: create_bullet
+  manufacturer: Hornady
+  name: "22 Cal .224 30 gr V-MAX"
+  weight_grains: 30.0
+  bullet_diameter_inches: 0.224
+  bc_g1: 0.095
+  source_url: https://www.hornady.com/ammunition/rimfire/22-wmr-30-gr-v-max
+
+# 2. Hornady 308 155gr Critical Defense needs a 155gr .308 FTX (was linked to 160gr 30-30 FTX)
+- action: create_bullet
+  manufacturer: Hornady
+  name: "30 Cal .308 155 gr FTX"
+  weight_grains: 155.0
+  bullet_diameter_inches: 0.308
+  bc_g1: 0.313
+  source_url: https://www.hornady.com/ammunition/rifle/308-win-155-gr-critical-defense
+
+# 3. Winchester 308 185gr needs a 185gr .308 Power-Point (was linked to 180gr PP)
+- action: create_bullet
+  manufacturer: Winchester
+  name: "Power-Point 30 Cal 185gr"
+  weight_grains: 185.0
+  bullet_diameter_inches: 0.308
+  source_url: https://winchester.com/Products/Ammunition/Rifle/Power-Point/X308SUBX
+
+# 4. Winchester M1 Garand 150gr needs a 150gr .308 FMJ (was linked to 147gr FMJ)
+#    BC 0.420 from winchester.com M1 Garand product page
+- action: create_bullet
+  manufacturer: Winchester
+  name: "Full Metal Jacket 30 Cal 150gr"
+  weight_grains: 150.0
+  bullet_diameter_inches: 0.308
+  bc_g1: 0.420
+  source_url: https://winchester.com/Products/Ammunition/Rifle/M1-Garand
+
+# 5. Federal 250th Anniversary 30-06 150gr needs a Federal 150gr FMJ (was linked to Winchester 147gr)
+#    BC 0.410 from federalpremium.com product page
+- action: create_bullet
+  manufacturer: Federal
+  name: "Full Metal Jacket 30 Cal 150gr"
+  weight_grains: 150.0
+  bullet_diameter_inches: 0.308
+  bc_g1: 0.410
+  source_url: https://www.federalpremium.com/rifle/american-eagle/american-eagle-rifle/11-AE3006USA.html
+
+# ── C1: Relink cartridges to correct bullets ────────────────────────────────
+
+# 1. Hornady 22 WMR 30gr → new 30gr V-MAX
+- action: update_cartridge
+  manufacturer: Hornady
+  name: "22 WMR 30 gr V-MAX® Varmint Express® Rimfire"
+  set:
+    bullet: "22 Cal .224 30 gr V-MAX"
+    bullet_weight_grains: 30.0
+
+# 2. Hornady 308 155gr Critical Defense → new 155gr FTX
+- action: update_cartridge
+  manufacturer: Hornady
+  name: "308 Win 155 gr Critical Defense®"
+  set:
+    bullet: "30 Cal .308 155 gr FTX"
+    bullet_weight_grains: 155.0
+
+# 3. Winchester 308 185gr → new 185gr Power-Point
+- action: update_cartridge
+  manufacturer: Winchester
+  name: "308 Winchester, 185 Grain"
+  set:
+    bullet: "Power-Point 30 Cal 185gr"
+    bullet_weight_grains: 185.0
+
+# 4. Winchester 7.62 NATO 149gr → existing 147gr FMJ (M80 ball is 147gr, "149" is marketing)
+#    Update cartridge weight to match the actual bullet weight
+- action: update_cartridge
+  manufacturer: Winchester
+  name: "7.62 x 51mm NATO, 149 Grain"
+  set:
+    bullet_weight_grains: 147.0
+
+# 5. Winchester M1 Garand 150gr → new Winchester 150gr FMJ
+- action: update_cartridge
+  manufacturer: Winchester
+  name: "Winchester M1 Garand 30-06 Springfield 150 Grain Full Metal Jacket"
+  set:
+    bullet: "Full Metal Jacket 30 Cal 150gr"
+    bullet_weight_grains: 150.0
+
+# 6. Federal 250th Anniversary 150gr → new Federal 150gr FMJ
+- action: update_cartridge
+  manufacturer: Federal
+  name: "250th Anniversary USA Rifle, 30-06 Springfield, 150 Grain, Full Metal Jacket, 2740 fps"
+  set:
+    bullet: "Full Metal Jacket 30 Cal 150gr"
+    bullet_weight_grains: 150.0

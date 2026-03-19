@@ -2158,5 +2158,277 @@
     "verified": "2026-03-15",
     "status": "pass",
     "notes": "MV=2910fps, wt=90gr match. Confirmed via retailer (hornady.com SPA timed out)."
+  },
+  {
+    "entity": "bullet",
+    "id": "718a7ca8-6ae2-4cb1-8374-657c193e08c3",
+    "name": "Sierra 7MM 120gr SPT Pro-Hunter",
+    "verified": "2026-03-19",
+    "status": "pass",
+    "notes": "G1=0.328 exact match"
+  },
+  {
+    "entity": "bullet",
+    "id": "f28256b7-499d-479e-8fc2-55ba5d8d18ab",
+    "name": "Sierra 30 CAL 210gr TGK",
+    "verified": "2026-03-19",
+    "status": "pass",
+    "notes": "G1=0.621, G7=0.303 exact match"
+  },
+  {
+    "entity": "bullet",
+    "id": "7925597f-615d-4968-80ed-242c1ca92fc5",
+    "name": "Sierra 6.5MM 145gr TGK",
+    "verified": "2026-03-19",
+    "status": "pass",
+    "notes": "G1=0.597, G7=0.291 exact match"
+  },
+  {
+    "entity": "bullet",
+    "id": "8e35868b-db60-4283-bb5a-ab29ac9b7c91",
+    "name": "Lapua 100gr Open Tip G580",
+    "verified": "2026-03-19",
+    "status": "fail",
+    "notes": "DIAMETER WRONG: DB has 0.264 but manufacturer page shows 0.308 (.30 cal). BC G1=0.200 and weight correct."
+  },
+  {
+    "entity": "bullet",
+    "id": "b94d9320-1f27-4ec6-a581-ae0d2292c601",
+    "name": "Lapua 165gr TRX N584",
+    "verified": "2026-03-19",
+    "status": "pass",
+    "notes": "G1=0.490, G7=0.243 exact match"
+  },
+  {
+    "entity": "bullet",
+    "id": "04535564-9116-4841-883e-8b76a4ac1ee2",
+    "name": "Sierra 22 CAL 60gr TMK",
+    "verified": "2026-03-19",
+    "status": "fail",
+    "notes": "Diam=0.220 should be 0.224, BCs null should be G1=0.323/G7=0.151, wrong source URL"
+  },
+  {
+    "entity": "bullet",
+    "id": "a1d2faef-17aa-4b95-a7bc-8128c7008139",
+    "name": "Norma Oryx 9.3mm 232gr",
+    "verified": "2026-03-19",
+    "status": "pass",
+    "notes": "G1=0.267 exact match"
+  },
+  {
+    "entity": "bullet",
+    "id": "08ad45e6-6078-4605-bcc0-8e0a5007771a",
+    "name": "Sako Speedhead .308 123gr",
+    "verified": "2026-03-19",
+    "status": "pass",
+    "notes": "G1=0.273 exact match from sako.global product table"
+  },
+  {
+    "entity": "bullet",
+    "id": "fb4c874b-9414-428d-9980-902ceef3a3ef",
+    "name": "Sako Powerhead Blade .308 150gr",
+    "verified": "2026-03-19",
+    "status": "pass",
+    "notes": "G1=0.401 exact match"
+  },
+  {
+    "entity": "bullet",
+    "id": "0614dd6c-7584-48ff-8741-099667f7a4b3",
+    "name": "Sako Super Hammerhead .310 181gr",
+    "verified": "2026-03-19",
+    "status": "pass",
+    "notes": "G1=0.342 exact match, 7.62x53R Finnish cartridge"
+  },
+  {
+    "entity": "bullet",
+    "id": "256a2212-1ff1-4237-868b-23eb002327cb",
+    "name": "Lehigh Defense .224 62gr Maximum Expansion",
+    "verified": "2026-03-19",
+    "status": "pass",
+    "notes": "G1=0.251 exact match"
+  },
+  {
+    "entity": "bullet",
+    "id": "2a8206de-4c24-4578-b9b2-0ad57ea8fe2d",
+    "name": "Lehigh Defense .257 102gr Controlled Chaos",
+    "verified": "2026-03-19",
+    "status": "pass",
+    "notes": "G1=0.387 exact match"
+  },
+  {
+    "entity": "bullet",
+    "id": "1da8623c-ce8d-4d33-9cd7-597460211f3f",
+    "name": "Barnes 7MM LRX BT 168gr",
+    "verified": "2026-03-19",
+    "status": "pass",
+    "notes": "G1=0.513 exact match on multi-variant page"
+  },
+  {
+    "entity": "bullet",
+    "id": "c5a529f7-aa07-4cef-b814-8155d9ee3585",
+    "name": "Federal Trophy Bonded Tip .338 200gr",
+    "verified": "2026-03-19",
+    "status": "pass",
+    "notes": "G1=0.440 exact match"
+  },
+  {
+    "entity": "bullet",
+    "id": "21007058-129b-42a4-b55f-6a2d0e37456d",
+    "name": "Hornady 30cal 212gr ELD-X",
+    "verified": "2026-03-19",
+    "status": "pass",
+    "notes": "G1=0.663, G7=0.334 exact match"
+  },
+  {
+    "entity": "cartridge",
+    "id": "55b3cd2f-f286-457d-9a09-d7efb1c5ea3c",
+    "name": "Berger 308 Win 155.5gr Fullbore Target",
+    "verified": "2026-03-19",
+    "status": "pass",
+    "notes": "MV=3000, G1=0.473 exact match"
+  },
+  {
+    "entity": "cartridge",
+    "id": "77e0a867-7a75-41e0-88df-4fa0146aec43",
+    "name": "Berger 308 Win 168gr Classic Hunter",
+    "verified": "2026-03-19",
+    "status": "pass",
+    "notes": "MV=2675, G1=0.489 exact match"
+  },
+  {
+    "entity": "cartridge",
+    "id": "ed06a307-c15c-4a97-b056-04418e882418",
+    "name": "Berger 6.5 CM 144gr LR Hybrid Target",
+    "verified": "2026-03-19",
+    "status": "pass",
+    "notes": "MV=2830, G1=0.655 exact match"
+  },
+  {
+    "entity": "cartridge",
+    "id": "e349942e-931b-494e-8a7e-0eabb788fc08",
+    "name": "Nosler 300 WM 210gr RDF Match Grade",
+    "verified": "2026-03-19",
+    "status": "pass",
+    "notes": "MV=2750 confirmed from multiple retailers"
+  },
+  {
+    "entity": "cartridge",
+    "id": "0edf2631-4f56-41c9-8273-5f207f4dcbb3",
+    "name": "Nosler 308 Win 165gr AccuBond TG",
+    "verified": "2026-03-19",
+    "status": "pass",
+    "notes": "MV=2800 confirmed from multiple retailers"
+  },
+  {
+    "entity": "cartridge",
+    "id": "ed65c92d-b476-4fae-8a1a-5634013ead21",
+    "name": "Norma Golden Target .308 175gr BTHP",
+    "verified": "2026-03-19",
+    "status": "pass",
+    "notes": "MV=2592 exact match (manufacturer spec)"
+  },
+  {
+    "entity": "cartridge",
+    "id": "91ee62f5-fe7c-4ac4-9b31-1dc7fa3ac3d1",
+    "name": "Norma BondStrike .308 180gr",
+    "verified": "2026-03-19",
+    "status": "pass",
+    "notes": "MV=2625 exact match"
+  },
+  {
+    "entity": "cartridge",
+    "id": "b50fbf68-705d-43a5-86db-e6a5e8173256",
+    "name": "Barnes VOR-TX RR TTSX 308 110gr",
+    "verified": "2026-03-19",
+    "status": "fail",
+    "notes": "MV=0 in DB, should be 2910 fps per retailers. Barnes doesn't publish MV on product pages."
+  },
+  {
+    "entity": "cartridge",
+    "id": "0d8dad16-7d4c-4c3c-820c-392e30eac6d6",
+    "name": "Barnes VOR-TX TSX 6.5 PRC 130gr",
+    "verified": "2026-03-19",
+    "status": "fail",
+    "notes": "MV=0 in DB, should be 3010 fps per retailers. Barnes doesn't publish MV on product pages."
+  },
+  {
+    "entity": "cartridge",
+    "id": "18854d77-9e4b-432e-b18e-e4f4b7ac6474",
+    "name": "Winchester 270 Win 130gr Ballistic Silvertip",
+    "verified": "2026-03-19",
+    "status": "fail",
+    "notes": "MV=0 in DB, should be 3050 fps per retailers. Winchester has no ballistics data online."
+  },
+  {
+    "entity": "cartridge",
+    "id": "a941055f-49f6-4c90-a3eb-e11ac2d6b6e2",
+    "name": "Winchester Expedition Big Game 6.5 CM 142gr",
+    "verified": "2026-03-19",
+    "status": "fail",
+    "notes": "MV=0 in DB, should be 2700 fps per retailers. Winchester has no ballistics data online."
+  },
+  {
+    "entity": "cartridge",
+    "id": "3a3faad0-3dad-45f0-ae73-693d645d75f3",
+    "name": "Federal Power-Shok Copper 270 Win 130gr",
+    "verified": "2026-03-19",
+    "status": "pass",
+    "notes": "MV=3060, G1=0.287 exact match"
+  },
+  {
+    "entity": "cartridge",
+    "id": "d2c49aef-ffa9-46ea-ad4b-cc731ef52d24",
+    "name": "Federal Barnes TSX 6.5 CM 130gr",
+    "verified": "2026-03-19",
+    "status": "pass",
+    "notes": "MV=2825 exact match"
+  },
+  {
+    "entity": "cartridge",
+    "id": "cfb5d0af-db0a-44eb-8c5d-80950168fcc2",
+    "name": "Federal 6mm CM 107gr Gold Medal SMK",
+    "verified": "2026-03-19",
+    "status": "pass",
+    "notes": "MV=3000, G1=0.547, G7=0.271 exact match"
+  },
+  {
+    "entity": "cartridge",
+    "id": "01e54946-fb55-4a34-84c7-6d23bddb67c5",
+    "name": "Black Hills Gold .308 168gr Barnes TSX",
+    "verified": "2026-03-19",
+    "status": "pass",
+    "notes": "MV=2650 exact match"
+  },
+  {
+    "entity": "bullet",
+    "id": "36413c0a-140a-4d6a-96b6-c71bb7767ffe",
+    "name": "Hornady 7mm 175gr ELD-X",
+    "verified": "2026-03-19",
+    "status": "pass",
+    "notes": "G1=0.689, G7=0.347 match"
+  },
+  {
+    "entity": "bullet",
+    "id": "2aae47a3-03f6-4f24-a77a-6e4066c4e644",
+    "name": "Berger 30cal 190gr VLD Hunting",
+    "verified": "2026-03-19",
+    "status": "pass",
+    "notes": "G1=0.566, G7=0.290 match"
+  },
+  {
+    "entity": "cartridge",
+    "id": "ef432781-d9a9-450f-b7c0-60d461854cf0",
+    "name": "Hornady 6.5 PRC 130gr CX Outfitter",
+    "verified": "2026-03-19",
+    "status": "pass",
+    "notes": "MV=2975 matches"
+  },
+  {
+    "entity": "cartridge",
+    "id": "80965d33-29a6-41f0-b2d4-3cd94f5d211b",
+    "name": "Hornady 300 PRC 212gr ELD-X PH",
+    "verified": "2026-03-19",
+    "status": "pass",
+    "notes": "MV=2860 matches"
   }
 ]
