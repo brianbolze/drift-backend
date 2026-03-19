@@ -9,6 +9,8 @@ Usage:
     python scripts/pipeline_fetch.py
     python scripts/pipeline_fetch.py --no-firecrawl
     python scripts/pipeline_fetch.py --manifest data/pipeline/url_manifest.json
+    python scripts/pipeline_fetch.py --rereduce                   # Re-reduce all fetched HTML
+    python scripts/pipeline_fetch.py --rereduce --domain barnes   # Re-reduce only matching domains
 """
 
 from __future__ import annotations
@@ -18,6 +20,7 @@ import asyncio
 import json
 import logging
 from pathlib import Path
+from urllib.parse import urlparse
 
 import httpx
 
@@ -36,6 +39,90 @@ logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
 logger = logging.getLogger(__name__)
 
 
+def _rereduce(domain_filter: str | None, limit: int) -> None:
+    """Re-run reduction on already-fetched HTML without re-fetching."""
+    reducer = HtmlReducer()
+    stats = {"rereduced": 0, "skipped": 0, "improved": 0, "total": 0}
+
+    # Build URL lookup from manifest
+    manifest_path = MANIFEST_PATH
+    if not manifest_path.exists():
+        raise SystemExit(f"Manifest not found: {manifest_path}")
+
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    url_to_entry = {entry["url"]: entry for entry in manifest}
+
+    # Iterate over existing reduced JSON files to get URLs
+    reduced_jsons = sorted(REDUCED_DIR.glob("*.json"))
+    pending = []
+    for rj in reduced_jsons:
+        try:
+            meta = json.loads(rj.read_text(encoding="utf-8"))
+        except (json.JSONDecodeError, KeyError):
+            continue
+        url = meta.get("url", "")
+        if not url:
+            continue
+        if domain_filter and domain_filter.lower() not in urlparse(url).netloc.lower():
+            stats["skipped"] += 1
+            continue
+        uhash = meta.get("url_hash", rj.stem)
+        fetched_html_path = FETCHED_DIR / f"{uhash}.html"
+        if not fetched_html_path.exists():
+            stats["skipped"] += 1
+            continue
+        pending.append((url, uhash, meta, fetched_html_path))
+
+    if limit > 0:
+        pending = pending[:limit]
+
+    stats["total"] = len(pending) + stats["skipped"]
+
+    for i, (url, uhash, old_meta, fetched_html_path) in enumerate(pending):
+        html = fetched_html_path.read_text(encoding="utf-8")
+        old_size = old_meta.get("reduction_meta", {}).get("reduced_size", 0)
+
+        reduced_html, meta = reducer.reduce(html, url=url)
+
+        # Preserve manifest metadata in reduced JSON
+        entry = url_to_entry.get(url, {})
+        reduced_data = {
+            "url": url,
+            "url_hash": uhash,
+            "entity_type": entry.get("entity_type") or old_meta.get("entity_type"),
+            "expected_manufacturer": entry.get("expected_manufacturer") or old_meta.get("expected_manufacturer"),
+            "expected_caliber": entry.get("expected_caliber") or old_meta.get("expected_caliber"),
+            "reduction_meta": meta,
+        }
+        (REDUCED_DIR / f"{uhash}.json").write_text(json.dumps(reduced_data, indent=2), encoding="utf-8")
+        (REDUCED_DIR / f"{uhash}.html").write_text(reduced_html, encoding="utf-8")
+
+        improved = meta["reduced_size"] < old_size
+        if improved:
+            stats["improved"] += 1
+
+        strategy = meta.get("strategy_used", "generic")
+        logger.info(
+            "[%d/%d] %s → %d → %d chars (%.0f%%) [%s]%s",
+            i + 1,
+            len(pending),
+            urlparse(url).netloc,
+            len(html),
+            meta["reduced_size"],
+            meta["reduction_ratio"] * 100,
+            strategy,
+            f" (was {old_size})" if old_size else "",
+        )
+
+        stats["rereduced"] += 1
+
+    print()
+    print(
+        f"Re-reduced: {stats['rereduced']} pages, {stats['improved']} improved, "
+        f"{stats['skipped']} skipped (of {stats['total']} total)"
+    )
+
+
 async def main() -> None:  # noqa: C901
     parser = argparse.ArgumentParser(description="Fetch and reduce URLs from manifest")
     parser.add_argument("--manifest", type=Path, default=MANIFEST_PATH, help="URL manifest JSON path")
@@ -44,7 +131,15 @@ async def main() -> None:  # noqa: C901
         "--delay", type=float, default=FIRECRAWL_RATE_LIMIT_SECONDS, help="Delay between requests (seconds)"
     )
     parser.add_argument("--limit", type=int, default=0, help="Max URLs to process (0 = all)")
+    parser.add_argument(
+        "--rereduce", action="store_true", help="Re-run reduction on fetched HTML without re-fetching"
+    )
+    parser.add_argument("--domain", type=str, default=None, help="Domain filter for --rereduce (substring match)")
     args = parser.parse_args()
+
+    if args.rereduce:
+        _rereduce(args.domain, args.limit)
+        return
 
     if not args.manifest.exists():
         raise SystemExit(
@@ -106,7 +201,7 @@ async def main() -> None:  # noqa: C901
             (FETCHED_DIR / f"{uhash}.html").write_text(result.html, encoding="utf-8")
 
             # Reduce
-            reduced_html, meta = reducer.reduce(result.html)
+            reduced_html, meta = reducer.reduce(result.html, url=url)
 
             # Save reduced result
             reduced_data = {
@@ -121,12 +216,13 @@ async def main() -> None:  # noqa: C901
             (REDUCED_DIR / f"{uhash}.html").write_text(reduced_html, encoding="utf-8")
 
             logger.info(
-                "  %s → %d → %d chars (%.0f%%), %s",
+                "  %s → %d → %d chars (%.0f%%), %s [%s]",
                 result.fetcher_backend,
                 len(result.html),
                 meta["reduced_size"],
                 meta["reduction_ratio"] * 100,
                 "under target" if meta["under_target"] else "OVER TARGET",
+                meta.get("strategy_used", "generic"),
             )
 
             stats["fetched"] += 1

@@ -150,3 +150,22 @@ HTTPX_HEADERS = {
 
 REDUCE_TARGET_SIZE = 30_000  # chars — fits comfortably in LLM context
 REDUCE_MIN_SIZE = 6_000  # below this we've over-stripped
+
+# Per-domain reducer strategy override. Domains not listed here use "generic".
+DOMAIN_REDUCER_STRATEGY: dict[str, str] = {
+    # main_content: extract <main> (or custom selector) + JSON-LD only
+    "barnesbullets.com": "main_content",
+    "www.nosler.com": "main_content",
+    "bergerbullets.com": "main_content",
+    "www.swiftbullets.com": "main_content",
+    "cuttingedgebullets.com": "main_content",
+    "lehighdefense.com": "main_content",
+    # jsonld_only: SPA pages where HTML body is useless
+    "www.norma-ammunition.com": "jsonld_only",
+}
+
+# Per-domain CSS selector for main_content strategy. Defaults to "main" if not listed.
+DOMAIN_CONTENT_SELECTORS: dict[str, str] = {
+    "cuttingedgebullets.com": "#main",  # Shopify — uses div#main, not <main>
+    "lehighdefense.com": "main#maincontent",  # Magento 2
+}
