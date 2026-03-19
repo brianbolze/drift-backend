@@ -19,6 +19,7 @@ Lightweight tech debt and engineering improvement tracker. Agents and humans app
 
 ## Data Quality
 
+- [ ] Manually populate saami_test_barrel_length_inches for _all_ calibers. iOS will rely on this as a fallback. Will treat it as _not null_.
 - [ ] Populate cartridge.bc_g1, bc_g7, bullet_length_inches — columns added via migration but not yet extracted/populated from manufacturer pages (source: human, 2026-03-06)
 - [ ] 3 cartridge-bullet weight mismatches — .22 WMR 30gr→35gr + .308 155gr Critical Defense→160gr FTX + Federal 250th Anniversary 30-06 150gr→147gr FMJ. Need to determine whether cartridge or bullet record is wrong. (source: QA report, 2026-03-06, updated 2026-03-16)
 - [ ] 99 existing cartridges with wrong bullet_id — re-run pipeline-store-commit after ensuring correct bullets exist in DB (source: pipeline working notes)
@@ -54,6 +55,11 @@ Lightweight tech debt and engineering improvement tracker. Agents and humans app
 ## Coverage Gaps (JBM Audit 2026-03-15)
 
 - [ ] Scrape JBM BC values as supplementary BulletBCSource — 3,520 entries with BCs, 261 Litz-measured (gold standard). Could fill 66 Drift bullets missing BCs. (source: JBM coverage audit, 2026-03-15)
+
+## iOS Search / Filtering Support
+
+- [ ] Add bullet entity_aliases for common abbreviations — ELDM→ELD Match, SMK→MatchKing, TMK→Tipped MatchKing, ABLR→AccuBond Long Range, VLD→VLD Target/Hunting, GMM→Gold Medal Match, etc. Currently zero bullet aliases exist. Add via curation patches so they export to `alt_names` JSON. (source: reference DB analysis, 2026-03-18)
+- [ ] Curate `popularity_rank` on top ~50 factory loads and top ~50 bullets — no ranking data exists today. Needed for "recommended" sort in ammunition picker. Small enough to do manually via curation patches. (source: reference DB analysis, 2026-03-18)
 
 ## Documentation
 
