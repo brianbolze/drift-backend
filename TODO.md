@@ -19,20 +19,12 @@ Lightweight tech debt and engineering improvement tracker. Agents and humans app
 
 ## Data Quality
 
-- [ ] Manually populate saami_test_barrel_length_inches for _all_ calibers. iOS will rely on this as a fallback. Will treat it as _not null_.
-- [ ] Populate cartridge.bc_g1, bc_g7, bullet_length_inches — columns added via migration but not yet extracted/populated from manufacturer pages (source: human, 2026-03-06)
+- [ ] Populate cartridge.bc_g1, bc_g7, bullet_length_inches — columns added via migration but not yet extracted/populated from manufacturer pages (source: human, 2026-03-06) -- IN PROGRESS
 - [ ] 3 cartridge-bullet weight mismatches — .22 WMR 30gr→35gr + .308 155gr Critical Defense→160gr FTX + Federal 250th Anniversary 30-06 150gr→147gr FMJ. Need to determine whether cartridge or bullet record is wrong. (source: QA report, 2026-03-06, updated 2026-03-16)
 - [ ] 99 existing cartridges with wrong bullet_id — re-run pipeline-store-commit after ensuring correct bullets exist in DB (source: pipeline working notes)
 - [ ] 9 cartridges with zero velocity — all Hornady ECX/International pages that don't publish MV. Not fixable at extraction level. (source: QA report, 2026-03-06, updated 2026-03-16)
 - [ ] 4 MatchKing->Nosler HPBT false matches — Sierra MatchKing bullets missing at certain weights, causing cross-manufacturer false positives (source: pipeline working notes)
 - [ ] 18 rifle bullets (diam ≤ .375) missing all BC fields, excl CE/Nosler/Winchester — Sierra 4 (2026 new products, BCs not yet published), Federal 4, Lehigh 4, Lapua 3, Norma 1, Swift 1. None are match/LR-critical. (source: QA report, 2026-03-06, updated 2026-03-16)
-- [x] Sierra 22 CAL 60gr TMK (f4facb6b) — deleted via patch 011 (2026-03-16)
-- [x] Sierra 6.5mm 107gr TMK (adb2ba7f) misnamed as "6MM" — renamed via patch 011 (2026-03-16)
-- [x] 13 Berger loaded ammunition product pages stored as bullet records — 7 deleted, 6 renamed via patch 012 (2026-03-16)
-- [x] Hornady .308 220gr RN Custom International barrel=9.45" — fixed to 24" via patch 011 (2026-03-16)
-- [x] 5 Federal "Custom Rifle Ammo" placeholder cartridges — deleted via patch 011 (2026-03-16)
-- [x] Hornady 8x57 JS 195gr SP Custom International barrel=9.45" — fixed to 24" via patch 011 (2026-03-16)
-- [x] Sako Gamehead .308 150gr wrong BC 0.322 — corrected to 0.304 via patch 011 (2026-03-16)
 
 ## Pipeline Improvements
 
@@ -43,6 +35,7 @@ Lightweight tech debt and engineering improvement tracker. Agents and humans app
 - [ ] Nosler BCs only in load data section — product pages return null BC, need to scrape load data pages separately (source: pipeline working notes)
 - [ ] `HttpxFetcher` creates new `AsyncClient` per request — no connection reuse/keep-alive across same-host URLs; same issue with `FirecrawlFetcher` reinstantiating `FirecrawlApp` per call (source: code review, 2026-03-06)
 - [ ] Stale flagged entries persist on re-extraction — `_write_flagged` deduplicates by hash, so old warnings stick around (source: code review, 2026-03-06)
+- [x] `pipeline_fetch.py` stale `reduced_cache` variable — `reduced_cache` was set in the skip-check loop but not re-assigned in the processing loop, causing all reduced JSON sidecars to write to the same file path. Fixed by adding `reduced_cache = REDUCED_DIR / f"{uhash}.json"` in the processing loop. 519 pages affected in cartridge fetch. (source: agent, 2026-03-19)
 
 ## Code / Tooling
 
