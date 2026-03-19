@@ -28,7 +28,7 @@ _PRODUCT_LINE_CASING: dict[str, str] = {
 }
 
 # Known bullet manufacturer names (for stripping from cartridge product lines)
-_BULLET_MANUFACTURERS = {
+_BULLET_MANUFACTURERS: set[str] = {
     "sierra",
     "berger",
     "barnes",
@@ -42,6 +42,20 @@ _BULLET_MANUFACTURERS = {
 
 # Suffixes to strip from cartridge product lines before combining
 _CART_PL_STRIP_SUFFIXES = re.compile(r"\s+(?:Rifle|TIPPED|Rimfire)$", re.IGNORECASE)
+
+# Abbreviations for generic bullet descriptions (Federal comma-delimited format)
+_FEDERAL_BULLET_ABBREV: dict[str, str] = {
+    "jacketed soft point": "JSP",
+    "jacketed hollow point": "JHP",
+    "full metal jacket boat-tail": "FMJ-BT",
+    "full metal jacket": "FMJ",
+    "open tip match": "OTM",
+    "boat-tail hollow point": "BTHP",
+    "bonded soft point": "BSP",
+    "hollow point": "HP",
+    "soft point": "SP",
+    "copper hp": "Copper HP",
+}
 
 # ---------------------------------------------------------------------------
 # Text normalization helpers
@@ -408,20 +422,6 @@ def _extract_federal_bullet_identity(name: str) -> str | None:
         return None
 
     bullet_desc = segments[3]
-
-    # Common abbreviations for generic descriptions
-    _ABBREV = {
-        "jacketed soft point": "JSP",
-        "jacketed hollow point": "JHP",
-        "full metal jacket boat-tail": "FMJ-BT",
-        "full metal jacket": "FMJ",
-        "open tip match": "OTM",
-        "boat-tail hollow point": "BTHP",
-        "bonded soft point": "BSP",
-        "hollow point": "HP",
-        "soft point": "SP",
-    }
-
     desc_lower = bullet_desc.lower()
 
     # If the bullet_desc is the same as the product line name, skip it (dedup)
@@ -433,7 +433,7 @@ def _extract_federal_bullet_identity(name: str) -> str | None:
 
     # Check if it's a generic description we can abbreviate
     desc_check = bullet_desc.lower().strip()
-    for full, abbr in _ABBREV.items():
+    for full, abbr in _FEDERAL_BULLET_ABBREV.items():
         if desc_check == full:
             return abbr
 

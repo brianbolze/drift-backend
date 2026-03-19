@@ -414,3 +414,62 @@ class TestCartridgeDisplayName:
             manufacturer_name="Hornady",
         )
         assert result == "ELD Match"
+
+
+class TestGracefulDegradation:
+    """Verify the cleaner produces reasonable output for unknown formats."""
+
+    def test_unknown_bullet_format_returns_something(self):
+        """A totally unfamiliar format should still return a non-empty string."""
+        result = compute_bullet_display_name(
+            "SuperPrecision Ultra 150gr Match Grade",
+            manufacturer_name="NewBrand",
+        )
+        assert result
+        assert len(result) >= 2
+
+    def test_unknown_bullet_falls_back_to_product_line(self):
+        """If cleaning produces nothing, product_line is the fallback."""
+        result = compute_bullet_display_name(
+            "30 Cal .308 168 gr",  # stripping leaves nothing
+            product_line="SpecialMatch",
+            manufacturer_name="Hornady",
+        )
+        assert result == "SpecialMatch"
+
+    def test_unknown_cartridge_format_returns_something(self):
+        """A totally unfamiliar cartridge name should still produce output."""
+        result = compute_cartridge_display_name(
+            "MagicRound 7.62 NATO Special Purpose 175gr 2600fps",
+            manufacturer_name="NewBrand",
+        )
+        assert result
+        assert len(result) >= 2
+
+    def test_empty_name_with_product_line(self):
+        """Empty name but valid product_line should return product_line."""
+        result = compute_bullet_display_name(
+            "",
+            product_line="MatchKing",
+        )
+        assert result == "MatchKing"
+
+    def test_idempotency(self):
+        """Running the cleaner twice produces the same output."""
+        first = compute_bullet_display_name(
+            "30 Cal .308 168 gr BTHP Match\u2122",
+            manufacturer_name="Hornady",
+        )
+        second = compute_bullet_display_name(
+            first,
+            manufacturer_name="Hornady",
+        )
+        assert first == second
+
+    def test_name_with_caliber_like_substring(self):
+        """A product name containing caliber-like text shouldn't be destroyed."""
+        result = compute_bullet_display_name(
+            "30 Cal .308 168 gr SINGLE FEED Lazer-Tipped Hollow Point - 50ct",
+            manufacturer_name="Cutting Edge Bullets",
+        )
+        assert "Lazer-Tipped Hollow Point" in result

@@ -110,12 +110,23 @@ def _populate_display_names(conn: sqlite3.Connection) -> None:
     """).fetchall()
 
     bullet_count = 0
+    bullet_warnings = []
     for bullet_id, name, product_line, mfr_name in rows:
         display_name = compute_bullet_display_name(name, product_line, mfr_name)
         if display_name:
             conn.execute("UPDATE bullet SET display_name = ? WHERE id = ?", (display_name, bullet_id))
             bullet_count += 1
-    print(f"  Computed display_name for {bullet_count} bullets")
+            # Warn on suspicious results
+            if len(display_name) < 2:
+                bullet_warnings.append(f"  WARN: too short: {name!r} → {display_name!r}")
+            elif display_name == name:
+                bullet_warnings.append(f"  WARN: unchanged: {name!r}")
+        else:
+            bullet_warnings.append(f"  WARN: empty result: {name!r} (product_line={product_line!r})")
+
+    print(f"  Computed display_name for {bullet_count}/{len(rows)} bullets")
+    for w in bullet_warnings:
+        print(w)
 
     # -- Cartridges --
     rows = conn.execute("""
@@ -126,12 +137,22 @@ def _populate_display_names(conn: sqlite3.Connection) -> None:
     """).fetchall()
 
     cart_count = 0
+    cart_warnings = []
     for cart_id, name, cart_pl, bullet_pl, mfr_name in rows:
         display_name = compute_cartridge_display_name(name, cart_pl, bullet_pl, mfr_name)
         if display_name:
             conn.execute("UPDATE cartridge SET display_name = ? WHERE id = ?", (display_name, cart_id))
             cart_count += 1
-    print(f"  Computed display_name for {cart_count} cartridges")
+            if len(display_name) < 2:
+                cart_warnings.append(f"  WARN: too short: {name!r} → {display_name!r}")
+            elif display_name == name:
+                cart_warnings.append(f"  WARN: unchanged: {name!r}")
+        else:
+            cart_warnings.append(f"  WARN: empty result: {name!r} (product_line={cart_pl!r})")
+
+    print(f"  Computed display_name for {cart_count}/{len(rows)} cartridges")
+    for w in cart_warnings:
+        print(w)
 
 
 def main() -> None:
