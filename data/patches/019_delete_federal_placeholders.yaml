@@ -1,0 +1,39 @@
+patch:
+  id: 019_delete_federal_placeholders
+  author: agent
+  date: '2026-03-19'
+  description: >
+    Delete 5 Federal Custom Rifle Ammo placeholder cartridges. These are
+    configurable custom shop loads with zero bullet weight and zero MV —
+    no fixed ballistic spec exists. Resolves known issue W5.
+operations:
+
+- action: delete_cartridge
+  manufacturer: Federal
+  name: "Custom Rifle Ammo 300 PRC"
+  id: "40a18259-7879-4472-8738-309f84834777"
+  reason: "Zero-weight, zero-MV placeholder — custom shop load with no fixed spec"
+
+- action: delete_cartridge
+  manufacturer: Federal
+  name: "Custom Rifle Ammo 338 Federal"
+  id: "ebd5d2fe-bb88-4baf-b3d1-01f73096c4b0"
+  reason: "Zero-weight, zero-MV placeholder — custom shop load with no fixed spec"
+
+- action: delete_cartridge
+  manufacturer: Federal
+  name: "Custom Rifle Ammo 264 Win"
+  id: "f1c807db-f836-4994-b84e-23b7ec63fa83"
+  reason: "Zero-weight, zero-MV placeholder — custom shop load with no fixed spec"
+
+- action: delete_cartridge
+  manufacturer: Federal
+  name: "Custom Rifle Ammo 26 Nosler"
+  id: "76666cad-0df1-46ff-89e2-2baab30288f5"
+  reason: "Zero-weight, zero-MV placeholder — custom shop load with no fixed spec"
+
+- action: delete_cartridge
+  manufacturer: Federal
+  name: "Custom Rifle Ammo 284 Win"
+  id: "66cf460f-6a95-4080-8793-76373df3b9ad"
+  reason: "Zero-weight, zero-MV placeholder — custom shop load with no fixed spec"

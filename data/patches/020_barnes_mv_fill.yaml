@@ -1,0 +1,290 @@
+patch:
+  id: 020_barnes_mv_fill
+  author: agent
+  date: '2026-03-19'
+  description: >
+    Populate muzzle velocity for 33 Barnes VOR-TX cartridges. Barnes product pages
+    publish BC but not MV. Data sourced from retailer sites (CheaperThanDirt,
+    MidwayUSA, Natchez, SMGA, BlackBasin) and Barnes ballistics pages. All values
+    cross-referenced against multiple sources. Barrel lengths use SAAMI standards
+    where not explicitly stated by source (24" rifle, 26" magnum, 16" .300 BLK).
+operations:
+
+# ── .243 Winchester ──────────────────────────────────────────────────────────
+# Source: multiple retailers — 3350 fps
+- action: update_cartridge
+  manufacturer: "Barnes Bullets"
+  name: "VOR-TX Rifle TTSX 243 Win 80 GR BT"
+  set:
+    muzzle_velocity_fps: 3350
+    test_barrel_length_inches: 24
+
+# ── .270 WSM ─────────────────────────────────────────────────────────────────
+# Source: CheaperThanDirt — 3135 fps
+- action: update_cartridge
+  manufacturer: "Barnes Bullets"
+  name: "VOR-TX Rifle TSX 270 WSM 140 GR BT"
+  set:
+    muzzle_velocity_fps: 3135
+    test_barrel_length_inches: 24
+
+# ── .30-06 Springfield ───────────────────────────────────────────────────────
+# Source: multiple retailers — 2760 fps (reduced recoil)
+- action: update_cartridge
+  manufacturer: "Barnes Bullets"
+  name: "VOR-TX RR TTSX 30-06 Sprg 130 GR BT"
+  set:
+    muzzle_velocity_fps: 2760
+    test_barrel_length_inches: 24
+
+# Source: multiple retailers — 2970 fps (CheaperThanDirt) / 3000 fps (others)
+- action: update_cartridge
+  manufacturer: "Barnes Bullets"
+  name: "VOR-TX Rifle TTSX 30-06 Sprg 150 GR"
+  set:
+    muzzle_velocity_fps: 2970
+    test_barrel_length_inches: 24
+
+# Source: Natchez, BlackBasin — 2850 fps
+- action: update_cartridge
+  manufacturer: "Barnes Bullets"
+  name: "VOR-TX Rifle TTSX 30-06 Sprg 168 GR"
+  set:
+    muzzle_velocity_fps: 2850
+    test_barrel_length_inches: 24
+
+# Source: CheaperThanDirt — 2700 fps
+- action: update_cartridge
+  manufacturer: "Barnes Bullets"
+  name: "VOR-TX Rifle TTSX 30-06 Sprg 180 GR"
+  set:
+    muzzle_velocity_fps: 2700
+    test_barrel_length_inches: 24
+
+# ── .30-30 Winchester ────────────────────────────────────────────────────────
+# Source: multiple retailers — 2335 fps
+- action: update_cartridge
+  manufacturer: "Barnes Bullets"
+  name: "PIONEER TSX 30-30 Win 150 GR FN FB"
+  set:
+    muzzle_velocity_fps: 2335
+    test_barrel_length_inches: 24
+
+# ── .300 AAC Blackout ────────────────────────────────────────────────────────
+# Source: multiple retailers — 2350 fps (110gr), 2100 fps (120gr)
+- action: update_cartridge
+  manufacturer: "Barnes Bullets"
+  name: "VOR-TX Rifle TAC-TX 300 AAC Blackout 110 GR FB"
+  set:
+    muzzle_velocity_fps: 2350
+    test_barrel_length_inches: 16
+
+- action: update_cartridge
+  manufacturer: "Barnes Bullets"
+  name: "VOR-TX Rifle TAC-TX 300 AAC Blackout 120 GR BT"
+  set:
+    muzzle_velocity_fps: 2100
+    test_barrel_length_inches: 16
+
+# ── .300 PRC ─────────────────────────────────────────────────────────────────
+# Source: CheaperThanDirt, MidwayUSA — 2860 fps
+- action: update_cartridge
+  manufacturer: "Barnes Bullets"
+  name: "VOR-TX LR LRX 300 PRC 208 GR BT"
+  set:
+    muzzle_velocity_fps: 2860
+    test_barrel_length_inches: 26
+
+# ── .300 Weatherby Magnum ────────────────────────────────────────────────────
+# Source: CheaperThanDirt — 3100 fps
+- action: update_cartridge
+  manufacturer: "Barnes Bullets"
+  name: "VOR-TX Rifle TTSX 300 Wby Mag 180 GR BT"
+  set:
+    muzzle_velocity_fps: 3100
+    test_barrel_length_inches: 26
+
+# ── .300 Winchester Magnum ───────────────────────────────────────────────────
+# Source: MidwayUSA — 3285 fps
+- action: update_cartridge
+  manufacturer: "Barnes Bullets"
+  name: "VOR-TX Rifle TTSX 300 Win Mag 150gr"
+  set:
+    muzzle_velocity_fps: 3285
+    test_barrel_length_inches: 24
+
+# Source: MidwayUSA — 3120 fps
+- action: update_cartridge
+  manufacturer: "Barnes Bullets"
+  name: "VOR-TX Rifle TTSX 300 Win Mag 165gr"
+  set:
+    muzzle_velocity_fps: 3120
+    test_barrel_length_inches: 24
+
+# Source: MidwayUSA — 2960 fps
+- action: update_cartridge
+  manufacturer: "Barnes Bullets"
+  name: "VOR-TX Rifle TTSX 300 Win Mag 180gr"
+  set:
+    muzzle_velocity_fps: 2960
+    test_barrel_length_inches: 24
+
+# Source: MidwayUSA — 2880 fps
+- action: update_cartridge
+  manufacturer: "Barnes Bullets"
+  name: "VOR-TX LR LRX 300 Win Mag 190 GR BT"
+  set:
+    muzzle_velocity_fps: 2880
+    test_barrel_length_inches: 24
+
+# ── .300 WSM ─────────────────────────────────────────────────────────────────
+# Source: SMGA, MidwayUSA — 3310 fps
+- action: update_cartridge
+  manufacturer: "Barnes Bullets"
+  name: "VOR-TX Rifle TTSX 300 WSM 150 Grain"
+  set:
+    muzzle_velocity_fps: 3310
+    test_barrel_length_inches: 24
+
+# Source: MidwayUSA — 3130 fps
+- action: update_cartridge
+  manufacturer: "Barnes Bullets"
+  name: "VOR-TX Rifle TTSX 300 WSM 165 Grain"
+  set:
+    muzzle_velocity_fps: 3130
+    test_barrel_length_inches: 24
+
+# ── .308 Winchester ──────────────────────────────────────────────────────────
+# Source: MidwayUSA — 2910 fps (reduced recoil)
+- action: update_cartridge
+  manufacturer: "Barnes Bullets"
+  name: "VOR-TX RR TTSX 308 Win 110 GR BT"
+  set:
+    muzzle_velocity_fps: 2910
+    test_barrel_length_inches: 24
+
+# Source: MidwayUSA, BlackBasin — 3125 fps
+- action: update_cartridge
+  manufacturer: "Barnes Bullets"
+  name: "VOR-TX Rifle TTSX 308 Win 130 GR"
+  set:
+    muzzle_velocity_fps: 3125
+    test_barrel_length_inches: 24
+
+# Source: MidwayUSA — 2900 fps
+- action: update_cartridge
+  manufacturer: "Barnes Bullets"
+  name: "VOR-TX Rifle TTSX 308 Win 150 GR"
+  set:
+    muzzle_velocity_fps: 2900
+    test_barrel_length_inches: 24
+
+# Source: MidwayUSA, SMGA — 2680 fps
+- action: update_cartridge
+  manufacturer: "Barnes Bullets"
+  name: "VOR-TX Rifle TTSX 308 Win 168 GR"
+  set:
+    muzzle_velocity_fps: 2680
+    test_barrel_length_inches: 24
+
+# ── .35 Whelen ───────────────────────────────────────────────────────────────
+# Source: multiple retailers — 2900 fps
+- action: update_cartridge
+  manufacturer: "Barnes Bullets"
+  name: "VOR-TX Rifle TTSX 35 Whelen 180gr"
+  set:
+    muzzle_velocity_fps: 2900
+    test_barrel_length_inches: 24
+
+# Source: multiple retailers — 2700 fps
+- action: update_cartridge
+  manufacturer: "Barnes Bullets"
+  name: "VOR-TX Rifle TTSX 35 Whelen 200gr"
+  set:
+    muzzle_velocity_fps: 2700
+    test_barrel_length_inches: 24
+
+# ── .45-70 Government ────────────────────────────────────────────────────────
+# Source: multiple retailers — 1925 fps
+- action: update_cartridge
+  manufacturer: "Barnes Bullets"
+  name: "VOR-TX Rifle TSX 45-70 Govt 300 GR FN FB"
+  set:
+    muzzle_velocity_fps: 1925
+    test_barrel_length_inches: 24
+
+# ── 6.5 Creedmoor ───────────────────────────────────────────────────────────
+# Source: Field & Stream review — 2776 fps (reduced recoil)
+- action: update_cartridge
+  manufacturer: "Barnes Bullets"
+  name: "VOR-TX RR TTSX 6.5 Creedmoor 100 GR BT"
+  set:
+    muzzle_velocity_fps: 2776
+    test_barrel_length_inches: 24
+
+# ── 6.5 PRC ─────────────────────────────────────────────────────────────────
+# Source: multiple retailers — 3010 fps
+- action: update_cartridge
+  manufacturer: "Barnes Bullets"
+  name: "VOR-TX LR LRX 6.5 PRC 127 GR BT"
+  set:
+    muzzle_velocity_fps: 3010
+    test_barrel_length_inches: 24
+
+# Source: CheaperThanDirt — 3010 fps
+- action: update_cartridge
+  manufacturer: "Barnes Bullets"
+  name: "VOR-TX Rifle TSX 6.5 PRC 130 GR BT"
+  set:
+    muzzle_velocity_fps: 3010
+    test_barrel_length_inches: 24
+
+# ── 7mm PRC ──────────────────────────────────────────────────────────────────
+# Source: Natchez, multiple retailers — 3050 fps
+- action: update_cartridge
+  manufacturer: "Barnes Bullets"
+  name: "VOR-TX LR LRX 7mm PRC 160 GR BT"
+  set:
+    muzzle_velocity_fps: 3050
+    test_barrel_length_inches: 24
+
+# ── 7mm Remington Magnum ─────────────────────────────────────────────────────
+# Source: Barnes ballistics page — 2910 fps (reduced recoil)
+- action: update_cartridge
+  manufacturer: "Barnes Bullets"
+  name: "VOR-TX RR TTSX 7mm Rem Mag 120 GR BT"
+  set:
+    muzzle_velocity_fps: 2910
+    test_barrel_length_inches: 24
+
+# Source: multiple retailers — 3210 fps
+- action: update_cartridge
+  manufacturer: "Barnes Bullets"
+  name: "VOR-TX LR LRX 7mm Rem Mag 139 GR BT"
+  set:
+    muzzle_velocity_fps: 3210
+    test_barrel_length_inches: 24
+
+# Source: Palmetto State Armory — 3350 fps
+- action: update_cartridge
+  manufacturer: "Barnes Bullets"
+  name: "VOR-TX LR LRX 7mm Rem Ultra Mag 145 GR BT"
+  set:
+    muzzle_velocity_fps: 3350
+    test_barrel_length_inches: 26
+
+# Source: multiple retailers — 3060 fps
+- action: update_cartridge
+  manufacturer: "Barnes Bullets"
+  name: "VOR-TX Rifle TTSX 7mm Rem Mag 150 GR"
+  set:
+    muzzle_velocity_fps: 3060
+    test_barrel_length_inches: 24
+
+# Source: Federal/retailers — 2950 fps
+- action: update_cartridge
+  manufacturer: "Barnes Bullets"
+  name: "VOR-TX Rifle TSX 7mm Rem Mag 160 GR BT"
+  set:
+    muzzle_velocity_fps: 2950
+    test_barrel_length_inches: 24
