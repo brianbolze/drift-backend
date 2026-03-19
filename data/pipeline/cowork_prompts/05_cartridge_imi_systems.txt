@@ -1,0 +1,87 @@
+Research all factory-loaded ammunition from IMI Systems across multiple calibers.
+
+**Manufacturer**: IMI Systems (https://www.imisystems.com)
+**Entity type**: cartridge
+**Estimated gap**: ~580 cartridges needed across 116 calibers
+
+## Target Calibers
+
+**High Priority (LR Top 5)**: 6.5 Creedmoor, 6mm Dasher, 6mm GT, 6mm Creedmoor, .308 Winchester
+**Medium Priority (LR Top 15)**: .300 Winchester Magnum, .300 PRC, 6.5 PRC, 7mm PRC, .338 Lapua Magnum, 6mm ARC, .25 Creedmoor, 7mm Remington Magnum, .260 Remington, 6.5-284 Norma
+**Lower Priority (Popular Overall)**: 6.5 Creedmoor, 6mm Creedmoor, .308 Winchester, .300 Winchester Magnum, .300 PRC, 6.5 PRC, 7mm PRC, .338 Lapua Magnum, 7mm Remington Magnum, .260 Remington
+
+Focus on **high priority calibers first**, but if you find products in other calibers while exploring the site, include them too.
+
+## Your Task
+
+Use your domain mapping tool to explore the IMI Systems website structure and find **individual product pages** (not category/listing pages) for factory-loaded ammunition.
+
+Most manufacturer sites organize by caliber with predictable URL patterns like:
+- `/bullets/[caliber]/[model]`
+- `/ammunition/[caliber]/[product-line]`
+- `/rifles/[model-family]/[chambering]`
+- `/products/[category]/[sku]`
+
+Explore the site systematically and find products with actual specifications.
+Look for pages with:
+- Muzzle velocity (fps)
+- Bullet weight (grains)
+- Bullet name/type (e.g., "ELD Match", "Scenar")
+- Test barrel length (if specified)
+- Round count per box
+
+
+## Requirements
+
+1. **Product pages only** — Each URL should be for a specific SKU/model with detailed specs. Avoid category pages, search results, or product family landing pages.
+
+2. **Multi-variant pages are OK** — If a single product page lists multiple weights/variants (e.g., "LRX Boat Tail: 175gr, 190gr, 200gr, 208gr"), that's perfect — include it as one URL.
+
+3. **Verify specs exist** — Briefly check each page to confirm it has the specifications we need for extraction (BC values, velocities, weights, etc.). **Important**: Note in the "notes" field if specs are complete on the product page vs. in a separate section (e.g., load data, reloading guide, PDF downloads).
+
+4. **Prioritize high-value calibers** — Focus on the high/medium priority calibers listed above, but include others if you find them.
+
+5. **Cast a wide net** — Find as many products as you can across all relevant calibers. We're building a comprehensive database.
+
+6. **Deduplication** — If you find multiple pages for the same product (different pack sizes, etc.), pick the one with the most complete specifications.
+
+## Output Format
+
+Return a JSON array with this structure:
+
+```json
+[
+  {
+    "url": "https://example.com/product/...",
+    "entity_type": 'cartridge',
+    "expected_manufacturer": 'IMI Systems',
+    "expected_caliber": "6.5 Creedmoor",
+    "brief_description": "140gr Hybrid Target",
+    "confidence": "high",
+    "notes": "Has G1/G7 BC, sectional density listed"
+  },
+  {
+    "url": "https://example.com/product/another",
+    "entity_type": 'cartridge',
+    "expected_manufacturer": 'IMI Systems',
+    "expected_caliber": "6mm Creedmoor",
+    "brief_description": "105gr VLD Target",
+    "confidence": "high",
+    "notes": "Complete specs available"
+  }
+]
+```
+
+Note: Return products from **all calibers** you find, not just one. The array can contain dozens of products across multiple calibers.
+
+**Confidence levels**:
+- `high`: Product page with complete specs on the page (BC/velocity/weight/specs all visible)
+- `medium`: Product page exists but some specs are in separate sections (load data, PDFs) or require navigation
+- `low`: Uncertain if this is the canonical product page, specs are minimal, or page structure is unclear
+
+## Notes
+
+- Return products from **all relevant calibers** you find on the site, not just the high priority ones.
+- If the site structure makes individual product pages hard to find (e.g., everything behind a configurator), document what you found and provide the best alternative (product family pages, etc.).
+- The manufacturer may not make products in all listed calibers — that's fine, just return what exists.
+- Use your judgment on completeness — aim for comprehensive coverage of their catalog in relevant calibers.

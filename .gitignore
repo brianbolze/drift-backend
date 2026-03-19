@@ -38,7 +38,14 @@ logs/
 # Temporary files
 tmp/
 temp/
-data/pipeline/
+
+# Pipeline cache (large/generated) — keep config and manifests
+data/pipeline/*
+!data/pipeline/rejected_calibers.json
+!data/pipeline/url_manifest.json
+!data/pipeline/url_manifest_cartridges.json
+!data/pipeline/url_manifest_template.json
+!data/pipeline/cowork_prompts/
 
 # AI tools
 .claude/settings.local.json

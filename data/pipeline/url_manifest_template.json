@@ -1,0 +1,152 @@
+[
+  {
+    "url": "https://www.hornady.com/bullets/eld-match/6.5mm-264-140-gr-eld-match",
+    "entity_type": "bullet",
+    "expected_manufacturer": "Hornady",
+    "expected_caliber": "6.5 Creedmoor",
+    "priority": 1,
+    "source_type": "manufacturer",
+    "discovery_method": "verified_in_codebase",
+    "notes": "140gr ELD Match, 6.5mm/.264. SKU 26331. Verified in seed_data.py"
+  },
+  {
+    "url": "https://www.hornady.com/bullets/eld-match/6.5mm-264-147-gr-eld-match",
+    "entity_type": "bullet",
+    "expected_manufacturer": "Hornady",
+    "expected_caliber": "6.5 Creedmoor",
+    "priority": 1,
+    "source_type": "manufacturer",
+    "discovery_method": "verified_in_codebase",
+    "notes": "147gr ELD Match, 6.5mm/.264. SKU 26333. Verified in seed_data.py"
+  },
+  {
+    "url": "https://www.hornady.com/bullets/eld-x/6.5mm-264-143-gr-eld-x",
+    "entity_type": "bullet",
+    "expected_manufacturer": "Hornady",
+    "expected_caliber": "6.5 Creedmoor",
+    "priority": 1,
+    "source_type": "manufacturer",
+    "discovery_method": "verified_in_codebase",
+    "notes": "143gr ELD-X, 6.5mm/.264. SKU 2635. Verified in seed_data.py"
+  },
+  {
+    "url": "https://www.hornady.com/bullets/a-tip/6.5mm-264-153-gr-a-tip-match",
+    "entity_type": "bullet",
+    "expected_manufacturer": "Hornady",
+    "expected_caliber": "6.5 Creedmoor",
+    "priority": 1,
+    "source_type": "manufacturer",
+    "discovery_method": "pattern_derived",
+    "notes": "153gr A-Tip Match, 6.5mm/.264. URL pattern from verified 230gr A-Tip: /bullets/a-tip/{cal}-{weight}-gr-a-tip-match. NEEDS VERIFICATION."
+  },
+  {
+    "url": "https://www.sierrabullets.com/product/6-5mm-140-gr-matchking/",
+    "entity_type": "bullet",
+    "expected_manufacturer": "Sierra Bullets",
+    "expected_caliber": "6.5 Creedmoor",
+    "priority": 1,
+    "source_type": "manufacturer",
+    "discovery_method": "verified_in_codebase",
+    "notes": "140gr MatchKing, 6.5mm. SKU 1740. Verified in seed_data.py"
+  },
+  {
+    "url": "https://www.sierrabullets.com/product/6-5mm-130-gr-matchking/",
+    "entity_type": "bullet",
+    "expected_manufacturer": "Sierra Bullets",
+    "expected_caliber": "6.5 Creedmoor",
+    "priority": 1,
+    "source_type": "manufacturer",
+    "discovery_method": "pattern_derived",
+    "notes": "130gr MatchKing, 6.5mm. URL pattern from verified 140gr: /product/{cal}-{weight}-gr-matchking/. NEEDS VERIFICATION."
+  },
+  {
+    "url": "https://www.bergerbullets.com/products/6-5mm-140-gr-hybrid-target/",
+    "entity_type": "bullet",
+    "expected_manufacturer": "Berger Bullets",
+    "expected_caliber": "6.5 Creedmoor",
+    "priority": 1,
+    "source_type": "manufacturer",
+    "discovery_method": "verified_in_codebase",
+    "notes": "140gr Hybrid Target, 6.5mm. SKU 26414. Verified in seed_data.py"
+  },
+  {
+    "url": "https://www.bergerbullets.com/products/6-5mm-144-gr-long-range-hybrid-target/",
+    "entity_type": "bullet",
+    "expected_manufacturer": "Berger Bullets",
+    "expected_caliber": "6.5 Creedmoor",
+    "priority": 1,
+    "source_type": "manufacturer",
+    "discovery_method": "pattern_derived",
+    "notes": "144gr Long Range Hybrid Target, 6.5mm. URL pattern from verified Berger URLs. NEEDS VERIFICATION."
+  },
+  {
+    "url": "https://www.sierrabullets.com/product/7mm-168-gr-matchking/",
+    "entity_type": "bullet",
+    "expected_manufacturer": "Sierra Bullets",
+    "expected_caliber": "7mm PRC",
+    "priority": 3,
+    "source_type": "manufacturer",
+    "discovery_method": "pattern_derived",
+    "notes": "168gr MatchKing, 7mm. URL pattern from verified Sierra URLs. NEEDS VERIFICATION."
+  },
+  {
+    "url": "https://www.sierrabullets.com/product/7mm-180-gr-matchking/",
+    "entity_type": "bullet",
+    "expected_manufacturer": "Sierra Bullets",
+    "expected_caliber": "7mm PRC",
+    "priority": 3,
+    "source_type": "manufacturer",
+    "discovery_method": "pattern_derived",
+    "notes": "180gr MatchKing, 7mm. URL pattern from verified Sierra URLs. NEEDS VERIFICATION."
+  },
+  {
+    "url": "https://www.bergerbullets.com/products/7mm-180-gr-hybrid-target/",
+    "entity_type": "bullet",
+    "expected_manufacturer": "Berger Bullets",
+    "expected_caliber": "7mm PRC",
+    "priority": 3,
+    "source_type": "manufacturer",
+    "discovery_method": "pattern_derived",
+    "notes": "180gr Hybrid Target, 7mm. URL pattern from verified Berger URLs. NEEDS VERIFICATION."
+  },
+  {
+    "url": "https://www.nosler.com/rdf-bullets",
+    "entity_type": "bullet",
+    "expected_manufacturer": "Nosler",
+    "expected_caliber": "7mm PRC",
+    "priority": 3,
+    "source_type": "manufacturer",
+    "discovery_method": "verified_in_codebase",
+    "notes": "RDF 168gr 7mm. Category page, same URL as other RDF entries."
+  },
+  {
+    "url": "https://www.sierrabullets.com/product/338-cal-300-gr-matchking/",
+    "entity_type": "bullet",
+    "expected_manufacturer": "Sierra Bullets",
+    "expected_caliber": ".338 Lapua Magnum",
+    "priority": 4,
+    "source_type": "manufacturer",
+    "discovery_method": "pattern_derived",
+    "notes": "300gr MatchKing, .338. URL pattern from verified Sierra URLs. NEEDS VERIFICATION."
+  },
+  {
+    "url": "https://www.sierrabullets.com/product/338-cal-250-gr-matchking/",
+    "entity_type": "bullet",
+    "expected_manufacturer": "Sierra Bullets",
+    "expected_caliber": ".338 Lapua Magnum",
+    "priority": 4,
+    "source_type": "manufacturer",
+    "discovery_method": "pattern_derived",
+    "notes": "250gr MatchKing, .338. URL pattern from verified Sierra URLs. NEEDS VERIFICATION."
+  },
+  {
+    "url": "https://www.hornady.com/bullets/eld-match/25-cal-257-110-gr-eld-match",
+    "entity_type": "bullet",
+    "expected_manufacturer": "Hornady",
+    "expected_caliber": ".25 Creedmoor",
+    "priority": 4,
+    "source_type": "manufacturer",
+    "discovery_method": "pattern_derived",
+    "notes": "110gr ELD Match, .25 cal/.257. URL pattern from verified Hornady ELD Match URLs. NEEDS VERIFICATION."
+  }
+]
