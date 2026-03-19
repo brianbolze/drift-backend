@@ -179,12 +179,12 @@ operations:
     muzzle_velocity_fps: 2900
     test_barrel_length_inches: 24
 
-# Source: MidwayUSA, SMGA — 2680 fps
+# Source: Barnes ballistics page, spot-checked 2026-03-19 — 2700 fps
 - action: update_cartridge
   manufacturer: "Barnes Bullets"
   name: "VOR-TX Rifle TTSX 308 Win 168 GR"
   set:
-    muzzle_velocity_fps: 2680
+    muzzle_velocity_fps: 2700
     test_barrel_length_inches: 24
 
 # ── .35 Whelen ───────────────────────────────────────────────────────────────
