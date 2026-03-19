@@ -1,0 +1,513 @@
+patch:
+  id: 016_norma_cartridges
+  author: agent
+  date: '2026-03-19'
+  description: >
+    Add Norma factory rifle cartridges. Norma's website is a 2.3MB SPA that the
+    pipeline reducer cannot handle, so these are curated from retailer data
+    (normausa.com, midwayusa.com, ammoseek.com). Covers Golden Target (match),
+    BondStrike (LR hunting), TipStrike (hunting), and Ecostrike (lead-free).
+    Whitetail line skipped — all bullets missing, low BC, not precision-relevant.
+operations:
+
+# ══════════════════════════════════════════════════════════════════════════════
+# MISSING BULLETS — create before cartridges that reference them
+# ══════════════════════════════════════════════════════════════════════════════
+
+- action: create_bullet
+  manufacturer: Norma
+  name: Norma Golden Target 6mm (.243) 107gr BTHP
+  bullet_diameter_inches: 0.243
+  weight_grains: 107.0
+  bc_g1: 0.547
+  product_line: Golden Target
+  base_type: boat_tail
+  tip_type: hollow_point
+  source_url: https://www.norma-ammunition.com/en-gb/products/dedicated-precision/centerfire-rifle/norma-golden-target/norma-golden-target-6mm-creedmoor-107gr---20160392
+
+- action: create_bullet
+  manufacturer: Norma
+  name: Norma BondStrike 6mm (.243) 105gr
+  bullet_diameter_inches: 0.243
+  weight_grains: 105.0
+  bc_g1: 0.517
+  product_line: Bondstrike
+  base_type: boat_tail
+  tip_type: polymer
+  source_url: https://www.norma-ammunition.com/en-us/products/dedicated-hunting/centerfire-rifle/norma-bondstrike/norma-bondstrike-6mm-creedmoor-105gr---20160482
+
+- action: create_bullet
+  manufacturer: Norma
+  name: Norma Golden Target .30 (.308) 220gr BTHP
+  bullet_diameter_inches: 0.308
+  weight_grains: 220.0
+  bc_g1: 0.629
+  product_line: Golden Target
+  base_type: boat_tail
+  tip_type: hollow_point
+  source_url: https://www.norma-ammunition.com/en-gb/products/dedicated-precision/centerfire-rifle/norma-golden-target/norma-golden-target-300-win-mag-220gr---20177722
+
+- action: create_bullet
+  manufacturer: Norma
+  name: Norma TipStrike 6,5mm (.264) 140gr
+  bullet_diameter_inches: 0.264
+  weight_grains: 140.0
+  bc_g1: 0.480
+  product_line: Tipstrike
+  base_type: boat_tail
+  tip_type: polymer
+  source_url: https://www.norma-ammunition.com/en-gb/products/dedicated-hunting/centerfire-rifle/norma-tipstrike/norma-tipstrike-65-creedmoor-140gr---20166512
+
+# ══════════════════════════════════════════════════════════════════════════════
+# GOLDEN TARGET — Match/competition line (highest priority)
+# ══════════════════════════════════════════════════════════════════════════════
+
+# ── .223 Remington ───────────────────────────────────────────────────────────
+- action: create_cartridge
+  manufacturer: Norma
+  name: Norma Golden Target .223 Rem 69gr BTHP
+  caliber: .223 Remington
+  bullet: Norma GTX 5,7 mm (.224) 4,5g
+  bullet_manufacturer: Norma
+  bullet_weight_grains: 69.0
+  muzzle_velocity_fps: 2936
+  test_barrel_length_inches: 24.0
+  product_line: Golden Target
+  source_url: https://www.norma-ammunition.com/en-gb/products/dedicated-precision/centerfire-rifle/norma-golden-target/norma-golden-target-223-remington-69gr---10157692
+
+# ── 6mm Creedmoor ───────────────────────────────────────────────────────────
+- action: create_cartridge
+  manufacturer: Norma
+  name: Norma Golden Target 6mm Creedmoor 107gr BTHP
+  caliber: 6mm Creedmoor
+  bullet: Norma Golden Target 6mm (.243) 107gr BTHP
+  bullet_manufacturer: Norma
+  bullet_weight_grains: 107.0
+  muzzle_velocity_fps: 3051
+  test_barrel_length_inches: 24.0
+  product_line: Golden Target
+  source_url: https://www.norma-ammunition.com/en-gb/products/dedicated-precision/centerfire-rifle/norma-golden-target/norma-golden-target-6mm-creedmoor-107gr---20160392
+
+# ── 6.5 Creedmoor ───────────────────────────────────────────────────────────
+- action: create_cartridge
+  manufacturer: Norma
+  name: Norma Golden Target 6.5 Creedmoor 130gr BTHP
+  caliber: 6.5 Creedmoor
+  bullet: Norma GTX 6,5 mm (.264) 8,4g
+  bullet_manufacturer: Norma
+  bullet_weight_grains: 130.0
+  muzzle_velocity_fps: 2851
+  test_barrel_length_inches: 24.0
+  product_line: Golden Target
+  source_url: https://www.norma-ammunition.com/en-gb/products/dedicated-precision/centerfire-rifle/norma-golden-target/norma-golden-target-65-creedmoor-130gr---10166312
+
+- action: create_cartridge
+  manufacturer: Norma
+  name: Norma Golden Target 6.5 Creedmoor 143gr BTHP
+  caliber: 6.5 Creedmoor
+  bullet: Norma GTX 6,5 mm (.264) 9,27g
+  bullet_manufacturer: Norma
+  bullet_weight_grains: 143.0
+  muzzle_velocity_fps: 2723
+  test_barrel_length_inches: 24.0
+  product_line: Golden Target
+  source_url: https://www.norma-ammunition.com/en-gb/products/dedicated-precision/centerfire-rifle/norma-golden-target/norma-golden-target-65-creedmoor-143gr---10166522
+
+# ── 6.5 PRC ─────────────────────────────────────────────────────────────────
+- action: create_cartridge
+  manufacturer: Norma
+  name: Norma Golden Target 6.5 PRC 143gr BTHP
+  caliber: 6.5 PRC
+  bullet: Norma GTX 6,5 mm (.264) 9,27g
+  bullet_manufacturer: Norma
+  bullet_weight_grains: 143.0
+  muzzle_velocity_fps: 2831
+  test_barrel_length_inches: 24.0
+  product_line: Golden Target
+  source_url: https://www.norma-ammunition.com/en-gb/products/dedicated-precision/centerfire-rifle/norma-golden-target/norma-golden-target-65-prc-143gr---10166462
+
+# ── 6.5x55 Swedish ──────────────────────────────────────────────────────────
+- action: create_cartridge
+  manufacturer: Norma
+  name: Norma Golden Target 6.5x55 Swedish 130gr BTHP
+  caliber: 6.5x55mm Swedish
+  bullet: Norma GTX 6,5 mm (.264) 8,4g
+  bullet_manufacturer: Norma
+  bullet_weight_grains: 130.0
+  muzzle_velocity_fps: 2723
+  test_barrel_length_inches: 24.0
+  product_line: Golden Target
+  source_url: https://www.norma-ammunition.com/en-gb/products/dedicated-precision/centerfire-rifle/norma-golden-target/norma-golden-target-65x55-swedish-mauser-130gr---10165130
+
+- action: create_cartridge
+  manufacturer: Norma
+  name: Norma Golden Target 6.5x55 Swedish 143gr BTHP
+  caliber: 6.5x55mm Swedish
+  bullet: Norma GTX 6,5 mm (.264) 9,27g
+  bullet_manufacturer: Norma
+  bullet_weight_grains: 143.0
+  muzzle_velocity_fps: 2560
+  test_barrel_length_inches: 24.0
+  product_line: Golden Target
+  source_url: https://www.norma-ammunition.com/en-gb/products/dedicated-precision/centerfire-rifle/norma-golden-target/norma-golden-target-65x55-143-gr---10166602
+
+# ── .308 Winchester ──────────────────────────────────────────────────────────
+- action: create_cartridge
+  manufacturer: Norma
+  name: Norma Golden Target .308 Win 155gr BTHP
+  caliber: .308 Winchester
+  bullet: Norma GTX .30 (.308) 10,0g
+  bullet_manufacturer: Norma
+  bullet_weight_grains: 155.0
+  muzzle_velocity_fps: 2657
+  test_barrel_length_inches: 24.0
+  product_line: Golden Target
+  source_url: https://www.norma-ammunition.com/en-gb/products/dedicated-precision/centerfire-rifle/norma-golden-target/norma-golden-target-308-winchester-155gr---10177422
+
+- action: create_cartridge
+  manufacturer: Norma
+  name: Norma Golden Target .308 Win 168gr BTHP
+  caliber: .308 Winchester
+  bullet: Norma GTX .30 (.308) 10,9g
+  bullet_manufacturer: Norma
+  bullet_weight_grains: 168.0
+  muzzle_velocity_fps: 2625
+  test_barrel_length_inches: 24.0
+  product_line: Golden Target
+  source_url: https://www.norma-ammunition.com/en-gb/products/dedicated-precision/centerfire-rifle/norma-golden-target/norma-golden-target-308-winchester-168gr---10177432
+
+- action: create_cartridge
+  manufacturer: Norma
+  name: Norma Golden Target .308 Win 175gr BTHP
+  caliber: .308 Winchester
+  bullet: Norma GTX .30 (.308) 11,3g
+  bullet_manufacturer: Norma
+  bullet_weight_grains: 175.0
+  muzzle_velocity_fps: 2592
+  test_barrel_length_inches: 24.0
+  product_line: Golden Target
+  source_url: https://www.norma-ammunition.com/en-gb/products/dedicated-precision/centerfire-rifle/norma-golden-target/norma-golden-target-308-winchester-175gr---10177442
+
+# ── .300 Winchester Magnum ───────────────────────────────────────────────────
+- action: create_cartridge
+  manufacturer: Norma
+  name: Norma Golden Target .300 Win Mag 220gr BTHP
+  caliber: .300 Winchester Magnum
+  bullet: Norma Golden Target .30 (.308) 220gr BTHP
+  bullet_manufacturer: Norma
+  bullet_weight_grains: 220.0
+  muzzle_velocity_fps: 2800
+  test_barrel_length_inches: 24.0
+  product_line: Golden Target
+  source_url: https://www.norma-ammunition.com/en-gb/products/dedicated-precision/centerfire-rifle/norma-golden-target/norma-golden-target-300-win-mag-220gr---20177722
+
+# ── .300 Norma Magnum (Berger Hybrid Target) ────────────────────────────────
+- action: create_cartridge
+  manufacturer: Norma
+  name: Norma Hybrid Target .300 Norma Mag 230gr Berger Hybrid Target
+  caliber: .300 Norma Magnum
+  bullet: 30 Caliber 230 Grain Hybrid Target Rifle Bullet
+  bullet_manufacturer: Berger Bullets
+  bullet_weight_grains: 230.0
+  muzzle_velocity_fps: 2986
+  test_barrel_length_inches: 26.0
+  product_line: Hybrid Target
+  source_url: https://www.norma-ammunition.com/en-gb/products/dedicated-precision/centerfire-rifle/norma-hybrid-target/norma-hybrid-target-300-norma-mag-230gr---20174602
+
+# ── .338 Lapua Magnum ───────────────────────────────────────────────────────
+- action: create_cartridge
+  manufacturer: Norma
+  name: Norma Golden Target .338 Lapua Mag 250gr BTHP
+  caliber: .338 Lapua Magnum
+  bullet: Norma GTX .338 16,2g
+  bullet_manufacturer: Norma
+  bullet_weight_grains: 250.0
+  muzzle_velocity_fps: 2838
+  test_barrel_length_inches: 27.0
+  product_line: Golden Target
+  source_url: https://www.norma-ammunition.com/en-gb/products/dedicated-precision/centerfire-rifle/norma-golden-target/norma-golden-target-338-lapua-mag-250gr---10185442
+
+# ══════════════════════════════════════════════════════════════════════════════
+# BONDSTRIKE — Long-range hunting (bonded polymer tip, high BC)
+# ══════════════════════════════════════════════════════════════════════════════
+
+# ── 6mm Creedmoor ───────────────────────────────────────────────────────────
+- action: create_cartridge
+  manufacturer: Norma
+  name: Norma BondStrike 6mm Creedmoor 105gr
+  caliber: 6mm Creedmoor
+  bullet: Norma BondStrike 6mm (.243) 105gr
+  bullet_manufacturer: Norma
+  bullet_weight_grains: 105.0
+  muzzle_velocity_fps: 3050
+  test_barrel_length_inches: 24.0
+  product_line: Bondstrike
+  source_url: https://www.norma-ammunition.com/en-us/products/dedicated-hunting/centerfire-rifle/norma-bondstrike/norma-bondstrike-6mm-creedmoor-105gr---20160482
+
+# ── 6.5 Creedmoor ───────────────────────────────────────────────────────────
+- action: create_cartridge
+  manufacturer: Norma
+  name: Norma BondStrike 6.5 Creedmoor 143gr
+  caliber: 6.5 Creedmoor
+  bullet: Norma Bondstrike 6,5 mm (.264) 9,27g
+  bullet_manufacturer: Norma
+  bullet_weight_grains: 143.0
+  muzzle_velocity_fps: 2740
+  test_barrel_length_inches: 24.0
+  product_line: Bondstrike
+  source_url: https://www.norma-ammunition.com/en-gb/products/dedicated-hunting/centerfire-rifle/norma-bondstrike/norma-bondstrike-65-creedmoor-143gr---20166402
+
+# ── 6.5 PRC ─────────────────────────────────────────────────────────────────
+- action: create_cartridge
+  manufacturer: Norma
+  name: Norma BondStrike 6.5 PRC 143gr
+  caliber: 6.5 PRC
+  bullet: Norma Bondstrike 6,5 mm (.264) 9,27g
+  bullet_manufacturer: Norma
+  bullet_weight_grains: 143.0
+  muzzle_velocity_fps: 2953
+  test_barrel_length_inches: 24.0
+  product_line: Bondstrike
+  source_url: https://www.norma-ammunition.com/en-gb/products/dedicated-hunting/centerfire-rifle/norma-bondstrike/norma-bondstrike-65-prc-143gr---20166452
+
+# ── 6.5x55 Swedish ──────────────────────────────────────────────────────────
+- action: create_cartridge
+  manufacturer: Norma
+  name: Norma BondStrike 6.5x55 Swedish 143gr
+  caliber: 6.5x55mm Swedish
+  bullet: Norma Bondstrike 6,5 mm (.264) 9,27g
+  bullet_manufacturer: Norma
+  bullet_weight_grains: 143.0
+  muzzle_velocity_fps: 2690
+  test_barrel_length_inches: 24.0
+  product_line: Bondstrike
+  source_url: https://www.norma-ammunition.com/en-gb/products/dedicated-hunting/centerfire-rifle/norma-bondstrike/norma-bondstrike-65x55-swedish-mauser-143-gr---20166382
+
+# ── 7mm PRC ──────────────────────────────────────────────────────────────────
+- action: create_cartridge
+  manufacturer: Norma
+  name: Norma BondStrike 7mm PRC 165gr
+  caliber: 7mm PRC
+  bullet: Norma Bondstrike 7 mm (.284) 10,7g
+  bullet_manufacturer: Norma
+  bullet_weight_grains: 165.0
+  muzzle_velocity_fps: 3051
+  test_barrel_length_inches: 24.0
+  product_line: Bondstrike
+  source_url: https://www.norma-ammunition.com/en-gb/products/dedicated-hunting/centerfire-rifle/norma-bondstrike/norma-bondstrike-7mm-prc-165gr---20171582
+
+# ── 7mm Remington Magnum ────────────────────────────────────────────────────
+- action: create_cartridge
+  manufacturer: Norma
+  name: Norma BondStrike 7mm Rem Mag 165gr
+  caliber: 7mm Remington Magnum
+  bullet: Norma Bondstrike 7 mm (.284) 10,7g
+  bullet_manufacturer: Norma
+  bullet_weight_grains: 165.0
+  muzzle_velocity_fps: 2900
+  test_barrel_length_inches: 24.0
+  product_line: Bondstrike
+  source_url: https://www.norma-ammunition.com/en-gb/products/dedicated-hunting/centerfire-rifle/norma-bondstrike/norma-bondstrike-7-mm-rem-mag-165gr---20171522
+
+# ── .308 Winchester ──────────────────────────────────────────────────────────
+- action: create_cartridge
+  manufacturer: Norma
+  name: Norma BondStrike .308 Win 180gr
+  caliber: .308 Winchester
+  bullet: Norma Bondstrike .30 (.308) 11,7g
+  bullet_manufacturer: Norma
+  bullet_weight_grains: 180.0
+  muzzle_velocity_fps: 2625
+  test_barrel_length_inches: 24.0
+  product_line: Bondstrike
+  source_url: https://www.norma-ammunition.com/en-gb/products/dedicated-hunting/centerfire-rifle/norma-bondstrike/norma-bondstrike-308-winchester-180gr---20176412
+
+# ── .30-06 Springfield ───────────────────────────────────────────────────────
+- action: create_cartridge
+  manufacturer: Norma
+  name: Norma BondStrike .30-06 Springfield 180gr
+  caliber: .30-06 Springfield
+  bullet: Norma Bondstrike .30 (.308) 11,7g
+  bullet_manufacturer: Norma
+  bullet_weight_grains: 180.0
+  muzzle_velocity_fps: 2756
+  test_barrel_length_inches: 24.0
+  product_line: Bondstrike
+  source_url: https://www.norma-ammunition.com/en-gb/products/dedicated-hunting/centerfire-rifle/norma-bondstrike/norma-bondstrike-30-06-springfield-180gr---20176422
+
+# ── .300 WSM ─────────────────────────────────────────────────────────────────
+- action: create_cartridge
+  manufacturer: Norma
+  name: Norma BondStrike .300 WSM 180gr
+  caliber: .300 Winchester Short Magnum
+  bullet: Norma Bondstrike .30 (.308) 11,7g
+  bullet_manufacturer: Norma
+  bullet_weight_grains: 180.0
+  muzzle_velocity_fps: 3084
+  test_barrel_length_inches: 24.0
+  product_line: Bondstrike
+  source_url: https://www.norma-ammunition.com/en-gb/products/dedicated-hunting/centerfire-rifle/norma-bondstrike/norma-bondstrike-300-winchester-short-magnum-180gr---20175832
+
+# ── .300 Winchester Magnum ───────────────────────────────────────────────────
+- action: create_cartridge
+  manufacturer: Norma
+  name: Norma BondStrike .300 Win Mag 180gr
+  caliber: .300 Winchester Magnum
+  bullet: Norma Bondstrike .30 (.308) 11,7g
+  bullet_manufacturer: Norma
+  bullet_weight_grains: 180.0
+  muzzle_velocity_fps: 3084
+  test_barrel_length_inches: 24.0
+  product_line: Bondstrike
+  source_url: https://www.norma-ammunition.com/en-gb/products/dedicated-hunting/centerfire-rifle/norma-bondstrike/norma-bondstrike-300-winchester-magnum-180gr---20176332
+
+# ── .300 PRC ─────────────────────────────────────────────────────────────────
+- action: create_cartridge
+  manufacturer: Norma
+  name: Norma BondStrike .300 PRC 180gr
+  caliber: .300 PRC
+  bullet: Norma Bondstrike .30 (.308) 11,7g
+  bullet_manufacturer: Norma
+  bullet_weight_grains: 180.0
+  muzzle_velocity_fps: 3182
+  test_barrel_length_inches: 24.0
+  product_line: Bondstrike
+  source_url: https://www.norma-ammunition.com/en-gb/products/dedicated-hunting/centerfire-rifle/norma-bondstrike/norma-bondstrike-300-prc-180gr---20177762
+
+# ══════════════════════════════════════════════════════════════════════════════
+# TIPSTRIKE — Polymer-tip hunting (key calibers only)
+# ══════════════════════════════════════════════════════════════════════════════
+
+# ── .243 Winchester ──────────────────────────────────────────────────────────
+- action: create_cartridge
+  manufacturer: Norma
+  name: Norma TipStrike .243 Win 76gr
+  caliber: .243 Winchester
+  bullet: Norma Tipstrike Varmint 6mm (.243) 4,9g
+  bullet_manufacturer: Norma
+  bullet_weight_grains: 76.0
+  muzzle_velocity_fps: 3445
+  test_barrel_length_inches: 24.0
+  product_line: Tipstrike
+  source_url: https://www.norma-ammunition.com/en-gb/products/dedicated-hunting/centerfire-rifle/norma-tipstrike/norma-tipstrike-varmint-243-winchester-76gr---20160052
+
+# ── 6.5 Creedmoor ───────────────────────────────────────────────────────────
+- action: create_cartridge
+  manufacturer: Norma
+  name: Norma TipStrike 6.5 Creedmoor 140gr
+  caliber: 6.5 Creedmoor
+  bullet: Norma TipStrike 6,5mm (.264) 140gr
+  bullet_manufacturer: Norma
+  bullet_weight_grains: 140.0
+  muzzle_velocity_fps: 2625
+  test_barrel_length_inches: 24.0
+  product_line: Tipstrike
+  source_url: https://www.norma-ammunition.com/en-gb/products/dedicated-hunting/centerfire-rifle/norma-tipstrike/norma-tipstrike-65-creedmoor-140gr---20166512
+
+# ── .270 Winchester ──────────────────────────────────────────────────────────
+- action: create_cartridge
+  manufacturer: Norma
+  name: Norma TipStrike .270 Win 140gr
+  caliber: .270 Winchester
+  bullet: Norma Tipstrike .270 9,1g
+  bullet_manufacturer: Norma
+  bullet_weight_grains: 140.0
+  muzzle_velocity_fps: 3084
+  test_barrel_length_inches: 24.0
+  product_line: Tipstrike
+  source_url: https://www.norma-ammunition.com/en-gb/products/dedicated-hunting/centerfire-rifle/norma-tipstrike/norma-tipstrike-270-winchester-140gr---20169292
+
+# ── 7mm Remington Magnum ────────────────────────────────────────────────────
+- action: create_cartridge
+  manufacturer: Norma
+  name: Norma TipStrike 7mm Rem Mag 160gr
+  caliber: 7mm Remington Magnum
+  bullet: Norma Tipstrike 7mm (.284) 10,4g
+  bullet_manufacturer: Norma
+  bullet_weight_grains: 160.0
+  muzzle_velocity_fps: 3018
+  test_barrel_length_inches: 24.0
+  product_line: Tipstrike
+  source_url: https://www.norma-ammunition.com/en-gb/products/dedicated-hunting/centerfire-rifle/norma-tipstrike/norma-tipstrike-7-mm-remington-magnum-160gr---20170142
+
+# ── .308 Winchester ──────────────────────────────────────────────────────────
+- action: create_cartridge
+  manufacturer: Norma
+  name: Norma TipStrike .308 Win 170gr
+  caliber: .308 Winchester
+  bullet: Norma Tipstrike .30 (.308) 11,0g
+  bullet_manufacturer: Norma
+  bullet_weight_grains: 170.0
+  muzzle_velocity_fps: 2625
+  test_barrel_length_inches: 24.0
+  product_line: Tipstrike
+  source_url: https://www.norma-ammunition.com/en-gb/products/dedicated-hunting/centerfire-rifle/norma-tipstrike/norma-tipstrike-308-winchester-170gr---20174352
+
+# ── .30-06 Springfield ───────────────────────────────────────────────────────
+- action: create_cartridge
+  manufacturer: Norma
+  name: Norma TipStrike .30-06 Springfield 170gr
+  caliber: .30-06 Springfield
+  bullet: Norma Tipstrike .30 (.308) 11,0g
+  bullet_manufacturer: Norma
+  bullet_weight_grains: 170.0
+  muzzle_velocity_fps: 2790
+  test_barrel_length_inches: 24.0
+  product_line: Tipstrike
+  source_url: https://www.norma-ammunition.com/en-gb/products/dedicated-hunting/centerfire-rifle/norma-tipstrike/norma-tipstrike-30-06-springfield-170gr---20174342
+
+# ── .300 WSM ─────────────────────────────────────────────────────────────────
+- action: create_cartridge
+  manufacturer: Norma
+  name: Norma TipStrike .300 WSM 170gr
+  caliber: .300 Winchester Short Magnum
+  bullet: Norma Tipstrike .30 (.308) 11,0g
+  bullet_manufacturer: Norma
+  bullet_weight_grains: 170.0
+  muzzle_velocity_fps: 3199
+  test_barrel_length_inches: 24.0
+  product_line: Tipstrike
+  source_url: https://www.norma-ammunition.com/en-gb/products/dedicated-hunting/centerfire-rifle/norma-tipstrike/norma-tipstrike-300-winchester-short-magnum-170gr---20174022
+
+# ── .300 Winchester Magnum ───────────────────────────────────────────────────
+- action: create_cartridge
+  manufacturer: Norma
+  name: Norma TipStrike .300 Win Mag 170gr
+  caliber: .300 Winchester Magnum
+  bullet: Norma Tipstrike .30 (.308) 11,0g
+  bullet_manufacturer: Norma
+  bullet_weight_grains: 170.0
+  muzzle_velocity_fps: 3150
+  test_barrel_length_inches: 24.0
+  product_line: Tipstrike
+  source_url: https://www.norma-ammunition.com/en-gb/products/dedicated-hunting/centerfire-rifle/norma-tipstrike/norma-tipstrike-300-winchester-magnum-170gr---20174362
+
+# ══════════════════════════════════════════════════════════════════════════════
+# ECOSTRIKE — Lead-free copper (key calibers only)
+# ══════════════════════════════════════════════════════════════════════════════
+
+# ── 6.5 Creedmoor ───────────────────────────────────────────────────────────
+- action: create_cartridge
+  manufacturer: Norma
+  name: Norma Ecostrike 6.5 Creedmoor 120gr
+  caliber: 6.5 Creedmoor
+  bullet: Norma ECOSTRIKE 6,5 mm 7,8g
+  bullet_manufacturer: Norma
+  bullet_weight_grains: 120.0
+  muzzle_velocity_fps: 2887
+  test_barrel_length_inches: 24.0
+  product_line: Ecostrike
+  source_url: https://www.norma-ammunition.com/en-gb/products/dedicated-hunting/centerfire-rifle/norma-ecostrike/norma-ecostrike-65-creedmoor-120gr---20166572
+
+# ── .308 Winchester ──────────────────────────────────────────────────────────
+- action: create_cartridge
+  manufacturer: Norma
+  name: Norma Ecostrike .308 Win 150gr
+  caliber: .308 Winchester
+  bullet: Norma Ecostrike .30 (.308) 9,7g
+  bullet_manufacturer: Norma
+  bullet_weight_grains: 150.0
+  muzzle_velocity_fps: 2822
+  test_barrel_length_inches: 24.0
+  product_line: Ecostrike
+  source_url: https://www.norma-ammunition.com/en-gb/products/dedicated-hunting/centerfire-rifle/norma-ecostrike/norma-ecostrike-308-winchester-150gr---20177562

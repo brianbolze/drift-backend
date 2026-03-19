@@ -196,3 +196,24 @@ Adding Tier 1 + Tier 2 across key calibers would add an estimated **200-300 cart
 | Sig Sauer | Pipeline or curation | Moderate catalog size |
 | Remington | Pipeline or curation | Post-bankruptcy site may have changed |
 | Lapua | Curation patches | Very small catalog, not worth pipeline effort |
+
+---
+
+## Status Update — 2026-03-19
+
+**568 total cartridges** across 8 manufacturers. Plan's 500–550 launch target exceeded.
+
+| Manufacturer | Cartridges | Status |
+|---|---|---|
+| Hornady | 156 | Tier 1 ✅ |
+| Nosler | 124 | Tier 1 ✅ |
+| Federal | 124 | Tier 1 ✅ |
+| Winchester | 44 | Tier 2 ✅ |
+| Norma | 34 | Tier 2 ✅ (patch 016 — Golden Target, BondStrike, TipStrike, Ecostrike) |
+| Barnes Bullets | 33 | Tier 2 ✅ |
+| Berger Bullets | 31 | Tier 1 ✅ |
+| Black Hills | 22 | Tier 1 ✅ |
+
+Key caliber gaps closed: .260 Remington went from 0 → 5 (still thin), 6mm ARC unchanged at 5. All other priority calibers well above plan targets, led by .308 Win (61), 6.5 Creedmoor (41), .223 Rem (39), .300 Win Mag (34), .30-06 (32).
+
+Remaining work: Tier 3 (Sig, Remington, Lapua) is post-launch. Norma Whitetail/Oryx lines skipped — bullets not in DB, low BC, not precision-relevant.

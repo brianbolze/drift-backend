@@ -1,0 +1,246 @@
+patch:
+  id: 017_norma_url_fixes
+  author: agent
+  date: '2026-03-19'
+  description: >
+    Fix source URLs on Norma cartridges from patch 016 — original URLs used
+    fabricated slugs that 404. Updated to real norma-ammunition.com en-gb product
+    page URLs with SKU numbers. Also fixes .300 Norma Mag cartridge: product_line
+    was incorrectly "Golden Target", should be "Hybrid Target" (separate Norma
+    product line).
+operations:
+
+# ── Fix .300 Norma Mag product_line + name + URL ────────────────────────────
+- action: update_cartridge
+  name: Norma Golden Target .300 Norma Mag 230gr Berger Hybrid Target
+  manufacturer: Norma
+  set:
+    product_line: Hybrid Target
+    source_url: https://www.norma-ammunition.com/en-gb/products/dedicated-precision/centerfire-rifle/norma-hybrid-target/norma-hybrid-target-300-norma-mag-230gr---20174602
+
+# ── Golden Target URL fixes ─────────────────────────────────────────────────
+- action: update_cartridge
+  name: Norma Golden Target .223 Rem 69gr BTHP
+  manufacturer: Norma
+  set:
+    source_url: https://www.norma-ammunition.com/en-gb/products/dedicated-precision/centerfire-rifle/norma-golden-target/norma-golden-target-223-remington-69gr---10157692
+
+- action: update_cartridge
+  name: Norma Golden Target 6mm Creedmoor 107gr BTHP
+  manufacturer: Norma
+  set:
+    source_url: https://www.norma-ammunition.com/en-gb/products/dedicated-precision/centerfire-rifle/norma-golden-target/norma-golden-target-6mm-creedmoor-107gr---20160392
+
+- action: update_cartridge
+  name: Norma Golden Target 6.5 Creedmoor 130gr BTHP
+  manufacturer: Norma
+  set:
+    source_url: https://www.norma-ammunition.com/en-gb/products/dedicated-precision/centerfire-rifle/norma-golden-target/norma-golden-target-65-creedmoor-130gr---10166312
+
+- action: update_cartridge
+  name: Norma Golden Target 6.5 Creedmoor 143gr BTHP
+  manufacturer: Norma
+  set:
+    source_url: https://www.norma-ammunition.com/en-gb/products/dedicated-precision/centerfire-rifle/norma-golden-target/norma-golden-target-65-creedmoor-143gr---10166522
+
+- action: update_cartridge
+  name: Norma Golden Target 6.5 PRC 143gr BTHP
+  manufacturer: Norma
+  set:
+    source_url: https://www.norma-ammunition.com/en-gb/products/dedicated-precision/centerfire-rifle/norma-golden-target/norma-golden-target-65-prc-143gr---10166462
+
+- action: update_cartridge
+  name: Norma Golden Target 6.5x55 Swedish 130gr BTHP
+  manufacturer: Norma
+  set:
+    source_url: https://www.norma-ammunition.com/en-gb/products/dedicated-precision/centerfire-rifle/norma-golden-target/norma-golden-target-65x55-swedish-mauser-130gr---10165130
+
+- action: update_cartridge
+  name: Norma Golden Target 6.5x55 Swedish 143gr BTHP
+  manufacturer: Norma
+  set:
+    source_url: https://www.norma-ammunition.com/en-gb/products/dedicated-precision/centerfire-rifle/norma-golden-target/norma-golden-target-65x55-143-gr---10166602
+
+- action: update_cartridge
+  name: Norma Golden Target .308 Win 155gr BTHP
+  manufacturer: Norma
+  set:
+    source_url: https://www.norma-ammunition.com/en-gb/products/dedicated-precision/centerfire-rifle/norma-golden-target/norma-golden-target-308-winchester-155gr---10177422
+
+- action: update_cartridge
+  name: Norma Golden Target .308 Win 168gr BTHP
+  manufacturer: Norma
+  set:
+    source_url: https://www.norma-ammunition.com/en-gb/products/dedicated-precision/centerfire-rifle/norma-golden-target/norma-golden-target-308-winchester-168gr---10177432
+
+- action: update_cartridge
+  name: Norma Golden Target .308 Win 175gr BTHP
+  manufacturer: Norma
+  set:
+    source_url: https://www.norma-ammunition.com/en-gb/products/dedicated-precision/centerfire-rifle/norma-golden-target/norma-golden-target-308-winchester-175gr---10177442
+
+- action: update_cartridge
+  name: Norma Golden Target .300 Win Mag 220gr BTHP
+  manufacturer: Norma
+  set:
+    source_url: https://www.norma-ammunition.com/en-gb/products/dedicated-precision/centerfire-rifle/norma-golden-target/norma-golden-target-300-win-mag-220gr---20177722
+
+- action: update_cartridge
+  name: Norma Golden Target .338 Lapua Mag 250gr BTHP
+  manufacturer: Norma
+  set:
+    source_url: https://www.norma-ammunition.com/en-gb/products/dedicated-precision/centerfire-rifle/norma-golden-target/norma-golden-target-338-lapua-mag-250gr---10185442
+
+# ── BondStrike URL fixes ────────────────────────────────────────────────────
+- action: update_cartridge
+  name: Norma BondStrike 6mm Creedmoor 105gr
+  manufacturer: Norma
+  set:
+    source_url: https://www.norma-ammunition.com/en-us/products/dedicated-hunting/centerfire-rifle/norma-bondstrike/norma-bondstrike-6mm-creedmoor-105gr---20160482
+
+- action: update_cartridge
+  name: Norma BondStrike 6.5 Creedmoor 143gr
+  manufacturer: Norma
+  set:
+    source_url: https://www.norma-ammunition.com/en-gb/products/dedicated-hunting/centerfire-rifle/norma-bondstrike/norma-bondstrike-65-creedmoor-143gr---20166402
+
+- action: update_cartridge
+  name: Norma BondStrike 6.5 PRC 143gr
+  manufacturer: Norma
+  set:
+    source_url: https://www.norma-ammunition.com/en-gb/products/dedicated-hunting/centerfire-rifle/norma-bondstrike/norma-bondstrike-65-prc-143gr---20166452
+
+- action: update_cartridge
+  name: Norma BondStrike 6.5x55 Swedish 143gr
+  manufacturer: Norma
+  set:
+    source_url: https://www.norma-ammunition.com/en-gb/products/dedicated-hunting/centerfire-rifle/norma-bondstrike/norma-bondstrike-65x55-swedish-mauser-143-gr---20166382
+
+- action: update_cartridge
+  name: Norma BondStrike 7mm PRC 165gr
+  manufacturer: Norma
+  set:
+    source_url: https://www.norma-ammunition.com/en-gb/products/dedicated-hunting/centerfire-rifle/norma-bondstrike/norma-bondstrike-7mm-prc-165gr---20171582
+
+- action: update_cartridge
+  name: Norma BondStrike 7mm Rem Mag 165gr
+  manufacturer: Norma
+  set:
+    source_url: https://www.norma-ammunition.com/en-gb/products/dedicated-hunting/centerfire-rifle/norma-bondstrike/norma-bondstrike-7-mm-rem-mag-165gr---20171522
+
+- action: update_cartridge
+  name: Norma BondStrike .308 Win 180gr
+  manufacturer: Norma
+  set:
+    source_url: https://www.norma-ammunition.com/en-gb/products/dedicated-hunting/centerfire-rifle/norma-bondstrike/norma-bondstrike-308-winchester-180gr---20176412
+
+- action: update_cartridge
+  name: Norma BondStrike .30-06 Springfield 180gr
+  manufacturer: Norma
+  set:
+    source_url: https://www.norma-ammunition.com/en-gb/products/dedicated-hunting/centerfire-rifle/norma-bondstrike/norma-bondstrike-30-06-springfield-180gr---20176422
+
+- action: update_cartridge
+  name: Norma BondStrike .300 WSM 180gr
+  manufacturer: Norma
+  set:
+    source_url: https://www.norma-ammunition.com/en-gb/products/dedicated-hunting/centerfire-rifle/norma-bondstrike/norma-bondstrike-300-winchester-short-magnum-180gr---20175832
+
+- action: update_cartridge
+  name: Norma BondStrike .300 Win Mag 180gr
+  manufacturer: Norma
+  set:
+    source_url: https://www.norma-ammunition.com/en-gb/products/dedicated-hunting/centerfire-rifle/norma-bondstrike/norma-bondstrike-300-winchester-magnum-180gr---20176332
+
+- action: update_cartridge
+  name: Norma BondStrike .300 PRC 180gr
+  manufacturer: Norma
+  set:
+    source_url: https://www.norma-ammunition.com/en-gb/products/dedicated-hunting/centerfire-rifle/norma-bondstrike/norma-bondstrike-300-prc-180gr---20177762
+
+# ── TipStrike URL fixes ─────────────────────────────────────────────────────
+- action: update_cartridge
+  name: Norma TipStrike .243 Win 76gr
+  manufacturer: Norma
+  set:
+    source_url: https://www.norma-ammunition.com/en-gb/products/dedicated-hunting/centerfire-rifle/norma-tipstrike/norma-tipstrike-varmint-243-winchester-76gr---20160052
+
+- action: update_cartridge
+  name: Norma TipStrike 6.5 Creedmoor 140gr
+  manufacturer: Norma
+  set:
+    source_url: https://www.norma-ammunition.com/en-gb/products/dedicated-hunting/centerfire-rifle/norma-tipstrike/norma-tipstrike-65-creedmoor-140gr---20166512
+
+- action: update_cartridge
+  name: Norma TipStrike .270 Win 140gr
+  manufacturer: Norma
+  set:
+    source_url: https://www.norma-ammunition.com/en-gb/products/dedicated-hunting/centerfire-rifle/norma-tipstrike/norma-tipstrike-270-winchester-140gr---20169292
+
+- action: update_cartridge
+  name: Norma TipStrike 7mm Rem Mag 160gr
+  manufacturer: Norma
+  set:
+    source_url: https://www.norma-ammunition.com/en-gb/products/dedicated-hunting/centerfire-rifle/norma-tipstrike/norma-tipstrike-7-mm-remington-magnum-160gr---20170142
+
+- action: update_cartridge
+  name: Norma TipStrike .308 Win 170gr
+  manufacturer: Norma
+  set:
+    source_url: https://www.norma-ammunition.com/en-gb/products/dedicated-hunting/centerfire-rifle/norma-tipstrike/norma-tipstrike-308-winchester-170gr---20174352
+
+- action: update_cartridge
+  name: Norma TipStrike .30-06 Springfield 170gr
+  manufacturer: Norma
+  set:
+    source_url: https://www.norma-ammunition.com/en-gb/products/dedicated-hunting/centerfire-rifle/norma-tipstrike/norma-tipstrike-30-06-springfield-170gr---20174342
+
+- action: update_cartridge
+  name: Norma TipStrike .300 WSM 170gr
+  manufacturer: Norma
+  set:
+    source_url: https://www.norma-ammunition.com/en-gb/products/dedicated-hunting/centerfire-rifle/norma-tipstrike/norma-tipstrike-300-winchester-short-magnum-170gr---20174022
+
+- action: update_cartridge
+  name: Norma TipStrike .300 Win Mag 170gr
+  manufacturer: Norma
+  set:
+    source_url: https://www.norma-ammunition.com/en-gb/products/dedicated-hunting/centerfire-rifle/norma-tipstrike/norma-tipstrike-300-winchester-magnum-170gr---20174362
+
+# ── Ecostrike URL fixes ─────────────────────────────────────────────────────
+- action: update_cartridge
+  name: Norma Ecostrike 6.5 Creedmoor 120gr
+  manufacturer: Norma
+  set:
+    source_url: https://www.norma-ammunition.com/en-gb/products/dedicated-hunting/centerfire-rifle/norma-ecostrike/norma-ecostrike-65-creedmoor-120gr---20166572
+
+- action: update_cartridge
+  name: Norma Ecostrike .308 Win 150gr
+  manufacturer: Norma
+  set:
+    source_url: https://www.norma-ammunition.com/en-gb/products/dedicated-hunting/centerfire-rifle/norma-ecostrike/norma-ecostrike-308-winchester-150gr---20177562
+
+# ── Bullet URL fixes ────────────────────────────────────────────────────────
+- action: update_bullet
+  name: Norma Golden Target 6mm (.243) 107gr BTHP
+  manufacturer: Norma
+  set:
+    source_url: https://www.norma-ammunition.com/en-gb/products/dedicated-precision/centerfire-rifle/norma-golden-target/norma-golden-target-6mm-creedmoor-107gr---20160392
+
+- action: update_bullet
+  name: Norma BondStrike 6mm (.243) 105gr
+  manufacturer: Norma
+  set:
+    source_url: https://www.norma-ammunition.com/en-us/products/dedicated-hunting/centerfire-rifle/norma-bondstrike/norma-bondstrike-6mm-creedmoor-105gr---20160482
+
+- action: update_bullet
+  name: Norma Golden Target .30 (.308) 220gr BTHP
+  manufacturer: Norma
+  set:
+    source_url: https://www.norma-ammunition.com/en-gb/products/dedicated-precision/centerfire-rifle/norma-golden-target/norma-golden-target-300-win-mag-220gr---20177722
+
+- action: update_bullet
+  name: Norma TipStrike 6,5mm (.264) 140gr
+  manufacturer: Norma
+  set:
+    source_url: https://www.norma-ammunition.com/en-gb/products/dedicated-hunting/centerfire-rifle/norma-tipstrike/norma-tipstrike-65-creedmoor-140gr---20166512
