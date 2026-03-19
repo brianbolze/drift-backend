@@ -61,6 +61,7 @@ data/
 ├── drift.db        # SQLite database (source of truth)
 └── seed.sql        # Seed data (auto-generated from drift.db)
 docs/               # Design docs, research, domain reference
+sql/                # Common, helpful SQL queries
 alembic/            # Database migrations
 ```
 
