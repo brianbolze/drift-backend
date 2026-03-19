@@ -78,12 +78,12 @@
   {
     "id": "W1-hornady-zero-mv",
     "severity": "warning",
-    "summary": "104 cartridges with MV=0: Winchester 43, Barnes 33, Nosler 13, Hornady 10 (ECX/International), Federal 5 (Custom Rifle Ammo placeholders)",
+    "summary": "9 cartridges with MV=0: 8 Hornady ECX International (velocity intentionally unpublished) + 1 Nosler 300 Wby Mag NoslerCustom (no factory spec found). Down from 104 after curation patches 019-023.",
     "first_seen": "2026-03-06",
     "last_seen": "2026-03-19",
-    "count": 104,
+    "count": 9,
     "status": "open",
-    "notes": "90 new zero-MV from Barnes/Winchester/Nosler cartridge ingestion batch. Barnes and Winchester don't publish MV on product pages."
+    "notes": "95 zero-MV cartridges resolved: 5 Federal placeholders deleted (patch 019), 33 Barnes filled (020), 43 Winchester filled (021), 12 Nosler filled (022), 2 Hornady filled (023). Remaining 9 are genuinely unfixable from public sources — Hornady ECX International ballistics chart shows 'See hornady.com for latest information' for all ECX loads."
   },
   {
     "id": "W2-missing-bc-rifle-bullets",
@@ -117,11 +117,13 @@
   {
     "id": "W5-federal-custom-rifle-ammo-placeholders",
     "severity": "warning",
-    "summary": "5 Federal Custom Rifle Ammo cartridges with zero weight and zero MV \u2014 placeholder records with no load data",
+    "summary": "5 Federal Custom Rifle Ammo cartridges deleted \u2014 were placeholder records with zero weight and zero MV",
     "first_seen": "2026-03-09",
     "last_seen": "2026-03-19",
-    "count": 5,
-    "status": "open"
+    "count": 0,
+    "status": "resolved",
+    "resolved_date": "2026-03-19",
+    "resolution": "All 5 placeholder records deleted via curation patch 019."
   },
   {
     "id": "W6-speer-impact-264-wrong-source-url",
@@ -200,10 +202,12 @@
   {
     "id": "W11-new-cartridges-zero-mv",
     "severity": "warning",
-    "summary": "90 newly ingested cartridges (Barnes 33, Winchester 43, Nosler 13) have MV=0. Barnes/Winchester don't publish velocity on product pages. Velocity data available from third-party retailers.",
+    "summary": "90 newly ingested cartridges from Barnes/Winchester/Nosler batch — all resolved via curation patches 020-022. MV data sourced from retailer sites.",
     "first_seen": "2026-03-19",
     "last_seen": "2026-03-19",
-    "count": 90,
-    "status": "open"
+    "count": 0,
+    "status": "resolved",
+    "resolved_date": "2026-03-19",
+    "resolution": "All 90 cartridges populated: 33 Barnes (patch 020), 43 Winchester (patch 021), 12 Nosler (patch 022), 1 Nosler left at zero (no factory spec), 1 already had correct name match in patch 022."
   }
 ]

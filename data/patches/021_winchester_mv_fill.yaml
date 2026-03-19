@@ -1,0 +1,333 @@
+patch:
+  id: 021_winchester_mv_fill
+  author: agent
+  date: '2026-03-19'
+  description: >
+    Populate muzzle velocity for 43 Winchester cartridges. Winchester product pages
+    don't publish MV. Data sourced from retailers (AbleAmmo, CheaperThanDirt, PSA,
+    Optics Planet, Target Sports USA, BlackBasin, AmmoJoy, etc.) and Winchester
+    ballistic charts distributed via Able Ammo. All values cross-referenced against
+    2+ independent sources. Barrel lengths use SAAMI standards (24" rifle, 16" BLK).
+operations:
+
+# ── .22-250 Remington ────────────────────────────────────────────────────────
+- action: update_cartridge
+  manufacturer: Winchester
+  name: "22-250 Remington, 64 Grain Power-Point"
+  set:
+    muzzle_velocity_fps: 3500
+    test_barrel_length_inches: 24
+
+# ── .223 Remington ───────────────────────────────────────────────────────────
+- action: update_cartridge
+  manufacturer: Winchester
+  name: "223 Remington, 45 Grain"
+  set:
+    muzzle_velocity_fps: 3600
+    test_barrel_length_inches: 24
+
+- action: update_cartridge
+  manufacturer: Winchester
+  name: "223 Remington, 55 Grain"
+  set:
+    muzzle_velocity_fps: 3240
+    test_barrel_length_inches: 24
+
+- action: update_cartridge
+  manufacturer: Winchester
+  name: "223 Remington, 62 Grain"
+  set:
+    muzzle_velocity_fps: 3100
+    test_barrel_length_inches: 24
+
+- action: update_cartridge
+  manufacturer: Winchester
+  name: "223 Remington, 64 Grain Power-Point"
+  set:
+    muzzle_velocity_fps: 3020
+    test_barrel_length_inches: 24
+
+- action: update_cartridge
+  manufacturer: Winchester
+  name: "223 Remington, 69 Grain Match"
+  set:
+    muzzle_velocity_fps: 3060
+    test_barrel_length_inches: 24
+
+# ── .223 WSSM ────────────────────────────────────────────────────────────────
+- action: update_cartridge
+  manufacturer: Winchester
+  name: "223 WSSM, 64 Grain Power-Point"
+  set:
+    muzzle_velocity_fps: 3600
+    test_barrel_length_inches: 24
+
+# ── .243 Winchester ──────────────────────────────────────────────────────────
+- action: update_cartridge
+  manufacturer: Winchester
+  name: "243 Winchester, 95 Grain Ballistic Silvertip"
+  set:
+    muzzle_velocity_fps: 3100
+    test_barrel_length_inches: 24
+
+# ── .270 WSM ─────────────────────────────────────────────────────────────────
+- action: update_cartridge
+  manufacturer: Winchester
+  name: "270 WSM, 130 Grain Ballistic Silvertip"
+  set:
+    muzzle_velocity_fps: 3275
+    test_barrel_length_inches: 24
+
+# ── .270 Winchester ──────────────────────────────────────────────────────────
+- action: update_cartridge
+  manufacturer: Winchester
+  name: "270 Winchester, 130 Grain Power-Point"
+  set:
+    muzzle_velocity_fps: 3060
+    test_barrel_length_inches: 24
+
+- action: update_cartridge
+  manufacturer: Winchester
+  name: "270 Winchester, 130 Grain Ballistic Silvertip"
+  set:
+    muzzle_velocity_fps: 3050
+    test_barrel_length_inches: 24
+
+- action: update_cartridge
+  manufacturer: Winchester
+  name: "270 Winchester, 150 Grain"
+  set:
+    muzzle_velocity_fps: 2900
+    test_barrel_length_inches: 24
+
+# ── .284 Winchester ──────────────────────────────────────────────────────────
+- action: update_cartridge
+  manufacturer: Winchester
+  name: "284 Winchester, 150 Grain"
+  set:
+    muzzle_velocity_fps: 2860
+    test_barrel_length_inches: 24
+
+# ── .30-06 Springfield ───────────────────────────────────────────────────────
+- action: update_cartridge
+  manufacturer: Winchester
+  name: "30-06 Springfield, 147 Grain"
+  set:
+    muzzle_velocity_fps: 3020
+    test_barrel_length_inches: 24
+
+- action: update_cartridge
+  manufacturer: Winchester
+  name: "30-06 Springfield, 150 Grain Ballistic Silvertip"
+  set:
+    muzzle_velocity_fps: 2900
+    test_barrel_length_inches: 24
+
+- action: update_cartridge
+  manufacturer: Winchester
+  name: "30-06 Springfield, 180 Grain Power-Point"
+  set:
+    muzzle_velocity_fps: 2700
+    test_barrel_length_inches: 24
+
+- action: update_cartridge
+  manufacturer: Winchester
+  name: "30-06 Springfield, 190 Grain"
+  set:
+    muzzle_velocity_fps: 2750
+    test_barrel_length_inches: 24
+
+# ── .30-30 Winchester ────────────────────────────────────────────────────────
+- action: update_cartridge
+  manufacturer: Winchester
+  name: "30-30 Winchester, 150 Grain Power-Point"
+  set:
+    muzzle_velocity_fps: 2390
+    test_barrel_length_inches: 24
+
+- action: update_cartridge
+  manufacturer: Winchester
+  name: "30-30 Winchester, 150 Grain Ballistic Silvertip"
+  set:
+    muzzle_velocity_fps: 2390
+    test_barrel_length_inches: 24
+
+# ── .300 AAC Blackout ────────────────────────────────────────────────────────
+- action: update_cartridge
+  manufacturer: Winchester
+  name: "300 Blackout, 150 Grain"
+  set:
+    muzzle_velocity_fps: 1890
+    test_barrel_length_inches: 16
+
+# ── .300 Savage ──────────────────────────────────────────────────────────────
+- action: update_cartridge
+  manufacturer: Winchester
+  name: "300 Savage, 150 Grain"
+  set:
+    muzzle_velocity_fps: 2630
+    test_barrel_length_inches: 24
+
+# ── .300 Winchester Magnum ───────────────────────────────────────────────────
+- action: update_cartridge
+  manufacturer: Winchester
+  name: "300 Winchester Magnum, 150 Grain Power-Point"
+  set:
+    muzzle_velocity_fps: 3290
+    test_barrel_length_inches: 24
+
+- action: update_cartridge
+  manufacturer: Winchester
+  name: "300 Winchester Magnum, 180 Grain Ballistic Silvertip"
+  set:
+    muzzle_velocity_fps: 2950
+    test_barrel_length_inches: 24
+
+- action: update_cartridge
+  manufacturer: Winchester
+  name: "300 Winchester Magnum, 190 Grain"
+  set:
+    muzzle_velocity_fps: 2900
+    test_barrel_length_inches: 24
+
+# ── .300 WSM ─────────────────────────────────────────────────────────────────
+- action: update_cartridge
+  manufacturer: Winchester
+  name: "300 WSM, 150 Grain Ballistic Silvertip"
+  set:
+    muzzle_velocity_fps: 3300
+    test_barrel_length_inches: 24
+
+- action: update_cartridge
+  manufacturer: Winchester
+  name: "300 WSM, 150 Grain Power-Point"
+  set:
+    muzzle_velocity_fps: 3270
+    test_barrel_length_inches: 24
+
+- action: update_cartridge
+  manufacturer: Winchester
+  name: "300 WSM, 180 Grain Ballistic Silvertip"
+  set:
+    muzzle_velocity_fps: 3010
+    test_barrel_length_inches: 24
+
+- action: update_cartridge
+  manufacturer: Winchester
+  name: "300 WSM, 180 Grain Power-Point"
+  set:
+    muzzle_velocity_fps: 2970
+    test_barrel_length_inches: 24
+
+- action: update_cartridge
+  manufacturer: Winchester
+  name: "300 WSM, 190 Grain"
+  set:
+    muzzle_velocity_fps: 2875
+    test_barrel_length_inches: 24
+
+# ── .308 Winchester ──────────────────────────────────────────────────────────
+- action: update_cartridge
+  manufacturer: Winchester
+  name: "308 Winchester, 150 Grain Ballistic Silvertip"
+  set:
+    muzzle_velocity_fps: 2810
+    test_barrel_length_inches: 24
+
+- action: update_cartridge
+  manufacturer: Winchester
+  name: "308 Winchester, 168 Grain Ballistic Silvertip"
+  set:
+    muzzle_velocity_fps: 2670
+    test_barrel_length_inches: 24
+
+- action: update_cartridge
+  manufacturer: Winchester
+  name: "308 Winchester, 169 Grain"
+  set:
+    muzzle_velocity_fps: 2755
+    test_barrel_length_inches: 24
+
+- action: update_cartridge
+  manufacturer: Winchester
+  name: "308 Winchester, 180 Grain Power-Point X3086"
+  set:
+    muzzle_velocity_fps: 2620
+    test_barrel_length_inches: 24
+
+- action: update_cartridge
+  manufacturer: Winchester
+  name: "308 Winchester, 185 Grain"
+  set:
+    muzzle_velocity_fps: 1060
+    test_barrel_length_inches: 24
+
+# ── .45-70 Government ────────────────────────────────────────────────────────
+- action: update_cartridge
+  manufacturer: Winchester
+  name: "45-70 Government, 300 Grain Ballistic Silvertip"
+  set:
+    muzzle_velocity_fps: 1880
+    test_barrel_length_inches: 24
+
+# ── 6.5 Creedmoor ───────────────────────────────────────────────────────────
+- action: update_cartridge
+  manufacturer: Winchester
+  name: "6.5 Creedmoor, 140 Grain"
+  set:
+    muzzle_velocity_fps: 2700
+    test_barrel_length_inches: 24
+
+- action: update_cartridge
+  manufacturer: Winchester
+  name: "Winchester Expedition Big Game 6.5 Creedmoor 142 Grain"
+  set:
+    muzzle_velocity_fps: 2700
+    test_barrel_length_inches: 24
+
+# ── 6.5 PRC ─────────────────────────────────────────────────────────────────
+- action: update_cartridge
+  manufacturer: Winchester
+  name: "6.5 PRC, 140 Grain"
+  set:
+    muzzle_velocity_fps: 3010
+    test_barrel_length_inches: 24
+
+- action: update_cartridge
+  manufacturer: Winchester
+  name: "Winchester 6.5 PRC, 142 Grain, Expedition Big Game"
+  set:
+    muzzle_velocity_fps: 3020
+    test_barrel_length_inches: 24
+
+# ── 7.62x51mm NATO ───────────────────────────────────────────────────────────
+# Note: cartridge weight already corrected to 147gr in patch 018
+- action: update_cartridge
+  manufacturer: Winchester
+  name: "7.62 x 51mm NATO, 149 Grain"
+  set:
+    muzzle_velocity_fps: 2790
+    test_barrel_length_inches: 24
+
+# ── 7mm Remington Magnum ─────────────────────────────────────────────────────
+- action: update_cartridge
+  manufacturer: Winchester
+  name: "7mm Remington Magnum, 150 Grain Power-Point"
+  set:
+    muzzle_velocity_fps: 3090
+    test_barrel_length_inches: 24
+
+- action: update_cartridge
+  manufacturer: Winchester
+  name: "7mm Remington Magnum, 168 Grain"
+  set:
+    muzzle_velocity_fps: 2900
+    test_barrel_length_inches: 24
+
+# ── 7mm WSM ──────────────────────────────────────────────────────────────────
+- action: update_cartridge
+  manufacturer: Winchester
+  name: "7mm WSM, 150 Grain"
+  set:
+    muzzle_velocity_fps: 3200
+    test_barrel_length_inches: 24

@@ -1,0 +1,42 @@
+patch:
+  id: 023_hornady_mv_fill
+  author: agent
+  date: '2026-03-19'
+  description: >
+    Populate muzzle velocity for 2 of 10 Hornady zero-MV cartridges.
+    22 Creedmoor CX Superformance: 3660 fps from retailer listings.
+    6.5 Creedmoor 140gr SP Custom International: 2700 fps (823 m/s)
+    from Hornady 2022 Metric Ballistics Chart.
+    The remaining 8 ECX Hornady International cartridges have no published
+    velocity data — all show "See hornady.com for latest information" in
+    the official ballistics chart. Left at zero rather than guess.
+operations:
+
+# ── .22 Creedmoor ────────────────────────────────────────────────────────────
+# Source: multiple retailers (MidwayUSA, MunitionsExpress, Rogers) — 3660 fps
+- action: update_cartridge
+  manufacturer: Hornady
+  name: "22 Creedmoor 65 gr CX Superformance"
+  set:
+    muzzle_velocity_fps: 3660
+    test_barrel_length_inches: 24
+
+# ── 6.5 Creedmoor Custom International ───────────────────────────────────────
+# Source: Hornady 2022 Metric Ballistics Chart — 823 m/s = 2700 fps
+- action: update_cartridge
+  manufacturer: Hornady
+  name: "6.5 Creedmoor 140 gr SP Custom International™"
+  set:
+    muzzle_velocity_fps: 2700
+    test_barrel_length_inches: 24
+
+# ── NOT INCLUDED (8 ECX Hornady International — no velocity published) ───────
+# 30-06 Sprg 165 gr ECX International (item 811614)
+# 300 Win Mag 165 gr ECX International
+# 308 Win 125 gr ECX International (item 806684)
+# 308 Win 165 gr ECX International (item 809914)
+# 6.5X55 120 gr ECX
+# 7x57mm 150 gr ECX International (item 81579)
+# 8x57 JS (IS) 180 gr ECX International
+# 9.3x62 250 gr ECX International
+# All show "See hornady.com for latest information" in official ballistics chart.

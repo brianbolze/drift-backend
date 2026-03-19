@@ -1,0 +1,125 @@
+patch:
+  id: 022_nosler_mv_fill
+  author: agent
+  date: '2026-03-19'
+  description: >
+    Populate muzzle velocity for 12 of 13 Nosler cartridges. Data sourced from
+    retailer sites (BlackBasin, LuckyGunner, OpticsPlane, MidwayUSA, etc.) and
+    Nosler product pages where available. Factory Seconds have identical specs
+    to standard production. One cartridge (300 Wby Mag 180gr Partition) left at
+    zero — no verified factory MV found from any source.
+    Note: 222 Rem 50gr is the Ballistic Tip SP variant, MV from Hendershot's
+    custom loader listing (3100 fps for Nosler 50gr .222 Rem loads).
+operations:
+
+# ── .22-250 Remington ────────────────────────────────────────────────────────
+# Source: munitionsexpress.com, blackbasin.com — 3550 fps
+- action: update_cartridge
+  manufacturer: Nosler
+  name: "22-250 Remington 55gr Ballistic Tip Varmint Ammunition (Factory Seconds) | 20 Count"
+  set:
+    muzzle_velocity_fps: 3550
+    test_barrel_length_inches: 24
+
+# ── .222 Remington ───────────────────────────────────────────────────────────
+# Source: hendershots.net — 3100 fps for Nosler 50gr .222 Rem
+- action: update_cartridge
+  manufacturer: Nosler
+  name: "222 Remington 50gr Ballistic Tip SP Ammunition"
+  set:
+    muzzle_velocity_fps: 3100
+    test_barrel_length_inches: 24
+
+# ── .223 Remington ───────────────────────────────────────────────────────────
+# Source: blackbasin.com — 3100 fps
+- action: update_cartridge
+  manufacturer: Nosler
+  name: "223 Remington 55gr Soft Point NoslerCustom Ammunition"
+  set:
+    muzzle_velocity_fps: 3100
+    test_barrel_length_inches: 24
+
+# ── .243 Winchester ──────────────────────────────────────────────────────────
+# Source: luckygunner.com — 3100 fps
+- action: update_cartridge
+  manufacturer: Nosler
+  name: "243 Winchester 90gr Ballistic Tip Hunting Ammunition (Factory Seconds) | 20 Count"
+  set:
+    muzzle_velocity_fps: 3100
+    test_barrel_length_inches: 24
+
+# Source: opticsplanet.com — 3100 fps
+- action: update_cartridge
+  manufacturer: Nosler
+  name: "243 Win 100gr Partition Trophy Grade Ammunition (Factory Seconds) | 20 Count"
+  set:
+    muzzle_velocity_fps: 3100
+    test_barrel_length_inches: 24
+
+# ── .257 Roberts ─────────────────────────────────────────────────────────────
+# Source: reedsammo.com — 3070 fps
+- action: update_cartridge
+  manufacturer: Nosler
+  name: "257 Roberts +P 115gr Ballistic Tip NoslerCustom Ammunition"
+  set:
+    muzzle_velocity_fps: 3070
+    test_barrel_length_inches: 24
+
+# ── .26 Nosler ───────────────────────────────────────────────────────────────
+# Source: blackbasin.com — 3450 fps
+- action: update_cartridge
+  manufacturer: Nosler
+  name: "26 Nosler 120gr Expansion Tip Ammunition (20 Count)"
+  set:
+    muzzle_velocity_fps: 3450
+    test_barrel_length_inches: 26
+
+# ── .270 WSM ─────────────────────────────────────────────────────────────────
+# Source: ammocalibers.com — 3000 fps
+- action: update_cartridge
+  manufacturer: Nosler
+  name: "270 WSM 150gr Partition NoslerCustom Ammunition"
+  set:
+    muzzle_velocity_fps: 3000
+    test_barrel_length_inches: 24
+
+# ── .300 Win Mag ─────────────────────────────────────────────────────────────
+# Source: opticsplanet.com, ammunitiondepot.com — 2870 fps
+- action: update_cartridge
+  manufacturer: Nosler
+  name: "300 Win Mag 190gr AccuBond Long Range Trophy Grade Ammunition"
+  set:
+    muzzle_velocity_fps: 2870
+    test_barrel_length_inches: 26
+
+# ── .308 Winchester ──────────────────────────────────────────────────────────
+# Source: theshootingcentre.com — 2750 fps, 24" barrel confirmed
+- action: update_cartridge
+  manufacturer: Nosler
+  name: "308 Winchester 150gr Expansion Tip Ammunition (Factory Seconds) | 20 Count"
+  set:
+    muzzle_velocity_fps: 2750
+    test_barrel_length_inches: 24
+
+# ── .375 H&H Magnum ─────────────────────────────────────────────────────────
+# Source: Nosler forum, reloading consensus — 2650 fps
+- action: update_cartridge
+  manufacturer: Nosler
+  name: "375 H&H Mag 260gr AccuBond NoslerCustom Ammunition"
+  set:
+    muzzle_velocity_fps: 2650
+    test_barrel_length_inches: 26
+
+# ── 7mm PRC ──────────────────────────────────────────────────────────────────
+# Source: dbsupply.com, midwayusa.com — 3000 fps
+- action: update_cartridge
+  manufacturer: Nosler
+  name: "7mm PRC 175gr AccuBond Long Range Trophy Grade Ammunition"
+  set:
+    muzzle_velocity_fps: 3000
+    test_barrel_length_inches: 24
+
+# ── NOT INCLUDED: 300 Weatherby Mag 180gr Partition NoslerCustom ─────────────
+# No verified factory MV found. Nosler NoslerCustom pages don't publish specs.
+# Federal's equivalent .300 Wby 180gr Partition runs 3190 fps but different product.
+# Left at zero rather than guess.
