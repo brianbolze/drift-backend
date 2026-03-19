@@ -82,6 +82,102 @@ class TestHtmlReducer:
         assert "under_target" in meta
         assert isinstance(meta["steps"], list)
 
+    def test_metadata_includes_strategy(self):
+        html = "<html><body><p>Test</p></body></html>"
+        reducer = HtmlReducer()
+        _, meta = reducer.reduce(html)
+        assert meta["strategy_used"] == "generic"
+
+    def test_strategy_dispatch_generic_no_url(self):
+        """No URL → generic strategy."""
+        html = "<html><body><main><p>Product data</p></main></body></html>"
+        reducer = HtmlReducer()
+        _, meta = reducer.reduce(html)
+        assert meta["strategy_used"] == "generic"
+
+    def test_strategy_dispatch_generic_unknown_domain(self):
+        """Unknown domain → generic strategy."""
+        html = "<html><body><main><p>Product data</p></main></body></html>"
+        reducer = HtmlReducer()
+        _, meta = reducer.reduce(html, url="https://unknownsite.com/product")
+        assert meta["strategy_used"] == "generic"
+
+    def test_strategy_dispatch_main_content(self):
+        """Barnes domain → main_content strategy, extracts <main>."""
+        html = """<html><body>
+        <header><nav>Huge nav content that should be removed</nav></header>
+        <script type="application/ld+json">{"@type":"Product","name":"TSX"}</script>
+        <main><h1>Barnes TSX</h1><p>Weight: 130gr, BC: 0.392</p></main>
+        <footer>Huge footer content</footer>
+        </body></html>"""
+        reducer = HtmlReducer(min_size=50)
+        result, meta = reducer.reduce(html, url="https://barnesbullets.com/products/tsx")
+        assert meta["strategy_used"] == "main_content"
+        assert "Barnes TSX" in result
+        assert "130gr" in result
+        # JSON-LD should be preserved
+        assert "TSX" in result
+
+    def test_strategy_dispatch_main_content_custom_selector(self):
+        """CE domain uses #main selector instead of <main>."""
+        html = """<html><body>
+        <script type="application/ld+json">{"@type":"Product","name":"Raptor"}</script>
+        <div id="main"><h1>Cutting Edge Raptor</h1><p>Weight: 100gr</p></div>
+        <div class="footer">Footer junk</div>
+        </body></html>"""
+        reducer = HtmlReducer(min_size=50)
+        result, meta = reducer.reduce(html, url="https://cuttingedgebullets.com/product/raptor")
+        assert meta["strategy_used"] == "main_content"
+        assert "Raptor" in result
+        assert "100gr" in result
+
+    def test_main_content_fallback_no_main(self):
+        """Page without <main> → falls back to generic."""
+        html = """<html><body>
+        <div><h1>Product</h1><p>Specs here</p></div>
+        </body></html>"""
+        reducer = HtmlReducer()
+        _, meta = reducer.reduce(html, url="https://barnesbullets.com/products/tsx")
+        assert meta["strategy_used"] == "main_content_fallback"
+
+    def test_strategy_dispatch_jsonld_only(self):
+        """Norma domain → jsonld_only strategy."""
+        html = """<html><head><title>Norma BONDSTRIKE 6.5 Creedmoor</title>
+        <meta name="description" content="Premium hunting ammunition">
+        <meta property="og:title" content="BONDSTRIKE">
+        </head><body>
+        <script type="application/ld+json">{"@type":"Product","name":"BONDSTRIKE","weight":"140gr"}</script>
+        <div id="__next">Massive SPA content here...</div>
+        </body></html>"""
+        reducer = HtmlReducer()
+        result, meta = reducer.reduce(html, url="https://www.norma-ammunition.com/en/product/bondstrike")
+        assert meta["strategy_used"] == "jsonld_only"
+        assert "BONDSTRIKE" in result
+        assert "140gr" in result
+        # Meta tags preserved
+        assert "hunting ammunition" in result
+
+    def test_jsonld_only_fallback_no_jsonld(self):
+        """Page without JSON-LD → falls back to generic."""
+        html = """<html><head><title>Some Page</title></head>
+        <body><p>Content without JSON-LD</p></body></html>"""
+        reducer = HtmlReducer()
+        _, meta = reducer.reduce(html, url="https://www.norma-ammunition.com/en/product/test")
+        assert meta["strategy_used"] == "jsonld_only_fallback"
+
+    def test_main_content_preserves_jsonld_outside_main(self):
+        """JSON-LD outside <main> should still be captured by main_content strategy."""
+        html = """<html><head>
+        <script type="application/ld+json">{"@type":"Product","name":"AccuBond","bc":0.509}</script>
+        </head><body>
+        <main><h1>Nosler AccuBond</h1><p>Weight: 140gr</p></main>
+        </body></html>"""
+        reducer = HtmlReducer(min_size=50)
+        result, meta = reducer.reduce(html, url="https://www.nosler.com/accubond-140")
+        assert meta["strategy_used"] == "main_content"
+        assert "AccuBond" in result
+        assert "0.509" in result
+
 
 # ── Extraction schemas ───────────────────────────────────────────────────────
 
