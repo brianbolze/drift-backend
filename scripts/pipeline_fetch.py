@@ -81,6 +81,7 @@ async def main() -> None:  # noqa: C901
     for i, entry in enumerate(pending):
         url = entry["url"]
         uhash = url_hash(url)
+        reduced_cache = REDUCED_DIR / f"{uhash}.json"
 
         logger.info("[%d/%d] FETCH: %s", i + 1, len(pending), url)
 

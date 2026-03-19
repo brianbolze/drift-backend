@@ -43,6 +43,7 @@ Lightweight tech debt and engineering improvement tracker. Agents and humans app
 - [ ] Nosler BCs only in load data section — product pages return null BC, need to scrape load data pages separately (source: pipeline working notes)
 - [ ] `HttpxFetcher` creates new `AsyncClient` per request — no connection reuse/keep-alive across same-host URLs; same issue with `FirecrawlFetcher` reinstantiating `FirecrawlApp` per call (source: code review, 2026-03-06)
 - [ ] Stale flagged entries persist on re-extraction — `_write_flagged` deduplicates by hash, so old warnings stick around (source: code review, 2026-03-06)
+- [x] `pipeline_fetch.py` stale `reduced_cache` variable — `reduced_cache` was set in the skip-check loop but not re-assigned in the processing loop, causing all reduced JSON sidecars to write to the same file path. Fixed by adding `reduced_cache = REDUCED_DIR / f"{uhash}.json"` in the processing loop. 519 pages affected in cartridge fetch. (source: agent, 2026-03-19)
 
 ## Code / Tooling
 
