@@ -1,5 +1,6 @@
 from drift.models.base import Base
 from drift.models.bullet import Bullet, BulletBCSource
+from drift.models.bullet_product_line import BulletProductLine
 from drift.models.caliber import Caliber
 from drift.models.cartridge import Cartridge
 from drift.models.chamber import Chamber, ChamberAcceptsCaliber
@@ -19,6 +20,7 @@ __all__ = [
     "CaliberPlatform",
     "Bullet",
     "BulletBCSource",
+    "BulletProductLine",
     "Cartridge",
     "RifleModel",
     "Reticle",

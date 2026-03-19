@@ -1,0 +1,225 @@
+patch:
+  id: "014_bullet_product_line_aliases"
+  author: "Brian Bolze"
+  date: "2026-03-18"
+  description: "Add abbreviation aliases for bullet product lines (ELDM, SMK, ABLR, etc.)"
+
+operations:
+  # ── Hornady ──────────────────────────────────────────────────────────────
+  - action: add_entity_alias
+    entity_type: bullet_product_line
+    entity_name: ELD Match
+    manufacturer: Hornady
+    alias: ELDM
+    alias_type: abbreviation
+
+  - action: add_entity_alias
+    entity_type: bullet_product_line
+    entity_name: ELD Match
+    manufacturer: Hornady
+    alias: ELD-M
+    alias_type: abbreviation
+
+  - action: add_entity_alias
+    entity_type: bullet_product_line
+    entity_name: ELD-X
+    manufacturer: Hornady
+    alias: ELDX
+    alias_type: abbreviation
+
+  - action: add_entity_alias
+    entity_type: bullet_product_line
+    entity_name: A-Tip Match
+    manufacturer: Hornady
+    alias: A-Tip
+    alias_type: abbreviation
+
+  - action: add_entity_alias
+    entity_type: bullet_product_line
+    entity_name: CX
+    manufacturer: Hornady
+    alias: GMX
+    alias_type: predecessor  # CX replaced GMX in 2021
+
+  - action: add_entity_alias
+    entity_type: bullet_product_line
+    entity_name: V-MAX
+    manufacturer: Hornady
+    alias: VMAX
+    alias_type: abbreviation
+
+  - action: add_entity_alias
+    entity_type: bullet_product_line
+    entity_name: Sub-X
+    manufacturer: Hornady
+    alias: SubX
+    alias_type: abbreviation
+
+  # ── Sierra ───────────────────────────────────────────────────────────────
+  - action: add_entity_alias
+    entity_type: bullet_product_line
+    entity_name: MatchKing
+    manufacturer: Sierra Bullets
+    alias: SMK
+    alias_type: abbreviation
+
+  - action: add_entity_alias
+    entity_type: bullet_product_line
+    entity_name: MatchKing
+    manufacturer: Sierra Bullets
+    alias: MK
+    alias_type: abbreviation
+
+  - action: add_entity_alias
+    entity_type: bullet_product_line
+    entity_name: Tipped MatchKing
+    manufacturer: Sierra Bullets
+    alias: TMK
+    alias_type: abbreviation
+
+  - action: add_entity_alias
+    entity_type: bullet_product_line
+    entity_name: GameKing
+    manufacturer: Sierra Bullets
+    alias: SGK
+    alias_type: abbreviation
+
+  - action: add_entity_alias
+    entity_type: bullet_product_line
+    entity_name: GameKing
+    manufacturer: Sierra Bullets
+    alias: GK
+    alias_type: abbreviation
+
+  # Sierra uses TGK in their own product names already
+  - action: add_entity_alias
+    entity_type: bullet_product_line
+    entity_name: VarmintKing
+    manufacturer: Sierra Bullets
+    alias: SVK
+    alias_type: abbreviation
+
+  # ── Nosler ───────────────────────────────────────────────────────────────
+  - action: add_entity_alias
+    entity_type: bullet_product_line
+    entity_name: AccuBond Long Range
+    manufacturer: Nosler
+    alias: ABLR
+    alias_type: abbreviation
+
+  - action: add_entity_alias
+    entity_type: bullet_product_line
+    entity_name: AccuBond
+    manufacturer: Nosler
+    alias: AB
+    alias_type: abbreviation
+
+  - action: add_entity_alias
+    entity_type: bullet_product_line
+    entity_name: Ballistic Tip
+    manufacturer: Nosler
+    alias: BT
+    alias_type: abbreviation
+
+  - action: add_entity_alias
+    entity_type: bullet_product_line
+    entity_name: Partition
+    manufacturer: Nosler
+    alias: PT
+    alias_type: abbreviation
+
+  - action: add_entity_alias
+    entity_type: bullet_product_line
+    entity_name: Custom Competition
+    manufacturer: Nosler
+    alias: CC
+    alias_type: abbreviation
+
+  - action: add_entity_alias
+    entity_type: bullet_product_line
+    entity_name: Ballistic Silvertip
+    manufacturer: Nosler
+    alias: BST
+    alias_type: abbreviation
+
+  # ── Berger ───────────────────────────────────────────────────────────────
+  - action: add_entity_alias
+    entity_type: bullet_product_line
+    entity_name: Long Range Hybrid Target
+    manufacturer: Berger Bullets
+    alias: LRHT
+    alias_type: abbreviation
+
+  - action: add_entity_alias
+    entity_type: bullet_product_line
+    entity_name: Elite Hunter
+    manufacturer: Berger Bullets
+    alias: EH
+    alias_type: abbreviation
+
+  - action: add_entity_alias
+    entity_type: bullet_product_line
+    entity_name: Hybrid Target
+    manufacturer: Berger Bullets
+    alias: HT
+    alias_type: abbreviation
+
+  # ── Barnes ───────────────────────────────────────────────────────────────
+  - action: add_entity_alias
+    entity_type: bullet_product_line
+    entity_name: TTSX
+    manufacturer: Barnes Bullets
+    alias: Tipped TSX
+    alias_type: alternate_name
+
+  - action: add_entity_alias
+    entity_type: bullet_product_line
+    entity_name: TTSX
+    manufacturer: Barnes Bullets
+    alias: Tipped Triple-Shock
+    alias_type: full_name
+
+  - action: add_entity_alias
+    entity_type: bullet_product_line
+    entity_name: TSX
+    manufacturer: Barnes Bullets
+    alias: Triple-Shock
+    alias_type: full_name
+
+  - action: add_entity_alias
+    entity_type: bullet_product_line
+    entity_name: TAC-TX
+    manufacturer: Barnes Bullets
+    alias: TACTX
+    alias_type: abbreviation
+
+  # ── Lapua ────────────────────────────────────────────────────────────────
+  - action: add_entity_alias
+    entity_type: bullet_product_line
+    entity_name: Scenar-L
+    manufacturer: Lapua
+    alias: Scenar L
+    alias_type: alternate_name
+
+  # ── Federal ──────────────────────────────────────────────────────────────
+  - action: add_entity_alias
+    entity_type: bullet_product_line
+    entity_name: Trophy Bonded Bear Claw
+    manufacturer: Federal
+    alias: TBBC
+    alias_type: abbreviation
+
+  - action: add_entity_alias
+    entity_type: bullet_product_line
+    entity_name: Trophy Bonded Tip
+    manufacturer: Federal
+    alias: TBT
+    alias_type: abbreviation
+
+  # ── Nosler (additional) ─────────────────────────────────────────────────
+  - action: add_entity_alias
+    entity_type: bullet_product_line
+    entity_name: Expansion Tip Lead Free
+    manufacturer: Nosler
+    alias: E-Tip
+    alias_type: alternate_name

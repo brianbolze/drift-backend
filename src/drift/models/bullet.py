@@ -6,10 +6,11 @@ from typing import TYPE_CHECKING
 from sqlalchemy import JSON, Boolean, DateTime, Float, Integer, String, Text
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from drift.models.base import Base, TimestampMixin, uuid_fk, uuid_pk
+from drift.models.base import Base, TimestampMixin, uuid_fk, uuid_fk_nullable, uuid_pk
 
 if TYPE_CHECKING:
     from drift.models import Cartridge, Manufacturer
+    from drift.models.bullet_product_line import BulletProductLine
 
 
 class Bullet(TimestampMixin, Base):
@@ -42,6 +43,9 @@ class Bullet(TimestampMixin, Base):
     # Null for generic bullets without a named product line (plain soft points, FMJs, etc.)
     product_line: Mapped[str | None] = mapped_column(String(100), nullable=True, index=True)
 
+    # FK to canonical product line entity (for structured matching and alias lookup)
+    product_line_id: Mapped[str | None] = uuid_fk_nullable("bullet_product_line.id")
+
     # Cleaned display name for iOS app UI (computed at export time)
     display_name: Mapped[str | None] = mapped_column(String(255), nullable=True)
 
@@ -65,6 +69,7 @@ class Bullet(TimestampMixin, Base):
     manufacturer: Mapped["Manufacturer"] = relationship(back_populates="bullets")  # noqa: F821
     cartridges: Mapped[list["Cartridge"]] = relationship(back_populates="bullet")  # noqa: F821
     bc_sources: Mapped[list["BulletBCSource"]] = relationship(back_populates="bullet")
+    product_line_ref: Mapped["BulletProductLine | None"] = relationship(back_populates="bullets")  # noqa: F821
 
 
 class BulletBCSource(TimestampMixin, Base):

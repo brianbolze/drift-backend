@@ -32,6 +32,7 @@ SOURCE_DB = Path("data/drift.db")
 DROP_TABLES = [
     "alembic_version",
     "bullet_bc_source",
+    "bullet_product_line",
 ]
 
 # Columns to drop per table (pipeline/internal metadata)
@@ -42,6 +43,7 @@ DROP_COLUMNS: dict[str, list[str]] = {
         "extraction_confidence",
         "last_verified_at",
         "bc_source_notes",
+        "product_line_id",
         "created_at",
         "updated_at",
     ],
@@ -155,6 +157,71 @@ def _populate_display_names(conn: sqlite3.Connection) -> None:
         print(w)
 
 
+def _flatten_product_line_aliases(conn: sqlite3.Connection) -> None:  # noqa: C901
+    """Merge bullet_product_line aliases into each bullet's alt_names JSON.
+
+    For each bullet with a product_line_id, finds all entity_alias rows for that
+    product line and appends them to the bullet's alt_names array (deduped).
+    Must run BEFORE dropping bullet_product_line table and product_line_id column.
+    """
+    import json as _json
+
+    # Build product_line_id → list of aliases
+    alias_rows = conn.execute("""
+        SELECT ea.entity_id, ea.alias
+        FROM entity_alias ea
+        WHERE ea.entity_type = 'bullet_product_line'
+    """).fetchall()
+
+    pl_aliases: dict[str, list[str]] = {}
+    for entity_id, alias in alias_rows:
+        pl_aliases.setdefault(entity_id, []).append(alias)
+
+    if not pl_aliases:
+        print("  No bullet_product_line aliases to flatten")
+        return
+
+    # Get all bullets with a product_line_id
+    bullet_rows = conn.execute("""
+        SELECT id, alt_names, product_line_id
+        FROM bullet
+        WHERE product_line_id IS NOT NULL
+    """).fetchall()
+
+    updated = 0
+    for bullet_id, existing_alt_names_json, pl_id in bullet_rows:
+        aliases = pl_aliases.get(pl_id, [])
+        if not aliases:
+            continue
+
+        # Parse existing alt_names
+        existing = []
+        if existing_alt_names_json:
+            try:
+                existing = _json.loads(existing_alt_names_json)
+                if not isinstance(existing, list):
+                    existing = []
+            except (ValueError, TypeError):
+                existing = []
+
+        # Merge, deduped (case-insensitive)
+        existing_lower = {s.lower() for s in existing if isinstance(s, str)}
+        merged = list(existing)
+        for alias in aliases:
+            if alias.lower() not in existing_lower:
+                merged.append(alias)
+                existing_lower.add(alias.lower())
+
+        if len(merged) > len(existing):
+            conn.execute(
+                "UPDATE bullet SET alt_names = ? WHERE id = ?",
+                (_json.dumps(merged), bullet_id),
+            )
+            updated += 1
+
+    print(f"  Flattened product line aliases into {updated} bullets' alt_names")
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description="Export production SQLite DB for iOS app")
     parser.add_argument("-o", "--output", default="data/production/drift.db", help="Output path")
@@ -173,6 +240,10 @@ def main() -> None:
 
     conn = sqlite3.connect(output)
     conn.execute("PRAGMA foreign_keys = OFF")
+
+    # ── Flatten product line aliases into bullet alt_names ─────────────────
+    # Must run BEFORE dropping bullet_product_line table and product_line_id column
+    _flatten_product_line_aliases(conn)
 
     # ── Drop tables ────────────────────────────────────────────────────────
     for table in DROP_TABLES:

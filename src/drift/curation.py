@@ -26,6 +26,7 @@ from sqlalchemy.orm import Session
 from drift.models import (
     Bullet,
     BulletBCSource,
+    BulletProductLine,
     Caliber,
     Cartridge,
     Chamber,
@@ -244,10 +245,11 @@ class AddEntityAliasOp(BaseModel):
     model_config = ConfigDict(str_strip_whitespace=True)
 
     action: Literal["add_entity_alias"]
-    entity_type: Literal["manufacturer", "caliber", "chamber", "bullet", "cartridge"]
+    entity_type: Literal["manufacturer", "caliber", "chamber", "bullet", "cartridge", "bullet_product_line"]
     entity_name: str = Field(..., min_length=1)
     alias: str = Field(..., min_length=1, max_length=255)
     alias_type: str = Field(..., min_length=1, max_length=50)
+    manufacturer: str | None = Field(default=None, min_length=1)  # required for bullet_product_line disambiguation
 
 
 Operation = Annotated[
@@ -283,6 +285,7 @@ _ENTITY_TYPE_MODEL = {
     "chamber": Chamber,
     "bullet": Bullet,
     "cartridge": Cartridge,
+    "bullet_product_line": BulletProductLine,
 }
 
 
@@ -680,7 +683,8 @@ def _apply_add_bc_source(session: Session, op: AddBCSourceOp, stats: ApplyStats,
 
 
 def _apply_add_entity_alias(session: Session, op: AddEntityAliasOp, stats: ApplyStats, index: int) -> None:
-    entity_id = _resolve_entity(session, op.entity_type, op.entity_name)
+    manufacturer_id = _resolve_manufacturer(session, op.manufacturer) if op.manufacturer else None
+    entity_id = _resolve_entity(session, op.entity_type, op.entity_name, manufacturer_id=manufacturer_id)
 
     try:
         session.add(
