@@ -416,18 +416,9 @@ class HtmlReducer:
         jsonld_block = "\n".join(jsonld_comments)
         assembled = f"<html><head><title>{title}</title></head>\n<body>\n{meta_block}\n{jsonld_block}\n</body></html>"
 
-        # This is already minimal — just finalize
-        reduced = _collapse_whitespace(assembled)
-        metadata = {
-            "original_size": original_size,
-            "reduced_size": len(reduced),
-            "reduction_ratio": round(len(reduced) / original_size, 3) if original_size > 0 else 0,
-            "steps_applied": 0,
-            "steps": [],
-            "under_target": len(reduced) <= self.target_size,
-            "strategy_used": "jsonld_only",
-        }
-        return reduced, metadata
+        # Already minimal — parse and finalize through the shared path
+        soup_out = BeautifulSoup(assembled, "lxml")
+        return self._finalize(soup_out, original_size, [], "jsonld_only")
 
     # ── Finalization ─────────────────────────────────────────────────────────
 

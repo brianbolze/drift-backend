@@ -47,7 +47,9 @@ def _collect_rereduce_items(domain_filter: str | None) -> tuple[list[tuple], int
     for rj in reduced_jsons:
         try:
             meta = json.loads(rj.read_text(encoding="utf-8"))
-        except (json.JSONDecodeError, KeyError):
+        except (json.JSONDecodeError, OSError, UnicodeDecodeError) as e:
+            logger.warning("Skipping corrupt reduced cache file %s: %s", rj.name, e)
+            skipped += 1
             continue
         url = meta.get("url", "")
         if not url:
@@ -78,6 +80,7 @@ def _rereduce(domain_filter: str | None, limit: int) -> None:
         pending = pending[:limit]
 
     improved = 0
+    fallbacks = 0
     for i, (url, uhash, old_meta, fetched_html_path) in enumerate(pending):
         html = fetched_html_path.read_text(encoding="utf-8")
         old_size = old_meta.get("reduction_meta", {}).get("reduced_size", 0)
@@ -99,6 +102,8 @@ def _rereduce(domain_filter: str | None, limit: int) -> None:
 
         if meta["reduced_size"] < old_size:
             improved += 1
+        if meta.get("strategy_used", "").endswith("_fallback"):
+            fallbacks += 1
 
         logger.info(
             "[%d/%d] %s → %d → %d chars (%.0f%%) [%s]%s",
@@ -113,10 +118,13 @@ def _rereduce(domain_filter: str | None, limit: int) -> None:
         )
 
     print()
-    print(
+    summary = (
         f"Re-reduced: {len(pending)} pages, {improved} improved, "
         f"{skipped} skipped (of {len(pending) + skipped} total)"
     )
+    if fallbacks:
+        summary += f", {fallbacks} fallbacks (check logs)"
+    print(summary)
 
 
 async def main() -> None:  # noqa: C901

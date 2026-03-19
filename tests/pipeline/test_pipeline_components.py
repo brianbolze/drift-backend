@@ -178,6 +178,57 @@ class TestHtmlReducer:
         assert "AccuBond" in result
         assert "0.509" in result
 
+    def test_main_content_fallback_min_size(self):
+        """Tiny <main> below min_size → falls back to generic."""
+        html = """<html><body>
+        <main><p>Hi</p></main>
+        <div>Other content here for the generic reducer to work with</div>
+        </body></html>"""
+        reducer = HtmlReducer(min_size=10_000)
+        _, meta = reducer.reduce(html, url="https://barnesbullets.com/products/tsx")
+        assert meta["strategy_used"] == "main_content_fallback"
+
+    def test_multiple_jsonld_blocks_preserved(self):
+        """Pages with multiple JSON-LD blocks (Product + BreadcrumbList) preserve all."""
+        html = """<html><head><title>Product Page</title></head><body>
+        <script type="application/ld+json">{"@type":"Product","name":"ELD Match","bc":0.610}</script>
+        <script type="application/ld+json">{"@type":"BreadcrumbList","itemListElement":[{"name":"Bullets"}]}</script>
+        <script type="application/ld+json">{"@type":"Organization","name":"Hornady"}</script>
+        <div id="__next">SPA shell</div>
+        </body></html>"""
+        reducer = HtmlReducer()
+        result, meta = reducer.reduce(html, url="https://www.norma-ammunition.com/en/product/test")
+        assert meta["strategy_used"] == "jsonld_only"
+        assert "ELD Match" in result
+        assert "BreadcrumbList" in result
+        assert "Hornady" in result
+
+    def test_metadata_keys_consistent_across_strategies(self):
+        """All strategies produce the same metadata keys."""
+        expected_keys = {
+            "original_size",
+            "reduced_size",
+            "reduction_ratio",
+            "steps_applied",
+            "steps",
+            "under_target",
+            "strategy_used",
+        }
+
+        # generic
+        _, meta_generic = HtmlReducer().reduce("<html><body><p>Test</p></body></html>")
+        assert set(meta_generic.keys()) == expected_keys
+
+        # main_content
+        html_mc = "<html><body><main><p>Product data here with enough content</p></main></body></html>"
+        _, meta_mc = HtmlReducer(min_size=50).reduce(html_mc, url="https://barnesbullets.com/x")
+        assert set(meta_mc.keys()) == expected_keys
+
+        # jsonld_only
+        html_jl = '<html><body><script type="application/ld+json">{"@type":"Product"}</script></body></html>'
+        _, meta_jl = HtmlReducer().reduce(html_jl, url="https://www.norma-ammunition.com/x")
+        assert set(meta_jl.keys()) == expected_keys
+
 
 # ── Extraction schemas ───────────────────────────────────────────────────────
 
