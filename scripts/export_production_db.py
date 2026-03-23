@@ -276,6 +276,32 @@ def main() -> None:
     cursor = conn.execute("DELETE FROM bullet WHERE bullet_diameter_inches = 0.223")
     print(f"  Removed {cursor.rowcount} bogus-diameter bullets")
 
+    # BC-less cartridges (no usable BC at cartridge or bullet level — solver can't run)
+    cursor = conn.execute("""
+        DELETE FROM cartridge WHERE id IN (
+            SELECT c.id FROM cartridge c
+            JOIN bullet b ON c.bullet_id = b.id
+            WHERE (c.bc_g1 IS NULL OR c.bc_g1 = 0)
+              AND (c.bc_g7 IS NULL OR c.bc_g7 = 0)
+              AND b.bc_g1_published IS NULL
+              AND b.bc_g1_estimated IS NULL
+              AND b.bc_g7_published IS NULL
+              AND b.bc_g7_estimated IS NULL
+        )
+    """)
+    print(f"  Removed {cursor.rowcount} BC-less cartridges")
+
+    # Mislinked cartridges (linked to wrong bullet — cart-level BC is valid but
+    # bullet data is wrong; filter until correct bullets exist in DB)
+    cursor = conn.execute("""
+        DELETE FROM cartridge WHERE id IN (
+            SELECT c.id FROM cartridge c
+            JOIN manufacturer m ON c.manufacturer_id = m.id
+            WHERE m.name = 'Federal' AND c.name LIKE '%Power-Shok Copper%'
+        )
+    """)
+    print(f"  Removed {cursor.rowcount} mislinked cartridges (Federal Power-Shok Copper)")
+
     # ── Compute display_name ────────────────────────────────────────────────
     _populate_display_names(conn)
 

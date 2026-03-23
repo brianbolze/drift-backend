@@ -1,0 +1,67 @@
+patch:
+  id: 024_cartridge_bc_and_bullet_fixes
+  author: brian
+  date: '2026-03-23'
+  description: >
+    Data audit fixes: Nosler 270 WSM BC correction, Federal Power-Shok Copper bullet
+    lengths, Barnes TSX BT 150gr bullet creation + Federal 308 Win relink. Power-Shok
+    Copper cartridges filtered from production export (wrong bullet links).
+operations:
+
+# ── 1. Nosler 270 WSM 130gr Expansion Tip: BC fix ────────────────────────────
+- action: update_cartridge
+  manufacturer: Nosler
+  name: "270 WSM 130gr Expansion Tip Ammunition"
+  set:
+    bc_g1: 0.459
+    bc_g7: null
+  reason: >
+    Cart-level G1=0.150 and G7=0.11 were wrong; linked bullet has G1=0.459.
+    Nulling G7 so the app falls through to bullet-level BC.
+
+# ── 2. Federal Power-Shok Copper 270 Win 130gr: bullet length ────────────────
+- action: update_cartridge
+  manufacturer: Federal
+  name: "Power-Shok Copper Rifle, 270 Win, 130 Grain, Copper HP, 3060 fps"
+  set:
+    bullet_length_inches: 1.175
+  reason: Bullet length confirmed from manufacturer data.
+
+# ── 3-4. Federal Power-Shok Copper 300 WSM/Win Mag 180gr: bullet length ──────
+- action: update_cartridge
+  manufacturer: Federal
+  name: "Power-Shok Copper Rifle, 300 WSM, 180 Grain, Copper HP, 2850 fps"
+  set:
+    bullet_length_inches: 1.32
+  reason: Bullet length confirmed from manufacturer data.
+
+- action: update_cartridge
+  manufacturer: Federal
+  name: "Power-Shok Copper Rifle, 300 Win Mag, 180 Grain, Copper HP, 2850 fps"
+  set:
+    bullet_length_inches: 1.32
+  reason: Bullet length confirmed from manufacturer data.
+
+# ── 5. Federal Barnes TSX 308 Win 150gr: create correct bullet and relink ─────
+
+# The cartridge was linked to the 30-30 WIN TSX FN FB (flat nose, G1=0.184).
+# Correct bullet is the .308 30 Cal TSX BT (boat tail spitzer, G1=0.369).
+- action: create_bullet
+  manufacturer: Barnes Bullets
+  name: "0.308\" 30 CAL TSX BT 150 GR"
+  weight_grains: 150.0
+  bullet_diameter_inches: 0.308
+  bc_g1: 0.369
+  product_line: TSX
+  source_url: https://barnesbullets.com/0-308-30-cal-tsx-bt/
+  reason: >
+    No .308 TSX BT 150gr existed in the DB. The 30-30 WIN TSX FN FB is a flat-nose
+    variant with very different ballistics (G1=0.184 vs 0.369).
+
+- action: update_cartridge
+  manufacturer: Federal
+  name: "Barnes TSX, 308 Win, 150 Grain, Barnes Triple-Shock X Bullet (TSX), 2820 fps"
+  set:
+    bullet: "0.308\" 30 CAL TSX BT 150 GR"
+    bullet_manufacturer: "Barnes Bullets"
+  reason: Relink from 30-30 flat nose TSX to correct .308 TSX BT spitzer.
