@@ -21,6 +21,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import os
 import sqlite3
 import sys
 import tempfile
@@ -40,8 +41,6 @@ try:
     load_dotenv()
 except ImportError:
     pass  # dotenv is optional — env vars can be set directly
-
-import os
 
 # ── Configuration ────────────────────────────────────────────────────────────
 
@@ -63,12 +62,14 @@ def sha256_file(path: Path) -> str:
     return h.hexdigest()
 
 
-def get_primary_keys(db_path: Path, table: str) -> set[str]:
-    """Return all primary key (id) values from a table."""
+def get_primary_keys(db_path: Path, table: str) -> set[str] | None:
+    """Return all primary key (id) values from a table, or None if table doesn't exist."""
     conn = sqlite3.connect(db_path)
     try:
         rows = conn.execute(f"SELECT id FROM [{table}]").fetchall()  # noqa: S608
         return {row[0] for row in rows}
+    except sqlite3.OperationalError:
+        return None
     finally:
         conn.close()
 
@@ -104,11 +105,19 @@ def fetch_current_manifest(s3) -> dict | None:
     """Fetch the current manifest.json from R2. Returns None if not found."""
     try:
         response = s3.get_object(Bucket=R2_BUCKET, Key="manifest.json")
-        return json.loads(response["Body"].read())
+        data = json.loads(response["Body"].read())
     except ClientError as e:
         if e.response["Error"]["Code"] == "NoSuchKey":
             return None
         raise
+    except json.JSONDecodeError as e:
+        print(f"ERROR: Remote manifest.json is malformed: {e}", file=sys.stderr)
+        sys.exit(1)
+
+    if not isinstance(data, dict) or "version" not in data:
+        print("ERROR: Remote manifest.json missing required 'version' field", file=sys.stderr)
+        sys.exit(1)
+    return data
 
 
 def download_current_db(s3, dest: Path) -> bool:
@@ -131,6 +140,12 @@ def check_pk_stability(old_db: Path, new_db: Path) -> list[str]:
     for table in PK_CHECK_TABLES:
         old_keys = get_primary_keys(old_db, table)
         new_keys = get_primary_keys(new_db, table)
+        if old_keys is None:
+            print(f"  {table}: not in previous DB — skipping (new table)")
+            continue
+        if new_keys is None:
+            errors.append(f"  {table}: table missing from new DB entirely")
+            continue
         missing = old_keys - new_keys
         if missing:
             errors.append(f"  {table}: {len(missing)} PKs removed: {sorted(missing)[:10]}")
@@ -189,12 +204,23 @@ def upload_to_r2(s3, db_path: Path, manifest: dict) -> None:
     print("  drift.db uploaded.")
 
     print("Uploading manifest.json...")
-    s3.put_object(
-        Bucket=R2_BUCKET,
-        Key="manifest.json",
-        Body=json.dumps(manifest, indent=2),
-        ContentType="application/json",
-    )
+    try:
+        s3.put_object(
+            Bucket=R2_BUCKET,
+            Key="manifest.json",
+            Body=json.dumps(manifest, indent=2),
+            ContentType="application/json",
+        )
+    except Exception as e:
+        print("\n" + "=" * 70, file=sys.stderr)
+        print("CRITICAL: drift.db was uploaded but manifest.json upload FAILED.", file=sys.stderr)
+        print("R2 is in an inconsistent state — the DB is new but the manifest", file=sys.stderr)
+        print("still references the old version/hash.", file=sys.stderr)
+        print("", file=sys.stderr)
+        print("To fix: re-run this command to retry the publish.", file=sys.stderr)
+        print(f"Error: {e}", file=sys.stderr)
+        print("=" * 70, file=sys.stderr)
+        sys.exit(2)
     print("  manifest.json uploaded.")
 
 
@@ -205,6 +231,10 @@ def main() -> None:
     parser.add_argument("--dry-run", action="store_true", help="Validate and preview without uploading")
     parser.add_argument("--skip-pk-check", action="store_true", help="Skip primary key stability check")
     args = parser.parse_args()
+
+    if not args.changelog.strip():
+        print("ERROR: --changelog must not be empty.", file=sys.stderr)
+        sys.exit(1)
 
     db_path = Path(args.db)
     if not db_path.exists():
@@ -260,6 +290,8 @@ def main() -> None:
     # ── Upload ───────────────────────────────────────────────────────────
     if args.dry_run:
         print("\nDRY RUN — nothing uploaded.")
+        if not s3:
+            print("NOTE: Version number is estimated (R2 was unreachable).")
         print(f"Would upload: {db_path.name} ({db_size / 1024:.0f} KB) + manifest.json")
         return
 
