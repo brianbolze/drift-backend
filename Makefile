@@ -29,7 +29,7 @@ PIPELINE_LIMIT ?= 0
 .PHONY: pipeline-store pipeline-store-commit pipeline-review
 .PHONY: pipeline-status pipeline-all pipeline-clean
 .PHONY: curate curate-commit
-.PHONY: export-production-db
+.PHONY: export-production-db publish-db publish-db-commit
 
 # ═══════════════════════════════════════════════════════════════════════════
 # Help & Documentation
@@ -263,3 +263,9 @@ curate-commit: ## Apply curation patches to database
 
 export-production-db: ## Export production-ready SQLite DB for iOS app
 	$(VENV)/python scripts/export_production_db.py
+
+publish-db: ## Dry-run publish production DB to R2 (preview only)
+	$(VENV)/python scripts/publish_db.py --dry-run --changelog "$(CHANGELOG)"
+
+publish-db-commit: ## Upload production DB + manifest to R2
+	$(VENV)/python scripts/publish_db.py --changelog "$(CHANGELOG)"

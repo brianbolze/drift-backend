@@ -15,6 +15,8 @@ make pipeline-status          # Pipeline execution status
 make pipeline-store           # Dry-run resolve (preview DB changes)
 make pipeline-store-commit    # Commit resolved data to DB
 make export-production-db     # Export production SQLite for iOS app
+make publish-db               # Dry-run publish to R2 (preview only)
+make publish-db-commit        # Upload production DB + manifest to R2
 python scripts/describe_db.py # Database schema + row counts
 ```
 
@@ -102,6 +104,17 @@ python scripts/export_production_db.py -o path.db      # Custom output path
 
 Re-run after any data changes (curation patches, pipeline store, etc.) to keep the production DB current.
 
+## OTA Publish
+
+`scripts/publish_db.py` uploads `data/production/drift.db` + `manifest.json` to Cloudflare R2 (`data.driftballistics.com`). Validates primary key stability against the previous published version.
+
+```bash
+make publish-db CHANGELOG="Added 47 Berger bullets"          # Dry-run preview
+make publish-db-commit CHANGELOG="Added 47 Berger bullets"   # Upload to R2
+```
+
+Requires `R2_ACCESS_KEY_ID`, `R2_SECRET_ACCESS_KEY`, `R2_ENDPOINT_URL` in `.env`. Install deps: `pip install -e '.[publish]'`.
+
 ## TODO.md — Tech Debt Backlog
 
 `TODO.md` in the project root is a lightweight backlog for tech debt, engineering improvements, and issues discovered during work. Features and large items go in Linear.
@@ -111,6 +124,39 @@ When you discover an issue, improvement opportunity, or tech debt during your wo
 - Format: `- [ ] Short description — context (source: agent/human, YYYY-MM-DD)`
 - Don't duplicate items already listed
 - If an item grows beyond a quick fix (>1 hour), it should move to Linear. Notify the user about these.
+
+## Product & Design Hub
+
+`product/` (symlink → iCloud) is the product management, design, and research hub for Drift. Read relevant files here when working on product-adjacent tasks.
+
+Key files and directories:
+- `product/README.md` — hub overview and orientation
+- `product/current-app-state.md` — current state of the iOS app
+- `product/strategy/` — roadmap, product themes, monetization, v1 requirements
+- `product/product design/` — feature specs, design tokens, UX flows (ammo step, profile creation, gear identity)
+- `product/research/` — competitive analysis, user research, ballistics engine research, brand positioning
+- `product/engineering/` — iOS package design, services API, OTA data, design system, WI2 spec
+- `product/ops/` — Linear agent guide
+- `product/brand assets/` — SVG logos, wordmarks, rifle silhouettes, visual identity
+- `product/agent_prompts/` — reusable prompts for specific implementation tasks
+- `product/data-pipeline/` — early pipeline research JSONs (historical, mostly superseded by DB)
+
+## iOS App Repository
+
+`ios/` (symlink → `/Users/brianbolze/Development/ios/Drift/`) is the Drift iOS app (SwiftUI). When working in this backend repo, treat `ios/` as **read-only** — use it for reference only, never edit or create files under it.
+
+Key reference files:
+- `ios/CLAUDE.md` — iOS-specific agent instructions
+- `ios/agent_docs/` — architecture, domain primer, file map, SwiftUI patterns, known issues
+- `ios/docs/` — feature specs, design system, implemented features, engineering overview
+- `ios/current-app-state.md` — current iOS app state
+- `ios/Drift/` — SwiftUI source (Views, Models, Services, DesignSystem)
+
+## Search Tips
+
+- For backend work, scope searches to `src/`, `scripts/`, `tests/`, `data/`, `docs/` — `ios/` and `product/` are large external directories that will pollute results if searched broadly
+- `data/pipeline/` is generated cache, not source code — rarely useful to read directly
+- Prefer searching `src/` over repo root for Python symbol lookups
 
 ## User Preferences
 

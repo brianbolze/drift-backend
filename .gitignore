@@ -49,3 +49,7 @@ data/pipeline/*
 
 # AI tools
 .claude/settings.local.json
+
+# Additional docs
+product
+ios
