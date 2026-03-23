@@ -62,8 +62,8 @@ help: ## Show this help message
 	@echo "Data Curation:"
 	@grep -E '^curate[a-z-]*:.*##' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*## "}; {printf "  %-20s %s\n", $$1, $$2}'
 	@echo ""
-	@echo "Production Export:"
-	@grep -E '^export-[a-z-]*:.*##' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*## "}; {printf "  %-20s %s\n", $$1, $$2}'
+	@echo "Production Export & Publish:"
+	@grep -E '^(export|publish)-[a-z-]*:.*##' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*## "}; {printf "  %-20s %s\n", $$1, $$2}'
 	@echo ""
 	@echo "Data Pipeline:"
 	@grep -E '^pipeline-[a-z0-9-]+:.*##' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*## "}; {printf "  %-20s %s\n", $$1, $$2}'
