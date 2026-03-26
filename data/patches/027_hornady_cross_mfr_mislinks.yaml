@@ -1,0 +1,181 @@
+patch:
+  id: "027_hornady_cross_mfr_mislinks"
+  author: agent
+  date: "2026-03-25"
+  description: >
+    Fix 11 Hornady cartridges linked to Lapua or Sierra bullets instead of correct
+    Hornady bullets. Creates 6 missing Hornady bullet variants (InterLock SP 150gr,
+    InterLock RN 150gr, FMJ-BT 55gr, BTHP Match 68gr, HP 125gr, BTHP Match 105gr)
+    and relinks. 1 cartridge (338 Lapua 250gr BTHP Match) flagged for manual review.
+    Fixes C10 subset.
+operations:
+  # =====================================================================
+  # Hornady → Lapua mislinks (6 cartridges)
+  # =====================================================================
+
+  # --- Create Hornady 30 Cal .308 150 gr InterLock SP ---
+  # 3 Hornady American Whitetail cartridges linked to Lapua 150gr Mega SP.
+  # Hornady AWT loads use Hornady InterLock bullets, not Lapua.
+  - action: create_bullet
+    manufacturer: Hornady
+    name: "30 Cal .308 150 gr InterLock® SP"
+    weight_grains: 150.0
+    bullet_diameter_inches: 0.308
+    bc_g1: 0.338
+    product_line: "InterLock"
+    source_url: https://www.hornady.com/bullets/rifle/30-cal-308-150-gr-interlock-sp
+    bc_source: manufacturer
+    bc_source_notes: "G1 0.338 from hornady.com product page, accessed 2026-03-25. G7 not published."
+
+  - action: update_cartridge
+    manufacturer: Hornady
+    name: "300 Win Mag 150 gr InterLock® SP American Whitetail®"
+    set:
+      bullet: "30 Cal .308 150 gr InterLock® SP"
+      bullet_manufacturer: Hornady
+
+  - action: update_cartridge
+    manufacturer: Hornady
+    name: "308 Win 150 gr InterLock® SP American Whitetail®"
+    set:
+      bullet: "30 Cal .308 150 gr InterLock® SP"
+      bullet_manufacturer: Hornady
+
+  - action: update_cartridge
+    manufacturer: Hornady
+    name: "30-06 Springfield 150 gr InterLock SP American Whitetail"
+    set:
+      bullet: "30 Cal .308 150 gr InterLock® SP"
+      bullet_manufacturer: Hornady
+
+  # --- Create Hornady 22 Cal .224 55 gr FMJ-BT with cannelure ---
+  # 2 Hornady Frontier cartridges linked to Lapua 55gr FMJ.
+  # Frontier uses Hornady military-spec FMJ bullets.
+  - action: create_bullet
+    manufacturer: Hornady
+    name: "22 Cal .224 55 gr FMJ-BT with cannelure"
+    weight_grains: 55.0
+    bullet_diameter_inches: 0.224
+    bc_g1: 0.243
+    product_line: "FMJ"
+    source_url: https://www.hornady.com/bullets/rifle/22-cal-224-55-gr-fmj-bt-with-cannelure
+    bc_source: manufacturer
+    bc_source_notes: "G1 0.243 from hornady.com product page, accessed 2026-03-25. G7 not published."
+
+  - action: update_cartridge
+    manufacturer: Hornady
+    name: "223 Remington 55 gr FMJ Frontier®"
+    set:
+      bullet: "22 Cal .224 55 gr FMJ-BT with cannelure"
+      bullet_manufacturer: Hornady
+
+  - action: update_cartridge
+    manufacturer: Hornady
+    name: "5.56 NATO 55 gr FMJ (M193) Frontier®"
+    set:
+      bullet: "22 Cal .224 55 gr FMJ-BT with cannelure"
+      bullet_manufacturer: Hornady
+
+  # --- Create Hornady 22 Cal .224 68 gr BTHP Match ---
+  # 1 Hornady Frontier cartridge linked to Lapua 69gr Scenar-L OTM.
+  # Frontier BTHP Match uses Hornady 68gr BTHP Match bullets.
+  - action: create_bullet
+    manufacturer: Hornady
+    name: "22 Cal .224 68 gr BTHP Match™"
+    weight_grains: 68.0
+    bullet_diameter_inches: 0.224
+    bc_g1: 0.355
+    product_line: "Match"
+    source_url: https://www.hornady.com/bullets/rifle/22-cal-224-68-gr-bthp-match
+    bc_source: manufacturer
+    bc_source_notes: "G1 0.355 from hornady.com product page, accessed 2026-03-25. G7 not published."
+
+  - action: update_cartridge
+    manufacturer: Hornady
+    name: "5.56 NATO 68 gr BTHP Match Frontier"
+    set:
+      bullet: "22 Cal .224 68 gr BTHP Match™"
+      bullet_manufacturer: Hornady
+
+  # =====================================================================
+  # Hornady → Sierra mislinks (4 cartridges fixed, 1 flagged)
+  # =====================================================================
+
+  # --- Create Hornady 30 Cal .308 150 gr InterLock RN ---
+  # 30-30 Win cartridge linked to Sierra 150gr RN Pro-Hunter instead of
+  # Hornady InterLock RN. 30-30 AWT loads use Hornady InterLock bullets.
+  - action: create_bullet
+    manufacturer: Hornady
+    name: "30 Cal .308 150 gr InterLock® RN"
+    weight_grains: 150.0
+    bullet_diameter_inches: 0.308
+    bc_g1: 0.186
+    product_line: "InterLock"
+    source_url: https://www.hornady.com/bullets/rifle/30-cal-308-150-gr-interlock-rn
+    bc_source: manufacturer
+    bc_source_notes: "G1 0.186 from hornady.com product page, accessed 2026-03-25. G7 not published. Low BC is expected for round-nose bullet."
+
+  - action: update_cartridge
+    manufacturer: Hornady
+    name: "30-30 Win 150 gr RN Interlock American Whitetail"
+    set:
+      bullet: "30 Cal .308 150 gr InterLock® RN"
+      bullet_manufacturer: Hornady
+
+  # --- Create Hornady 30 Cal .308 125 gr HP ---
+  # 300 Blackout cartridge linked to Sierra 125gr MatchKing instead of
+  # Hornady 125gr HP. American Gunner loads use Hornady bullets.
+  - action: create_bullet
+    manufacturer: Hornady
+    name: "30 Cal .308 125 gr HP"
+    weight_grains: 125.0
+    bullet_diameter_inches: 0.308
+    bc_g1: 0.320
+    source_url: https://www.hornady.com/bullets/rifle/30-cal-308-125-gr-hp
+    bc_source: manufacturer
+    bc_source_notes: "G1 0.320 from hornady.com product page, accessed 2026-03-25. G7 not published."
+
+  - action: update_cartridge
+    manufacturer: Hornady
+    name: "300 Blackout 125 gr HP American Gunner®"
+    set:
+      bullet: "30 Cal .308 125 gr HP"
+      bullet_manufacturer: Hornady
+
+  # --- Create Hornady 6mm .243 105 gr BTHP Match ---
+  # 2 Hornady BLACK cartridges (6mm ARC + 6mm Creedmoor) linked to
+  # Sierra 105gr MatchKing instead of Hornady 105gr BTHP Match.
+  # Hornady BLACK loads use Hornady bullets.
+  - action: create_bullet
+    manufacturer: Hornady
+    name: "6mm .243 105 gr BTHP Match™"
+    weight_grains: 105.0
+    bullet_diameter_inches: 0.243
+    bc_g1: 0.530
+    product_line: "Match"
+    source_url: https://www.hornady.com/bullets/rifle/6mm-.243-105-gr-bthp-match-500
+    bc_source: manufacturer
+    bc_source_notes: "G1 0.530 from hornady.com product page, accessed 2026-03-25. G7 not published."
+
+  - action: update_cartridge
+    manufacturer: Hornady
+    name: "6mm ARC 105 gr BTHP Hornady BLACK®"
+    set:
+      bullet: "6mm .243 105 gr BTHP Match™"
+      bullet_manufacturer: Hornady
+
+  - action: update_cartridge
+    manufacturer: Hornady
+    name: "6mm Creedmoor 105 gr BTHP Hornady BLACK®"
+    set:
+      bullet: "6mm .243 105 gr BTHP Match™"
+      bullet_manufacturer: Hornady
+
+  # =====================================================================
+  # FLAGGED: 338 Lapua 250 gr BTHP Match → Sierra 250gr SMK
+  # Cannot fix — Hornady 338 250gr BTHP Match component bullet (item #33361)
+  # has no product page on hornady.com. BC (0.675) only available from
+  # retailer sites, which per project rules cannot be used as BC sources.
+  # Leaving this cartridge linked to Sierra 250gr SMK until manufacturer
+  # BC can be verified. Manual follow-up needed.
+  # =====================================================================

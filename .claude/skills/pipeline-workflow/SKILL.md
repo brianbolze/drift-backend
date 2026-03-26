@@ -62,7 +62,18 @@ ALWAYS dry-run first:
 
 Records have `data_source` ("pipeline", "cowork", "manual") and `is_locked` (bool) columns. The store script skips locked records entirely — they won't be modified by pipeline re-runs.
 
-**Manual data fixes** (missing bullets, BC corrections, aliases) should use the **curation system** — numbered YAML patches in `data/patches/`, applied via `make curate` / `make curate-commit`. All curated records automatically get `data_source="manual"` + `is_locked=True`. See `curation_plan.md` for YAML format and `src/drift/curation.py` for implementation.
+**Manual data fixes** (missing bullets, BC corrections, relinks, aliases, deletions) use the **curation system** — numbered YAML patches in `data/patches/`, applied via `make curate` / `make curate-commit`. All curated records automatically get `data_source="manual"` + `is_locked=True`.
+
+```bash
+make curate           # Dry-run preview
+make curate-commit    # Write to DB
+```
+
+For full YAML format reference, available operations (`create_bullet`, `update_cartridge`, `delete_bullet`, `add_bc_source`, `add_entity_alias`, etc.), updatable field lists, and common fix patterns — see the **data-quality** skill's "Fixing Issues: Curation Patches" section. Implementation: `src/drift/curation.py`.
+
+**When to use curation vs pipeline re-run:**
+- **Curation patch**: missing bullets, BC corrections, relinking cartridges to correct bullets, deleting duplicates, adding aliases. Anything requiring human judgment.
+- **Pipeline re-run**: re-extracting pages with updated prompts, bulk ingestion of new manufacturer URLs, fixing systematic extraction errors.
 
 **Unlock to allow pipeline updates:**
 ```sql
@@ -72,6 +83,11 @@ UPDATE bullet SET is_locked = 0 WHERE id = '...';
 The store report shows `skipped (locked)` counts so you can see what was preserved.
 
 Extraction JSON can set `"data_source": "cowork"` in the envelope to tag CoWork-sourced entities.
+
+**After any data change** (curation or pipeline store), re-export for iOS:
+```bash
+make export-production-db
+```
 
 ## Resolution Strategy
 

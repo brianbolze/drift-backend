@@ -1,0 +1,110 @@
+patch:
+  id: "026_black_hills_fixes_and_norma_dupe"
+  author: agent
+  date: "2026-03-25"
+  description: >
+    Fix 4 Black Hills .308 cartridge mislinks by creating missing bullet variants
+    (Hornady 150gr SST, 155gr ELD Match; Sierra 175gr/155gr TMK) and relinking.
+    Delete duplicate Norma .300 Norma Mag cartridge. Fixes C10 subset and W12.
+operations:
+  # =====================================================================
+  # TASK 3: Black Hills .308 mislink fixes [C10 subset]
+  # =====================================================================
+
+  # --- 3a. Create Hornady 30 Cal .308 150 gr SST ---
+  # BH Gold .308 150gr SST is linked to Hornady 150gr CX (wrong).
+  # The 150gr SST component bullet doesn't exist in DB (only 270 Cal 150gr SST).
+  - action: create_bullet
+    manufacturer: Hornady
+    name: "30 Cal .308 150 gr SST®"
+    weight_grains: 150.0
+    bullet_diameter_inches: 0.308
+    bc_g1: 0.415
+    product_line: "SST"
+    source_url: https://www.hornady.com/bullets/rifle/30-cal-308-150-gr-sst
+    bc_source: manufacturer
+    bc_source_notes: "G1 0.415 from hornady.com product page, accessed 2026-03-25. G7 not published."
+
+  - action: update_cartridge
+    manufacturer: Black Hills Ammunition
+    name: "Black Hills Gold .308 Win 150gr Hornady SST"
+    set:
+      bullet: "30 Cal .308 150 gr SST®"
+      bullet_manufacturer: Hornady
+
+  # --- 3b. Create Hornady 30 Cal .308 155 gr ELD Match ---
+  # BH Gold .308 155gr ELD Match is linked to Hornady 155gr BTHP Match with
+  # cannelure (wrong). ELD Match has Heat Shield tip and higher BC (0.461 vs 0.405).
+  - action: create_bullet
+    manufacturer: Hornady
+    name: "30 Cal .308 155 gr ELD® Match"
+    weight_grains: 155.0
+    bullet_diameter_inches: 0.308
+    bc_g1: 0.461
+    bc_g7: 0.232
+    product_line: "ELD Match"
+    source_url: https://www.hornady.com/bullets/rifle/30-cal-.308-155-gr-eld-match
+    bc_source: manufacturer
+    bc_source_notes: "G1 0.461, G7 0.232 from hornady.com product page, accessed 2026-03-25."
+
+  - action: update_cartridge
+    manufacturer: Black Hills Ammunition
+    name: "Black Hills Gold .308 Win 155gr Hornady ELD Match"
+    set:
+      bullet: "30 Cal .308 155 gr ELD® Match"
+      bullet_manufacturer: Hornady
+
+  # --- 3c. Create Sierra 30 Cal 175 gr TMK ---
+  # BH Gold .308 175gr TMK is linked to Sierra 175gr SMK (MatchKing, wrong).
+  # TMK (Tipped MatchKing) has acetal resin tip and higher BC than HPBT SMK.
+  - action: create_bullet
+    manufacturer: Sierra Bullets
+    name: "30 CAL 175 GR TIPPED MATCHKING (TMK)"
+    weight_grains: 175.0
+    bullet_diameter_inches: 0.308
+    bc_g1: 0.545
+    bc_g7: 0.267
+    product_line: "Tipped MatchKing"
+    source_url: https://sierrabullets.com/30-cal-175-gr-tipped-matchking-tmk/
+    bc_source: manufacturer
+    bc_source_notes: "G1 0.545, G7 0.267 from sierrabullets.com product page, accessed 2026-03-25."
+
+  - action: update_cartridge
+    manufacturer: Black Hills Ammunition
+    name: "Black Hills Gold .308 Win 175gr Sierra TMK"
+    set:
+      bullet: "30 CAL 175 GR TIPPED MATCHKING (TMK)"
+      bullet_manufacturer: Sierra Bullets
+
+  # --- 3d. Create Sierra 30 Cal 155 gr TMK (bonus fix) ---
+  # BH Gold .308 155gr Sierra TMK is linked to Sierra 155gr SMK (wrong).
+  # Same TMK vs SMK confusion as 175gr above.
+  - action: create_bullet
+    manufacturer: Sierra Bullets
+    name: "30 CAL 155 GR TIPPED MATCHKING (TMK)"
+    weight_grains: 155.0
+    bullet_diameter_inches: 0.308
+    bc_g1: 0.519
+    bc_g7: 0.256
+    product_line: "Tipped MatchKing"
+    source_url: https://sierrabullets.com/30-cal-155-gr-tipped-matchking-tmk/
+    bc_source: manufacturer
+    bc_source_notes: "G1 0.519, G7 0.256 from sierrabullets.com product page, accessed 2026-03-25."
+
+  - action: update_cartridge
+    manufacturer: Black Hills Ammunition
+    name: "Black Hills Gold .308 Win 155gr Sierra TMK"
+    set:
+      bullet: "30 CAL 155 GR TIPPED MATCHKING (TMK)"
+      bullet_manufacturer: Sierra Bullets
+
+  # =====================================================================
+  # TASK 4: Delete Norma duplicate cartridge [W12]
+  # Two identical rows: same name, MV (2986), source URL, both manual.
+  # Deleting the newer one (created 17:28 vs 17:18).
+  # =====================================================================
+  - action: delete_cartridge
+    manufacturer: Norma
+    name: "Norma Hybrid Target .300 Norma Mag 230gr Berger Hybrid Target"
+    id: "8b5eaa1b-26d6-4d9a-a835-1b19b146d6ed"
+    reason: "Exact duplicate row — same name, MV (2986), and source URL as id a906c092. Deleting the newer of the two (created 17:28 vs 17:18)."

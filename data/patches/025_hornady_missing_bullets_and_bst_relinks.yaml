@@ -1,0 +1,219 @@
+patch:
+  id: "025_hornady_missing_bullets_and_bst_relinks"
+  author: agent
+  date: "2026-03-25"
+  description: >
+    Create 5 missing Hornady bullet variants (ELD-X 178gr, CX 165gr, SST 129gr,
+    CX 120gr, InterLock BTSP 117gr) and relink ~13 cartridges that were matched
+    to wrong bullet types. Also fix 4 Winchester Ballistic Silvertip cartridges
+    linked to Winchester/Lapua bullets instead of correct Nosler BST bullets.
+    Fixes C10, C11, C12 from known_issues.json.
+operations:
+  # =====================================================================
+  # TASK 1: Create 5 missing Hornady bullets + relink cartridges [C11, C12]
+  # =====================================================================
+
+  # --- 1a. Hornady 30 Cal .308 178 gr ELD-X ---
+  # The 178gr ELD-X (hunting) is different from the 178gr ELD Match (target).
+  # ELD-X has Heat Shield tip + controlled expansion; ELD Match is target-only.
+  # 7 cartridges currently mislinked to ELD Match.
+  - action: create_bullet
+    manufacturer: Hornady
+    name: "30 Cal .308 178 gr ELD-X®"
+    weight_grains: 178.0
+    bullet_diameter_inches: 0.308
+    bc_g1: 0.552
+    bc_g7: 0.278
+    product_line: "ELD-X"
+    source_url: https://www.hornady.com/bullets/rifle/30-cal-308-178-gr-eld-x
+    bc_source: manufacturer
+    bc_source_notes: "G1 0.552, G7 0.278 from hornady.com product page, accessed 2026-03-25. Velocity-dependent BCs also available at hornady.com/BC (Mach 2.0: G1=0.543/G7=0.273, Mach 1.75: G1=0.538/G7=0.271)."
+
+  # Relink 4 Hornady Precision Hunter cartridges from ELD Match → ELD-X
+  - action: update_cartridge
+    manufacturer: Hornady
+    name: "300 Win Mag 178 gr ELD-X Precision Hunter"
+    set:
+      bullet: "30 Cal .308 178 gr ELD-X®"
+      bullet_manufacturer: Hornady
+
+  - action: update_cartridge
+    manufacturer: Hornady
+    name: "30-06 Springfield 178 gr ELD-X Precision Hunter"
+    set:
+      bullet: "30 Cal .308 178 gr ELD-X®"
+      bullet_manufacturer: Hornady
+
+  - action: update_cartridge
+    manufacturer: Hornady
+    name: "300 Remington Short Action Ultra Mag 178 gr ELD-X Precision Hunter"
+    set:
+      bullet: "30 Cal .308 178 gr ELD-X®"
+      bullet_manufacturer: Hornady
+
+  - action: update_cartridge
+    manufacturer: Hornady
+    name: "300 RCM 178 gr ELD-X Precision Hunter"
+    set:
+      bullet: "30 Cal .308 178 gr ELD-X®"
+      bullet_manufacturer: Hornady
+
+  # Relink 2 Federal ELD-X cartridges from ELD Match → ELD-X
+  - action: update_cartridge
+    manufacturer: Federal
+    name: "ELD-X, 30-06 Springfield, 178 Grain, ELD-X, 2750 fps"
+    set:
+      bullet: "30 Cal .308 178 gr ELD-X®"
+      bullet_manufacturer: Hornady
+
+  - action: update_cartridge
+    manufacturer: Federal
+    name: "ELD-X, 308 Win, 178 Grain, ELD-X, 2610 fps"
+    set:
+      bullet: "30 Cal .308 178 gr ELD-X®"
+      bullet_manufacturer: Hornady
+
+  # Relink 1 Black Hills ELD-X cartridge from ELD Match → ELD-X
+  - action: update_cartridge
+    manufacturer: Black Hills Ammunition
+    name: "Black Hills Gold .308 Win 178gr Hornady ELD-X"
+    set:
+      bullet: "30 Cal .308 178 gr ELD-X®"
+      bullet_manufacturer: Hornady
+
+  # --- 1b. Hornady 30 Cal .308 165 gr CX ---
+  # 2 cartridges linked to 165gr SST instead of 165gr CX.
+  # CX is monolithic copper; SST is lead-core with polymer tip.
+  - action: create_bullet
+    manufacturer: Hornady
+    name: "30 Cal .308 165 gr CX®"
+    weight_grains: 165.0
+    bullet_diameter_inches: 0.308
+    bc_g1: 0.440
+    product_line: "CX"
+    source_url: https://www.hornady.com/bullets/rifle/30-cal-.308-165-gr-cx
+    bc_source: manufacturer
+    bc_source_notes: "G1 0.440 from hornady.com product page, accessed 2026-03-25. G7 not published."
+
+  - action: update_cartridge
+    manufacturer: Hornady
+    name: "308 Win 165 gr. CX® Superformance®"
+    set:
+      bullet: "30 Cal .308 165 gr CX®"
+      bullet_manufacturer: Hornady
+
+  - action: update_cartridge
+    manufacturer: Black Hills Ammunition
+    name: "Black Hills Gold .308 Win 165gr Hornady CX"
+    set:
+      bullet: "30 Cal .308 165 gr CX®"
+      bullet_manufacturer: Hornady
+
+  # --- 1c. Hornady 6.5mm .264 129 gr SST ---
+  # 1 cartridge linked to 129gr InterLock SP instead of 129gr SST.
+  # SST has polymer tip + higher BC; InterLock SP is flat-base soft point.
+  - action: create_bullet
+    manufacturer: Hornady
+    name: "6.5mm .264 129 gr SST®"
+    weight_grains: 129.0
+    bullet_diameter_inches: 0.264
+    bc_g1: 0.485
+    product_line: "SST"
+    source_url: https://www.hornady.com/bullets/rifle/6-5mm-264-129-gr-sst
+    bc_source: manufacturer
+    bc_source_notes: "G1 0.485 from hornady.com product page, accessed 2026-03-25. G7 not published."
+
+  - action: update_cartridge
+    manufacturer: Hornady
+    name: "6.5 Creedmoor 129 gr SST® American Whitetail® TIPPED"
+    set:
+      bullet: "6.5mm .264 129 gr SST®"
+      bullet_manufacturer: Hornady
+
+  # --- 1d. Hornady 6.5mm .264 120 gr CX ---
+  # 2 cartridges linked to 120gr ECX instead of 120gr CX.
+  # CX and ECX are different bullets (ECX = European-spec lead-free).
+  - action: create_bullet
+    manufacturer: Hornady
+    name: "6.5mm .264 120 gr CX®"
+    weight_grains: 120.0
+    bullet_diameter_inches: 0.264
+    bc_g1: 0.428
+    product_line: "CX"
+    source_url: https://www.hornady.com/bullets/rifle/6.5mm-.264-120-gr-cx
+    bc_source: manufacturer
+    bc_source_notes: "G1 0.428 from hornady.com product page, accessed 2026-03-25. G7 not published."
+
+  - action: update_cartridge
+    manufacturer: Hornady
+    name: "6.5 Creedmoor 120 gr. CX® Outfitter®"
+    set:
+      bullet: "6.5mm .264 120 gr CX®"
+      bullet_manufacturer: Hornady
+
+  - action: update_cartridge
+    manufacturer: Black Hills Ammunition
+    name: "Black Hills Gold 6.5 Creedmoor 120gr Hornady CX"
+    set:
+      bullet: "6.5mm .264 120 gr CX®"
+      bullet_manufacturer: Hornady
+
+  # --- 1e. Hornady 25 Cal .257 117 gr InterLock BTSP ---
+  # 1 cartridge linked to 117gr InterLock RN instead of BTSP.
+  # BTSP (boat tail spitzer) has G1=0.391; RN (round nose) has much lower BC.
+  - action: create_bullet
+    manufacturer: Hornady
+    name: "25 Cal .257 117 gr InterLock® BTSP"
+    weight_grains: 117.0
+    bullet_diameter_inches: 0.257
+    bc_g1: 0.391
+    product_line: "InterLock"
+    source_url: https://www.hornady.com/bullets/rifle/25-cal-257-117-gr-interlock-btsp
+    bc_source: manufacturer
+    bc_source_notes: "G1 0.391 from hornady.com product page, accessed 2026-03-25. G7 not published."
+
+  - action: update_cartridge
+    manufacturer: Hornady
+    name: "25-06 Rem 117 gr InterLock® BTSP American Whitetail®"
+    set:
+      bullet: "25 Cal .257 117 gr InterLock® BTSP"
+      bullet_manufacturer: Hornady
+
+  # =====================================================================
+  # TASK 2: Winchester Ballistic Silvertip relinks [C10 subset]
+  # Winchester BST ammo uses Nosler Ballistic Silvertip bullets
+  # (Combined Technologies partnership). Correct Nosler BST bullets
+  # already exist in DB — pure relinks, no bullet creation needed.
+  # =====================================================================
+
+  # 308 Win 150gr BST: was linked to Winchester Power-Point 30 Cal 150gr
+  - action: update_cartridge
+    manufacturer: Winchester
+    name: "308 Winchester, 150 Grain Ballistic Silvertip"
+    set:
+      bullet: "30 Caliber 150gr Ballistic Silvertip (50ct)"
+      bullet_manufacturer: Nosler
+
+  # 30-06 150gr BST: was linked to Winchester Power-Point 30 Cal 150gr
+  - action: update_cartridge
+    manufacturer: Winchester
+    name: "30-06 Springfield, 150 Grain Ballistic Silvertip"
+    set:
+      bullet: "30 Caliber 150gr Ballistic Silvertip (50ct)"
+      bullet_manufacturer: Nosler
+
+  # 300 Win Mag 180gr BST: was linked to Winchester Power-Point 30 Cal 180gr
+  - action: update_cartridge
+    manufacturer: Winchester
+    name: "300 Winchester Magnum, 180 Grain Ballistic Silvertip"
+    set:
+      bullet: "30 Caliber 180gr Ballistic Silvertip (50ct)"
+      bullet_manufacturer: Nosler
+
+  # 308 Win 168gr BST: was linked to Lapua 167gr Scenar OTM
+  - action: update_cartridge
+    manufacturer: Winchester
+    name: "308 Winchester, 168 Grain Ballistic Silvertip"
+    set:
+      bullet: "30 Caliber 168gr Ballistic Silvertip (50ct)"
+      bullet_manufacturer: Nosler

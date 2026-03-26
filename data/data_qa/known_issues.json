@@ -209,5 +209,55 @@
     "status": "resolved",
     "resolved_date": "2026-03-19",
     "resolution": "All 90 cartridges populated: 33 Barnes (patch 020), 43 Winchester (patch 021), 12 Nosler (patch 022), 1 Nosler left at zero (no factory spec), 1 already had correct name match in patch 022."
+  },
+  {
+    "id": "C10-cartridge-bullet-mislinks",
+    "severity": "critical",
+    "summary": "~40 cartridges linked to wrong bullet. Two root causes: (1) cross-manufacturer false positives — resolver matched on weight/diameter, ignoring mfr affinity (~27 cartridges), (2) same-manufacturer type confusion — correct mfr but wrong bullet variant (~13 cartridges). Affects ~7.5% of production-export cartridges.",
+    "first_seen": "2026-03-25",
+    "last_seen": "2026-03-25",
+    "count": 40,
+    "status": "open",
+    "notes": "CROSS-MFR MISLINKS (~27): 4 Winchester BST→Power-Point/Lapua (correct Nosler BST exists, pure relink). 6 Hornady→Lapua Mega SP (InterLock/Frontier). 6 Federal→Lapua Mega SP (Fusion/Power-Shok, proprietary bullets not in DB). 5 Hornady→Sierra MatchKing. 3 Winchester→Lapua Scenar (6.5 PRC, 6.5 CM, .308 BST). 1 BH SST→CX. 2 Nosler→Hornady/Barnes. Plus Federal Power-Shok Copper→Sierra/Cutting Edge (~5) and Federal Fusion .300WM 180gr→Nosler Partition, Federal TA .300WM 200gr→Hornady ELD-X. Lapua 150gr Mega SP is a catch-all bucket — 9 cartridges from 4 mfrs all point to it. SAME-MFR TYPE CONFUSION (~13): 7 cartridges referencing 178gr ELD-X all linked to 178gr ELD Match (ELD-X bullet missing from DB — must create). Hornady 25-06 117gr BTSP→RN (BC delta 0.148, worst single mislink). Hornady 308 165gr CX→SST, 6.5CM 129gr SST→InterLock SP, 6.5CM 120gr CX→ECX. BH .308 155gr ELD Match→wrong Hornady, BH 175gr TMK→Sierra SMK. MITIGATING FACTOR: 338/564 cartridges (60%) have own cart-level BC values, so solver gets correct BC regardless of linkage. The ~226 relying solely on bullet-level BC are at risk."
+  },
+  {
+    "id": "W12-norma-300nm-duplicate",
+    "severity": "warning",
+    "summary": "Norma Hybrid Target .300 Norma Mag 230gr Berger — exact duplicate row. Same name, MV (2986), source URL, both data_source=manual.",
+    "first_seen": "2026-03-25",
+    "last_seen": "2026-03-25",
+    "count": 1,
+    "status": "open",
+    "notes": "One of the two rows should be deleted via curation patch."
+  },
+  {
+    "id": "C11-missing-178gr-eld-x-bullet",
+    "severity": "critical",
+    "summary": "Hornady 30 Cal .308 178gr ELD-X bullet does not exist in DB. 7 cartridges (4 Hornady Precision Hunter, 2 Federal, 1 Black Hills) all mislinked to 178gr ELD Match instead. ELD-X (hunting, polymer tip) and ELD Match (target) are different bullets with different BCs.",
+    "first_seen": "2026-03-25",
+    "last_seen": "2026-03-25",
+    "count": 7,
+    "status": "open",
+    "notes": "Fix: create 178gr ELD-X bullet via curation patch with BCs from Hornady product page, then relink all 7 cartridges. Affected: 30-06 178gr, 300 Win Mag 178gr, 300 RCM 178gr, 300 RSAUM 178gr (all Hornady Precision Hunter); Federal ELD-X .308 178gr, 30-06 178gr; BH Gold .308 178gr."
+  },
+  {
+    "id": "C12-missing-bullets-for-mislinks",
+    "severity": "critical",
+    "summary": "5 Hornady bullet variants missing from DB, causing same-manufacturer type confusion in cartridge linkages.",
+    "first_seen": "2026-03-25",
+    "last_seen": "2026-03-25",
+    "count": 5,
+    "status": "open",
+    "notes": "Missing bullets to create: (1) 30 Cal .308 178gr ELD-X (see C11, 7 cartridges). (2) 30 Cal .308 165gr CX (2+ cartridges linked to 165gr SST instead). (3) 6.5mm .264 129gr SST (1+ cartridge linked to 129gr InterLock SP, BC delta 0.04). (4) 6.5mm .264 120gr CX (cartridge linked to 120gr ECX, BC delta 0.068). (5) 25 Cal .257 117gr InterLock BTSP (cartridge linked to 117gr InterLock RN, BC delta 0.148 — worst single mislink). All fixable via curation patch with BCs from Hornady product pages."
+  },
+  {
+    "id": "W13-bc-out-of-range-false-positives",
+    "severity": "warning",
+    "summary": "3 cartridge BC values outside standard ranges — all verified plausible. .50 BMG 750gr A-MAX G1=1.05 (valid for .50 cal), .22 WMR 30gr V-MAX G1=0.095 (tiny rimfire), .338 Lapua 300gr Elite Hunter G1=0.814/G7=0.417 (heavy .338).",
+    "first_seen": "2026-03-25",
+    "last_seen": "2026-03-25",
+    "count": 3,
+    "status": "verified-ok",
+    "notes": "No action needed. These are edge cases that legitimately fall outside the G1 0.1-0.8 / G7 0.05-0.45 typical ranges."
   }
 ]

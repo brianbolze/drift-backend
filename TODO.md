@@ -21,10 +21,12 @@ Lightweight tech debt and engineering improvement tracker. Agents and humans app
 
 - [ ] Populate cartridge.bc_g1, bc_g7, bullet_length_inches — columns added via migration but not yet extracted/populated from manufacturer pages (source: human, 2026-03-06) -- IN PROGRESS
 - [ ] 6 cartridge-bullet weight mismatches (non-placeholder) — .22 WMR 30→35gr + .308 155→160gr Critical Defense + Federal 250th 30-06 150→147gr + Winchester M1 Garand 30-06 150→147gr + Winchester 308 185→180gr + Winchester 7.62 NATO 149→147gr. (source: QA report, 2026-03-06, updated 2026-03-19)
-- [ ] 99 existing cartridges with wrong bullet_id — re-run pipeline-store-commit after ensuring correct bullets exist in DB (source: pipeline working notes)
+- [ ] ~40 cartridge→bullet mislinks — two root causes: ~27 cross-mfr false positives (resolver ignores mfr affinity) + ~13 same-mfr type confusion (wrong variant, e.g. ELD-X→ELD Match, BTSP→RN). Worst: 25-06 BTSP→RN has 38% BC error. 60% of cartridges have own cart-level BC mitigating solver impact, but UI shows wrong bullet metadata. See known_issues.json C10/C11/C12. (source: merged FK audits, 2026-03-25)
+- [ ] Create 5 missing Hornady bullets blocking correct linkages — 178gr ELD-X (7 cartridges), 165gr CX (2+), 129gr SST (1+), 120gr CX (1+), 117gr InterLock BTSP (1+). All have BCs available on Hornady product pages. See known_issues.json C12. (source: FK audit, 2026-03-25)
 - [x] ~~104 cartridges with zero velocity~~ Resolved: 95 filled/deleted via patches 019-023 (Barnes 33, Winchester 43, Nosler 12, Hornady 2, Federal 5 deleted). 9 remain: 8 Hornady ECX International (velocity intentionally unpublished) + 1 Nosler 300 Wby NoslerCustom (no factory spec). (source: QA report, 2026-03-06, resolved 2026-03-19)
 - [ ] Lapua G580 100gr bullet (id=8e35868b) has wrong diameter 0.264, should be 0.308 — pipeline confused "6,5 g" weight with 6.5mm caliber. Fix via curation patch. (source: QA report C9, 2026-03-19)
 - [ ] 4 MatchKing->Nosler HPBT false matches — Sierra MatchKing bullets missing at certain weights, causing cross-manufacturer false positives (source: pipeline working notes)
+- [ ] Norma .300 Norma Mag 230gr Berger Hybrid Target — exact duplicate cartridge row, delete one via curation patch (source: FK audit, 2026-03-25)
 - [ ] 18 rifle bullets (diam ≤ .375) missing all BC fields, excl CE/Nosler/Winchester — Sierra 4 (2026 new products, BCs not yet published), Federal 4, Lehigh 4, Lapua 3, Norma 1, Swift 1. None are match/LR-critical. (source: QA report, 2026-03-06, updated 2026-03-16)
 
 ## Pipeline Improvements
