@@ -20,14 +20,14 @@ Lightweight tech debt and engineering improvement tracker. Agents and humans app
 ## Data Quality
 
 - [ ] Populate cartridge.bc_g1, bc_g7, bullet_length_inches — columns added via migration but not yet extracted/populated from manufacturer pages (source: human, 2026-03-06) -- IN PROGRESS
-- [ ] 6 cartridge-bullet weight mismatches (non-placeholder) — .22 WMR 30→35gr + .308 155→160gr Critical Defense + Federal 250th 30-06 150→147gr + Winchester M1 Garand 30-06 150→147gr + Winchester 308 185→180gr + Winchester 7.62 NATO 149→147gr. (source: QA report, 2026-03-06, updated 2026-03-19)
-- [ ] ~40 cartridge→bullet mislinks — two root causes: ~27 cross-mfr false positives (resolver ignores mfr affinity) + ~13 same-mfr type confusion (wrong variant, e.g. ELD-X→ELD Match, BTSP→RN). Worst: 25-06 BTSP→RN has 38% BC error. 60% of cartridges have own cart-level BC mitigating solver impact, but UI shows wrong bullet metadata. See known_issues.json C10/C11/C12. (source: merged FK audits, 2026-03-25)
-- [ ] Create 5 missing Hornady bullets blocking correct linkages — 178gr ELD-X (7 cartridges), 165gr CX (2+), 129gr SST (1+), 120gr CX (1+), 117gr InterLock BTSP (1+). All have BCs available on Hornady product pages. See known_issues.json C12. (source: FK audit, 2026-03-25)
+- [x] ~~6 cartridge-bullet weight mismatches~~ All resolved: 6 non-placeholder mismatches fixed via patch 018, 5 Federal placeholders deleted via patch 019. Zero remain as of 2026-03-29. (source: QA report, 2026-03-06, resolved 2026-03-19)
+- [ ] 16 cartridge→bullet mislinks remain — 3 self-loading brand mislinks (1 Hornady 338 Lapua→Sierra, 2 Nosler→Hornady/Barnes) + 13 Winchester non-BST cross-mfr links (6.5 PRC/Creedmoor→Nosler/Lapua, .223 69gr/62gr→Hornady, Expedition Big Game→Nosler, etc.). 11 Winchester BST→Nosler are expected. Patch 031 fixed BH .223 77gr OTM→Sierra SMK. (source: patches 025-027+031, updated 2026-03-29)
+- [x] ~~Create 5 missing Hornady bullets blocking correct linkages~~ All 5 created via patch 025 (178gr ELD-X, 165gr CX, 129gr SST, 120gr CX, 117gr InterLock BTSP) + 7 cartridges relinked. (source: patch 025, 2026-03-26)
 - [x] ~~104 cartridges with zero velocity~~ Resolved: 95 filled/deleted via patches 019-023 (Barnes 33, Winchester 43, Nosler 12, Hornady 2, Federal 5 deleted). 9 remain: 8 Hornady ECX International (velocity intentionally unpublished) + 1 Nosler 300 Wby NoslerCustom (no factory spec). (source: QA report, 2026-03-06, resolved 2026-03-19)
-- [ ] Lapua G580 100gr bullet (id=8e35868b) has wrong diameter 0.264, should be 0.308 — pipeline confused "6,5 g" weight with 6.5mm caliber. Fix via curation patch. (source: QA report C9, 2026-03-19)
-- [ ] 4 MatchKing->Nosler HPBT false matches — Sierra MatchKing bullets missing at certain weights, causing cross-manufacturer false positives (source: pipeline working notes)
-- [ ] Norma .300 Norma Mag 230gr Berger Hybrid Target — exact duplicate cartridge row, delete one via curation patch (source: FK audit, 2026-03-25)
-- [ ] 18 rifle bullets (diam ≤ .375) missing all BC fields, excl CE/Nosler/Winchester — Sierra 4 (2026 new products, BCs not yet published), Federal 4, Lehigh 4, Lapua 3, Norma 1, Swift 1. None are match/LR-critical. (source: QA report, 2026-03-06, updated 2026-03-16)
+- [x] ~~Lapua G580 100gr bullet wrong diameter~~ Already correct in DB (0.308). QA report was against stale snapshot. See C9-resolved. (source: QA report C9, 2026-03-19)
+- [x] ~~4 MatchKing->Nosler HPBT false matches~~ Partially resolved — Sierra 175gr TMK and 155gr TMK created in patch 026 for BH fixes. Remaining MatchKing gaps may exist but no longer blocking active mislinks. (source: patch 026, 2026-03-26)
+- [x] ~~Norma .300 Norma Mag 230gr Berger Hybrid Target — exact duplicate~~ Deleted via curation patch 026. (source: patch 026, 2026-03-26)
+- [ ] 17 rifle bullets (diam ≤ .375) missing all BC fields, excl CE/Nosler/Winchester — Sierra 4 (2026 new products, BCs not yet published), Federal 4, Lehigh 4, Lapua 3, Norma 1, Swift 1. None are match/LR-critical. Down from 33 after metadata enrichment patches 028-030. (source: QA report, 2026-03-06, updated 2026-03-29)
 
 ## Pipeline Improvements
 

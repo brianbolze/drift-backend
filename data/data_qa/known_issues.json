@@ -2,12 +2,13 @@
   {
     "id": "C1-cartridge-bullet-weight-mismatches",
     "severity": "critical",
-    "summary": "5 remaining cartridge-bullet weight mismatches: all Federal Custom Rifle Ammo placeholders (W5). 6 non-placeholder mismatches resolved via curation patch 018 — created missing bullets (30gr V-MAX, 155gr FTX, 185gr PP, 2x 150gr FMJ) and relinked cartridges.",
+    "summary": "All cartridge-bullet weight mismatches resolved. 6 non-placeholder mismatches fixed via patch 018. 5 Federal placeholder records deleted via patch 019 (W5).",
     "first_seen": "2026-03-06",
-    "last_seen": "2026-03-19",
-    "count": 5,
-    "status": "open",
-    "notes": "Remaining 5 are Federal Custom Rifle Ammo placeholders with zero weight — tracked separately as W5."
+    "last_seen": "2026-03-29",
+    "count": 0,
+    "status": "resolved",
+    "resolved_date": "2026-03-19",
+    "resolution": "6 non-placeholder mismatches fixed via curation patch 018. 5 Federal placeholders deleted via patch 019. Zero weight mismatches remain as of 2026-03-29."
   },
   {
     "id": "C2-lapua-g573-weight-error",
@@ -88,11 +89,12 @@
   {
     "id": "W2-missing-bc-rifle-bullets",
     "severity": "warning",
-    "summary": "33 rifle bullets (diameter <= .375) missing all BC fields, excluding CE and Nosler. Winchester 15, Sierra 5, Federal 4, Lehigh 4, Lapua 3, Swift 1, Norma 1.",
+    "summary": "17 rifle bullets (diameter <= .375) missing all BC fields, excluding CE, Nosler, and Winchester. Sierra 4, Lehigh 4, Federal 4, Lapua 3, Swift 1, Norma 1. Down from 33 after metadata enrichment patches 028-030.",
     "first_seen": "2026-03-06",
-    "last_seen": "2026-03-19",
-    "count": 33,
-    "status": "open"
+    "last_seen": "2026-03-29",
+    "count": 17,
+    "status": "open",
+    "notes": "Sierra 4 are 2026 new products (BCs not yet published). Lehigh 4 are Controlled Chaos bullets (BC not published by manufacturer). Federal 4 are component bullets (Fusion, Trophy Bonded). None are match/LR-critical."
   },
   {
     "id": "W3-204-ruger-4400fps",
@@ -212,43 +214,46 @@
   },
   {
     "id": "C10-cartridge-bullet-mislinks",
-    "severity": "critical",
-    "summary": "~40 cartridges linked to wrong bullet. Two root causes: (1) cross-manufacturer false positives — resolver matched on weight/diameter, ignoring mfr affinity (~27 cartridges), (2) same-manufacturer type confusion — correct mfr but wrong bullet variant (~13 cartridges). Affects ~7.5% of production-export cartridges.",
+    "severity": "warning",
+    "summary": "3 self-loading brand mislinks remain (down from ~8): 1 Hornady 338 Lapua→Sierra, 2 Nosler→Hornady/Barnes. Plus 13 Winchester non-BST cross-mfr links (separate from BST partnership loads).",
     "first_seen": "2026-03-25",
-    "last_seen": "2026-03-25",
-    "count": 40,
+    "last_seen": "2026-03-29",
+    "count": 16,
     "status": "open",
-    "notes": "CROSS-MFR MISLINKS (~27): 4 Winchester BST→Power-Point/Lapua (correct Nosler BST exists, pure relink). 6 Hornady→Lapua Mega SP (InterLock/Frontier). 6 Federal→Lapua Mega SP (Fusion/Power-Shok, proprietary bullets not in DB). 5 Hornady→Sierra MatchKing. 3 Winchester→Lapua Scenar (6.5 PRC, 6.5 CM, .308 BST). 1 BH SST→CX. 2 Nosler→Hornady/Barnes. Plus Federal Power-Shok Copper→Sierra/Cutting Edge (~5) and Federal Fusion .300WM 180gr→Nosler Partition, Federal TA .300WM 200gr→Hornady ELD-X. Lapua 150gr Mega SP is a catch-all bucket — 9 cartridges from 4 mfrs all point to it. SAME-MFR TYPE CONFUSION (~13): 7 cartridges referencing 178gr ELD-X all linked to 178gr ELD Match (ELD-X bullet missing from DB — must create). Hornady 25-06 117gr BTSP→RN (BC delta 0.148, worst single mislink). Hornady 308 165gr CX→SST, 6.5CM 129gr SST→InterLock SP, 6.5CM 120gr CX→ECX. BH .308 155gr ELD Match→wrong Hornady, BH 175gr TMK→Sierra SMK. MITIGATING FACTOR: 338/564 cartridges (60%) have own cart-level BC values, so solver gets correct BC regardless of linkage. The ~226 relying solely on bullet-level BC are at risk."
+    "notes": "Self-loading brand mislinks (3): Hornady 338 Lapua 250gr BTHP Match→Sierra (needs manual review), Nosler 223 Rem 55gr SP→Hornady, Nosler 375 H&H 300gr→Barnes. Winchester non-BST cross-mfr (13): includes .223 69gr Match→Hornady, .223 62gr→Hornady, 6.5 PRC/Creedmoor→Nosler/Lapua, Expedition Big Game loads→Nosler, .300 Blackout→Nosler, etc. 11 Winchester BST→Nosler links are expected (Combined Technologies partnership). Patch 031 also fixed BH .223 77gr OTM→Sierra SMK (was incorrectly linked to Berger)."
   },
   {
     "id": "W12-norma-300nm-duplicate",
     "severity": "warning",
-    "summary": "Norma Hybrid Target .300 Norma Mag 230gr Berger — exact duplicate row. Same name, MV (2986), source URL, both data_source=manual.",
+    "summary": "Norma Hybrid Target .300 Norma Mag 230gr Berger — duplicate deleted via curation patch 026.",
     "first_seen": "2026-03-25",
-    "last_seen": "2026-03-25",
-    "count": 1,
-    "status": "open",
-    "notes": "One of the two rows should be deleted via curation patch."
+    "last_seen": "2026-03-26",
+    "count": 0,
+    "status": "resolved",
+    "resolved_date": "2026-03-26",
+    "resolution": "Duplicate row deleted via curation patch 026_black_hills_fixes_and_norma_dupe."
   },
   {
     "id": "C11-missing-178gr-eld-x-bullet",
     "severity": "critical",
-    "summary": "Hornady 30 Cal .308 178gr ELD-X bullet does not exist in DB. 7 cartridges (4 Hornady Precision Hunter, 2 Federal, 1 Black Hills) all mislinked to 178gr ELD Match instead. ELD-X (hunting, polymer tip) and ELD Match (target) are different bullets with different BCs.",
+    "summary": "Hornady 30 Cal .308 178gr ELD-X bullet created and all 7 cartridges relinked via curation patch 025.",
     "first_seen": "2026-03-25",
-    "last_seen": "2026-03-25",
-    "count": 7,
-    "status": "open",
-    "notes": "Fix: create 178gr ELD-X bullet via curation patch with BCs from Hornady product page, then relink all 7 cartridges. Affected: 30-06 178gr, 300 Win Mag 178gr, 300 RCM 178gr, 300 RSAUM 178gr (all Hornady Precision Hunter); Federal ELD-X .308 178gr, 30-06 178gr; BH Gold .308 178gr."
+    "last_seen": "2026-03-26",
+    "count": 0,
+    "status": "resolved",
+    "resolved_date": "2026-03-26",
+    "resolution": "178gr ELD-X bullet created with G1=0.535/G7=0.271 from Hornady product page. All 7 cartridges (4 Hornady Precision Hunter, 2 Federal, 1 BH) relinked. Patch 025."
   },
   {
     "id": "C12-missing-bullets-for-mislinks",
     "severity": "critical",
-    "summary": "5 Hornady bullet variants missing from DB, causing same-manufacturer type confusion in cartridge linkages.",
+    "summary": "All 5 missing Hornady bullet variants created and cartridges relinked via curation patch 025.",
     "first_seen": "2026-03-25",
-    "last_seen": "2026-03-25",
-    "count": 5,
-    "status": "open",
-    "notes": "Missing bullets to create: (1) 30 Cal .308 178gr ELD-X (see C11, 7 cartridges). (2) 30 Cal .308 165gr CX (2+ cartridges linked to 165gr SST instead). (3) 6.5mm .264 129gr SST (1+ cartridge linked to 129gr InterLock SP, BC delta 0.04). (4) 6.5mm .264 120gr CX (cartridge linked to 120gr ECX, BC delta 0.068). (5) 25 Cal .257 117gr InterLock BTSP (cartridge linked to 117gr InterLock RN, BC delta 0.148 — worst single mislink). All fixable via curation patch with BCs from Hornady product pages."
+    "last_seen": "2026-03-26",
+    "count": 0,
+    "status": "resolved",
+    "resolved_date": "2026-03-26",
+    "resolution": "Created via patch 025: 178gr ELD-X (G1=0.535/G7=0.271), 165gr CX (G1=0.442/G7=0.220), 129gr SST (G1=0.485/G7=0.249), 120gr CX (G1=0.473/G7=0.237), 117gr InterLock BTSP (G1=0.391/G7=0.195). All affected cartridges relinked."
   },
   {
     "id": "W13-bc-out-of-range-false-positives",
