@@ -1,0 +1,256 @@
+patch:
+  id: 031_556_223_match_cartridges
+  author: agent
+  date: '2026-03-29'
+  description: >
+    Add popular 5.56 NATO and .223 Rem match/tactical cartridges.
+    Adds Sierra 69gr TMK and Hornady 50gr V-MAX bullets (missing from DB).
+    Creates IMI Razor Core 77gr, Sig Sauer 77gr Elite Match, and
+    Black Hills 5.56 NATO full lineup plus missing .223 loads.
+    Also fixes BH .223 77gr OTM bullet link (was Berger, should be Sierra SMK).
+
+operations:
+
+# ── New Bullets ──────────────────────────────────────────────────────────────
+
+  # Sierra 69gr TMK not in DB — needed for BH 5.56 69gr TMK cartridge
+  - action: create_bullet
+    manufacturer: Sierra Bullets
+    name: "22 CAL 69 GR Tipped MatchKing (TMK)"
+    weight_grains: 69.0
+    bullet_diameter_inches: 0.224
+    bc_g1: 0.375
+    bc_g7: 0.178
+    tip_type: polymer_tip
+    base_type: boat_tail
+    product_line: Tipped MatchKing
+    used_for:
+      - competition
+      - precision
+      - target
+    type_tags:
+      - match
+      - target
+    source_url: https://sierrabullets.com/22-cal-69-gr-tipped-matchking-tmk/
+    bc_source: manufacturer
+    bc_source_notes: "G1 0.375 and G7 0.178 from sierrabullets.com product page, accessed 2026-03-29"
+
+  # Hornady 50gr V-MAX not in DB — needed for BH .223 50gr V-MAX cartridge
+  - action: create_bullet
+    manufacturer: Hornady
+    name: "22 Cal .224 50 gr V-MAX"
+    weight_grains: 50.0
+    bullet_diameter_inches: 0.224
+    bc_g1: 0.242
+    tip_type: polymer_tip
+    base_type: boat_tail
+    product_line: V-MAX
+    used_for:
+      - varmint
+    type_tags:
+      - varmint
+    source_url: https://www.hornady.com/bullets/rifle/22-cal-224-50-gr-v-max-100
+    bc_source: manufacturer
+    bc_source_notes: "G1 0.242 from hornady.com product page, accessed 2026-03-29"
+
+# ── Fix BH .223 77gr OTM Bullet Link ────────────────────────────────────────
+
+  # BH .223 77gr OTM is an Mk262 clone using Sierra 77gr SMK with cannelure,
+  # not Berger 77gr OTM Tactical. Source: black-hills.com product catalog and
+  # widely documented as Mk262 Mod 1 equivalent.
+  - action: update_cartridge
+    manufacturer: Black Hills Ammunition
+    name: "Black Hills .223 Rem 77gr OTM"
+    set:
+      bullet: "22 CAL 77 GR HPBT MatchKing (SMK) - Cannelure"
+      bullet_manufacturer: Sierra Bullets
+
+# ── IMI Razor Core ───────────────────────────────────────────────────────────
+
+  # IMI Razor Core 77gr — Mk262 Mod 1 equivalent, Sierra 77gr SMK w/ cannelure
+  # MV 2740 fps from manufacturer spec sheet (imisystems.com/wp-content/uploads/2017/01/razor-core-77-grain.pdf)
+  # Verified via TFB test: 2866 fps from 20" barrel, 2730 fps from 16.1" barrel
+  - action: create_cartridge
+    manufacturer: IMI Systems
+    name: "IMI Razor Core 5.56 NATO 77gr OTM"
+    caliber: 5.56x45mm NATO
+    bullet: "22 CAL 77 GR HPBT MatchKing (SMK) - Cannelure"
+    bullet_manufacturer: Sierra Bullets
+    bullet_weight_grains: 77.0
+    muzzle_velocity_fps: 2740
+    product_line: Razor Core
+    source_url: https://www.imisystems.com/ammunition/small-caliber/5-56x45mm/
+
+# ── Sig Sauer Elite Match ────────────────────────────────────────────────────
+
+  # Sig Sauer .223 77gr Elite Match — Sierra 77gr SMK, 2750 fps from 24" barrel
+  # BC G1 0.362 per Sig's product page (slightly differs from Sierra's published 0.372)
+  - action: create_cartridge
+    manufacturer: Sig Sauer
+    name: "Sig Sauer .223 Rem 77gr Elite Match OTM"
+    caliber: .223 Remington
+    bullet: "22 CAL 77 GR HPBT MatchKing (SMK) - Cannelure"
+    bullet_manufacturer: Sierra Bullets
+    bullet_weight_grains: 77.0
+    muzzle_velocity_fps: 2750
+    test_barrel_length_inches: 24.0
+    product_line: Elite Match
+    source_url: https://www.sigsauer.com/223rem-77gr-elite-match-grade-otm.html
+
+# ── Black Hills 5.56 NATO Lineup ────────────────────────────────────────────
+# All velocities from black-hills.com, measured from 20" test barrels
+
+  # BH 5.56 50gr Barnes TSX — BH lists as "TSX" but linked to TTSX (tipped) in DB.
+  # Barnes makes both 50gr TSX and TTSX at .224; only TTSX is in the DB currently.
+  # If a plain TSX record is added later, this link should be revisited.
+  - action: create_cartridge
+    manufacturer: Black Hills Ammunition
+    name: "Black Hills 5.56 NATO 50gr Barnes TSX"
+    caliber: 5.56x45mm NATO
+    bullet: '0.224" 22 CAL TTSX 50 GR FB'
+    bullet_manufacturer: Barnes Bullets
+    bullet_weight_grains: 50.0
+    muzzle_velocity_fps: 3275
+    test_barrel_length_inches: 20.0
+    source_url: https://www.black-hills.com/shop/new-rifle-ammo/5-56mm/
+
+  - action: create_cartridge
+    manufacturer: Black Hills Ammunition
+    name: "Black Hills 5.56 NATO 62gr Barnes TSX"
+    caliber: 5.56x45mm NATO
+    bullet: '0.224" 22 CAL TSX BT'
+    bullet_manufacturer: Barnes Bullets
+    bullet_weight_grains: 62.0
+    muzzle_velocity_fps: 3000
+    test_barrel_length_inches: 20.0
+    source_url: https://www.black-hills.com/shop/new-rifle-ammo/5-56mm/
+
+  # BH 5.56 69gr OTM — Sierra 69gr SMK (Mk262 pattern at 69gr)
+  - action: create_cartridge
+    manufacturer: Black Hills Ammunition
+    name: "Black Hills 5.56 NATO 69gr OTM"
+    caliber: 5.56x45mm NATO
+    bullet: "22 CAL 69 GR HPBT MatchKing (SMK)"
+    bullet_manufacturer: Sierra Bullets
+    bullet_weight_grains: 69.0
+    muzzle_velocity_fps: 2875
+    test_barrel_length_inches: 20.0
+    source_url: https://www.black-hills.com/shop/new-rifle-ammo/5-56mm/
+
+  # BH 5.56 69gr Sierra TMK
+  - action: create_cartridge
+    manufacturer: Black Hills Ammunition
+    name: "Black Hills 5.56 NATO 69gr Sierra TMK"
+    caliber: 5.56x45mm NATO
+    bullet: "22 CAL 69 GR Tipped MatchKing (TMK)"
+    bullet_manufacturer: Sierra Bullets
+    bullet_weight_grains: 69.0
+    muzzle_velocity_fps: 2875
+    test_barrel_length_inches: 20.0
+    source_url: https://www.black-hills.com/shop/new-rifle-ammo/5-56mm/
+
+  # BH 5.56 70gr Hornady GMX — GMX succeeded by CX (redesigned w/ Heat Shield tip), linked to CX in DB
+  - action: create_cartridge
+    manufacturer: Black Hills Ammunition
+    name: "Black Hills 5.56 NATO 70gr Hornady GMX"
+    caliber: 5.56x45mm NATO
+    bullet: "22 Cal .224 70 gr CX\xAE"
+    bullet_manufacturer: Hornady
+    bullet_weight_grains: 70.0
+    muzzle_velocity_fps: 2800
+    test_barrel_length_inches: 20.0
+    source_url: https://www.black-hills.com/shop/new-rifle-ammo/5-56mm/
+
+  # BH 5.56 77gr OTM — Mk262 Mod 1 clone, Sierra 77gr SMK w/ cannelure
+  - action: create_cartridge
+    manufacturer: Black Hills Ammunition
+    name: "Black Hills 5.56 NATO 77gr OTM"
+    caliber: 5.56x45mm NATO
+    bullet: "22 CAL 77 GR HPBT MatchKing (SMK) - Cannelure"
+    bullet_manufacturer: Sierra Bullets
+    bullet_weight_grains: 77.0
+    muzzle_velocity_fps: 2750
+    test_barrel_length_inches: 20.0
+    source_url: https://www.black-hills.com/shop/new-rifle-ammo/5-56mm/
+
+  # BH 5.56 77gr Sierra TMK — polymer-tipped version for improved BC
+  - action: create_cartridge
+    manufacturer: Black Hills Ammunition
+    name: "Black Hills 5.56 NATO 77gr Sierra TMK"
+    caliber: 5.56x45mm NATO
+    bullet: "22 CAL 77 GR Tipped MatchKing (TMK)"
+    bullet_manufacturer: Sierra Bullets
+    bullet_weight_grains: 77.0
+    muzzle_velocity_fps: 2750
+    test_barrel_length_inches: 20.0
+    source_url: https://www.black-hills.com/shop/new-rifle-ammo/5-56mm/
+
+# ── Missing Black Hills .223 Rem Loads ───────────────────────────────────────
+# All velocities from black-hills.com, measured from 24" test barrels
+
+  - action: create_cartridge
+    manufacturer: Black Hills Ammunition
+    name: "Black Hills .223 Rem 40gr Hornady V-MAX"
+    caliber: .223 Remington
+    bullet: "22 Cal .224 40 gr V\u2011MAX\xAE"
+    bullet_manufacturer: Hornady
+    bullet_weight_grains: 40.0
+    muzzle_velocity_fps: 3600
+    test_barrel_length_inches: 24.0
+    source_url: https://www.black-hills.com/shop/new-rifle-ammo/223-remington/
+
+  - action: create_cartridge
+    manufacturer: Black Hills Ammunition
+    name: "Black Hills .223 Rem 50gr Hornady V-MAX"
+    caliber: .223 Remington
+    bullet: "22 Cal .224 50 gr V-MAX"
+    bullet_manufacturer: Hornady
+    bullet_weight_grains: 50.0
+    muzzle_velocity_fps: 3300
+    test_barrel_length_inches: 24.0
+    source_url: https://www.black-hills.com/shop/new-rifle-ammo/223-remington/
+
+  - action: create_cartridge
+    manufacturer: Black Hills Ammunition
+    name: "Black Hills .223 Rem 55gr Barnes TSX"
+    caliber: .223 Remington
+    bullet: '0.224" 22 CAL TSX FB 55 GR'
+    bullet_manufacturer: Barnes Bullets
+    bullet_weight_grains: 55.0
+    muzzle_velocity_fps: 3200
+    test_barrel_length_inches: 24.0
+    source_url: https://www.black-hills.com/shop/new-rifle-ammo/223-remington/
+
+  - action: create_cartridge
+    manufacturer: Black Hills Ammunition
+    name: "Black Hills .223 Rem 60gr Hornady V-MAX"
+    caliber: .223 Remington
+    bullet: "22 Cal .224 60 gr V\u2011MAX\xAE"
+    bullet_manufacturer: Hornady
+    bullet_weight_grains: 60.0
+    muzzle_velocity_fps: 3050
+    test_barrel_length_inches: 24.0
+    source_url: https://www.black-hills.com/shop/new-rifle-ammo/223-remington/
+
+  - action: create_cartridge
+    manufacturer: Black Hills Ammunition
+    name: "Black Hills .223 Rem 62gr Barnes TSX"
+    caliber: .223 Remington
+    bullet: '0.224" 22 CAL TSX BT'
+    bullet_manufacturer: Barnes Bullets
+    bullet_weight_grains: 62.0
+    muzzle_velocity_fps: 3025
+    test_barrel_length_inches: 24.0
+    source_url: https://www.black-hills.com/shop/new-rifle-ammo/223-remington/
+
+  # BH .223 68gr Heavy Match HP — likely Hornady 68gr BTHP Match
+  - action: create_cartridge
+    manufacturer: Black Hills Ammunition
+    name: "Black Hills .223 Rem 68gr Heavy Match HP"
+    caliber: .223 Remington
+    bullet: "22 Cal .224 68 gr BTHP Match\u2122"
+    bullet_manufacturer: Hornady
+    bullet_weight_grains: 68.0
+    muzzle_velocity_fps: 2850
+    test_barrel_length_inches: 24.0
+    source_url: https://www.black-hills.com/shop/new-rifle-ammo/223-remington/
