@@ -1,0 +1,410 @@
+patch:
+  id: "029_sako_bullet_metadata"
+  author: agent
+  date: "2026-03-29"
+  description: >
+    Enrich tip_type, base_type, type_tags, used_for on 74 Sako bullets across 10
+    product lines. Values derived from sako.com product pages and verified retailer
+    listings. Sako bullets were added via curation from ammunition pages (no component
+    bullet pages exist) so these metadata fields were never populated.
+
+operations:
+  # ── Gamehead: soft_point, boat_tail, hunting ────────────────────────────────
+  # Source: sako.com — "Soft Point Boat Tail" (SPBT), general-purpose hunting
+
+  - action: update_bullet
+    manufacturer: Sako
+    name: "Sako Gamehead .224 49gr"
+    set: {tip_type: soft_point, base_type: boat_tail, type_tags: '["hunting"]', used_for: '["hunting_varmint"]'}
+
+  - action: update_bullet
+    manufacturer: Sako
+    name: "Sako Gamehead .224 55gr"
+    set: {tip_type: soft_point, base_type: boat_tail, type_tags: '["hunting"]', used_for: '["hunting_varmint"]'}
+
+  - action: update_bullet
+    manufacturer: Sako
+    name: "Sako Gamehead .224 56gr"
+    set: {tip_type: soft_point, base_type: boat_tail, type_tags: '["hunting"]', used_for: '["hunting_varmint"]'}
+
+  - action: update_bullet
+    manufacturer: Sako
+    name: "Sako Gamehead .243 90gr"
+    set: {tip_type: soft_point, base_type: boat_tail, type_tags: '["hunting"]', used_for: '["hunting_deer"]'}
+
+  - action: update_bullet
+    manufacturer: Sako
+    name: "Sako Gamehead .243 100gr"
+    set: {tip_type: soft_point, base_type: boat_tail, type_tags: '["hunting"]', used_for: '["hunting_deer"]'}
+
+  - action: update_bullet
+    manufacturer: Sako
+    name: "Sako Gamehead .257 117gr"
+    set: {tip_type: soft_point, base_type: boat_tail, type_tags: '["hunting"]', used_for: '["hunting_deer"]'}
+
+  - action: update_bullet
+    manufacturer: Sako
+    name: "Sako Gamehead .264 140gr"
+    set: {tip_type: soft_point, base_type: boat_tail, type_tags: '["hunting"]', used_for: '["hunting_deer"]'}
+
+  - action: update_bullet
+    manufacturer: Sako
+    name: "Sako Gamehead .277 130gr"
+    set: {tip_type: soft_point, base_type: boat_tail, type_tags: '["hunting"]', used_for: '["hunting_deer"]'}
+
+  - action: update_bullet
+    manufacturer: Sako
+    name: "Sako Gamehead .284 120gr"
+    set: {tip_type: soft_point, base_type: boat_tail, type_tags: '["hunting"]', used_for: '["hunting_deer"]'}
+
+  - action: update_bullet
+    manufacturer: Sako
+    name: "Sako Gamehead .284 140gr"
+    set: {tip_type: soft_point, base_type: boat_tail, type_tags: '["hunting"]', used_for: '["hunting_deer"]'}
+
+  - action: update_bullet
+    manufacturer: Sako
+    name: "Sako Gamehead .308 123gr"
+    set: {tip_type: soft_point, base_type: boat_tail, type_tags: '["hunting"]', used_for: '["hunting_deer"]'}
+
+  - action: update_bullet
+    manufacturer: Sako
+    name: "Sako Gamehead .308 130gr"
+    set: {tip_type: soft_point, base_type: boat_tail, type_tags: '["hunting"]', used_for: '["hunting_deer"]'}
+
+  - action: update_bullet
+    manufacturer: Sako
+    name: "Sako Gamehead .308 150gr"
+    set: {tip_type: soft_point, base_type: boat_tail, type_tags: '["hunting"]', used_for: '["hunting_deer", "hunting_elk"]'}
+
+  - action: update_bullet
+    manufacturer: Sako
+    name: "Sako Gamehead .308 181gr"
+    set: {tip_type: soft_point, base_type: boat_tail, type_tags: '["hunting"]', used_for: '["hunting_deer", "hunting_elk"]'}
+
+  - action: update_bullet
+    manufacturer: Sako
+    name: "Sako Gamehead .310 123gr"
+    set: {tip_type: soft_point, base_type: boat_tail, type_tags: '["hunting"]', used_for: '["hunting_deer"]'}
+
+  - action: update_bullet
+    manufacturer: Sako
+    name: "Sako Gamehead .323 150gr"
+    set: {tip_type: soft_point, base_type: boat_tail, type_tags: '["hunting"]', used_for: '["hunting_deer", "hunting_elk"]'}
+
+  - action: update_bullet
+    manufacturer: Sako
+    name: "Sako Gamehead .323 174gr"
+    set: {tip_type: soft_point, base_type: boat_tail, type_tags: '["hunting"]', used_for: '["hunting_deer", "hunting_elk"]'}
+
+  - action: update_bullet
+    manufacturer: Sako
+    name: "Sako Gamehead .366 256gr"
+    set: {tip_type: soft_point, base_type: boat_tail, type_tags: '["hunting"]', used_for: '["hunting_elk"]'}
+
+  # ── Gamehead Pro: polymer_tip, boat_tail, hunting + long_range ──────────────
+  # Source: sako.com — polymer-tipped, high-BC version of Gamehead
+
+  - action: update_bullet
+    manufacturer: Sako
+    name: "Sako Gamehead Pro .243 90gr"
+    set: {tip_type: polymer_tip, base_type: boat_tail, type_tags: '["hunting", "long_range"]', used_for: '["hunting_deer", "long_range"]'}
+
+  - action: update_bullet
+    manufacturer: Sako
+    name: "Sako Gamehead Pro .264 130gr"
+    set: {tip_type: polymer_tip, base_type: boat_tail, type_tags: '["hunting", "long_range"]', used_for: '["hunting_deer", "long_range"]'}
+
+  - action: update_bullet
+    manufacturer: Sako
+    name: "Sako Gamehead Pro .264 140gr"
+    set: {tip_type: polymer_tip, base_type: boat_tail, type_tags: '["hunting", "long_range"]', used_for: '["hunting_deer", "long_range"]'}
+
+  - action: update_bullet
+    manufacturer: Sako
+    name: "Sako Gamehead Pro .277 140gr"
+    set: {tip_type: polymer_tip, base_type: boat_tail, type_tags: '["hunting", "long_range"]', used_for: '["hunting_deer", "long_range"]'}
+
+  - action: update_bullet
+    manufacturer: Sako
+    name: "Sako Gamehead Pro .284 150gr"
+    set: {tip_type: polymer_tip, base_type: boat_tail, type_tags: '["hunting", "long_range"]', used_for: '["hunting_deer", "long_range"]'}
+
+  - action: update_bullet
+    manufacturer: Sako
+    name: "Sako Gamehead Pro .284 165gr"
+    set: {tip_type: polymer_tip, base_type: boat_tail, type_tags: '["hunting", "long_range"]', used_for: '["hunting_deer", "hunting_elk", "long_range"]'}
+
+  - action: update_bullet
+    manufacturer: Sako
+    name: "Sako Gamehead Pro .308 150gr"
+    set: {tip_type: polymer_tip, base_type: boat_tail, type_tags: '["hunting", "long_range"]', used_for: '["hunting_deer", "hunting_elk", "long_range"]'}
+
+  - action: update_bullet
+    manufacturer: Sako
+    name: "Sako Gamehead Pro .308 165gr"
+    set: {tip_type: polymer_tip, base_type: boat_tail, type_tags: '["hunting", "long_range"]', used_for: '["hunting_deer", "hunting_elk", "long_range"]'}
+
+  # ── Gamehead Varmint: polymer_tip, boat_tail, varmint ───────────────────────
+  # Source: sako.com — polymer-tipped, thin jacket, explosive fragmentation
+
+  - action: update_bullet
+    manufacturer: Sako
+    name: "Sako Gamehead Varmint .224 40gr"
+    set: {tip_type: polymer_tip, base_type: boat_tail, type_tags: '["hunting", "varmint"]', used_for: '["hunting_varmint"]'}
+
+  - action: update_bullet
+    manufacturer: Sako
+    name: "Sako Gamehead Varmint .224 49gr"
+    set: {tip_type: polymer_tip, base_type: boat_tail, type_tags: '["hunting", "varmint"]', used_for: '["hunting_varmint"]'}
+
+  - action: update_bullet
+    manufacturer: Sako
+    name: "Sako Gamehead Varmint .243 69gr"
+    set: {tip_type: polymer_tip, base_type: boat_tail, type_tags: '["hunting", "varmint"]', used_for: '["hunting_varmint"]'}
+
+  # ── Gamehead Varmint RX: hollow_point, boat_tail, varmint ───────────────────
+  # Source: sako.com — HPBT, explosive fragmentation for varmint/predator
+
+  - action: update_bullet
+    manufacturer: Sako
+    name: "Sako Gamehead Varmint RX .308 130gr"
+    set: {tip_type: hollow_point, base_type: boat_tail, type_tags: '["hunting", "varmint"]', used_for: '["hunting_varmint"]'}
+
+  # ── Powerhead Blade: polymer_tip, boat_tail, hunting ────────────────────────
+  # Source: sako.com — lead-free monolithic copper, "Blade Tip" polymer tip
+
+  - action: update_bullet
+    manufacturer: Sako
+    name: "Sako Powerhead Blade .224 55gr"
+    set: {tip_type: polymer_tip, base_type: boat_tail, type_tags: '["hunting"]', used_for: '["hunting_varmint"]'}
+
+  - action: update_bullet
+    manufacturer: Sako
+    name: "Sako Powerhead Blade .243 80gr"
+    set: {tip_type: polymer_tip, base_type: boat_tail, type_tags: '["hunting"]', used_for: '["hunting_deer"]'}
+
+  - action: update_bullet
+    manufacturer: Sako
+    name: "Sako Powerhead Blade .264 120gr"
+    set: {tip_type: polymer_tip, base_type: boat_tail, type_tags: '["hunting"]', used_for: '["hunting_deer"]'}
+
+  - action: update_bullet
+    manufacturer: Sako
+    name: "Sako Powerhead Blade .277 120gr"
+    set: {tip_type: polymer_tip, base_type: boat_tail, type_tags: '["hunting"]', used_for: '["hunting_deer"]'}
+
+  - action: update_bullet
+    manufacturer: Sako
+    name: "Sako Powerhead Blade .284 140gr"
+    set: {tip_type: polymer_tip, base_type: boat_tail, type_tags: '["hunting"]', used_for: '["hunting_deer", "hunting_elk"]'}
+
+  - action: update_bullet
+    manufacturer: Sako
+    name: "Sako Powerhead Blade .308 150gr"
+    set: {tip_type: polymer_tip, base_type: boat_tail, type_tags: '["hunting"]', used_for: '["hunting_deer", "hunting_elk"]'}
+
+  - action: update_bullet
+    manufacturer: Sako
+    name: "Sako Powerhead Blade .308 162gr"
+    set: {tip_type: polymer_tip, base_type: boat_tail, type_tags: '["hunting"]', used_for: '["hunting_deer", "hunting_elk"]'}
+
+  - action: update_bullet
+    manufacturer: Sako
+    name: "Sako Powerhead Blade .308 170gr"
+    set: {tip_type: polymer_tip, base_type: boat_tail, type_tags: '["hunting"]', used_for: '["hunting_deer", "hunting_elk"]'}
+
+  - action: update_bullet
+    manufacturer: Sako
+    name: "Sako Powerhead Blade .308 174gr"
+    set: {tip_type: polymer_tip, base_type: boat_tail, type_tags: '["hunting"]', used_for: '["hunting_deer", "hunting_elk"]'}
+
+  - action: update_bullet
+    manufacturer: Sako
+    name: "Sako Powerhead Blade .323 181gr"
+    set: {tip_type: polymer_tip, base_type: boat_tail, type_tags: '["hunting"]', used_for: '["hunting_elk"]'}
+
+  - action: update_bullet
+    manufacturer: Sako
+    name: "Sako Powerhead Blade .366 230gr"
+    set: {tip_type: polymer_tip, base_type: boat_tail, type_tags: '["hunting"]', used_for: '["hunting_elk"]'}
+
+  - action: update_bullet
+    manufacturer: Sako
+    name: "Sako Powerhead Blade .375 261gr"
+    set: {tip_type: polymer_tip, base_type: boat_tail, type_tags: '["hunting"]', used_for: '["hunting_elk"]'}
+
+  # ── Powerhead Blade Pro: polymer_tip, boat_tail, hunting + long_range ───────
+  # Source: sako.com — enhanced BC version of Powerhead Blade, lead-free
+
+  - action: update_bullet
+    manufacturer: Sako
+    name: "Sako Powerhead Blade Pro .264 123gr"
+    set: {tip_type: polymer_tip, base_type: boat_tail, type_tags: '["hunting", "long_range"]', used_for: '["hunting_deer", "long_range"]'}
+
+  - action: update_bullet
+    manufacturer: Sako
+    name: "Sako Powerhead Blade Pro .277 120gr"
+    set: {tip_type: polymer_tip, base_type: boat_tail, type_tags: '["hunting", "long_range"]', used_for: '["hunting_deer", "long_range"]'}
+
+  - action: update_bullet
+    manufacturer: Sako
+    name: "Sako Powerhead Blade Pro .284 140gr"
+    set: {tip_type: polymer_tip, base_type: boat_tail, type_tags: '["hunting", "long_range"]', used_for: '["hunting_deer", "hunting_elk", "long_range"]'}
+
+  - action: update_bullet
+    manufacturer: Sako
+    name: "Sako Powerhead Blade Pro .308 120gr"
+    set: {tip_type: polymer_tip, base_type: boat_tail, type_tags: '["hunting", "long_range"]', used_for: '["hunting_deer", "long_range"]'}
+
+  - action: update_bullet
+    manufacturer: Sako
+    name: "Sako Powerhead Blade Pro .308 130gr"
+    set: {tip_type: polymer_tip, base_type: boat_tail, type_tags: '["hunting", "long_range"]', used_for: '["hunting_deer", "long_range"]'}
+
+  - action: update_bullet
+    manufacturer: Sako
+    name: "Sako Powerhead Blade Pro .308 162gr"
+    set: {tip_type: polymer_tip, base_type: boat_tail, type_tags: '["hunting", "long_range"]', used_for: '["hunting_deer", "hunting_elk", "long_range"]'}
+
+  - action: update_bullet
+    manufacturer: Sako
+    name: "Sako Powerhead Blade Pro .308 174gr"
+    set: {tip_type: polymer_tip, base_type: boat_tail, type_tags: '["hunting", "long_range"]', used_for: '["hunting_deer", "hunting_elk", "long_range"]'}
+
+  - action: update_bullet
+    manufacturer: Sako
+    name: "Sako Powerhead Blade Pro .366 201gr"
+    set: {tip_type: polymer_tip, base_type: boat_tail, type_tags: '["hunting", "long_range"]', used_for: '["hunting_elk", "long_range"]'}
+
+  # ── Hammerhead: soft_point, flat_base, big game hunting ─────────────────────
+  # Source: sako.com — bonded round-nose soft point, flat base, heavy game
+
+  - action: update_bullet
+    manufacturer: Sako
+    name: "Sako Hammerhead .277 156gr"
+    set: {tip_type: soft_point, base_type: flat_base, type_tags: '["hunting"]', used_for: '["hunting_elk"]'}
+
+  - action: update_bullet
+    manufacturer: Sako
+    name: "Sako Hammerhead .284 170gr"
+    set: {tip_type: soft_point, base_type: flat_base, type_tags: '["hunting"]', used_for: '["hunting_elk"]'}
+
+  - action: update_bullet
+    manufacturer: Sako
+    name: "Sako Hammerhead .308 181gr"
+    set: {tip_type: soft_point, base_type: flat_base, type_tags: '["hunting"]', used_for: '["hunting_elk"]'}
+
+  - action: update_bullet
+    manufacturer: Sako
+    name: "Sako Hammerhead .308 201gr"
+    set: {tip_type: soft_point, base_type: flat_base, type_tags: '["hunting"]', used_for: '["hunting_elk"]'}
+
+  - action: update_bullet
+    manufacturer: Sako
+    name: "Sako Hammerhead .308 221gr"
+    set: {tip_type: soft_point, base_type: flat_base, type_tags: '["hunting"]', used_for: '["hunting_elk"]'}
+
+  - action: update_bullet
+    manufacturer: Sako
+    name: "Sako Hammerhead .310 181gr"
+    set: {tip_type: soft_point, base_type: flat_base, type_tags: '["hunting"]', used_for: '["hunting_elk"]'}
+
+  - action: update_bullet
+    manufacturer: Sako
+    name: "Sako Hammerhead .310 201gr"
+    set: {tip_type: soft_point, base_type: flat_base, type_tags: '["hunting"]', used_for: '["hunting_elk"]'}
+
+  - action: update_bullet
+    manufacturer: Sako
+    name: "Sako Hammerhead .323 201gr"
+    set: {tip_type: soft_point, base_type: flat_base, type_tags: '["hunting"]', used_for: '["hunting_elk"]'}
+
+  - action: update_bullet
+    manufacturer: Sako
+    name: "Sako Hammerhead .338 250gr"
+    set: {tip_type: soft_point, base_type: flat_base, type_tags: '["hunting"]', used_for: '["hunting_elk"]'}
+
+  - action: update_bullet
+    manufacturer: Sako
+    name: "Sako Hammerhead .366 285gr"
+    set: {tip_type: soft_point, base_type: flat_base, type_tags: '["hunting"]', used_for: '["hunting_elk"]'}
+
+  # ── Super Hammerhead: soft_point, boat_tail, big game hunting ───────────────
+  # Source: sako.com — bonded soft point boat tail, improved BC over Hammerhead
+
+  - action: update_bullet
+    manufacturer: Sako
+    name: "Sako Super Hammerhead .264 140gr"
+    set: {tip_type: soft_point, base_type: boat_tail, type_tags: '["hunting"]', used_for: '["hunting_deer", "hunting_elk"]'}
+
+  - action: update_bullet
+    manufacturer: Sako
+    name: "Sako Super Hammerhead .277 130gr"
+    set: {tip_type: soft_point, base_type: boat_tail, type_tags: '["hunting"]', used_for: '["hunting_deer", "hunting_elk"]'}
+
+  - action: update_bullet
+    manufacturer: Sako
+    name: "Sako Super Hammerhead .308 150gr"
+    set: {tip_type: soft_point, base_type: boat_tail, type_tags: '["hunting"]', used_for: '["hunting_deer", "hunting_elk"]'}
+
+  - action: update_bullet
+    manufacturer: Sako
+    name: "Sako Super Hammerhead .308 181gr"
+    set: {tip_type: soft_point, base_type: boat_tail, type_tags: '["hunting"]', used_for: '["hunting_elk"]'}
+
+  - action: update_bullet
+    manufacturer: Sako
+    name: "Sako Super Hammerhead .310 181gr"
+    set: {tip_type: soft_point, base_type: boat_tail, type_tags: '["hunting"]', used_for: '["hunting_elk"]'}
+
+  # ── Speedhead: fmj, boat_tail, target/training ──────────────────────────────
+  # Source: sako.com — FMJ for range training and action shooting
+
+  - action: update_bullet
+    manufacturer: Sako
+    name: "Sako Speedhead .224 49gr"
+    set: {tip_type: fmj, base_type: boat_tail, type_tags: '["target", "plinking"]', used_for: '["plinking"]'}
+
+  - action: update_bullet
+    manufacturer: Sako
+    name: "Sako Speedhead .243 90gr"
+    set: {tip_type: fmj, base_type: boat_tail, type_tags: '["target", "plinking"]', used_for: '["plinking"]'}
+
+  - action: update_bullet
+    manufacturer: Sako
+    name: "Sako Speedhead .264 144gr"
+    set: {tip_type: fmj, base_type: boat_tail, type_tags: '["target", "plinking"]', used_for: '["plinking"]'}
+
+  - action: update_bullet
+    manufacturer: Sako
+    name: "Sako Speedhead .308 123gr"
+    set: {tip_type: fmj, base_type: boat_tail, type_tags: '["target", "plinking"]', used_for: '["plinking"]'}
+
+  - action: update_bullet
+    manufacturer: Sako
+    name: "Sako Speedhead .310 123gr"
+    set: {tip_type: fmj, base_type: boat_tail, type_tags: '["target", "plinking"]', used_for: '["plinking"]'}
+
+  # ── TRG Precision: open_tip_match, boat_tail, match/precision ───────────────
+  # Source: sako.com — OTM HPBT, competition and long-range precision
+
+  - action: update_bullet
+    manufacturer: Sako
+    name: "Sako TRG Precision .264 136gr"
+    set: {tip_type: open_tip_match, base_type: boat_tail, type_tags: '["match", "long_range"]', used_for: '["competition", "precision", "long_range"]'}
+
+  - action: update_bullet
+    manufacturer: Sako
+    name: "Sako TRG Precision .264 140gr"
+    set: {tip_type: open_tip_match, base_type: boat_tail, type_tags: '["match", "long_range"]', used_for: '["competition", "precision", "long_range"]'}
+
+  - action: update_bullet
+    manufacturer: Sako
+    name: "Sako TRG Precision .308 174gr"
+    set: {tip_type: open_tip_match, base_type: boat_tail, type_tags: '["match", "long_range"]', used_for: '["competition", "precision", "long_range"]'}
+
+  - action: update_bullet
+    manufacturer: Sako
+    name: "Sako TRG Precision .338 299gr"
+    set: {tip_type: open_tip_match, base_type: boat_tail, type_tags: '["match", "long_range"]', used_for: '["competition", "precision", "long_range"]'}

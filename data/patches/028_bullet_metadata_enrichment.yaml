@@ -1,0 +1,513 @@
+patch:
+  id: "028_bullet_metadata_enrichment"
+  author: agent
+  date: "2026-03-29"
+  description: >
+    Enrich tip_type, base_type, type_tags, used_for on 41 manually-curated bullets
+    (Hornady 17, Berger 7, Sierra 5, Barnes 2, Federal 2, Winchester 17) plus fix
+    invalid enum values on 4 existing records. Also sets product_line on 8 Black Hills
+    standard-line cartridges. All values verified against manufacturer product pages
+    or derived from unambiguous product naming conventions.
+
+operations:
+  # ── Hornady bullets ─────────────────────────────────────────────────────────
+
+  - action: update_bullet
+    manufacturer: Hornady
+    name: "17 Cal .172 17 gr V-MAX"
+    set:
+      tip_type: polymer_tip
+      base_type: flat_base
+      type_tags: '["varmint"]'
+      used_for: '["hunting_varmint"]'
+
+  - action: update_bullet
+    manufacturer: Hornady
+    name: "22 Cal .224 30 gr V-MAX"
+    set:
+      tip_type: polymer_tip
+      base_type: flat_base
+      type_tags: '["varmint"]'
+      used_for: '["hunting_varmint"]'
+
+  - action: update_bullet
+    manufacturer: Hornady
+    name: "22 Cal .224 55 gr FMJ-BT with cannelure"
+    set:
+      tip_type: fmj
+      base_type: boat_tail
+      type_tags: '["target", "plinking"]'
+      used_for: '["plinking"]'
+
+  - action: update_bullet
+    manufacturer: Hornady
+    name: "22 Cal .224 68 gr BTHP Match™"
+    set:
+      tip_type: open_tip_match
+      base_type: boat_tail
+      type_tags: '["match", "target"]'
+      used_for: '["competition", "precision"]'
+
+  - action: update_bullet
+    manufacturer: Hornady
+    name: "25 Cal .257 117 gr InterLock® BTSP"
+    set:
+      tip_type: soft_point
+      base_type: boat_tail
+      type_tags: '["hunting"]'
+      used_for: '["hunting_deer", "hunting_elk"]'
+
+  - action: update_bullet
+    manufacturer: Hornady
+    name: "30 Cal .308 125 gr HP"
+    set:
+      tip_type: hollow_point
+      base_type: flat_base
+      type_tags: '["varmint"]'
+      used_for: '["hunting_varmint"]'
+
+  - action: update_bullet
+    manufacturer: Hornady
+    name: "30 Cal .308 150 gr InterLock® RN"
+    set:
+      tip_type: soft_point
+      base_type: flat_base
+      type_tags: '["hunting"]'
+      used_for: '["hunting_deer", "hunting_elk"]'
+
+  - action: update_bullet
+    manufacturer: Hornady
+    name: "30 Cal .308 150 gr InterLock® SP"
+    set:
+      tip_type: soft_point
+      base_type: flat_base
+      type_tags: '["hunting"]'
+      used_for: '["hunting_deer", "hunting_elk"]'
+
+  - action: update_bullet
+    manufacturer: Hornady
+    name: "30 Cal .308 150 gr SST®"
+    set:
+      tip_type: polymer_tip
+      base_type: boat_tail
+      type_tags: '["hunting"]'
+      used_for: '["hunting_deer", "hunting_elk"]'
+
+  - action: update_bullet
+    manufacturer: Hornady
+    name: "30 Cal .308 155 gr ELD® Match"
+    set:
+      tip_type: polymer_tip
+      base_type: boat_tail
+      type_tags: '["match", "target"]'
+      used_for: '["competition", "precision"]'
+
+  # NOTE: Hornady 155gr FTX removed — Hornady does not make a 155gr FTX in .30 cal
+  # (only 135gr and 160gr). The DB record was created from a cartridge page, not a bullet page.
+
+  - action: update_bullet
+    manufacturer: Hornady
+    name: "30 Cal .308 165 gr CX®"
+    set:
+      tip_type: polymer_tip
+      base_type: boat_tail
+      type_tags: '["hunting", "long_range"]'
+      used_for: '["hunting_deer", "hunting_elk"]'
+
+  - action: update_bullet
+    manufacturer: Hornady
+    name: "30 Cal .308 178 gr ELD-X®"
+    set:
+      tip_type: polymer_tip
+      base_type: boat_tail
+      type_tags: '["hunting", "long_range"]'
+      used_for: '["hunting_deer", "hunting_elk", "long_range"]'
+
+  - action: update_bullet
+    manufacturer: Hornady
+    name: "35 Cal .355 170 gr InterLock SP"
+    set:
+      tip_type: soft_point
+      type_tags: '["hunting"]'
+      used_for: '["hunting_deer", "hunting_elk"]'
+
+  - action: update_bullet
+    manufacturer: Hornady
+    name: "6.5mm .264 120 gr CX®"
+    set:
+      tip_type: polymer_tip
+      base_type: boat_tail
+      type_tags: '["hunting", "long_range"]'
+      used_for: '["hunting_deer"]'
+
+  - action: update_bullet
+    manufacturer: Hornady
+    name: "6.5mm .264 129 gr SST®"
+    set:
+      tip_type: polymer_tip
+      base_type: boat_tail
+      type_tags: '["hunting"]'
+      used_for: '["hunting_deer"]'
+
+  - action: update_bullet
+    manufacturer: Hornady
+    name: "6mm .243 105 gr BTHP Match™"
+    set:
+      tip_type: open_tip_match
+      base_type: boat_tail
+      type_tags: '["match", "target"]'
+      used_for: '["competition", "precision"]'
+
+  # ── Berger bullets ──────────────────────────────────────────────────────────
+
+  - action: update_bullet
+    manufacturer: Berger Bullets
+    name: "22 Caliber 70 Grain Very Low Drag (VLD) Target"
+    set:
+      tip_type: open_tip_match
+      base_type: boat_tail
+      type_tags: '["match", "target", "long_range"]'
+      used_for: '["competition", "precision", "long_range"]'
+
+  - action: update_bullet
+    manufacturer: Berger Bullets
+    name: "22 Caliber 75 Grain Very Low Drag (VLD) Target"
+    set:
+      tip_type: open_tip_match
+      base_type: boat_tail
+      type_tags: '["match", "target", "long_range"]'
+      used_for: '["competition", "precision", "long_range"]'
+
+  - action: update_bullet
+    manufacturer: Berger Bullets
+    name: "22 Caliber 82 Grain Long Range Target (DISCONTINUED)"
+    set:
+      tip_type: open_tip_match
+      base_type: boat_tail
+      type_tags: '["match", "target", "long_range"]'
+      used_for: '["competition", "precision", "long_range"]'
+
+  - action: update_bullet
+    manufacturer: Berger Bullets
+    name: "22 Caliber 90 Grain Very Low Drag (VLD) Target"
+    set:
+      tip_type: open_tip_match
+      base_type: boat_tail
+      type_tags: '["match", "target", "long_range"]'
+      used_for: '["competition", "precision", "long_range"]'
+
+  - action: update_bullet
+    manufacturer: Berger Bullets
+    name: "30 Caliber 190 Grain Very Low Drag (VLD) Hunting"
+    set:
+      tip_type: open_tip_match
+      base_type: boat_tail
+      type_tags: '["hunting", "long_range"]'
+      used_for: '["hunting_deer", "hunting_elk", "long_range"]'
+
+  - action: update_bullet
+    manufacturer: Berger Bullets
+    name: "30 Caliber 210 Grain Very Low Drag (VLD) Hunting"
+    set:
+      tip_type: open_tip_match
+      base_type: boat_tail
+      type_tags: '["hunting", "long_range"]'
+      used_for: '["hunting_deer", "hunting_elk", "long_range"]'
+
+  - action: update_bullet
+    manufacturer: Berger Bullets
+    name: "30 Caliber 210 Grain Very Low Drag (VLD) Target"
+    set:
+      tip_type: open_tip_match
+      base_type: boat_tail
+      type_tags: '["match", "target", "long_range"]'
+      used_for: '["competition", "precision", "long_range"]'
+
+  # ── Sierra bullets ──────────────────────────────────────────────────────────
+
+  - action: update_bullet
+    manufacturer: Sierra Bullets
+    name: "30 CAL 155 GR TIPPED MATCHKING (TMK)"
+    set:
+      tip_type: polymer_tip
+      base_type: boat_tail
+      type_tags: '["match", "target", "long_range"]'
+      used_for: '["competition", "precision", "long_range"]'
+
+  - action: update_bullet
+    manufacturer: Sierra Bullets
+    name: "30 CAL 175 GR TIPPED MATCHKING (TMK)"
+    set:
+      tip_type: polymer_tip
+      base_type: boat_tail
+      type_tags: '["match", "target", "long_range"]'
+      used_for: '["competition", "precision", "long_range"]'
+
+  # Fix invalid enum values on existing Sierra SMK bullets
+  - action: update_bullet
+    manufacturer: Sierra Bullets
+    name: "30 CAL 150 GR HPBT MATCHKING (SMK)"
+    set:
+      type_tags: '["match", "target"]'
+      used_for: '["competition", "precision"]'
+
+  - action: update_bullet
+    manufacturer: Sierra Bullets
+    name: "30 CAL 155 GR HPBT MATCHKING (SMK)"
+    set:
+      type_tags: '["match", "target"]'
+      used_for: '["competition", "precision"]'
+
+  - action: update_bullet
+    manufacturer: Sierra Bullets
+    name: "30 CAL 190 GR HPBT MATCHKING (SMK)"
+    set:
+      type_tags: '["match", "target"]'
+      used_for: '["competition", "precision"]'
+
+  # ── Barnes bullets ──────────────────────────────────────────────────────────
+
+  - action: update_bullet
+    manufacturer: Barnes Bullets
+    name: "0.308\" 30 CAL TSX BT 150 GR"
+    set:
+      tip_type: hollow_point
+      base_type: boat_tail
+      type_tags: '["hunting"]'
+      used_for: '["hunting_deer", "hunting_elk"]'
+
+  # Fix invalid enum values on existing Barnes bullet
+  - action: update_bullet
+    manufacturer: Barnes Bullets
+    name: ".224 78 gr TSX BT"
+    set:
+      type_tags: '["hunting"]'
+      used_for: '["hunting_deer", "hunting_varmint"]'
+
+  # ── Federal bullets ─────────────────────────────────────────────────────────
+
+  - action: update_bullet
+    manufacturer: Federal
+    name: "Full Metal Jacket 30 Cal 150gr"
+    set:
+      tip_type: fmj
+      base_type: boat_tail
+      product_line: American Eagle
+      type_tags: '["target", "plinking"]'
+      used_for: '["plinking"]'
+
+  # Fix invalid enum values on existing Federal bullet
+  - action: update_bullet
+    manufacturer: Federal
+    name: "Terminal Ascent 7mm .284 170 gr"
+    set:
+      type_tags: '["hunting", "long_range"]'
+      used_for: '["hunting_elk", "hunting_deer", "long_range"]'
+
+  # ── Winchester bullets ──────────────────────────────────────────────────────
+  # Winchester component bullets — type info derived from product names
+  # Source: winchester.com/Products/Ammunition/Components/Bullets
+
+  - action: update_bullet
+    manufacturer: Winchester
+    name: "BC MAX 30 Cal 175gr"
+    set:
+      tip_type: polymer_tip
+      base_type: boat_tail
+      type_tags: '["match", "target", "long_range"]'
+      used_for: '["competition", "precision", "long_range"]'
+
+  - action: update_bullet
+    manufacturer: Winchester
+    name: "BC MAX 30 Cal 195gr"
+    set:
+      tip_type: polymer_tip
+      base_type: boat_tail
+      type_tags: '["match", "target", "long_range"]'
+      used_for: '["competition", "precision", "long_range"]'
+
+  - action: update_bullet
+    manufacturer: Winchester
+    name: "BC MAX 6.5mm 140gr"
+    set:
+      tip_type: polymer_tip
+      base_type: boat_tail
+      type_tags: '["match", "target", "long_range"]'
+      used_for: '["competition", "precision", "long_range"]'
+
+  - action: update_bullet
+    manufacturer: Winchester
+    name: "Full Metal Jacket 22 Cal 55gr"
+    set:
+      tip_type: fmj
+      base_type: boat_tail
+      type_tags: '["target", "plinking"]'
+      used_for: '["plinking"]'
+
+  - action: update_bullet
+    manufacturer: Winchester
+    name: "Full Metal Jacket 30 Cal 147gr"
+    set:
+      tip_type: fmj
+      base_type: boat_tail
+      type_tags: '["target", "plinking"]'
+      used_for: '["plinking"]'
+
+  - action: update_bullet
+    manufacturer: Winchester
+    name: "Full Metal Jacket 30 Cal 150gr"
+    set:
+      tip_type: fmj
+      base_type: boat_tail
+      type_tags: '["target", "plinking"]'
+      used_for: '["plinking"]'
+
+  - action: update_bullet
+    manufacturer: Winchester
+    name: "Hollow Point 22 Cal 46gr"
+    set:
+      tip_type: hollow_point
+      base_type: flat_base
+      type_tags: '["varmint"]'
+      used_for: '["hunting_varmint"]'
+
+  - action: update_bullet
+    manufacturer: Winchester
+    name: "Pointed Soft Point 22 Cal 50gr"
+    set:
+      tip_type: soft_point
+      base_type: flat_base
+      type_tags: '["hunting", "varmint"]'
+      used_for: '["hunting_varmint"]'
+
+  - action: update_bullet
+    manufacturer: Winchester
+    name: "Pointed Soft Point 22 Cal 55gr"
+    set:
+      tip_type: soft_point
+      base_type: flat_base
+      type_tags: '["hunting", "varmint"]'
+      used_for: '["hunting_varmint"]'
+
+  - action: update_bullet
+    manufacturer: Winchester
+    name: "Pointed Soft Point 243 Cal 80gr"
+    set:
+      tip_type: soft_point
+      base_type: flat_base
+      type_tags: '["hunting"]'
+      used_for: '["hunting_deer"]'
+
+  - action: update_bullet
+    manufacturer: Winchester
+    name: "Power-Point 22 Cal 64gr"
+    set:
+      tip_type: soft_point
+      base_type: flat_base
+      type_tags: '["hunting"]'
+      used_for: '["hunting_deer", "hunting_varmint"]'
+
+  - action: update_bullet
+    manufacturer: Winchester
+    name: "Power-Point 270 Cal 130gr"
+    set:
+      tip_type: soft_point
+      base_type: flat_base
+      type_tags: '["hunting"]'
+      used_for: '["hunting_deer", "hunting_elk"]'
+
+  - action: update_bullet
+    manufacturer: Winchester
+    name: "Power-Point 30 Cal 150gr"
+    set:
+      tip_type: soft_point
+      base_type: flat_base
+      type_tags: '["hunting"]'
+      used_for: '["hunting_deer", "hunting_elk"]'
+
+  - action: update_bullet
+    manufacturer: Winchester
+    name: "Power-Point 30 Cal 180gr"
+    set:
+      tip_type: soft_point
+      base_type: flat_base
+      type_tags: '["hunting"]'
+      used_for: '["hunting_deer", "hunting_elk"]'
+
+  - action: update_bullet
+    manufacturer: Winchester
+    name: "Power-Point 30 Cal 185gr"
+    set:
+      tip_type: soft_point
+      base_type: flat_base
+      type_tags: '["hunting"]'
+      used_for: '["hunting_deer", "hunting_elk"]'
+
+  - action: update_bullet
+    manufacturer: Winchester
+    name: "Power-Point 7.62 Cal 123gr"
+    set:
+      tip_type: soft_point
+      base_type: flat_base
+      type_tags: '["hunting"]'
+      used_for: '["hunting_deer"]'
+
+  - action: update_bullet
+    manufacturer: Winchester
+    name: "Power-Point 7mm 150gr"
+    set:
+      tip_type: soft_point
+      base_type: flat_base
+      type_tags: '["hunting"]'
+      used_for: '["hunting_deer", "hunting_elk"]'
+
+  # ── Black Hills cartridge product_line ──────────────────────────────────────
+  # Standard (non-Gold) Black Hills loads missing product_line
+
+  - action: update_cartridge
+    manufacturer: Black Hills Ammunition
+    name: "Black Hills .223 Rem 52gr Match HP"
+    set:
+      product_line: Black Hills
+
+  - action: update_cartridge
+    manufacturer: Black Hills Ammunition
+    name: "Black Hills .223 Rem 55gr FMJ"
+    set:
+      product_line: Black Hills
+
+  - action: update_cartridge
+    manufacturer: Black Hills Ammunition
+    name: "Black Hills .223 Rem 69gr Sierra MatchKing"
+    set:
+      product_line: Black Hills
+
+  - action: update_cartridge
+    manufacturer: Black Hills Ammunition
+    name: "Black Hills .223 Rem 75gr Heavy Match HP"
+    set:
+      product_line: Black Hills
+
+  - action: update_cartridge
+    manufacturer: Black Hills Ammunition
+    name: "Black Hills .223 Rem 77gr OTM"
+    set:
+      product_line: Black Hills
+
+  - action: update_cartridge
+    manufacturer: Black Hills Ammunition
+    name: "Black Hills .300 Win Mag 190gr Match HP"
+    set:
+      product_line: Black Hills
+
+  - action: update_cartridge
+    manufacturer: Black Hills Ammunition
+    name: "Black Hills .338 Lapua Mag 250gr Sierra MatchKing"
+    set:
+      product_line: Black Hills
+
+  - action: update_cartridge
+    manufacturer: Black Hills Ammunition
+    name: "Black Hills .338 Lapua Mag 300gr Sierra MatchKing"
+    set:
+      product_line: Black Hills

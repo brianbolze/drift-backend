@@ -1,0 +1,268 @@
+patch:
+  id: "030_norma_bullet_metadata"
+  author: agent
+  date: "2026-03-29"
+  description: >
+    Enrich tip_type, base_type, type_tags, used_for on 49 Norma bullets across 8
+    product lines. Also fixes 2 invalid tip_type values ("polymer" → "polymer_tip")
+    and corrects Diamond Line tip_type from polymer_tip to hollow_point. Values verified
+    against norma-ammunition.com product pages.
+
+operations:
+  # ── Oryx: soft_point, flat_base, hunting ────────────────────────────────────
+  # Source: norma-ammunition.com — bonded semi-protected soft point, flat base
+
+  - action: update_bullet
+    manufacturer: Norma
+    name: "Norma Oryx 5,7mm (.224) 3,6g"
+    set: {tip_type: soft_point, base_type: flat_base, type_tags: '["hunting"]', used_for: '["hunting_varmint"]'}
+
+  - action: update_bullet
+    manufacturer: Norma
+    name: "Norma Oryx 6mm (.243) 6,5g"
+    set: {tip_type: soft_point, base_type: flat_base, type_tags: '["hunting"]', used_for: '["hunting_deer"]'}
+
+  - action: update_bullet
+    manufacturer: Norma
+    name: "Norma Oryx 6,5 mm (.264) 10,1g"
+    set: {tip_type: soft_point, base_type: flat_base, type_tags: '["hunting"]', used_for: '["hunting_deer"]'}
+
+  - action: update_bullet
+    manufacturer: Norma
+    name: "Norma Oryx .270 9,7g"
+    set: {tip_type: soft_point, base_type: flat_base, type_tags: '["hunting"]', used_for: '["hunting_deer"]'}
+
+  - action: update_bullet
+    manufacturer: Norma
+    name: "Norma Oryx 7mm (.284) 10,1g"
+    set: {tip_type: soft_point, base_type: flat_base, type_tags: '["hunting"]', used_for: '["hunting_deer", "hunting_elk"]'}
+
+  - action: update_bullet
+    manufacturer: Norma
+    name: "Norma Oryx 7mm (.284) 11,0g"
+    set: {tip_type: soft_point, base_type: flat_base, type_tags: '["hunting"]', used_for: '["hunting_deer", "hunting_elk"]'}
+
+  - action: update_bullet
+    manufacturer: Norma
+    name: "Norma Oryx .30 (.308) 10,7g"
+    set: {tip_type: soft_point, base_type: flat_base, type_tags: '["hunting"]', used_for: '["hunting_deer", "hunting_elk"]'}
+
+  - action: update_bullet
+    manufacturer: Norma
+    name: "Norma Oryx .30 (.308) 11,7g"
+    set: {tip_type: soft_point, base_type: flat_base, type_tags: '["hunting"]', used_for: '["hunting_deer", "hunting_elk"]'}
+
+  - action: update_bullet
+    manufacturer: Norma
+    name: "Norma Oryx .30 (.308) 12,96g"
+    set: {tip_type: soft_point, base_type: flat_base, type_tags: '["hunting"]', used_for: '["hunting_elk"]'}
+
+  - action: update_bullet
+    manufacturer: Norma
+    name: "Norma Oryx 8mm (.323) 12,7g"
+    set: {tip_type: soft_point, base_type: flat_base, type_tags: '["hunting"]', used_for: '["hunting_elk"]'}
+
+  - action: update_bullet
+    manufacturer: Norma
+    name: "Norma Oryx .338 14,9g"
+    set: {tip_type: soft_point, base_type: flat_base, type_tags: '["hunting"]', used_for: '["hunting_elk"]'}
+
+  - action: update_bullet
+    manufacturer: Norma
+    name: "Norma Oryx .358 16,2g"
+    set: {tip_type: soft_point, base_type: flat_base, type_tags: '["hunting"]', used_for: '["hunting_elk"]'}
+
+  - action: update_bullet
+    manufacturer: Norma
+    name: "Norma Oryx 9,3mm (.366) 15,0g"
+    set: {tip_type: soft_point, base_type: flat_base, type_tags: '["hunting"]', used_for: '["hunting_elk"]'}
+
+  - action: update_bullet
+    manufacturer: Norma
+    name: "Norma Oryx 9,3mm (.366) 18,5g"
+    set: {tip_type: soft_point, base_type: flat_base, type_tags: '["hunting"]', used_for: '["hunting_elk"]'}
+
+  - action: update_bullet
+    manufacturer: Norma
+    name: "Norma Oryx 9,3mm (.366) 21,1g"
+    set: {tip_type: soft_point, base_type: flat_base, type_tags: '["hunting"]', used_for: '["hunting_elk"]'}
+
+  - action: update_bullet
+    manufacturer: Norma
+    name: "Norma Oryx .375 19,4g"
+    set: {tip_type: soft_point, base_type: flat_base, type_tags: '["hunting"]', used_for: '["hunting_elk"]'}
+
+  # ── GTX: hollow_point, boat_tail, match/precision ───────────────────────────
+  # Source: norma-ammunition.com — HPBT match bullet (component version of Golden Target)
+
+  - action: update_bullet
+    manufacturer: Norma
+    name: "Norma GTX 5,7 mm (.224) 4,5g"
+    set: {tip_type: hollow_point, base_type: boat_tail, type_tags: '["match", "target", "long_range"]', used_for: '["competition", "precision", "long_range"]'}
+
+  - action: update_bullet
+    manufacturer: Norma
+    name: "Norma GTX 6,5 mm (.264) 6,5g"
+    set: {tip_type: hollow_point, base_type: boat_tail, type_tags: '["match", "target", "long_range"]', used_for: '["competition", "precision", "long_range"]'}
+
+  - action: update_bullet
+    manufacturer: Norma
+    name: "Norma GTX 6,5 mm (.264) 8,4g"
+    set: {tip_type: hollow_point, base_type: boat_tail, type_tags: '["match", "target", "long_range"]', used_for: '["competition", "precision", "long_range"]'}
+
+  - action: update_bullet
+    manufacturer: Norma
+    name: "Norma GTX 6,5 mm (.264) 9,27g"
+    set: {tip_type: hollow_point, base_type: boat_tail, type_tags: '["match", "target", "long_range"]', used_for: '["competition", "precision", "long_range"]'}
+
+  - action: update_bullet
+    manufacturer: Norma
+    name: "Norma GTX .30 (.308) 10,0g"
+    set: {tip_type: hollow_point, base_type: boat_tail, type_tags: '["match", "target", "long_range"]', used_for: '["competition", "precision", "long_range"]'}
+
+  - action: update_bullet
+    manufacturer: Norma
+    name: "Norma GTX .30 (.308) 10,9g"
+    set: {tip_type: hollow_point, base_type: boat_tail, type_tags: '["match", "target", "long_range"]', used_for: '["competition", "precision", "long_range"]'}
+
+  - action: update_bullet
+    manufacturer: Norma
+    name: "Norma GTX .30 (.308) 11,3g"
+    set: {tip_type: hollow_point, base_type: boat_tail, type_tags: '["match", "target", "long_range"]', used_for: '["competition", "precision", "long_range"]'}
+
+  - action: update_bullet
+    manufacturer: Norma
+    name: "Norma GTX .338 16,2g"
+    set: {tip_type: hollow_point, base_type: boat_tail, type_tags: '["match", "target", "long_range"]', used_for: '["competition", "precision", "long_range"]'}
+
+  # ── Tipstrike: polymer_tip, flat_base, hunting ──────────────────────────────
+  # Source: norma-ammunition.com + MidwayUSA retailer specs — flat base confirmed
+  # Also fixes "polymer" → "polymer_tip" on 2 records
+
+  - action: update_bullet
+    manufacturer: Norma
+    name: "Norma TipStrike 6,5mm (.264) 140gr"
+    set: {tip_type: polymer_tip, base_type: flat_base, type_tags: '["hunting"]', used_for: '["hunting_deer"]'}
+
+  - action: update_bullet
+    manufacturer: Norma
+    name: "Norma Tipstrike .270 9,1g"
+    set: {base_type: flat_base, type_tags: '["hunting"]', used_for: '["hunting_deer"]'}
+
+  - action: update_bullet
+    manufacturer: Norma
+    name: "Norma Tipstrike .30 (.308) 11,0g"
+    set: {base_type: flat_base, type_tags: '["hunting"]', used_for: '["hunting_deer", "hunting_elk"]'}
+
+  - action: update_bullet
+    manufacturer: Norma
+    name: "Norma Tipstrike 7mm (.284) 10,4g"
+    set: {base_type: flat_base, type_tags: '["hunting"]', used_for: '["hunting_deer", "hunting_elk"]'}
+
+  - action: update_bullet
+    manufacturer: Norma
+    name: "Norma Tipstrike 8mm (.323) 11,7g"
+    set: {base_type: flat_base, type_tags: '["hunting"]', used_for: '["hunting_elk"]'}
+
+  - action: update_bullet
+    manufacturer: Norma
+    name: "Norma Tipstrike 9,3mm (.366) 16,5g"
+    set: {base_type: flat_base, type_tags: '["hunting"]', used_for: '["hunting_elk"]'}
+
+  - action: update_bullet
+    manufacturer: Norma
+    name: "Norma Tipstrike Varmint 5,7mm (.224) 3,6g"
+    set: {base_type: flat_base, type_tags: '["hunting", "varmint"]', used_for: '["hunting_varmint"]'}
+
+  - action: update_bullet
+    manufacturer: Norma
+    name: "Norma Tipstrike Varmint 6mm (.243) 4,9g"
+    set: {base_type: flat_base, type_tags: '["hunting", "varmint"]', used_for: '["hunting_varmint"]'}
+
+  # ── Vulkan: soft_point, flat_base, hunting ──────────────────────────────────
+  # Source: norma-ammunition.com — protected semi-spitzer soft point, flat base
+
+  - action: update_bullet
+    manufacturer: Norma
+    name: "Norma Vulkan 6,5mm (.264) 10,1g"
+    set: {tip_type: soft_point, base_type: flat_base, type_tags: '["hunting"]', used_for: '["hunting_deer", "hunting_elk"]'}
+
+  - action: update_bullet
+    manufacturer: Norma
+    name: "Norma Vulkan 7mm (.284) 11,0g"
+    set: {tip_type: soft_point, base_type: flat_base, type_tags: '["hunting"]', used_for: '["hunting_deer", "hunting_elk"]'}
+
+  - action: update_bullet
+    manufacturer: Norma
+    name: "Norma Vulkan .30 (.308) 11,7g"
+    set: {tip_type: soft_point, base_type: flat_base, type_tags: '["hunting"]', used_for: '["hunting_deer", "hunting_elk"]'}
+
+  - action: update_bullet
+    manufacturer: Norma
+    name: "Norma Vulkan 8mm (.323) 12,7g"
+    set: {tip_type: soft_point, base_type: flat_base, type_tags: '["hunting"]', used_for: '["hunting_elk"]'}
+
+  - action: update_bullet
+    manufacturer: Norma
+    name: "Norma Vulkan 9,3mm (.366) 15,0g"
+    set: {tip_type: soft_point, base_type: flat_base, type_tags: '["hunting"]', used_for: '["hunting_elk"]'}
+
+  # ── Bondstrike: polymer_tip, boat_tail, hunting + long_range ────────────────
+  # Source: norma-ammunition.com — bonded polymer-tipped long-range hunting
+
+  - action: update_bullet
+    manufacturer: Norma
+    name: "Norma BondStrike 6mm (.243) 105gr"
+    set: {tip_type: polymer_tip, type_tags: '["hunting", "long_range"]', used_for: '["hunting_deer", "long_range"]'}
+
+  - action: update_bullet
+    manufacturer: Norma
+    name: "Norma Bondstrike 6,5 mm (.264) 9,27g"
+    set: {type_tags: '["hunting", "long_range"]', used_for: '["hunting_deer", "long_range"]'}
+
+  - action: update_bullet
+    manufacturer: Norma
+    name: "Norma Bondstrike 7 mm (.284) 10,7g"
+    set: {type_tags: '["hunting", "long_range"]', used_for: '["hunting_deer", "hunting_elk", "long_range"]'}
+
+  - action: update_bullet
+    manufacturer: Norma
+    name: "Norma Bondstrike .30 (.308) 11,7g"
+    set: {type_tags: '["hunting", "long_range"]', used_for: '["hunting_deer", "hunting_elk", "long_range"]'}
+
+  # ── Ecostrike: polymer_tip, boat_tail, hunting ──────────────────────────────
+  # Source: norma-ammunition.com — lead-free copper, polymer-tipped
+
+  - action: update_bullet
+    manufacturer: Norma
+    name: "Norma ECOSTRIKE 6,5 mm 7,8g"
+    set: {tip_type: polymer_tip, base_type: boat_tail, type_tags: '["hunting"]', used_for: '["hunting_deer"]'}
+
+  - action: update_bullet
+    manufacturer: Norma
+    name: "Norma Ecostrike .30 (.308) 9,7g"
+    set: {tip_type: polymer_tip, base_type: boat_tail, type_tags: '["hunting"]', used_for: '["hunting_deer", "hunting_elk"]'}
+
+  - action: update_bullet
+    manufacturer: Norma
+    name: "Norma Ecostrike .30 (.308) 10,7g"
+    set: {tip_type: polymer_tip, base_type: boat_tail, type_tags: '["hunting"]', used_for: '["hunting_deer", "hunting_elk"]'}
+
+  - action: update_bullet
+    manufacturer: Norma
+    name: "Norma Ecostrike 8 mm (.323) 10,4g"
+    set: {tip_type: polymer_tip, base_type: boat_tail, type_tags: '["hunting"]', used_for: '["hunting_elk"]'}
+
+  # ── Diamond Line: hollow_point, boat_tail, match ────────────────────────────
+  # Source: norma-ammunition.com — HPBT with moly coat, benchrest/precision
+  # Corrects tip_type from polymer_tip → hollow_point
+
+  - action: update_bullet
+    manufacturer: Norma
+    name: "Norma Diamond Line 6mm (.243) 6,8g"
+    set: {tip_type: hollow_point, type_tags: '["match", "target"]', used_for: '["competition", "precision"]'}
+
+  - action: update_bullet
+    manufacturer: Norma
+    name: "Norma Diamond Line 6,5mm (.264) 8,4g"
+    set: {tip_type: hollow_point, type_tags: '["match", "target"]', used_for: '["competition", "precision"]'}
