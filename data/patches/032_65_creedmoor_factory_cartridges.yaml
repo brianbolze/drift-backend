@@ -1,0 +1,202 @@
+patch:
+  id: 032_65_creedmoor_factory_cartridges
+  author: agent
+  date: '2026-04-07'
+  description: >
+    Add missing factory cartridges for 6.5 Creedmoor. Creates Hornady 140gr
+    ELD Match (SKU 81500, #1 match load), Hornady 129gr SST Superformance,
+    Barnes VOR-TX LR 127gr LRX, Federal Gold Medal CenterStrike 140gr OTM,
+    and Remington Core-Lokt Tipped 129gr + PSP 140gr. Creates 4 new bullet
+    records (Hornady 140gr ELD Match, Federal CenterStrike OTM, Remington
+    Core-Lokt Tipped 129gr, Remington Core-Lokt PSP 140gr). Fixes Barnes
+    LRX 127gr is_lead_free flag and adds missing G7 BC source.
+
+operations:
+
+# ── Data Quality Fixes ───────────────────────────────────────────────────────
+
+  # Barnes LRX is monolithic copper — is_lead_free should be true
+  - action: update_bullet
+    manufacturer: Barnes Bullets
+    name: "0.264\" 6.5MM LRX 127 GR BT"
+    set:
+      is_lead_free: true
+
+  # G7 BC 0.229 from Barnes bullet page — only G1 currently in DB
+  - action: add_bc_source
+    manufacturer: Barnes Bullets
+    bullet_name: "0.264\" 6.5MM LRX 127 GR BT"
+    bc_type: g7
+    bc_value: 0.229
+    source: manufacturer
+    source_url: https://barnesbullets.com/0-264-6-5mm-lrx-127-gr-bt/
+    notes: "G7 0.229 from barnesbullets.com product page, accessed 2026-04-07"
+
+# ── New Bullets ──────────────────────────────────────────────────────────────
+
+  # Hornady 140gr ELD Match — distinct from 140gr BTHP Match and 147gr ELD Match
+  - action: create_bullet
+    manufacturer: Hornady
+    name: "6.5mm .264 140 gr ELD\u00AE Match"
+    weight_grains: 140.0
+    bullet_diameter_inches: 0.264
+    bc_g1: 0.646
+    bc_g7: 0.326
+    tip_type: polymer_tip
+    base_type: boat_tail
+    product_line: ELD Match
+    used_for:
+      - competition
+      - precision
+      - target
+    type_tags:
+      - match
+      - target
+    source_url: https://www.hornady.com/ammunition/rifle/6-5-creedmoor-140-gr-eld-match
+    bc_source: manufacturer
+    bc_source_notes: "G1 0.646, G7 0.326 from hornady.com ammo page and bullet database, accessed 2026-04-07"
+
+  # Federal CenterStrike — proprietary OTM, not sold as component
+  - action: create_bullet
+    manufacturer: Federal
+    name: "CenterStrike OTM, .264, 140 Grain"
+    weight_grains: 140.0
+    bullet_diameter_inches: 0.264
+    bc_g1: 0.552
+    tip_type: open_tip
+    base_type: boat_tail
+    used_for:
+      - competition
+      - precision
+      - target
+    type_tags:
+      - match
+      - target
+    source_url: https://www.federalpremium.com/rifle/gold-medal/gold-medal-centerstrike/11-GM65CRDOTM1.html
+    bc_source: cartridge_page
+    bc_source_notes: "G1 0.552 from Federal Gold Medal CenterStrike ammo page, accessed 2026-04-07. No separate bullet page — proprietary."
+
+  # Remington Core-Lokt Tipped — proprietary polymer-tipped bonded hunting bullet
+  - action: create_bullet
+    manufacturer: Remington
+    name: "Core-Lokt Tipped, .264, 129 Grain"
+    weight_grains: 129.0
+    bullet_diameter_inches: 0.264
+    bc_g1: 0.485
+    tip_type: polymer_tip
+    base_type: boat_tail
+    construction: bonded
+    used_for:
+      - hunting
+    type_tags:
+      - hunting
+    source_url: https://www.remington.com/rifle/core-lokt-tipped/29-29017.html
+    bc_source: cartridge_page
+    bc_source_notes: "G1 0.485 from Remington Core-Lokt Tipped ammo page, accessed 2026-04-07. Not sold as component."
+
+  # Remington Core-Lokt PSP — traditional flat-base pointed soft point
+  - action: create_bullet
+    manufacturer: Remington
+    name: "Core-Lokt PSP, .264, 140 Grain"
+    weight_grains: 140.0
+    bullet_diameter_inches: 0.264
+    bc_g1: 0.410
+    tip_type: soft_point
+    base_type: flat_base
+    construction: lead_core
+    used_for:
+      - hunting
+    type_tags:
+      - hunting
+    source_url: https://www.remington.com/rifle/core-lokt/29-27657.html
+    bc_source: cartridge_page
+    bc_source_notes: "G1 0.410 from Remington Core-Lokt ammo page, accessed 2026-04-07. Not sold as component."
+
+# ── New Cartridges ───────────────────────────────────────────────────────────
+
+  # Hornady 140gr ELD Match — the most popular 6.5 CM match load
+  - action: create_cartridge
+    manufacturer: Hornady
+    name: "6.5 Creedmoor 140 gr ELD\u00AE Match"
+    caliber: 6.5 Creedmoor
+    bullet: "6.5mm .264 140 gr ELD\u00AE Match"
+    bullet_weight_grains: 140.0
+    muzzle_velocity_fps: 2710
+    test_barrel_length_inches: 24.0
+    bc_g1: 0.646
+    bc_g7: 0.326
+    product_line: Match
+    sku: "81500"
+    round_count: 20
+    source_url: https://www.hornady.com/ammunition/rifle/6-5-creedmoor-140-gr-eld-match
+
+  # Hornady 129gr SST Superformance — distinct from American Whitetail 129gr SST (MV 2810)
+  - action: create_cartridge
+    manufacturer: Hornady
+    name: "6.5 Creedmoor 129 gr SST\u00AE Superformance\u00AE"
+    caliber: 6.5 Creedmoor
+    bullet: "6.5mm .264 129 gr SST\u00AE"
+    bullet_weight_grains: 129.0
+    muzzle_velocity_fps: 2950
+    test_barrel_length_inches: 24.0
+    bc_g1: 0.485
+    product_line: Superformance
+    sku: "81496"
+    round_count: 20
+    source_url: https://www.hornady.com/ammunition/rifle/6-5-creedmoor-129-gr-sst-superformance
+
+  # Barnes VOR-TX LR LRX 127gr — long-range monolithic copper hunting load
+  - action: create_cartridge
+    manufacturer: Barnes Bullets
+    name: "VOR-TX LR LRX 6.5 Creedmoor 127 GR BT"
+    caliber: 6.5 Creedmoor
+    bullet: "0.264\" 6.5MM LRX 127 GR BT"
+    bullet_weight_grains: 127.0
+    muzzle_velocity_fps: 2850
+    bc_g1: 0.468
+    product_line: VOR-TX LR
+    sku: "28986"
+    round_count: 20
+    source_url: https://barnesbullets.com/vor-tx-lr-lrx-6-5-creedmoor-127-gr-bt/
+
+  # Federal Gold Medal CenterStrike 140gr OTM
+  - action: create_cartridge
+    manufacturer: Federal
+    name: "Gold Medal CenterStrike, 6.5 Creedmoor, 140 Grain, Centerstrike Open Tipped Match"
+    caliber: 6.5 Creedmoor
+    bullet: "CenterStrike OTM, .264, 140 Grain"
+    bullet_weight_grains: 140.0
+    muzzle_velocity_fps: 2675
+    bc_g1: 0.552
+    product_line: Gold Medal CenterStrike
+    sku: "GM65CRDOTM1"
+    round_count: 20
+    source_url: https://www.federalpremium.com/rifle/gold-medal/gold-medal-centerstrike/11-GM65CRDOTM1.html
+
+  # Remington Core-Lokt Tipped 129gr
+  - action: create_cartridge
+    manufacturer: Remington
+    name: "Core-Lokt Tipped, 6.5 Creedmoor, 129 Grain"
+    caliber: 6.5 Creedmoor
+    bullet: "Core-Lokt Tipped, .264, 129 Grain"
+    bullet_weight_grains: 129.0
+    muzzle_velocity_fps: 2945
+    bc_g1: 0.485
+    product_line: Core-Lokt Tipped
+    sku: "29017"
+    round_count: 20
+    source_url: https://www.remington.com/rifle/core-lokt-tipped/29-29017.html
+
+  # Remington Core-Lokt PSP 140gr — traditional hunting load
+  - action: create_cartridge
+    manufacturer: Remington
+    name: "Core-Lokt, 6.5 Creedmoor, 140 Grain, Pointed Soft Point"
+    caliber: 6.5 Creedmoor
+    bullet: "Core-Lokt PSP, .264, 140 Grain"
+    bullet_weight_grains: 140.0
+    muzzle_velocity_fps: 2700
+    bc_g1: 0.410
+    product_line: Core-Lokt
+    sku: "27657"
+    round_count: 20
+    source_url: https://www.remington.com/rifle/core-lokt/29-27657.html

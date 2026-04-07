@@ -1,0 +1,130 @@
+patch:
+  id: 033_6mm_arc_factory_cartridges
+  author: agent
+  date: '2026-04-07'
+  description: >
+    Add missing factory cartridges for 6mm ARC. Creates Federal Gold Medal
+    Berger 108gr BT Target, Barnes Precision Match OTM 105gr, Hornady Frontier
+    105gr FMJ, and Black Hills 103gr Hornady ELD-X. Creates 2 new bullet
+    records (Berger 108gr BT Target — distinct from Elite Hunter, Hornady
+    105gr FMJ for Frontier line). HSM loads (75gr V-Max, 95gr Tipping Point)
+    blocked — HSM manufacturer not in DB. Adds missing G7 BC for Barnes 6mm
+    105gr Match Burner.
+
+operations:
+
+# ── Data Quality Fixes ───────────────────────────────────────────────────────
+
+  # G7 BC 0.255 from Barnes ammo page — only G1 0.511 currently in DB
+  - action: add_bc_source
+    manufacturer: Barnes Bullets
+    bullet_name: "0.243\" 6MM Match Burner BT 105 GR"
+    bc_type: g7
+    bc_value: 0.255
+    source: cartridge_page
+    source_url: https://barnesbullets.com/precision-match-otm-6mm-arc-150gr-bt/
+    notes: "G7 0.255 from Barnes Precision Match OTM 6mm ARC ammo page, accessed 2026-04-07"
+
+# ── New Bullets ──────────────────────────────────────────────────────────────
+
+  # Berger 108gr BT Target — distinct from 108gr Elite Hunter (G1 0.559/G7 0.287)
+  # BT Target has lower BCs: G1 0.522, G7 0.268
+  - action: create_bullet
+    manufacturer: Berger Bullets
+    name: "6 mm 108 Grain BT Target Rifle Bullet"
+    weight_grains: 108.0
+    bullet_diameter_inches: 0.243
+    bc_g1: 0.522
+    bc_g7: 0.268
+    tip_type: open_tip
+    base_type: boat_tail
+    product_line: BT Target
+    used_for:
+      - competition
+      - precision
+      - target
+    type_tags:
+      - match
+      - target
+    source_url: https://www.bergerbullets.com
+    bc_source: cartridge_page
+    bc_source_notes: "G1 0.522, G7 0.268 from Federal Gold Medal Berger ammo page — matches Berger BT Target specs, accessed 2026-04-07"
+
+  # Hornady 105gr FMJ — Frontier line practice bullet, not sold as component
+  - action: create_bullet
+    manufacturer: Hornady
+    name: "6mm .243 105 gr FMJ"
+    weight_grains: 105.0
+    bullet_diameter_inches: 0.243
+    tip_type: fmj
+    base_type: boat_tail
+    construction: lead_core
+    used_for:
+      - target
+      - training
+    type_tags:
+      - fmj
+      - training
+    source_url: https://www.hornady.com/ammunition/rifle/6mm-arc-105-gr-fmj-frontier
+    bc_source_notes: "No BC published by Hornady for FMJ Frontier bullet"
+
+# ── New Cartridges ───────────────────────────────────────────────────────────
+
+  # Federal Gold Medal Berger 108gr BT Target
+  - action: create_cartridge
+    manufacturer: Federal
+    name: "Gold Medal Berger 6mm ARC 108 Grain Berger BT Target"
+    caliber: 6mm ARC
+    bullet: "6 mm 108 Grain BT Target Rifle Bullet"
+    bullet_manufacturer: Berger Bullets
+    bullet_weight_grains: 108.0
+    muzzle_velocity_fps: 2650
+    bc_g1: 0.522
+    bc_g7: 0.268
+    product_line: Gold Medal Berger
+    sku: "GM6ARCBT1"
+    round_count: 20
+    source_url: https://www.federalpremium.com/long-range/11-GM6ARCBT1.html
+
+  # Barnes Precision Match OTM 105gr — uses Barnes Match Burner 105gr bullet
+  - action: create_cartridge
+    manufacturer: Barnes Bullets
+    name: "Precision Match OTM 6mm ARC 105GR BT"
+    caliber: 6mm ARC
+    bullet: "0.243\" 6MM Match Burner BT 105 GR"
+    bullet_weight_grains: 105.0
+    muzzle_velocity_fps: 2675
+    bc_g1: 0.511
+    bc_g7: 0.255
+    product_line: Precision Match
+    sku: "32476"
+    round_count: 20
+    source_url: https://barnesbullets.com/precision-match-otm-6mm-arc-150gr-bt/
+
+  # Hornady Frontier 105gr FMJ — practice/training ammo
+  - action: create_cartridge
+    manufacturer: Hornady
+    name: "6mm ARC 105 gr FMJ Frontier"
+    caliber: 6mm ARC
+    bullet: "6mm .243 105 gr FMJ"
+    bullet_weight_grains: 105.0
+    muzzle_velocity_fps: 2700
+    test_barrel_length_inches: 24.0
+    product_line: Frontier
+    sku: "FR710"
+    round_count: 20
+    source_url: https://www.hornady.com/ammunition/rifle/6mm-arc-105-gr-fmj-frontier
+
+  # Black Hills 103gr Hornady ELD-X — MV 2550 from 18" barrel (reduced vs Hornady's 2800/24")
+  - action: create_cartridge
+    manufacturer: Black Hills Ammunition
+    name: "Black Hills 6mm ARC 103gr Hornady ELD-X"
+    caliber: 6mm ARC
+    bullet: "6mm .243 103 gr ELD\u2011X\u00AE"
+    bullet_manufacturer: Hornady
+    bullet_weight_grains: 103.0
+    muzzle_velocity_fps: 2550
+    test_barrel_length_inches: 18.0
+    product_line: Gold
+    round_count: 20
+    source_url: https://www.black-hills.com/shop/bh-gold-ammo/6mm-arc/
