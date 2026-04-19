@@ -20,6 +20,7 @@ import logging
 import re
 from dataclasses import dataclass, field
 
+from rapidfuzz import fuzz
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
@@ -90,11 +91,16 @@ def _normalize(name: str) -> str:
     """Normalize a name for comparison: lowercase, strip punctuation, collapse whitespace.
 
     Periods are kept only when leading a token (caliber names like ".308", ".223").
+    Hyphens are preserved so identifier strings like "ELD-X", "A-Tip", "Match-Grade"
+    remain a single token — splitting "ELD-X" into {"eld", "x"} caused "x" to be a
+    noise match against any name containing "X" (e.g. ELD Match).
     Trailing periods are stripped (handles "Inc." vs "Inc", "INC." vs "Inc").
     """
     name = _strip_trademarks(name).lower().strip()
-    # Keep periods to preserve caliber names like ".308", ".223"
-    name = re.sub(r"[^\w\s.]", " ", name)
+    # Normalize unicode dashes to ASCII hyphen so "ELD\u2013X" matches "ELD-X"
+    name = re.sub(r"[\u2010\u2011\u2012\u2013\u2014\u2015]", "-", name)
+    # Keep periods (caliber names like ".308") and hyphens (identifiers like "ELD-X")
+    name = re.sub(r"[^\w\s.\-]", " ", name)
     name = re.sub(r"\s+", " ", name)
     # Strip trailing periods from tokens that don't start with "." (caliber prefix)
     tokens = [t.rstrip(".") if not t.startswith(".") else t for t in name.split()]
@@ -184,17 +190,18 @@ def _normalize_product_line(name: str) -> str:
 
 
 def _name_similarity(a: str, b: str) -> float:
-    """Simple word-overlap similarity between two normalized names.
+    """Token-set similarity between two normalized names.
 
-    Returns 0.0 to 1.0 based on Jaccard index of word sets.
+    Uses ``rapidfuzz.fuzz.token_set_ratio``, which natively handles the long-vs-short
+    asymmetry between cartridge extractions ("ELD-X") and full DB product names
+    ("30 Cal .308 178 gr ELD-X®"). Jaccard penalized every extra word in the target
+    equally, which collapsed such scores to ~0.14 — below any useful threshold.
+    Returns 0.0 to 1.0.
     """
-    words_a = set(_normalize(a).split())
-    words_b = set(_normalize(b).split())
-    if not words_a or not words_b:
+    na, nb = _normalize(a), _normalize(b)
+    if not na or not nb:
         return 0.0
-    intersection = words_a & words_b
-    union = words_a | words_b
-    return len(intersection) / len(union)
+    return fuzz.token_set_ratio(na, nb) / 100.0
 
 
 # Noise words that don't help distinguish bullet identity (caliber/weight/generic suffixes).
@@ -285,8 +292,17 @@ def _bullet_name_score(extracted_name: str, db_name: str) -> float:
     """
 
     def _meaningful_words(name: str) -> set[str]:
-        """Extract semantically meaningful words, stripping noise and numbers."""
-        tokens = set(_normalize(name).split())
+        """Extract semantically meaningful words, stripping noise and numbers.
+
+        Hyphenated tokens are split back into their components so abbreviation
+        expansion still works ("Boat-Tail" contributes {boat, tail} for BT/BTHP
+        expansion) even though ``_normalize`` now preserves hyphens.
+        """
+        tokens: set[str] = set()
+        for tok in _normalize(name).split():
+            tokens.add(tok)
+            if "-" in tok:
+                tokens.update(part for part in tok.split("-") if part)
         # Remove pure numbers (weights, calibers like "308", "140") and noise
         return {t for t in tokens if not t.replace(".", "").isdigit() and t not in _BULLET_NOISE_WORDS}
 
@@ -314,6 +330,21 @@ def _bullet_name_score(extracted_name: str, db_name: str) -> float:
         score = max(score, _score_pair(prefix_words, target_words))
 
     return score
+
+
+def _weight_matches(bullet_weight: float | None, extracted_weight, tolerance: float, context: str) -> bool:
+    """True when an extracted weight value agrees with a DB bullet weight within ``tolerance`` grains.
+
+    Centralises the `float(...) + abs(...)` + ValueError/TypeError logging pattern that
+    the product-line tiers, composite-key tier, and fuzzy tier all repeated.
+    """
+    if extracted_weight is None or bullet_weight is None:
+        return False
+    try:
+        return abs(bullet_weight - float(extracted_weight)) < tolerance
+    except (ValueError, TypeError):
+        logger.warning("cannot parse weight %r for bullet %s", extracted_weight, context)
+        return False
 
 
 def _match_from_lookup(hit: LookupResult) -> MatchResult:
@@ -504,6 +535,39 @@ class EntityResolver:
 
     # ── Entity matching ──────────────────────────────────────────────────────
 
+    def _resolve_product_line_id(
+        self,
+        *,
+        explicit: str | None,
+        name: str | None,
+        normalized_pl: str,
+        manufacturer_id: str | None,
+    ) -> str | None:
+        """Resolve an extracted bullet's product line to a BulletProductLine FK.
+
+        Consults ``drift.resolution.aliases.lookup_entity`` for the ``bullet_product_line``
+        entity type, which walks exact name → alt_names → EntityAlias in order. This is
+        the sole channel the pipeline has to learn curator-added aliases (ELDM → ELD
+        Match, SMK → MatchKing, etc.) without code changes.
+
+        Tries candidates in order of specificity: explicit ``product_line`` field, then
+        the ``_normalize_product_line``-cleaned form (manufacturer prefix stripped,
+        parenthetical abbreviations extracted), then the raw extracted name. Returns
+        the first hit or None.
+        """
+        candidates: list[str] = []
+        if explicit:
+            candidates.append(explicit)
+        if normalized_pl and normalized_pl not in candidates:
+            candidates.append(normalized_pl)
+        if name and name not in candidates:
+            candidates.append(name)
+        for candidate in candidates:
+            hit = lookup_entity(self._session, "bullet_product_line", candidate, manufacturer_id=manufacturer_id)
+            if hit is not None:
+                return hit.entity_id
+        return None
+
     def match_bullet(
         self, extracted: dict, manufacturer_id: str | None, bullet_diameter_inches: float | None
     ) -> MatchResult:
@@ -557,9 +621,35 @@ class EntityResolver:
         if extracted_product_line:
             norm_extracted_pl = _normalize_product_line(extracted_product_line)
 
+        # Product-line alias tier — consult EntityAlias via the shared lookup module so
+        # curator-added aliases (e.g. ELDM → ELD Match, SMK → MatchKing, ABLR → AccuBond
+        # Long Range) resolve to a BulletProductLine FK. This is the only channel the
+        # pipeline has to learn new product-line abbreviations without code changes.
+        resolved_pl_id = self._resolve_product_line_id(
+            explicit=extracted_product_line,
+            name=name,
+            normalized_pl=norm_extracted_pl,
+            manufacturer_id=manufacturer_id,
+        )
+        if resolved_pl_id is not None:
+            methods_tried.append("product_line_alias")
+            for bullet in candidates:
+                if bullet.product_line_id != resolved_pl_id:
+                    continue
+                weight_matches = _weight_matches(bullet.weight_grains, weight, tolerance=0.5, context=bullet.name)
+                conf = 0.93 if weight_matches else 0.80
+                detail = (
+                    f"product_line_id={resolved_pl_id}, weight={weight}"
+                    if weight_matches
+                    else f"product_line_id={resolved_pl_id}, no weight match"
+                )
+                all_scored.append((bullet.id, conf, "product_line_alias", detail))
+
         # Product-line matching — when the extracted name (or explicit product_line)
         # matches a bullet's product_line, that's a strong signal. Combined with
         # weight + diameter (already filtered), this is highly deterministic.
+        # Kept alongside the alias tier because many existing bullets have a
+        # product_line string but no product_line_id FK populated yet.
         if norm_extracted_pl:
             methods_tried.append("product_line")
             for bullet in candidates:
@@ -568,15 +658,7 @@ class EntityResolver:
                 norm_bullet_pl = _normalize_product_line(bullet.product_line)
                 if norm_bullet_pl != norm_extracted_pl:
                     continue
-                # Product line matches — score based on weight agreement
-                if weight is not None:
-                    try:
-                        weight_matches = abs(bullet.weight_grains - float(weight)) < 0.5
-                    except (ValueError, TypeError):
-                        logger.warning("product_line: cannot parse weight %r for bullet %s", weight, bullet.name)
-                        weight_matches = False
-                else:
-                    weight_matches = False
+                weight_matches = _weight_matches(bullet.weight_grains, weight, tolerance=0.5, context=bullet.name)
                 if weight_matches:
                     conf = 0.93
                     detail = f"product_line={norm_extracted_pl}, weight={weight}"

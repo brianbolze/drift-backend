@@ -346,7 +346,9 @@ class TestResolverUtils:
         assert _normalize("6.5 Creedmoor") == "6.5 creedmoor"
         assert _normalize("  Hornady  ") == "hornady"
         assert _normalize(".308 Winchester") == ".308 winchester"
-        assert _normalize("ELD-X (Hunting)") == "eld x hunting"
+        # Hyphens are preserved so "ELD-X" stays one token and doesn't
+        # collide with names containing a lone "X".
+        assert _normalize("ELD-X (Hunting)") == "eld-x hunting"
 
     def test_name_similarity_identical(self):
         assert _name_similarity("Hornady ELD Match", "Hornady ELD Match") == 1.0
@@ -356,12 +358,19 @@ class TestResolverUtils:
         assert score == 1.0  # Same words, just reordered
 
     def test_name_similarity_partial(self):
+        # token_set_ratio handles asymmetric short-vs-long names natively:
+        # every query token ("eld", "match") appears in the target, so the
+        # score is ~1.0 — this is the finding #3 fix in action.
         score = _name_similarity("ELD Match", "ELD Match 140gr Hornady")
-        assert 0.3 < score < 0.8  # Partial overlap
+        assert score >= 0.9
 
     def test_name_similarity_no_overlap(self):
+        # token_set_ratio isn't a pure set-intersection metric — it folds in
+        # character-level similarity too. Unrelated tokens score low but not
+        # exactly zero ("hornady" vs "federal" ≈ 0.29). A threshold-based
+        # check is what callers actually rely on.
         score = _name_similarity("Hornady", "Federal")
-        assert score == 0.0
+        assert score < 0.4
 
     def test_get_value_from_extracted_value(self):
         assert _get_value({"name": {"value": "Test", "confidence": 0.9}}, "name") == "Test"
