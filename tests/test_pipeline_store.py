@@ -7,14 +7,17 @@ from pathlib import Path
 
 import pytest
 
-from drift.models import Bullet, Caliber, Cartridge, Manufacturer
+from drift.models import Bullet, Caliber, Cartridge, Chamber, EntityAlias, Manufacturer, RifleModel
 from drift.pipeline.resolution.resolver import MatchResult, ResolutionResult
 
 _SCRIPTS_DIR = Path(__file__).resolve().parent.parent / "scripts"
 sys.path.insert(0, str(_SCRIPTS_DIR))
 _store_mod = importlib.import_module("pipeline_store")
 _should_auto_create_weight_variant = _store_mod._should_auto_create_weight_variant
+_build_alias_suggestion = _store_mod._build_alias_suggestion
+_record_method_telemetry = _store_mod._record_method_telemetry
 AUTO_CREATE_CONFIDENCE_CEILING = _store_mod.AUTO_CREATE_CONFIDENCE_CEILING
+_LOW_CONFIDENCE_REPORT_THRESHOLD = _store_mod._LOW_CONFIDENCE_REPORT_THRESHOLD
 
 
 def _ev(value, confidence=0.9):
@@ -327,3 +330,214 @@ class TestAutoCreateEdgeCases:
             bullet_diameter_inches=0.308,
         )
         assert _should_auto_create_weight_variant(entity, "bullet", res, db) is False
+
+
+# ---------------------------------------------------------------------------
+# Alias suggestion tests (finding #9 — learning loop)
+# ---------------------------------------------------------------------------
+
+
+class TestAliasSuggestion:
+    """Tests for _build_alias_suggestion: candidates EntityAlias promotion for fuzzy matches."""
+
+    def test_fuzzy_name_match_returns_suggestion(self, seeded, db):
+        """A fuzzy_name match with a distinct extracted name → suggest alias."""
+        match = MatchResult(
+            matched=True,
+            entity_id=seeded["bullet"].id,
+            confidence=0.76,
+            method="fuzzy_name",
+        )
+        suggestion = _build_alias_suggestion(db, "bullet", match, seeded["bullet"], "Barnes 30 Cal 110gr TTSX")
+        assert suggestion is not None
+        assert suggestion["entity_type"] == "bullet"
+        assert suggestion["entity_id"] == seeded["bullet"].id
+        assert suggestion["canonical_name"] == seeded["bullet"].name
+        assert suggestion["alias"] == "Barnes 30 Cal 110gr TTSX"
+        assert suggestion["method"] == "fuzzy_name"
+        assert suggestion["confidence"] == 0.76
+
+    def test_composite_key_match_returns_suggestion(self, seeded, db):
+        """composite_key is also a fuzzy method (uses name similarity)."""
+        match = MatchResult(
+            matched=True,
+            entity_id=seeded["bullet"].id,
+            confidence=0.91,
+            method="composite_key",
+        )
+        suggestion = _build_alias_suggestion(db, "bullet", match, seeded["bullet"], "Barnes TTSX 110 grain")
+        assert suggestion is not None
+        assert suggestion["method"] == "composite_key"
+
+    def test_exact_sku_returns_none(self, seeded, db):
+        """Deterministic SKU match → no alias suggestion."""
+        match = MatchResult(
+            matched=True,
+            entity_id=seeded["bullet"].id,
+            confidence=1.0,
+            method="exact_sku",
+        )
+        suggestion = _build_alias_suggestion(db, "bullet", match, seeded["bullet"], "some alt name")
+        assert suggestion is None
+
+    def test_product_line_returns_none(self, seeded, db):
+        """product_line match is deterministic (normalized exact match) → no suggestion."""
+        match = MatchResult(
+            matched=True,
+            entity_id=seeded["bullet"].id,
+            confidence=0.93,
+            method="product_line",
+        )
+        suggestion = _build_alias_suggestion(db, "bullet", match, seeded["bullet"], "some alt name")
+        assert suggestion is None
+
+    def test_identical_normalized_name_returns_none(self, seeded, db):
+        """Extracted name equals canonical name after normalization → no suggestion."""
+        match = MatchResult(
+            matched=True,
+            entity_id=seeded["bullet"].id,
+            confidence=0.8,
+            method="fuzzy_name",
+        )
+        suggestion = _build_alias_suggestion(db, "bullet", match, seeded["bullet"], seeded["bullet"].name.upper())
+        assert suggestion is None
+
+    def test_existing_alias_returns_none(self, seeded, db):
+        """If EntityAlias already has this alias for this entity → no duplicate suggestion."""
+        db.add(
+            EntityAlias(
+                entity_type="bullet",
+                entity_id=seeded["bullet"].id,
+                alias="Barnes 30 Cal 110gr TTSX",
+                alias_type="extracted_fuzzy",
+            )
+        )
+        db.flush()
+        match = MatchResult(
+            matched=True,
+            entity_id=seeded["bullet"].id,
+            confidence=0.76,
+            method="fuzzy_name",
+        )
+        suggestion = _build_alias_suggestion(db, "bullet", match, seeded["bullet"], "Barnes 30 Cal 110gr TTSX")
+        assert suggestion is None
+
+    def test_missing_existing_returns_none(self, seeded, db):
+        """No existing entity → cannot suggest alias."""
+        match = MatchResult(matched=True, entity_id="some-id", confidence=0.8, method="fuzzy_name")
+        assert _build_alias_suggestion(db, "bullet", match, None, "foo") is None
+
+    def test_empty_extracted_name_returns_none(self, seeded, db):
+        """Empty extracted name → no suggestion."""
+        match = MatchResult(
+            matched=True,
+            entity_id=seeded["bullet"].id,
+            confidence=0.8,
+            method="fuzzy_name",
+        )
+        assert _build_alias_suggestion(db, "bullet", match, seeded["bullet"], "") is None
+
+    def test_rifle_uses_model_as_canonical(self, seeded, db):
+        """Rifles have .model (not .name) — suggestion picks the right attribute."""
+        chamber = Chamber(name=".308 Win chamber")
+        db.add(chamber)
+        db.flush()
+        rifle = RifleModel(manufacturer_id=seeded["mfr"].id, chamber_id=chamber.id, model="Model 700 SPS Varmint")
+        db.add(rifle)
+        db.flush()
+        match = MatchResult(
+            matched=True,
+            entity_id=rifle.id,
+            confidence=0.72,
+            method="fuzzy_name",
+        )
+        suggestion = _build_alias_suggestion(db, "rifle", match, rifle, "Remington 700 SPS Varmint")
+        assert suggestion is not None
+        assert suggestion["canonical_name"] == "Model 700 SPS Varmint"
+        assert suggestion["alias"] == "Remington 700 SPS Varmint"
+
+
+# ---------------------------------------------------------------------------
+# Method telemetry tests (finding #17 — end-of-run breakdown)
+# ---------------------------------------------------------------------------
+
+
+def _fresh_stats():
+    """Empty stats shape matching pipeline_store main()."""
+    return {
+        "bullet": {"methods": {}},
+        "cartridge": {"methods": {}},
+        "rifle": {"methods": {}},
+    }
+
+
+class TestMethodTelemetry:
+    """Tests for _record_method_telemetry: winning-method counts and confidence buckets."""
+
+    def test_records_winning_method(self):
+        stats = _fresh_stats()
+        _record_method_telemetry(stats, "bullet", MatchResult(matched=True, confidence=0.95, method="exact_sku"))
+        assert stats["bullet"]["methods"] == {"exact_sku": {"count": 1, "confidence_sum": 0.95, "low_confidence": 0}}
+
+    def test_accumulates_counts_and_confidence(self):
+        stats = _fresh_stats()
+        for conf in (0.9, 0.8, 0.7):
+            _record_method_telemetry(stats, "bullet", MatchResult(matched=True, confidence=conf, method="fuzzy_name"))
+        bucket = stats["bullet"]["methods"]["fuzzy_name"]
+        assert bucket["count"] == 3
+        assert bucket["confidence_sum"] == pytest.approx(0.9 + 0.8 + 0.7)
+        assert bucket["low_confidence"] == 0
+
+    def test_low_confidence_counted(self):
+        stats = _fresh_stats()
+        # Below threshold
+        _record_method_telemetry(stats, "bullet", MatchResult(matched=True, confidence=0.3, method="fuzzy_name"))
+        # At threshold — not counted as low
+        _record_method_telemetry(
+            stats,
+            "bullet",
+            MatchResult(matched=True, confidence=_LOW_CONFIDENCE_REPORT_THRESHOLD, method="fuzzy_name"),
+        )
+        bucket = stats["bullet"]["methods"]["fuzzy_name"]
+        assert bucket["count"] == 2
+        assert bucket["low_confidence"] == 1
+
+    def test_unmatched_not_recorded(self):
+        stats = _fresh_stats()
+        _record_method_telemetry(stats, "bullet", MatchResult(matched=False, confidence=0.0, method=""))
+        assert stats["bullet"]["methods"] == {}
+
+    def test_methods_separated_per_entity_type(self):
+        stats = _fresh_stats()
+        _record_method_telemetry(stats, "bullet", MatchResult(matched=True, confidence=1.0, method="exact_sku"))
+        _record_method_telemetry(stats, "cartridge", MatchResult(matched=True, confidence=0.8, method="composite_key"))
+        assert "exact_sku" in stats["bullet"]["methods"]
+        assert "exact_sku" not in stats["cartridge"]["methods"]
+        assert "composite_key" in stats["cartridge"]["methods"]
+
+    def test_empty_method_recorded_as_unknown(self):
+        stats = _fresh_stats()
+        _record_method_telemetry(stats, "bullet", MatchResult(matched=True, confidence=0.9, method=""))
+        assert stats["bullet"]["methods"]["unknown"]["count"] == 1
+
+
+class TestMethodBreakdownOutput:
+    """_print_method_breakdown renders a concise per-entity-type summary."""
+
+    def test_prints_nothing_when_empty(self, capsys):
+        _store_mod._print_method_breakdown(_fresh_stats())
+        assert capsys.readouterr().out == ""
+
+    def test_prints_summary_sorted_by_count(self, capsys):
+        stats = _fresh_stats()
+        stats["bullet"]["methods"] = {
+            "exact_sku": {"count": 10, "confidence_sum": 10.0, "low_confidence": 0},
+            "fuzzy_name": {"count": 3, "confidence_sum": 1.2, "low_confidence": 2},
+        }
+        _store_mod._print_method_breakdown(stats)
+        out = capsys.readouterr().out
+        assert "Match method breakdown:" in out
+        assert "bullet (13 matched):" in out
+        # exact_sku (higher count) should print before fuzzy_name
+        assert out.index("exact_sku") < out.index("fuzzy_name")
+        assert "2 < 0.5" in out  # low-confidence count for fuzzy_name
