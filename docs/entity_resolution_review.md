@@ -1,6 +1,17 @@
 # Entity Resolution Review & Refactor Plan
 
-Status: step 1 implemented (merged 2026-04-19 on `claude/unified-lookups-8dp6m`, commit `0355b74` — deterministic lookups now flow through `drift.resolution.aliases.lookup_entity` for both curation and the pipeline resolver; cross-system consistency test added). Other steps pending. Findings map to specific files/lines as of 2026-04-19.
+Status (2026-04-19): steps 1, 2, 3, 6, and the telemetry slice of step 7 are merged to master. Steps 4, 5, and 8 remain. Findings map to specific files/lines as of original review; line numbers may have drifted with merges.
+
+| Step | Status | Branch / commit | Findings addressed |
+|---|---|---|---|
+| 1. Unified lookup module | ✅ merged | `claude/unified-lookups-8dp6m` (`0355b74`) | #1, #2 (partial), #8, #11 |
+| 2. rapidfuzz name similarity | ✅ merged | `claude/fuzzy-matching-7ewKO` (`b74d7fa`) | #3, #7 |
+| 3. bullet_product_line EntityAlias wiring | ✅ merged | same as step 2 | #2 (bullet branch), unblocks TODO.md line 49 |
+| 4. ResolutionConfig + golden-set regression | ⏳ pending | — | #4 |
+| 5. Resolver small wins (ambiguity, manuf bias, dead columns, typed inputs) | ⏳ pending | — | #5, #6, #13, #16, #18 |
+| 6. Normalization hardening | ✅ merged | `claude/normalization-hardening-OG5Yg` (`bc02f7f`) | #19 |
+| 7. Learning loop + telemetry | 🟡 partial | `claude/resolver-telemetry-wVUMy` (`6e4771b`) — alias suggestions + method breakdown shipped; learning loop not yet | #9 (partial), #17 |
+| 8. BC reconciliation | ⏳ deferred | — | #20 |
 
 This document captures a thorough code review of how Drift resolves extracted entities (bullets, cartridges, rifles, manufacturers, calibers, chambers) against existing DB records, plus a prioritized refactor sequence. The review was prompted by observed shortcomings in bullet and cartridge matching (see TODO.md) but the overall architecture has enough issues that a broader refactor is warranted.
 
@@ -196,12 +207,32 @@ We store `extraction_confidence` per entity but not source quality. Doro's rule 
 Mostly independent; tackle in roughly this order.
 
 1. ✅ **DONE** — Unified lookup module on `claude/unified-lookups-8dp6m` (commit `0355b74`). Addressed findings #1, #2, #8, #11.
-2. **Replace Jaccard with `rapidfuzz.token_set_ratio`** in `_name_similarity`; preserve hyphens in normalization. Delete `_bullet_name_score` if redundant; otherwise unify between bullet/cartridge/rifle. Addresses findings #3, #7.
-3. **Wire `bullet_product_line` EntityAlias lookups into `match_bullet`** (use `product_line_id` FK + aliases, not the string column). Addresses finding #2 for bullets, unblocks TODO.md line 49.
+2. ✅ **DONE** — rapidfuzz `token_set_ratio` replaces Jaccard; `_normalize` preserves hyphens + unicode dashes. `claude/fuzzy-matching-7ewKO` (commit `b74d7fa`). Addressed findings #3, #7.
+3. ✅ **DONE** — `match_bullet` now resolves `bullet_product_line` via `lookup_entity` (FK + EntityAlias) in a new `product_line_alias` tier. Same branch as step 2. ELDM/SMK/ABLR aliases work without code changes; unblocks TODO.md line 49.
 4. **Consolidate thresholds into `ResolutionConfig`** dataclass; add golden-set regression test. Addresses finding #4.
 5. **Resolver small wins.** Act on `is_ambiguous` in `pipeline_store.py` (new `flagged_ambiguous` action, finding #5); same-manufacturer bias in cartridge→bullet as score boost not filter (finding #6); persist `bullet_match_confidence` + `bullet_match_method` from every pipeline write path (finding #18, resolves finding #13 by using the field instead of deleting it); type the resolver inputs with Pydantic schemas (finding #16).
-6. **Normalization hardening.** Unit-confusion heuristics (m/s→fps, grams→grains, mm→inches) and numeric-range flag-don't-store guards between EXTRACT and RESOLVE. Addresses finding #19 and the range-validation sub-item.
-7. **Learning loop + telemetry.** Surface EntityAlias suggestions for fuzzy matched-existing cases in `review.json`; aggregate `methods_tried` into an end-of-run breakdown. Addresses findings #9, #17.
+6. ✅ **DONE** — Normalization hardening between EXTRACT and RESOLVE: grams→grains, m/s→fps, mm→inches conversion attempts; null-or-reject for unrecoverable values; bullets with bad critical fields rejected pre-resolution. `claude/normalization-hardening-OG5Yg` (commit `bc02f7f`). Addressed finding #19, includes Lapua G580 regression test.
+7. 🟡 **PARTIAL** — Telemetry slice shipped on `claude/resolver-telemetry-wVUMy` (commit `6e4771b`): `_record_method_telemetry` aggregates winning methods + confidence distribution, `_print_method_breakdown` reports at end of run, `_build_alias_suggestion` emits candidate EntityAlias rows for fuzzy matched_existing entries. **Remaining:** an actual learning loop that consumes those suggestions (curator workflow, or auto-promote on N matches with high confidence). Addresses #9 (partial), #17 done.
 8. **BC reconciliation** (deferred, larger). `ReconciliationConfig`-style picker for canonical `Bullet.bc_g1_published`/`bc_g7_published` across `BulletBCSource` rows, weighted by source quality × extraction confidence. Addresses finding #20.
 
-The Jaccard swap (step 2) and the EntityAlias wiring for product lines (step 3) are the two changes most likely to move the needle on the cartridge→bullet miss rate.
+---
+
+## Recommended next steps (post-2026-04-19)
+
+The two highest-leverage changes (steps 2+3) are done. The remaining work splits along an axis of "tighten what's there" vs "extend reach":
+
+**Highest ROI now: step 4 — ResolutionConfig + golden-set regression.** Five steps have shipped without a calibration harness. Every tier was retuned (rapidfuzz scores aren't comparable to Jaccard), the new `product_line_alias` tier interleaves with `composite_key` and `product_line` in non-obvious ways, and the normalization step changes which entities even reach the resolver. Right now the only feedback we have is the new method-breakdown telemetry. Before tuning any more thresholds, capture a labeled set of ~50–100 "this extraction should resolve to that bullet" pairs from real pipeline output and lock the scores. Without this, step 5's tuning work is flying blind, and we can't tell if a future change regresses the matches we already get right.
+
+**Step 5 small wins, second.** These are mostly one-file diffs and individually low risk:
+- `bullet_match_confidence` + `bullet_match_method` persistence (finding #18) is the audit-query unblocker for *"99 existing cartridges with wrong bullet_id."* Highest single-finding impact in step 5.
+- `is_ambiguous` → `flagged_ambiguous` action (finding #5) is the natural follow-on to telemetry — we're now *measuring* low-confidence methods but not gating on the runner-up margin.
+- Same-manufacturer score boost (finding #6) directly targets the *MatchKing→Nosler false matches* TODO.
+- Typed Pydantic inputs (finding #16) is the structural cleanup that will pay off any time someone touches `_get_value` again.
+
+These can be split across multiple agents (different files, no overlap) or bundled into one branch.
+
+**Step 7 learning loop, third.** The telemetry has been emitting alias suggestions for at least one full pipeline run by now — we should look at what it found before designing the consumer. If suggestions are mostly noise, we need stricter filters; if they're high-quality, a curator-facing CLI to promote them is straightforward.
+
+**Step 8 BC reconciliation: still deferred.** It's the largest single piece, owns its own data model question (does `BulletBCSource.source_quality` get populated meaningfully?), and isn't blocking the matching-quality TODOs that started this whole effort.
+
+Concrete suggestion: kick off step 4 next as a single agent (it benefits from one mind designing the config + harness together), then unbundle step 5 into 2-3 parallel small-wins agents once step 4 lands.
