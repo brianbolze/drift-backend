@@ -81,17 +81,17 @@
     "severity": "warning",
     "summary": "9 cartridges with MV=0: 8 Hornady ECX International (velocity intentionally unpublished) + 1 Nosler 300 Wby Mag NoslerCustom (no factory spec found). Down from 104 after curation patches 019-023.",
     "first_seen": "2026-03-06",
-    "last_seen": "2026-03-19",
+    "last_seen": "2026-04-06",
     "count": 9,
     "status": "open",
-    "notes": "95 zero-MV cartridges resolved: 5 Federal placeholders deleted (patch 019), 33 Barnes filled (020), 43 Winchester filled (021), 12 Nosler filled (022), 2 Hornady filled (023). Remaining 9 are genuinely unfixable from public sources — Hornady ECX International ballistics chart shows 'See hornady.com for latest information' for all ECX loads."
+    "notes": "95 zero-MV cartridges resolved: 5 Federal placeholders deleted (patch 019), 33 Barnes filled (020), 43 Winchester filled (021), 12 Nosler filled (022), 2 Hornady filled (023). Remaining 9 are genuinely unfixable from public sources \u2014 Hornady ECX International ballistics chart shows 'See hornady.com for latest information' for all ECX loads."
   },
   {
     "id": "W2-missing-bc-rifle-bullets",
     "severity": "warning",
     "summary": "17 rifle bullets (diameter <= .375) missing all BC fields, excluding CE, Nosler, and Winchester. Sierra 4, Lehigh 4, Federal 4, Lapua 3, Swift 1, Norma 1. Down from 33 after metadata enrichment patches 028-030.",
     "first_seen": "2026-03-06",
-    "last_seen": "2026-03-29",
+    "last_seen": "2026-04-06",
     "count": 17,
     "status": "open",
     "notes": "Sierra 4 are 2026 new products (BCs not yet published). Lehigh 4 are Controlled Chaos bullets (BC not published by manufacturer). Federal 4 are component bullets (Fusion, Trophy Bonded). None are match/LR-critical."
@@ -101,7 +101,7 @@
     "severity": "warning",
     "summary": ".204 Ruger: 24gr NTX at 4400fps and 32gr V-MAX at 4225fps exceed 4200fps threshold (plausible for lightweight .204 Ruger Superformance)",
     "first_seen": "2026-03-06",
-    "last_seen": "2026-03-19",
+    "last_seen": "2026-04-06",
     "count": 2,
     "status": "open"
   },
@@ -154,7 +154,7 @@
     "severity": "warning",
     "summary": "6 Berger loaded ammunition product pages stored as bullet records \u2014 duplicates component bullet data",
     "first_seen": "2026-03-14",
-    "last_seen": "2026-03-19",
+    "last_seen": "2026-04-06",
     "count": 6,
     "status": "open",
     "notes": "Improved from 12 to 6 since last run"
@@ -164,7 +164,7 @@
     "severity": "warning",
     "summary": "Hornady 6.5 Creedmoor 100gr ELD-VT V-Match source_url slug says '6mm-creedmoor' \u2014 Hornady website routing issue, data is correct",
     "first_seen": "2026-03-14",
-    "last_seen": "2026-03-19",
+    "last_seen": "2026-04-06",
     "count": 1,
     "status": "open"
   },
@@ -204,7 +204,7 @@
   {
     "id": "W11-new-cartridges-zero-mv",
     "severity": "warning",
-    "summary": "90 newly ingested cartridges from Barnes/Winchester/Nosler batch — all resolved via curation patches 020-022. MV data sourced from retailer sites.",
+    "summary": "90 newly ingested cartridges from Barnes/Winchester/Nosler batch \u2014 all resolved via curation patches 020-022. MV data sourced from retailer sites.",
     "first_seen": "2026-03-19",
     "last_seen": "2026-03-19",
     "count": 0,
@@ -215,17 +215,17 @@
   {
     "id": "C10-cartridge-bullet-mislinks",
     "severity": "warning",
-    "summary": "3 self-loading brand mislinks remain (down from ~8): 1 Hornady 338 Lapua→Sierra, 2 Nosler→Hornady/Barnes. Plus 13 Winchester non-BST cross-mfr links (separate from BST partnership loads).",
+    "summary": "3 self-loading brand mislinks remain (down from ~8): 1 Hornady 338 Lapua\u2192Sierra, 2 Nosler\u2192Hornady/Barnes. Plus 13 Winchester non-BST cross-mfr links (separate from BST partnership loads).",
     "first_seen": "2026-03-25",
-    "last_seen": "2026-03-29",
+    "last_seen": "2026-04-06",
     "count": 16,
     "status": "open",
-    "notes": "Self-loading brand mislinks (3): Hornady 338 Lapua 250gr BTHP Match→Sierra (needs manual review), Nosler 223 Rem 55gr SP→Hornady, Nosler 375 H&H 300gr→Barnes. Winchester non-BST cross-mfr (13): includes .223 69gr Match→Hornady, .223 62gr→Hornady, 6.5 PRC/Creedmoor→Nosler/Lapua, Expedition Big Game loads→Nosler, .300 Blackout→Nosler, etc. 11 Winchester BST→Nosler links are expected (Combined Technologies partnership). Patch 031 also fixed BH .223 77gr OTM→Sierra SMK (was incorrectly linked to Berger)."
+    "notes": "Self-loading brand mislinks (3): Hornady 338 Lapua 250gr BTHP Match\u2192Sierra (needs manual review), Nosler 223 Rem 55gr SP\u2192Hornady, Nosler 375 H&H 300gr\u2192Barnes. Winchester non-BST cross-mfr (13): includes .223 69gr Match\u2192Hornady, .223 62gr\u2192Hornady, 6.5 PRC/Creedmoor\u2192Nosler/Lapua, Expedition Big Game loads\u2192Nosler, .300 Blackout\u2192Nosler, etc. 11 Winchester BST\u2192Nosler links are expected (Combined Technologies partnership). Patch 031 also fixed BH .223 77gr OTM\u2192Sierra SMK (was incorrectly linked to Berger)."
   },
   {
     "id": "W12-norma-300nm-duplicate",
     "severity": "warning",
-    "summary": "Norma Hybrid Target .300 Norma Mag 230gr Berger — duplicate deleted via curation patch 026.",
+    "summary": "Norma Hybrid Target .300 Norma Mag 230gr Berger \u2014 duplicate deleted via curation patch 026.",
     "first_seen": "2026-03-25",
     "last_seen": "2026-03-26",
     "count": 0,
@@ -258,11 +258,21 @@
   {
     "id": "W13-bc-out-of-range-false-positives",
     "severity": "warning",
-    "summary": "3 cartridge BC values outside standard ranges — all verified plausible. .50 BMG 750gr A-MAX G1=1.05 (valid for .50 cal), .22 WMR 30gr V-MAX G1=0.095 (tiny rimfire), .338 Lapua 300gr Elite Hunter G1=0.814/G7=0.417 (heavy .338).",
+    "summary": "3 cartridge BC values outside standard ranges \u2014 all verified plausible. .50 BMG 750gr A-MAX G1=1.05 (valid for .50 cal), .22 WMR 30gr V-MAX G1=0.095 (tiny rimfire), .338 Lapua 300gr Elite Hunter G1=0.814/G7=0.417 (heavy .338).",
     "first_seen": "2026-03-25",
-    "last_seen": "2026-03-25",
+    "last_seen": "2026-04-06",
     "count": 3,
     "status": "verified-ok",
     "notes": "No action needed. These are edge cases that legitimately fall outside the G1 0.1-0.8 / G7 0.05-0.45 typical ranges."
+  },
+  {
+    "id": "C13-sako-trg-308-wrong-weight-bc",
+    "severity": "critical",
+    "summary": "Sako TRG Precision .308 174gr (id=afee55ff) has wrong weight (174gr, should be 175gr) and wrong G1 BC (0.472, should be 0.467)",
+    "first_seen": "2026-04-06",
+    "last_seen": "2026-04-06",
+    "count": 1,
+    "status": "open",
+    "notes": "Curated data from gap-fill session. Multiple retailer sources confirm 175gr Scenar-L HPBT with G1=0.467. Related Sako entries (Powerhead Blade .308 174gr) may also have wrong weight \u2014 Sako SPA site prevents direct verification."
   }
 ]

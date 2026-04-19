@@ -2430,5 +2430,237 @@
     "verified": "2026-03-19",
     "status": "pass",
     "notes": "MV=2860 matches"
+  },
+  {
+    "entity": "bullet",
+    "id": "36413c0a-140a-4d6a-96b6-c71bb7767ffe",
+    "name": "Hornady 7mm .284 175gr ELD-X",
+    "verified": "2026-04-06",
+    "status": "pass",
+    "notes": "G1=0.689, G7=0.347 match"
+  },
+  {
+    "entity": "cartridge",
+    "id": "ec2e224d-62f8-4a16-84a2-737f05639855",
+    "name": "Hornady 6.5 Creedmoor 143gr ELD-X Precision Hunter",
+    "verified": "2026-04-06",
+    "status": "pass",
+    "notes": "G1=0.623, G7=0.314, MV=2700fps match"
+  },
+  {
+    "entity": "cartridge",
+    "id": "faa21cfc-c4e1-4b5f-b38d-3f9cec7d4c5b",
+    "name": "Hornady 300 Win Mag 200gr ELD-X Precision Hunter",
+    "verified": "2026-04-06",
+    "status": "pass",
+    "notes": "G1=0.597, G7=0.301, MV=2860fps match"
+  },
+  {
+    "entity": "cartridge",
+    "id": "7672bad5-3f19-4c99-88b1-00b8897baddc",
+    "name": "Hornady 7mm PRC 175gr ELD-X Precision Hunter",
+    "verified": "2026-04-06",
+    "status": "pass",
+    "notes": "G1=0.689, G7=0.347, MV=3000fps match"
+  },
+  {
+    "entity": "cartridge",
+    "id": "697be00f-97f9-419d-a862-12100539d58c",
+    "name": "Hornady 6.5 PRC 143gr ELD-X Precision Hunter",
+    "verified": "2026-04-06",
+    "status": "pass",
+    "notes": "G1=0.625, G7=0.315, MV=2960fps match"
+  },
+  {
+    "entity": "cartridge",
+    "id": "99897364-1a51-4db6-8a35-1c0b75732f42",
+    "name": "Hornady 338 Lapua 285gr ELD Match",
+    "verified": "2026-04-06",
+    "status": "pass",
+    "notes": "G1=0.789, G7=0.394, MV=2745fps match"
+  },
+  {
+    "entity": "cartridge",
+    "id": "2daa1c96-232d-4e7f-84e6-d2919ce03453",
+    "name": "Hornady 300 PRC 225gr ELD Match",
+    "verified": "2026-04-06",
+    "status": "pass",
+    "notes": "G1=0.777, G7=0.391, MV=2810fps match"
+  },
+  {
+    "entity": "cartridge",
+    "id": "8c2a95ea-40c1-4f10-81d4-61ed7e011dc9",
+    "name": "Hornady 6mm Creedmoor 108gr ELD Match",
+    "verified": "2026-04-06",
+    "status": "pass",
+    "notes": "G1=0.536, G7=0.270, MV=2960fps match"
+  },
+  {
+    "entity": "bullet",
+    "id": "ffeccac7-b898-4166-a89e-7ec22f0330ff",
+    "name": "Berger 6mm 105gr Hybrid Target",
+    "verified": "2026-04-06",
+    "status": "pass",
+    "notes": "G1=0.536, G7=0.275 match"
+  },
+  {
+    "entity": "bullet",
+    "id": "90538614-2993-48c3-be8a-471b3e7d74b6",
+    "name": "Berger 6mm 108gr Elite Hunter",
+    "verified": "2026-04-06",
+    "status": "pass",
+    "notes": "G1=0.559, G7=0.287 match"
+  },
+  {
+    "entity": "bullet",
+    "id": "d2bbc350-6434-46cc-a650-c2658fadc5db",
+    "name": "Berger 30cal 210gr VLD Hunting",
+    "verified": "2026-04-06",
+    "status": "pass",
+    "notes": "G1=0.625, G7=0.320 match (manual data)"
+  },
+  {
+    "entity": "bullet",
+    "id": "7707bf26-26ee-430e-8fbd-ba96b4436cbf",
+    "name": "Sierra 7MM 183gr HPBT/CN MatchKing",
+    "verified": "2026-04-06",
+    "status": "pass",
+    "notes": "G1=0.707, G7=0.351 match"
+  },
+  {
+    "entity": "bullet",
+    "id": "654ebc69-a875-4b3d-adf9-d88765b6d837",
+    "name": "Federal Terminal Ascent .308 175gr",
+    "verified": "2026-04-06",
+    "status": "pass",
+    "notes": "G1=0.520, G7=0.258 match"
+  },
+  {
+    "entity": "bullet",
+    "id": "0ee5e8be-9fc4-4f11-87c6-dc3d05995ac5",
+    "name": "Federal Trophy Bonded Tip .308 165gr",
+    "verified": "2026-04-06",
+    "status": "pass",
+    "notes": "G1=0.450 match, no G7 published"
+  },
+  {
+    "entity": "cartridge",
+    "id": "6e4d9a3c-e055-4262-8e9a-ac3c4f0ab351",
+    "name": "Federal Gold Medal SMK 300 Win Mag 190gr",
+    "verified": "2026-04-06",
+    "status": "pass",
+    "notes": "G1=0.533, G7=0.275, MV=2900fps match"
+  },
+  {
+    "entity": "cartridge",
+    "id": "8151532a-a83e-4b78-975f-3ca3eb0183e9",
+    "name": "Federal Gold Medal SMK 7.62x51mm 175gr",
+    "verified": "2026-04-06",
+    "status": "pass",
+    "notes": "G1=0.505, G7=0.250, MV=2600fps match"
+  },
+  {
+    "entity": "cartridge",
+    "id": "61135362-bcfc-49f1-90ed-317e217ac047",
+    "name": "Federal ELD-X 7mm PRC 175gr",
+    "verified": "2026-04-06",
+    "status": "pass",
+    "notes": "G1=0.689, MV=3000fps match, no G7 published"
+  },
+  {
+    "entity": "bullet",
+    "id": "f53736ad-d996-4965-9c49-24802766aad5",
+    "name": "Barnes 7MM LRX BT 145gr",
+    "verified": "2026-04-06",
+    "status": "pass",
+    "notes": "G1=0.449 match"
+  },
+  {
+    "entity": "bullet",
+    "id": "22aa202a-32bf-4bd7-83f4-d4e2bad4b11b",
+    "name": "Barnes 30 CAL TTSX BT 168gr",
+    "verified": "2026-04-06",
+    "status": "pass",
+    "notes": "G1=0.470 match"
+  },
+  {
+    "entity": "bullet",
+    "id": "d75dd48c-f441-4682-88e9-eccb3e2bf417",
+    "name": "Barnes 30 CAL LRX BT 175gr",
+    "verified": "2026-04-06",
+    "status": "pass",
+    "notes": "G1=0.508 match"
+  },
+  {
+    "entity": "cartridge",
+    "id": "52a70e47-761f-4fb9-8f05-60d65caf4ac9",
+    "name": "Barnes VOR-TX TTSX 308 Win 168gr",
+    "verified": "2026-04-06",
+    "status": "pass",
+    "notes": "G1=0.470, MV=2700fps match"
+  },
+  {
+    "entity": "bullet",
+    "id": "40f028f2-de82-4bb2-828a-4c6a3a11142d",
+    "name": "Norma ECOSTRIKE 6.5mm 120gr",
+    "verified": "2026-04-06",
+    "status": "pass",
+    "notes": "Weight 120gr correct, no BC published by Norma (null correct)"
+  },
+  {
+    "entity": "bullet",
+    "id": "a99823ba-62bc-41c1-805d-64a9f32f039b",
+    "name": "Norma Bondstrike .30 180gr",
+    "verified": "2026-04-06",
+    "status": "pass",
+    "notes": "G1=0.615 match"
+  },
+  {
+    "entity": "cartridge",
+    "id": "990df0c5-9550-4703-a6de-bcc7d6bd098a",
+    "name": "Norma Golden Target 6.5 Creedmoor 143gr",
+    "verified": "2026-04-06",
+    "status": "pass",
+    "notes": "MV=2723fps match. Source URL 404s but data confirmed via Norma USA."
+  },
+  {
+    "entity": "cartridge",
+    "id": "94ed4341-546e-4c06-a918-38a249e1b401",
+    "name": "Norma BondStrike 6.5 Creedmoor 143gr",
+    "verified": "2026-04-06",
+    "status": "pass",
+    "notes": "MV=2740fps match. BC enrichment available: G1=0.629, G7=0.313"
+  },
+  {
+    "entity": "bullet",
+    "id": "15104a2e-55c5-402b-baf7-22386fca7a2c",
+    "name": "Sako TRG Precision .264 136gr",
+    "verified": "2026-04-06",
+    "status": "inconclusive",
+    "notes": "Sako SPA prevents direct verification. Retailer sources show conflicting BC: 0.526 vs 0.545. Needs manual followup."
+  },
+  {
+    "entity": "bullet",
+    "id": "afee55ff-399e-49f5-9c8f-a61126d90bc4",
+    "name": "Sako TRG Precision .308 174gr",
+    "verified": "2026-04-06",
+    "status": "fail",
+    "notes": "Weight=174gr should be 175gr (Scenar-L HPBT). G1=0.472 should be 0.467. Multiple retailers confirm 175gr/0.467."
+  },
+  {
+    "entity": "bullet",
+    "id": "ce955b22-2ed5-42e0-8641-2defce088206",
+    "name": "Swift Scirocco .308 165gr",
+    "verified": "2026-04-06",
+    "status": "pass",
+    "notes": "G1=0.470 match. URL typo (srirocco) still works."
+  },
+  {
+    "entity": "cartridge",
+    "id": "3f2754dc-900f-47f5-8665-d3396f150cf6",
+    "name": "Berger 308 Win 175gr OTM Tactical",
+    "verified": "2026-04-06",
+    "status": "pass",
+    "notes": "G1=0.512, G7=0.263, MV=2668fps match"
   }
 ]
