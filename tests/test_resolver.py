@@ -10,7 +10,7 @@ import pytest
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
 
-from drift.models import Base, Bullet, Caliber, Cartridge, Manufacturer
+from drift.models import Base, Bullet, BulletProductLine, Caliber, Cartridge, EntityAlias, Manufacturer
 from drift.pipeline.resolution.resolver import (
     AlternativeMatch,
     EntityResolver,
@@ -1529,7 +1529,12 @@ class TestProductLineMatching:
         assert result.method == "product_line"
 
     def test_product_line_weight_disambiguates(self, product_line_db, db):
-        """When multiple bullets share a product_line, weight should pick the right one."""
+        """When multiple bullets share a product_line, weight should pick the right one.
+
+        With token_set_ratio-based name scoring, composite_key may tie or beat the
+        product_line tier when the extracted name ("SST") matches the full DB name
+        cleanly. The important guarantee is that the right-weight bullet wins.
+        """
         resolver = EntityResolver(db)
         # Two SSTs: 150gr and 165gr
         result = resolver.match_bullet(
@@ -1539,7 +1544,8 @@ class TestProductLineMatching:
         )
         assert result.matched is True
         assert result.entity_id == product_line_db["bullets"]["150 gr SST"].id
-        assert result.confidence == 0.93
+        assert result.confidence >= 0.93
+        assert result.method in ("product_line", "composite_key")
 
     def test_product_line_distinguishes_eld_x_from_eld_match(self, product_line_db, db):
         """ELD-X and ELD Match are different product lines — should not cross-match."""
@@ -1612,3 +1618,232 @@ class TestProductLineMatching:
             bullet_diameter_inches=0.308,
         )
         assert "product_line" in result.methods_tried
+
+
+# ---------------------------------------------------------------------------
+# Hyphen preservation in _normalize (finding #7)
+# ---------------------------------------------------------------------------
+
+
+class TestNormalizeHyphenPreservation:
+    """_normalize must keep hyphens so identifier strings stay distinct.
+
+    Before the fix, ``_normalize("ELD-X")`` returned ``"eld x"``, which meant
+    Jaccard matched {eld, x} against any DB name containing the letter "X"
+    alone — noise that pulled unrelated bullets into fuzzy matches.
+    """
+
+    def test_hyphen_preserved_in_single_identifier(self):
+        assert _normalize("ELD-X") == "eld-x"
+
+    def test_hyphen_preserved_among_other_tokens(self):
+        assert _normalize("30 Cal .308 178 gr ELD-X") == "30 cal .308 178 gr eld-x"
+
+    def test_unicode_dash_normalized_to_ascii_hyphen(self):
+        # U+2013 EN DASH is common in web-scraped product names.
+        assert _normalize("ELD\u2013X") == "eld-x"
+
+    def test_eldx_does_not_collapse_to_match_at_name_similarity(self):
+        """The regression target: "ELD-X" vs "ELD Match" must not score as high as "ELD-X" vs "ELD-X"."""
+        exact = _name_similarity("ELD-X", "30 Cal .308 178 gr ELD-X")
+        conflated = _name_similarity("ELD-X", "30 Cal .308 178 gr ELD Match")
+        assert exact == 1.0
+        assert conflated < 0.7
+        assert exact - conflated > 0.3
+
+
+# ---------------------------------------------------------------------------
+# bullet_product_line EntityAlias integration (finding #2, step 3)
+# ---------------------------------------------------------------------------
+
+
+class TestBulletProductLineAlias:
+    """match_bullet should resolve curator-added abbreviations via EntityAlias.
+
+    The TODO.md line 49 cases — ELDM → ELD Match, SMK → MatchKing,
+    ABLR → AccuBond Long Range — previously required code changes. After wiring
+    ``lookup_entity("bullet_product_line", ...)`` into ``match_bullet``, adding
+    a YAML ``add_entity_alias`` patch is all it takes.
+    """
+
+    @pytest.fixture()
+    def aliased_db(self, db):
+        hornady = Manufacturer(name="Hornady", country="US")
+        sierra = Manufacturer(name="Sierra Bullets", alt_names=["Sierra"], country="US")
+        nosler = Manufacturer(name="Nosler", country="US")
+        db.add_all([hornady, sierra, nosler])
+        db.flush()
+
+        # Canonical product lines with curator-visible names.
+        pl_eld_match = BulletProductLine(manufacturer_id=hornady.id, name="ELD Match", slug="eld-match")
+        pl_matchking = BulletProductLine(manufacturer_id=sierra.id, name="MatchKing", slug="matchking")
+        pl_ablr = BulletProductLine(manufacturer_id=nosler.id, name="AccuBond Long Range", slug="accubond-long-range")
+        db.add_all([pl_eld_match, pl_matchking, pl_ablr])
+        db.flush()
+
+        # Bullets linked to the product_line FK. Note: product_line string is
+        # intentionally left NULL on some rows to prove the FK path works
+        # independently of the legacy string column.
+        bullets = {
+            "eld_match_178": Bullet(
+                manufacturer_id=hornady.id,
+                name="30 Cal .308 178 gr ELD® Match",
+                bullet_diameter_inches=0.308,
+                weight_grains=178.0,
+                product_line_id=pl_eld_match.id,
+                product_line=None,
+            ),
+            "matchking_175": Bullet(
+                manufacturer_id=sierra.id,
+                name="30 CAL 175 GR HPBT MATCHKING",
+                bullet_diameter_inches=0.308,
+                weight_grains=175.0,
+                product_line_id=pl_matchking.id,
+                product_line=None,
+            ),
+            "ablr_190": Bullet(
+                manufacturer_id=nosler.id,
+                name="30 Caliber 190gr AccuBond Long Range",
+                bullet_diameter_inches=0.308,
+                weight_grains=190.0,
+                product_line_id=pl_ablr.id,
+                product_line=None,
+            ),
+        }
+        db.add_all(bullets.values())
+        db.flush()
+
+        # Curator-added aliases — the whole point of this tier.
+        db.add_all(
+            [
+                EntityAlias(
+                    entity_type="bullet_product_line",
+                    entity_id=pl_eld_match.id,
+                    alias="ELDM",
+                    alias_type="abbreviation",
+                ),
+                EntityAlias(
+                    entity_type="bullet_product_line",
+                    entity_id=pl_matchking.id,
+                    alias="SMK",
+                    alias_type="abbreviation",
+                ),
+                EntityAlias(
+                    entity_type="bullet_product_line",
+                    entity_id=pl_ablr.id,
+                    alias="ABLR",
+                    alias_type="abbreviation",
+                ),
+            ]
+        )
+        db.commit()
+
+        return {
+            "hornady": hornady,
+            "sierra": sierra,
+            "nosler": nosler,
+            "pl_eld_match": pl_eld_match,
+            "pl_matchking": pl_matchking,
+            "pl_ablr": pl_ablr,
+            "bullets": bullets,
+        }
+
+    def test_eldm_alias_resolves_to_eld_match(self, aliased_db, db):
+        """ELDM alias → ELD Match product line → correct bullet at matching weight."""
+        resolver = EntityResolver(db)
+        result = resolver.match_bullet(
+            {"name": {"value": "ELDM"}, "weight_grains": {"value": 178.0}},
+            manufacturer_id=None,
+            bullet_diameter_inches=0.308,
+        )
+        assert result.matched is True
+        assert result.entity_id == aliased_db["bullets"]["eld_match_178"].id
+        assert result.method == "product_line_alias"
+        assert result.confidence == 0.93
+
+    def test_smk_alias_resolves_to_matchking(self, aliased_db, db):
+        """SMK alias → MatchKing product line."""
+        resolver = EntityResolver(db)
+        result = resolver.match_bullet(
+            {"name": {"value": "SMK"}, "weight_grains": {"value": 175.0}},
+            manufacturer_id=None,
+            bullet_diameter_inches=0.308,
+        )
+        assert result.matched is True
+        assert result.entity_id == aliased_db["bullets"]["matchking_175"].id
+        assert result.method == "product_line_alias"
+
+    def test_ablr_alias_resolves_to_accubond_long_range(self, aliased_db, db):
+        """ABLR alias → AccuBond Long Range — three-word expansion via EntityAlias."""
+        resolver = EntityResolver(db)
+        result = resolver.match_bullet(
+            {"name": {"value": "ABLR"}, "weight_grains": {"value": 190.0}},
+            manufacturer_id=None,
+            bullet_diameter_inches=0.308,
+        )
+        assert result.matched is True
+        assert result.entity_id == aliased_db["bullets"]["ablr_190"].id
+        assert result.method == "product_line_alias"
+
+    def test_alias_with_weight_mismatch_still_matches_but_lower_conf(self, aliased_db, db):
+        """Alias hits the FK even without a weight match, scoring 0.80 instead of 0.93."""
+        resolver = EntityResolver(db)
+        result = resolver.match_bullet(
+            {"name": {"value": "ELDM"}},  # no weight
+            manufacturer_id=None,
+            bullet_diameter_inches=0.308,
+        )
+        assert result.matched is True
+        assert result.entity_id == aliased_db["bullets"]["eld_match_178"].id
+        assert result.confidence == 0.80
+        assert result.method == "product_line_alias"
+
+    def test_explicit_product_line_field_uses_alias(self, aliased_db, db):
+        """The explicit ``product_line`` extraction field also feeds the alias lookup."""
+        resolver = EntityResolver(db)
+        result = resolver.match_bullet(
+            {
+                "name": {"value": "30 Cal 178gr"},
+                "weight_grains": {"value": 178.0},
+                "product_line": {"value": "ELDM"},
+            },
+            manufacturer_id=None,
+            bullet_diameter_inches=0.308,
+        )
+        assert result.matched is True
+        assert result.entity_id == aliased_db["bullets"]["eld_match_178"].id
+        assert result.method == "product_line_alias"
+
+    def test_canonical_name_also_resolves_via_fk(self, aliased_db, db):
+        """Exact canonical name "ELD Match" also resolves via the FK tier (lookup_entity Tier 1)."""
+        resolver = EntityResolver(db)
+        result = resolver.match_bullet(
+            {"name": {"value": "ELD Match"}, "weight_grains": {"value": 178.0}},
+            manufacturer_id=None,
+            bullet_diameter_inches=0.308,
+        )
+        assert result.matched is True
+        assert result.entity_id == aliased_db["bullets"]["eld_match_178"].id
+        # Could be product_line_alias or product_line — both are high-confidence and correct.
+        assert result.confidence >= 0.93
+
+    def test_unknown_abbreviation_does_not_match(self, aliased_db, db):
+        """An abbreviation with no EntityAlias row should not false-match at the alias tier."""
+        resolver = EntityResolver(db)
+        result = resolver.match_bullet(
+            {"name": {"value": "XYZZY"}, "weight_grains": {"value": 178.0}},
+            manufacturer_id=None,
+            bullet_diameter_inches=0.308,
+        )
+        # Either no match, or not via the alias tier.
+        if result.matched:
+            assert result.method != "product_line_alias"
+
+    def test_alias_tier_appears_in_methods_tried(self, aliased_db, db):
+        resolver = EntityResolver(db)
+        result = resolver.match_bullet(
+            {"name": {"value": "ELDM"}, "weight_grains": {"value": 178.0}},
+            manufacturer_id=None,
+            bullet_diameter_inches=0.308,
+        )
+        assert "product_line_alias" in result.methods_tried
