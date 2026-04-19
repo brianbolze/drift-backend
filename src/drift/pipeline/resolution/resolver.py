@@ -26,10 +26,10 @@ from sqlalchemy.orm import Session
 from drift.models.bullet import Bullet, BulletBCSource
 from drift.models.caliber import Caliber
 from drift.models.cartridge import Cartridge
-from drift.models.chamber import Chamber, ChamberAcceptsCaliber
-from drift.models.entity_alias import EntityAlias
+from drift.models.chamber import ChamberAcceptsCaliber
 from drift.models.manufacturer import Manufacturer
 from drift.models.rifle_model import RifleModel
+from drift.resolution.aliases import LookupResult, lookup_entity
 
 logger = logging.getLogger(__name__)
 
@@ -316,6 +316,17 @@ def _bullet_name_score(extracted_name: str, db_name: str) -> float:
     return score
 
 
+def _match_from_lookup(hit: LookupResult) -> MatchResult:
+    """Adapt a deterministic LookupResult into a MatchResult for FK resolution paths."""
+    return MatchResult(
+        matched=True,
+        entity_id=hit.entity_id,
+        confidence=hit.confidence,
+        method=hit.method,
+        details=hit.details,
+    )
+
+
 def _pick_best_with_alternatives(
     all_scored: list[tuple[str, float, str, str]],
     methods_tried: list[str],
@@ -366,11 +377,10 @@ class EntityResolver:
 
     def __init__(self, session: Session):
         self._session = session
-        # Cache lookups on first use
+        # Cached lookups for fuzzy fallbacks (deterministic lookups go through
+        # drift.resolution.aliases and don't need this cache).
         self._manufacturers: list[Manufacturer] | None = None
         self._calibers: list[Caliber] | None = None
-        self._chambers: list[Chamber] | None = None
-        self._caliber_aliases: list[EntityAlias] | None = None
 
     # ── FK resolution helpers ────────────────────────────────────────────────
 
@@ -384,34 +394,19 @@ class EntityResolver:
             self._calibers = list(self._session.scalars(select(Caliber)))
         return self._calibers
 
-    def _get_chambers(self) -> list[Chamber]:
-        if self._chambers is None:
-            self._chambers = list(self._session.scalars(select(Chamber)))
-        return self._chambers
-
-    def _get_caliber_aliases(self) -> list[EntityAlias]:
-        if self._caliber_aliases is None:
-            self._caliber_aliases = list(
-                self._session.scalars(select(EntityAlias).where(EntityAlias.entity_type == "caliber"))
-            )
-        return self._caliber_aliases
-
     def resolve_manufacturer(self, name: str) -> MatchResult:
-        """Resolve a manufacturer name to an existing DB record."""
-        norm_name = _normalize(name)
+        """Resolve a manufacturer name to an existing DB record.
 
-        for mfr in self._get_manufacturers():
-            # Exact name match
-            if _normalize(mfr.name) == norm_name:
-                return MatchResult(matched=True, entity_id=mfr.id, confidence=1.0, method="exact_name")
+        Deterministic tiers (exact / alt_names / EntityAlias) are delegated to
+        ``drift.resolution.aliases.lookup_entity`` so curation patches and the
+        pipeline cannot disagree on a given manufacturer name. A Jaccard fuzzy
+        fallback is layered on top for typos and minor word variants.
+        """
+        hit = lookup_entity(self._session, "manufacturer", name)
+        if hit is not None:
+            return _match_from_lookup(hit)
 
-            # Alt names match
-            if mfr.alt_names:
-                for alt in mfr.alt_names:
-                    if _normalize(alt) == norm_name:
-                        return MatchResult(matched=True, entity_id=mfr.id, confidence=0.95, method="alt_name")
-
-        # Fuzzy: check main name and all alt_names
+        # Fuzzy fallback: check main name and all alt_names.
         best_match: MatchResult | None = None
         best_score = 0.0
         for mfr in self._get_manufacturers():
@@ -436,60 +431,16 @@ class EntityResolver:
     def resolve_caliber(self, name: str) -> MatchResult:
         """Resolve a caliber name to an existing DB record.
 
-        Matching tiers:
-          1. Exact name / alt_name (standard normalization)
-          2. Period-insensitive match (caliber-specific: "308 Win" ↔ ".308 Win")
-          3. EntityAlias table lookup
-          4. Fuzzy name match (Jaccard word-overlap across name + alt_names)
+        Deterministic tiers (exact / alt_names / EntityAlias / period-insensitive
+        caliber form) are delegated to ``drift.resolution.aliases.lookup_entity``
+        so curation patches and the pipeline cannot disagree on a given caliber
+        string. Falls back to a Jaccard fuzzy match for typos.
         """
-        norm_name = _normalize(name)
-        cal_norm_name = _normalize_caliber(name)
+        hit = lookup_entity(self._session, "caliber", name)
+        if hit is not None:
+            return _match_from_lookup(hit)
 
-        # Tier 1: Exact name / alt_name match (standard normalization)
-        for cal in self._get_calibers():
-            if _normalize(cal.name) == norm_name:
-                return MatchResult(matched=True, entity_id=cal.id, confidence=1.0, method="exact_name")
-            if cal.alt_names:
-                for alt in cal.alt_names:
-                    if _normalize(alt) == norm_name:
-                        return MatchResult(matched=True, entity_id=cal.id, confidence=0.95, method="alt_name")
-
-        # Tier 2: Period-insensitive match (handles "308 Win" vs ".308 Winchester")
-        for cal in self._get_calibers():
-            if _normalize_caliber(cal.name) == cal_norm_name:
-                return MatchResult(
-                    matched=True,
-                    entity_id=cal.id,
-                    confidence=0.95,
-                    method="caliber_norm",
-                    details=f"period-insensitive match: '{name}' → '{cal.name}'",
-                )
-            if cal.alt_names:
-                for alt in cal.alt_names:
-                    if _normalize_caliber(alt) == cal_norm_name:
-                        return MatchResult(
-                            matched=True,
-                            entity_id=cal.id,
-                            confidence=0.9,
-                            method="caliber_norm_alt",
-                            details=f"period-insensitive alt match: '{name}' → '{alt}' (via {cal.name})",
-                        )
-
-        # Tier 3: EntityAlias table lookup
-        for alias in self._get_caliber_aliases():
-            if _normalize(alias.alias) == norm_name or _normalize_caliber(alias.alias) == cal_norm_name:
-                # Verify the referenced caliber exists
-                cal = self._session.get(Caliber, alias.entity_id)
-                if cal:
-                    return MatchResult(
-                        matched=True,
-                        entity_id=cal.id,
-                        confidence=0.9,
-                        method="entity_alias",
-                        details=f"alias '{alias.alias}' → '{cal.name}'",
-                    )
-
-        # Tier 4: Fuzzy match (check name + alt_names)
+        # Fuzzy fallback: check main name and all alt_names.
         best_match: MatchResult | None = None
         best_score = 0.0
         for cal in self._get_calibers():

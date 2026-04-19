@@ -19,20 +19,18 @@ from typing import Annotated, Literal, Union
 
 import yaml
 from pydantic import BaseModel, ConfigDict, Discriminator, Field, field_validator
-from sqlalchemy import func
+from sqlalchemy import func, select
 from sqlalchemy.orm import Session
 
 from drift.models import (
     Bullet,
     BulletBCSource,
-    BulletProductLine,
     Caliber,
     Cartridge,
-    Chamber,
     EntityAlias,
-    Manufacturer,
     RifleModel,
 )
+from drift.resolution.aliases import lookup_entity
 
 logger = logging.getLogger(__name__)
 
@@ -283,52 +281,19 @@ class PatchFile(BaseModel):
 
 
 # ── Name Resolution ──────────────────────────────────────────────────────────
-# All lookups: exact name match (case-insensitive) → EntityAlias fallback.
-
-_ENTITY_TYPE_MODEL = {
-    "manufacturer": Manufacturer,
-    "caliber": Caliber,
-    "chamber": Chamber,
-    "bullet": Bullet,
-    "cartridge": Cartridge,
-    "bullet_product_line": BulletProductLine,
-}
+# All deterministic name lookups go through drift.resolution.aliases.lookup_entity
+# so the curation tooling and the pipeline resolver agree on what every alias means.
 
 
 def _resolve_entity(session: Session, entity_type: str, name: str, *, manufacturer_id: str | None = None) -> str:
-    """Resolve an entity name to its ID.
+    """Resolve an entity name to its ID via the shared deterministic-lookup module.
 
-    1. Exact match on the model's name field (case-insensitive).
-    2. Fallback: query EntityAlias table for (entity_type, alias) → entity_id.
-    3. For entities with manufacturer_id (bullet, bullet_product_line, cartridge, etc.):
-       optionally filter by manufacturer_id for disambiguation.
-
-    Raises ValueError if not found.
+    Raises ValueError if no exact name, alt_names, or EntityAlias entry matches.
     """
-    model = _ENTITY_TYPE_MODEL[entity_type]
-    name_col = model.model if entity_type == "rifle" else model.name if hasattr(model, "name") else model.model
-
-    # Step 1: exact name match (case-insensitive)
-    query = session.query(model).filter(func.lower(name_col) == name.lower().strip())
-    if manufacturer_id and hasattr(model, "manufacturer_id"):
-        query = query.filter(model.manufacturer_id == manufacturer_id)
-    entity = query.first()
-    if entity:
-        return entity.id
-
-    # Step 2: EntityAlias fallback
-    alias_row = (
-        session.query(EntityAlias)
-        .filter(
-            EntityAlias.entity_type == entity_type,
-            func.lower(EntityAlias.alias) == name.lower().strip(),
-        )
-        .first()
-    )
-    if alias_row:
-        return alias_row.entity_id
-
-    raise ValueError(f"{entity_type} not found: {name!r}")
+    hit = lookup_entity(session, entity_type, name, manufacturer_id=manufacturer_id)
+    if hit is None:
+        raise ValueError(f"{entity_type} not found: {name!r}")
+    return hit.entity_id
 
 
 def _resolve_manufacturer(session: Session, name: str) -> str:
@@ -351,51 +316,54 @@ def _resolve_bullet(session: Session, manufacturer_id: str, name: str) -> str:
 
 
 def _caliber_exists(session: Session, name: str) -> Caliber | None:
-    return session.query(Caliber).filter(func.lower(Caliber.name) == name.lower()).first()
+    return session.scalars(select(Caliber).where(func.lower(Caliber.name) == name.lower())).first()
 
 
 def _bullet_exists(session: Session, manufacturer_id: str, name: str, sku: str | None) -> Bullet | None:
     if sku:
-        existing = session.query(Bullet).filter(func.lower(Bullet.sku) == sku.lower()).first()
+        existing = session.scalars(select(Bullet).where(func.lower(Bullet.sku) == sku.lower())).first()
         if existing:
             return existing
-    return (
-        session.query(Bullet)
-        .filter(Bullet.manufacturer_id == manufacturer_id, func.lower(Bullet.name) == name.lower())
-        .first()
-    )
+    return session.scalars(
+        select(Bullet).where(
+            Bullet.manufacturer_id == manufacturer_id,
+            func.lower(Bullet.name) == name.lower(),
+        )
+    ).first()
 
 
 def _cartridge_exists(session: Session, manufacturer_id: str, name: str, sku: str | None) -> Cartridge | None:
     if sku:
-        existing = session.query(Cartridge).filter(func.lower(Cartridge.sku) == sku.lower()).first()
+        existing = session.scalars(select(Cartridge).where(func.lower(Cartridge.sku) == sku.lower())).first()
         if existing:
             return existing
-    return (
-        session.query(Cartridge)
-        .filter(Cartridge.manufacturer_id == manufacturer_id, func.lower(Cartridge.name) == name.lower())
-        .first()
-    )
+    return session.scalars(
+        select(Cartridge).where(
+            Cartridge.manufacturer_id == manufacturer_id,
+            func.lower(Cartridge.name) == name.lower(),
+        )
+    ).first()
 
 
 def _rifle_exists(session: Session, manufacturer_id: str, model_name: str) -> RifleModel | None:
-    return (
-        session.query(RifleModel)
-        .filter(RifleModel.manufacturer_id == manufacturer_id, func.lower(RifleModel.model) == model_name.lower())
-        .first()
-    )
+    return session.scalars(
+        select(RifleModel).where(
+            RifleModel.manufacturer_id == manufacturer_id,
+            func.lower(RifleModel.model) == model_name.lower(),
+        )
+    ).first()
 
 
 def _bc_source_exists(session: Session, bullet_id: str, bc_type: str, bc_value: float, source: str) -> bool:
     return (
-        session.query(BulletBCSource)
-        .filter(
-            BulletBCSource.bullet_id == bullet_id,
-            BulletBCSource.bc_type == bc_type,
-            BulletBCSource.bc_value == bc_value,
-            BulletBCSource.source == source,
-        )
-        .first()
+        session.scalars(
+            select(BulletBCSource).where(
+                BulletBCSource.bullet_id == bullet_id,
+                BulletBCSource.bc_type == bc_type,
+                BulletBCSource.bc_value == bc_value,
+                BulletBCSource.source == source,
+            )
+        ).first()
         is not None
     )
 
@@ -564,11 +532,12 @@ def _apply_create_rifle(session: Session, op: CreateRifleOp, stats: ApplyStats, 
 
 def _apply_update_bullet(session: Session, op: UpdateBulletOp, stats: ApplyStats, index: int) -> None:
     mfr_id = _resolve_manufacturer(session, op.manufacturer)
-    bullet = (
-        session.query(Bullet)
-        .filter(Bullet.manufacturer_id == mfr_id, func.lower(Bullet.name) == op.name.lower())
-        .first()
-    )
+    bullet = session.scalars(
+        select(Bullet).where(
+            Bullet.manufacturer_id == mfr_id,
+            func.lower(Bullet.name) == op.name.lower(),
+        )
+    ).first()
     if not bullet:
         raise ValueError(f"Bullet not found: {op.name!r} (manufacturer={op.manufacturer})")
 
@@ -587,11 +556,12 @@ def _apply_update_bullet(session: Session, op: UpdateBulletOp, stats: ApplyStats
 
 def _apply_update_cartridge(session: Session, op: UpdateCartridgeOp, stats: ApplyStats, index: int) -> None:
     mfr_id = _resolve_manufacturer(session, op.manufacturer)
-    cartridge = (
-        session.query(Cartridge)
-        .filter(Cartridge.manufacturer_id == mfr_id, func.lower(Cartridge.name) == op.name.lower())
-        .first()
-    )
+    cartridge = session.scalars(
+        select(Cartridge).where(
+            Cartridge.manufacturer_id == mfr_id,
+            func.lower(Cartridge.name) == op.name.lower(),
+        )
+    ).first()
     if not cartridge:
         raise ValueError(f"Cartridge not found: {op.name!r} (manufacturer={op.manufacturer})")
 
@@ -621,20 +591,21 @@ def _apply_update_cartridge(session: Session, op: UpdateCartridgeOp, stats: Appl
 def _apply_delete_bullet(session: Session, op: DeleteBulletOp, stats: ApplyStats, index: int) -> None:
     mfr_id = _resolve_manufacturer(session, op.manufacturer)
     if op.id:
-        bullet = session.query(Bullet).filter(Bullet.id == op.id, Bullet.manufacturer_id == mfr_id).first()
+        bullet = session.scalars(select(Bullet).where(Bullet.id == op.id, Bullet.manufacturer_id == mfr_id)).first()
     else:
-        bullet = (
-            session.query(Bullet)
-            .filter(Bullet.manufacturer_id == mfr_id, func.lower(Bullet.name) == op.name.lower())
-            .first()
-        )
+        bullet = session.scalars(
+            select(Bullet).where(
+                Bullet.manufacturer_id == mfr_id,
+                func.lower(Bullet.name) == op.name.lower(),
+            )
+        ).first()
     if not bullet:
         stats.skipped += 1
         stats.details.append(f"  [{index}] SKIP delete_bullet: {op.name!r} not found")
         return
 
     # Refuse to delete if cartridges reference this bullet
-    cartridge_refs = session.query(Cartridge).filter(Cartridge.bullet_id == bullet.id).count()
+    cartridge_refs = len(list(session.scalars(select(Cartridge).where(Cartridge.bullet_id == bullet.id))))
     if cartridge_refs > 0:
         raise ValueError(
             f"Cannot delete bullet {op.name!r}: {cartridge_refs} cartridge(s) reference it. "
@@ -642,7 +613,10 @@ def _apply_delete_bullet(session: Session, op: DeleteBulletOp, stats: ApplyStats
         )
 
     # Cascade to BulletBCSource (no ondelete cascade in schema yet)
-    bc_deleted = session.query(BulletBCSource).filter(BulletBCSource.bullet_id == bullet.id).delete()
+    bc_sources = list(session.scalars(select(BulletBCSource).where(BulletBCSource.bullet_id == bullet.id)))
+    bc_deleted = len(bc_sources)
+    for source in bc_sources:
+        session.delete(source)
     session.delete(bullet)
     session.flush()
     stats.updated += 1  # "updated" in the sense of a destructive change
@@ -655,13 +629,16 @@ def _apply_delete_bullet(session: Session, op: DeleteBulletOp, stats: ApplyStats
 def _apply_delete_cartridge(session: Session, op: DeleteCartridgeOp, stats: ApplyStats, index: int) -> None:
     mfr_id = _resolve_manufacturer(session, op.manufacturer)
     if op.id:
-        cartridge = session.query(Cartridge).filter(Cartridge.id == op.id, Cartridge.manufacturer_id == mfr_id).first()
+        cartridge = session.scalars(
+            select(Cartridge).where(Cartridge.id == op.id, Cartridge.manufacturer_id == mfr_id)
+        ).first()
     else:
-        cartridge = (
-            session.query(Cartridge)
-            .filter(Cartridge.manufacturer_id == mfr_id, func.lower(Cartridge.name) == op.name.lower())
-            .first()
-        )
+        cartridge = session.scalars(
+            select(Cartridge).where(
+                Cartridge.manufacturer_id == mfr_id,
+                func.lower(Cartridge.name) == op.name.lower(),
+            )
+        ).first()
     if not cartridge:
         stats.skipped += 1
         stats.details.append(f"  [{index}] SKIP delete_cartridge: {op.name!r} not found")
@@ -704,15 +681,13 @@ def _apply_add_entity_alias(session: Session, op: AddEntityAliasOp, stats: Apply
     entity_id = _resolve_entity(session, op.entity_type, op.entity_name, manufacturer_id=manufacturer_id)
 
     # Idempotency check — avoids IntegrityError which would break the savepoint
-    existing = (
-        session.query(EntityAlias)
-        .filter(
+    existing = session.scalars(
+        select(EntityAlias).where(
             EntityAlias.entity_type == op.entity_type,
             EntityAlias.entity_id == entity_id,
             EntityAlias.alias == op.alias,
         )
-        .first()
-    )
+    ).first()
     if existing:
         stats.skipped += 1
         stats.details.append(f"  [{index}] SKIP alias: {op.alias!r} already exists for {op.entity_type}")
