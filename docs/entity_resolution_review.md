@@ -1,6 +1,6 @@
 # Entity Resolution Review & Refactor Plan
 
-Status: review — not yet implemented. Findings map to specific files/lines in the codebase as of 2026-04-19.
+Status: step 1 implemented (merged 2026-04-19 on `claude/unified-lookups-8dp6m`, commit `0355b74` — deterministic lookups now flow through `drift.resolution.aliases.lookup_entity` for both curation and the pipeline resolver; cross-system consistency test added). Other steps pending. Findings map to specific files/lines as of 2026-04-19.
 
 This document captures a thorough code review of how Drift resolves extracted entities (bullets, cartridges, rifles, manufacturers, calibers, chambers) against existing DB records, plus a prioritized refactor sequence. The review was prompted by observed shortcomings in bullet and cartridge matching (see TODO.md) but the overall architecture has enough issues that a broader refactor is warranted.
 
@@ -159,17 +159,49 @@ Losing type safety at the handoff. `_get_value` papers over both wrapped and unw
 
 ---
 
+## Additional findings from `wi2-doro-learnings.md` cross-check
+
+Comparing the Doro learnings doc against the codebase surfaced three further items the team planned but never shipped.
+
+### 18. `bullet_match_confidence` and `bullet_match_method` are dead columns
+
+Both exist on `Cartridge` (`cartridge.py:46-47`) and the resolver computes `bullet_match_confidence` (`resolver.py:950`), but `_make_cartridge` in `pipeline_store.py:129-156` writes neither. Only archived seed data populates them. This blocks Doro's key retrospective audit query — *"all cartridges with `bullet_match_confidence < 0.95` via `fuzzy_name`"* — which is directly relevant to TODO.md's *"99 existing cartridges with wrong bullet_id."*
+
+**Fix:** persist both fields from every pipeline cartridge creation and match-update path. Two-line change in `_make_cartridge` plus a write in the match_updated branch of `pipeline_store.py`.
+
+### 19. Unit normalization heuristics never shipped
+
+Doro pattern: *"if `muzzle_velocity < 500`, probably m/s; multiply by 3.281. If `bullet_weight < 5`, probably grams."* No such guards exist. TODO.md already records the exact failure this would have caught: *"Lapua G580 100gr bullet — pipeline confused '6,5 g' weight with 6.5mm caliber."*
+
+**Fix:** a normalization step between EXTRACT and RESOLVE that applies numeric-range heuristics, flags suspicious values, and rejects-don't-stores the outliers. Include BC (0.05–0.90), MV (1500–4500 fps), bullet weight (15–750 gr), bullet diameter (0.10–0.60 in) range checks as flag-don't-store guards.
+
+### 20. Source quality ≠ extraction confidence
+
+We store `extraction_confidence` per entity but not source quality. Doro's rule `effective = min(source_quality, extraction_confidence)` would drive `BulletBCSource` reconciliation (Litz-measured > manufacturer bullet page > manufacturer ammo page). Currently last-write-wins. The `BulletBCSource` table exists for this purpose but reconciliation logic is underused.
+
+**Fix:** add `source_quality` to `BulletBCSource` (already has the field — confirm it's populated with meaningful values, not always 1.0), implement a `ReconciliationConfig`-style picker for choosing the canonical `Bullet.bc_g1_published` / `bc_g7_published` across sources. Larger scope than findings #18–19; likely its own phase.
+
+### Also noted, lower priority
+
+- No `upc` column on `Cartridge` — would give cartridge resolution a second deterministic tier (Doro scores UPC at 0.99).
+- Numeric range validation (BC G1 0.1–0.8, G7 0.05–0.45) is stated in CLAUDE.md but not enforced in the pipeline as flag-don't-store guards (overlaps with finding #19).
+- `match_method` persistence on `Bullet` and `RifleModel`, not just `Cartridge` — same audit-query logic should apply across entity types.
+- No coverage dashboard (automated *"15/18 calibers defined, Hornady 89/95"* report) — orthogonal to resolver but would make "what do I curate next" obvious.
+- No interactive review CLI with `[o]pen URL` shortcut — `review.json` works but is not ergonomic.
+
+---
+
 ## Recommended refactor sequence
 
-Independent; tackle in this order:
+Mostly independent; tackle in roughly this order.
 
-1. **Unify the lookup module.** One `drift/resolution/aliases.py` that both resolver and curation call for exact + alias lookups. Covers EntityAlias for all entity types. Addresses findings #1, #2, #8, #11.
+1. ✅ **DONE** — Unified lookup module on `claude/unified-lookups-8dp6m` (commit `0355b74`). Addressed findings #1, #2, #8, #11.
 2. **Replace Jaccard with `rapidfuzz.token_set_ratio`** in `_name_similarity`; preserve hyphens in normalization. Delete `_bullet_name_score` if redundant; otherwise unify between bullet/cartridge/rifle. Addresses findings #3, #7.
 3. **Wire `bullet_product_line` EntityAlias lookups into `match_bullet`** (use `product_line_id` FK + aliases, not the string column). Addresses finding #2 for bullets, unblocks TODO.md line 49.
 4. **Consolidate thresholds into `ResolutionConfig`** dataclass; add golden-set regression test. Addresses finding #4.
-5. **Act on `is_ambiguous`** in `pipeline_store.py` (new `flagged_ambiguous` action). Addresses finding #5.
-6. **Manufacturer bias in cartridge→bullet** (score boost, not filter). Addresses finding #6 and the MatchKing→Nosler false-match TODO.
-7. **Type the resolver inputs** with Pydantic schemas. Addresses finding #16.
-8. **Learning loop + telemetry.** Addresses findings #9, #17.
+5. **Resolver small wins.** Act on `is_ambiguous` in `pipeline_store.py` (new `flagged_ambiguous` action, finding #5); same-manufacturer bias in cartridge→bullet as score boost not filter (finding #6); persist `bullet_match_confidence` + `bullet_match_method` from every pipeline write path (finding #18, resolves finding #13 by using the field instead of deleting it); type the resolver inputs with Pydantic schemas (finding #16).
+6. **Normalization hardening.** Unit-confusion heuristics (m/s→fps, grams→grains, mm→inches) and numeric-range flag-don't-store guards between EXTRACT and RESOLVE. Addresses finding #19 and the range-validation sub-item.
+7. **Learning loop + telemetry.** Surface EntityAlias suggestions for fuzzy matched-existing cases in `review.json`; aggregate `methods_tried` into an end-of-run breakdown. Addresses findings #9, #17.
+8. **BC reconciliation** (deferred, larger). `ReconciliationConfig`-style picker for canonical `Bullet.bc_g1_published`/`bc_g7_published` across `BulletBCSource` rows, weighted by source quality × extraction confidence. Addresses finding #20.
 
-The Jaccard swap (#2 in the sequence) and the EntityAlias wiring for product lines (#3) are the two changes most likely to move the needle on the cartridge→bullet miss rate.
+The Jaccard swap (step 2) and the EntityAlias wiring for product lines (step 3) are the two changes most likely to move the needle on the cartridge→bullet miss rate.
