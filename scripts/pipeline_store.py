@@ -29,6 +29,7 @@ from drift.models.caliber import Caliber
 from drift.models.cartridge import Cartridge
 from drift.models.rifle_model import RifleModel
 from drift.pipeline.config import EXTRACTED_DIR, REJECTED_CALIBERS_PATH, STORE_REPORT_PATH
+from drift.pipeline.normalization import normalize_entity
 from drift.pipeline.resolution.resolver import EntityResolver, _get_value
 
 logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
@@ -390,6 +391,38 @@ def main() -> None:  # noqa: C901
 
             for j, entity in enumerate(entities):
                 name = _get_value(entity, "name") or _get_value(entity, "model") or f"entity[{j}]"
+
+                # Normalize BEFORE resolution so unit-confusion errors (grams vs grains,
+                # m/s vs fps, mm vs inches) don't poison entity matching downstream.
+                norm = normalize_entity(entity, entity_type)
+                entity = norm.entity
+
+                if norm.rejected:
+                    entry = {
+                        "url": url,
+                        "url_hash": uhash,
+                        "entity_type": entity_type,
+                        "entity_name": name,
+                        "matched": False,
+                        "match_method": "",
+                        "match_confidence": 0.0,
+                        "match_entity_id": None,
+                        "manufacturer_id": None,
+                        "caliber_id": None,
+                        "chamber_id": None,
+                        "bullet_id": None,
+                        "bullet_diameter_inches": None,
+                        "unresolved_refs": [],
+                        "warnings": list(norm.warnings),
+                        "normalization_events": [e.as_dict() for e in norm.events],
+                        "action": "rejected",
+                        "rejection_reason": norm.rejection_reason,
+                    }
+                    stats[entity_type]["rejected"] += 1
+                    logger.warning("  [%d] REJECTED (normalization): %s — %s", j + 1, name, norm.rejection_reason)
+                    report_entries.append(entry)
+                    continue
+
                 resolution = resolver.resolve(entity, entity_type)
 
                 entry = {
@@ -407,9 +440,13 @@ def main() -> None:  # noqa: C901
                     "bullet_id": resolution.bullet_id,
                     "bullet_diameter_inches": resolution.bullet_diameter_inches,
                     "unresolved_refs": resolution.unresolved_refs,
-                    "warnings": resolution.warnings,
+                    "warnings": list(norm.warnings) + list(resolution.warnings),
                     "action": "",
                 }
+                if norm.events:
+                    entry["normalization_events"] = [e.as_dict() for e in norm.events]
+                    for warning in norm.warnings:
+                        logger.info("  [%d] NORMALIZED: %s", j + 1, warning)
 
                 # Check if entity references a rejected caliber (pistol, shotgun, etc.)
                 if _has_rejected_caliber(resolution, rejected_calibers):
