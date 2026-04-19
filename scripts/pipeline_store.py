@@ -27,9 +27,11 @@ from drift.database import get_session_factory
 from drift.models.bullet import Bullet, BulletBCSource
 from drift.models.caliber import Caliber
 from drift.models.cartridge import Cartridge
+from drift.models.entity_alias import EntityAlias
 from drift.models.rifle_model import RifleModel
 from drift.pipeline.config import EXTRACTED_DIR, REJECTED_CALIBERS_PATH, STORE_REPORT_PATH
 from drift.pipeline.resolution.resolver import EntityResolver, _get_value
+from drift.resolution.aliases import normalize_name
 
 logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
 logger = logging.getLogger(__name__)
@@ -42,6 +44,16 @@ MATCH_CONFIDENCE_THRESHOLD = 0.7
 # where a new weight variant (e.g. 200gr ELD-X) fuzzy-matches to an existing variant
 # (e.g. 178gr ELD-X) at low confidence because the correct record doesn't exist yet.
 AUTO_CREATE_CONFIDENCE_CEILING = 0.5
+
+# Winning match methods that are non-deterministic (use similarity thresholds on names).
+# A matched_existing entry decided by one of these is a candidate for EntityAlias
+# promotion so the next run can hit the deterministic lookup path.
+_FUZZY_MATCH_METHODS = frozenset({"composite_key", "fuzzy_name"})
+
+# A successful match below this confidence is counted as low-confidence in the
+# end-of-run method breakdown. Independent of MATCH_CONFIDENCE_THRESHOLD so the
+# reporting threshold can be moved without affecting auto-match gating.
+_LOW_CONFIDENCE_REPORT_THRESHOLD = 0.5
 
 # Valid data_source values for provenance tracking
 _VALID_DATA_SOURCES = {"pipeline", "cowork", "manual"}
@@ -70,6 +82,85 @@ def _load_rejected_calibers() -> set[str]:
         return set()
     data = json.loads(REJECTED_CALIBERS_PATH.read_text(encoding="utf-8"))
     return {name.lower().strip() for name in data.get("calibers", [])}
+
+
+def _build_alias_suggestion(
+    session,
+    entity_type: str,
+    match,
+    existing,
+    extracted_name: str,
+) -> dict | None:
+    """Return a candidate EntityAlias for a fuzzy matched_existing entry, or None.
+
+    Skips deterministic matches (SKU, product_line), cases where the extracted
+    name is identical to the canonical name after normalization, and aliases
+    that already exist in the EntityAlias table.
+    """
+    if match.method not in _FUZZY_MATCH_METHODS or existing is None or not match.entity_id:
+        return None
+    canonical = getattr(existing, "name", None) or getattr(existing, "model", None)
+    if not canonical or not extracted_name:
+        return None
+    target_norm = normalize_name(extracted_name)
+    if not target_norm or target_norm == normalize_name(canonical):
+        return None
+    existing_aliases = session.scalars(
+        select(EntityAlias).where(
+            EntityAlias.entity_type == entity_type,
+            EntityAlias.entity_id == match.entity_id,
+        )
+    )
+    for alias in existing_aliases:
+        if normalize_name(alias.alias) == target_norm:
+            return None
+    return {
+        "entity_type": entity_type,
+        "entity_id": match.entity_id,
+        "canonical_name": canonical,
+        "alias": extracted_name,
+        "method": match.method,
+        "confidence": round(match.confidence, 3),
+    }
+
+
+def _record_method_telemetry(stats: dict, entity_type: str, match) -> None:
+    """Accumulate winning-method counts + confidence distribution per entity type.
+
+    Only successful matches (match.matched=True) are recorded. A match is counted
+    once per resolution, under its winning tier; tiers attempted but not selected
+    are already visible on each entry via ``methods_tried``.
+    """
+    if not match.matched:
+        return
+    methods = stats[entity_type].setdefault("methods", {})
+    method_name = match.method or "unknown"
+    bucket = methods.setdefault(method_name, {"count": 0, "confidence_sum": 0.0, "low_confidence": 0})
+    bucket["count"] += 1
+    bucket["confidence_sum"] += match.confidence
+    if match.confidence < _LOW_CONFIDENCE_REPORT_THRESHOLD:
+        bucket["low_confidence"] += 1
+
+
+def _print_method_breakdown(stats: dict) -> None:
+    """Print per-entity-type method usage (share %, avg confidence, low-conf count)."""
+    any_printed = False
+    for entity_type in ("bullet", "cartridge", "rifle"):
+        methods = stats.get(entity_type, {}).get("methods", {})
+        if not methods:
+            continue
+        if not any_printed:
+            print("\nMatch method breakdown:")
+            any_printed = True
+        total = sum(bucket["count"] for bucket in methods.values())
+        print(f"  {entity_type} ({total} matched):")
+        for method_name, bucket in sorted(methods.items(), key=lambda kv: kv[1]["count"], reverse=True):
+            share = 100.0 * bucket["count"] / total
+            avg_conf = bucket["confidence_sum"] / bucket["count"]
+            line = f"    {method_name:<14} {bucket['count']:>4} ({share:5.1f}%), avg conf {avg_conf:.2f}"
+            if bucket["low_confidence"]:
+                line += f", {bucket['low_confidence']} < {_LOW_CONFIDENCE_REPORT_THRESHOLD:.1f}"
+            print(line)
 
 
 def _has_rejected_caliber(resolution, rejected_calibers: set[str]) -> bool:
@@ -357,10 +448,37 @@ def main() -> None:  # noqa: C901
 
     valid_bullet_diameters: set[float] = set()
 
-    stats = {
-        "bullet": {"created": 0, "matched": 0, "updated": 0, "flagged": 0, "rejected": 0, "skipped_locked": 0},
-        "cartridge": {"created": 0, "matched": 0, "updated": 0, "flagged": 0, "rejected": 0, "skipped_locked": 0},
-        "rifle": {"created": 0, "matched": 0, "updated": 0, "flagged": 0, "rejected": 0, "skipped_locked": 0},
+    stats: dict = {
+        "bullet": {
+            "created": 0,
+            "matched": 0,
+            "updated": 0,
+            "flagged": 0,
+            "rejected": 0,
+            "skipped_locked": 0,
+            "alias_suggestions": 0,
+            "methods": {},
+        },
+        "cartridge": {
+            "created": 0,
+            "matched": 0,
+            "updated": 0,
+            "flagged": 0,
+            "rejected": 0,
+            "skipped_locked": 0,
+            "alias_suggestions": 0,
+            "methods": {},
+        },
+        "rifle": {
+            "created": 0,
+            "matched": 0,
+            "updated": 0,
+            "flagged": 0,
+            "rejected": 0,
+            "skipped_locked": 0,
+            "alias_suggestions": 0,
+            "methods": {},
+        },
     }
     report_entries: list[dict] = []
 
@@ -391,6 +509,7 @@ def main() -> None:  # noqa: C901
             for j, entity in enumerate(entities):
                 name = _get_value(entity, "name") or _get_value(entity, "model") or f"entity[{j}]"
                 resolution = resolver.resolve(entity, entity_type)
+                _record_method_telemetry(stats, entity_type, resolution.match)
 
                 entry = {
                     "url": url,
@@ -457,6 +576,11 @@ def main() -> None:  # noqa: C901
                         resolution.match.confidence * 100,
                         resolution.match.method,
                     )
+
+                    suggestion = _build_alias_suggestion(session, entity_type, resolution.match, existing, name)
+                    if suggestion is not None:
+                        entry["alias_suggestion"] = suggestion
+                        stats[entity_type]["alias_suggestions"] = stats[entity_type].get("alias_suggestions", 0) + 1
 
                     # Check if FK references should be updated on the existing entity.
                     # This allows re-runs with improved resolvers to fix previously committed
@@ -566,10 +690,14 @@ def main() -> None:  # noqa: C901
         if session is not None:
             session.close()
 
+    # Collect alias suggestions into a top-level list for easy curator scanning
+    alias_suggestions = [e["alias_suggestion"] for e in report_entries if "alias_suggestion" in e]
+
     # Write report
     report = {
         "mode": mode,
         "stats": stats,
+        "alias_suggestions": alias_suggestions,
         "entries": report_entries,
     }
     STORE_REPORT_PATH.parent.mkdir(parents=True, exist_ok=True)
@@ -581,6 +709,7 @@ def main() -> None:  # noqa: C901
         updated = counts.get("updated", 0)
         rejected = counts.get("rejected", 0)
         locked = counts.get("skipped_locked", 0)
+        suggested = counts.get("alias_suggestions", 0)
         parts = [
             f"{counts['created']} created",
             f"{counts['matched']} matched",
@@ -592,7 +721,10 @@ def main() -> None:  # noqa: C901
             parts.append(f"{rejected} rejected")
         if locked:
             parts.append(f"{locked} skipped (locked)")
+        if suggested:
+            parts.append(f"{suggested} alias suggestions")
         print(f"  {etype}: {', '.join(parts)}")
+    _print_method_breakdown(stats)
     print(f"\nReport written to: {STORE_REPORT_PATH}")
 
 
