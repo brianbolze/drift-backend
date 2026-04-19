@@ -225,6 +225,8 @@ def _make_cartridge(
     bullet_id: str | None,
     source_url: str,
     data_source: str = "pipeline",
+    bullet_match_confidence: float | None = None,
+    bullet_match_method: str | None = None,
 ) -> Cartridge:
     """Create a Cartridge ORM instance from an extracted entity dict."""
     return Cartridge(
@@ -245,6 +247,8 @@ def _make_cartridge(
         source_url=source_url,
         extraction_confidence=_avg_confidence(entity),
         data_source=data_source,
+        bullet_match_confidence=bullet_match_confidence,
+        bullet_match_method=bullet_match_method,
     )
 
 
@@ -416,7 +420,14 @@ def _create_entity(
                 session.add(bc_obj)
     elif entity_type == "cartridge":
         obj = _make_cartridge(
-            entity, resolution.manufacturer_id, resolution.caliber_id, resolution.bullet_id, url, data_source
+            entity,
+            resolution.manufacturer_id,
+            resolution.caliber_id,
+            resolution.bullet_id,
+            url,
+            data_source,
+            bullet_match_confidence=resolution.bullet_match_confidence,
+            bullet_match_method=resolution.bullet_match_method,
         )
         session.add(obj)
         _add_cartridge_bc_sources(session, resolution.bullet_id, bc_sources, entity, url)
@@ -637,6 +648,8 @@ def main() -> None:  # noqa: C901
                             )
                             if args.commit:
                                 existing_cart.bullet_id = resolution.bullet_id
+                                existing_cart.bullet_match_confidence = resolution.bullet_match_confidence
+                                existing_cart.bullet_match_method = resolution.bullet_match_method
                         elif existing_cart and not existing_cart.bullet_id and resolution.bullet_id:
                             entry["action"] = "matched_updated"
                             entry["old_bullet_id"] = None
@@ -649,6 +662,8 @@ def main() -> None:  # noqa: C901
                             )
                             if args.commit:
                                 existing_cart.bullet_id = resolution.bullet_id
+                                existing_cart.bullet_match_confidence = resolution.bullet_match_confidence
+                                existing_cart.bullet_match_method = resolution.bullet_match_method
                         # Also create BulletBCSource rows for matched cartridges with BC data
                         if args.commit and resolution.bullet_id:
                             _add_cartridge_bc_sources(session, resolution.bullet_id, bc_sources, entity, url)

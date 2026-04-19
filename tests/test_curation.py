@@ -209,6 +209,10 @@ class TestNameResolution:
         stats = apply_patch(seeded_db, patch)
         assert stats.created == 1
 
+        cart = seeded_db.query(Cartridge).filter_by(name="Test Cart").one()
+        assert cart.bullet_match_confidence == 1.0
+        assert cart.bullet_match_method == "manual"
+
     def test_unknown_manufacturer_error(self, seeded_db):
         patch = _make_patch(
             [
