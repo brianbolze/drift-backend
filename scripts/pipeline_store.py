@@ -31,30 +31,25 @@ from drift.models.entity_alias import EntityAlias
 from drift.models.rifle_model import RifleModel
 from drift.pipeline.config import EXTRACTED_DIR, REJECTED_CALIBERS_PATH, STORE_REPORT_PATH
 from drift.pipeline.normalization import normalize_entity
+from drift.pipeline.resolution.config import DEFAULT_CONFIG
 from drift.pipeline.resolution.resolver import EntityResolver, _get_value
 from drift.resolution.aliases import normalize_name
 
 logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
 logger = logging.getLogger(__name__)
 
-# Matches below this confidence are flagged for review instead of auto-skipped
-MATCH_CONFIDENCE_THRESHOLD = 0.7
-
-# Below this confidence, a weight-mismatched bullet match is treated as "no match"
-# and the entity is auto-created instead of flagged. This handles the common case
-# where a new weight variant (e.g. 200gr ELD-X) fuzzy-matches to an existing variant
-# (e.g. 178gr ELD-X) at low confidence because the correct record doesn't exist yet.
-AUTO_CREATE_CONFIDENCE_CEILING = 0.5
+# Thresholds for create/match/flag decisions live in ResolutionConfig. Module-level
+# aliases are kept for the rare callsites that read them directly (tests, imports).
+# See drift.pipeline.resolution.config for rationale on each value.
+MATCH_CONFIDENCE_THRESHOLD = DEFAULT_CONFIG.match_confidence_threshold
+AUTO_CREATE_CONFIDENCE_CEILING = DEFAULT_CONFIG.auto_create_confidence_ceiling
 
 # Winning match methods that are non-deterministic (use similarity thresholds on names).
 # A matched_existing entry decided by one of these is a candidate for EntityAlias
 # promotion so the next run can hit the deterministic lookup path.
 _FUZZY_MATCH_METHODS = frozenset({"composite_key", "fuzzy_name"})
 
-# A successful match below this confidence is counted as low-confidence in the
-# end-of-run method breakdown. Independent of MATCH_CONFIDENCE_THRESHOLD so the
-# reporting threshold can be moved without affecting auto-match gating.
-_LOW_CONFIDENCE_REPORT_THRESHOLD = 0.5
+_LOW_CONFIDENCE_REPORT_THRESHOLD = DEFAULT_CONFIG.low_confidence_report_threshold
 
 # Valid data_source values for provenance tracking
 _VALID_DATA_SOURCES = {"pipeline", "cowork", "manual"}
@@ -363,13 +358,13 @@ def _should_auto_create_weight_variant(
             return False
         weight_field = "weight_grains"
         model_cls = Bullet
-        tolerance = 1.0
+        tolerance = DEFAULT_CONFIG.auto_create_bullet_weight_tolerance_grains
     elif entity_type == "cartridge":
         if not resolution.manufacturer_id or not resolution.caliber_id or not resolution.bullet_id:
             return False
         weight_field = "bullet_weight_grains"
         model_cls = Cartridge
-        tolerance = 2.0
+        tolerance = DEFAULT_CONFIG.auto_create_cartridge_weight_tolerance_grains
     else:
         return False
 

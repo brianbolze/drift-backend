@@ -30,6 +30,7 @@ from drift.models.cartridge import Cartridge
 from drift.models.chamber import ChamberAcceptsCaliber
 from drift.models.manufacturer import Manufacturer
 from drift.models.rifle_model import RifleModel
+from drift.pipeline.resolution.config import DEFAULT_CONFIG, ResolutionConfig
 from drift.resolution.aliases import LookupResult, lookup_entity
 
 logger = logging.getLogger(__name__)
@@ -59,10 +60,10 @@ class MatchResult:
 
     @property
     def is_ambiguous(self) -> bool:
-        """True if the gap between best match and next-best is < 0.2."""
-        if not self.alternatives or self.confidence >= 0.97:
+        """True when the runner-up is within ``ambiguity_gap_threshold`` of the top match."""
+        if not self.alternatives or self.confidence >= DEFAULT_CONFIG.ambiguity_skip_above_confidence:
             return False
-        return (self.confidence - self.alternatives[0].confidence) < 0.2
+        return (self.confidence - self.alternatives[0].confidence) < DEFAULT_CONFIG.ambiguity_gap_threshold
 
 
 @dataclass
@@ -406,8 +407,9 @@ def _pick_best_with_alternatives(
 class EntityResolver:
     """Resolves extracted entities against existing DB records."""
 
-    def __init__(self, session: Session):
+    def __init__(self, session: Session, config: ResolutionConfig = DEFAULT_CONFIG):
         self._session = session
+        self._config = config
         # Cached lookups for fuzzy fallbacks (deterministic lookups go through
         # drift.resolution.aliases and don't need this cache).
         self._manufacturers: list[Manufacturer] | None = None
@@ -444,12 +446,12 @@ class EntityResolver:
             candidates = [mfr.name] + (mfr.alt_names or [])
             for candidate in candidates:
                 score = _name_similarity(name, candidate)
-                if score > 0.5 and score > best_score:
+                if score > self._config.manufacturer_fuzzy_threshold and score > best_score:
                     best_score = score
                     best_match = MatchResult(
                         matched=True,
                         entity_id=mfr.id,
-                        confidence=round(score * 0.9, 2),
+                        confidence=round(score * self._config.manufacturer_fuzzy_confidence_scale, 2),
                         method="fuzzy_name",
                         details=f"matched '{candidate}' (via {mfr.name}) with score {score:.2f}",
                     )
@@ -478,12 +480,12 @@ class EntityResolver:
             candidates = [cal.name] + (cal.alt_names or [])
             for candidate in candidates:
                 score = _name_similarity(name, candidate)
-                if score > 0.4 and score > best_score:
+                if score > self._config.caliber_fuzzy_threshold and score > best_score:
                     best_score = score
                     best_match = MatchResult(
                         matched=True,
                         entity_id=cal.id,
-                        confidence=round(score * 0.85, 2),
+                        confidence=round(score * self._config.caliber_fuzzy_confidence_scale, 2),
                         method="fuzzy_name",
                         details=f"matched '{candidate}' (via {cal.name}) with score {score:.2f}",
                     )
@@ -519,7 +521,7 @@ class EntityResolver:
                 return MatchResult(
                     matched=True,
                     entity_id=link.chamber_id,
-                    confidence=0.9,
+                    confidence=self._config.chamber_primary_confidence,
                     method="caliber_to_chamber",
                     details=f"primary chamber for caliber '{caliber_name}'",
                 )
@@ -528,7 +530,7 @@ class EntityResolver:
         return MatchResult(
             matched=True,
             entity_id=links[0].chamber_id,
-            confidence=0.7,
+            confidence=self._config.chamber_secondary_confidence,
             method="caliber_to_chamber",
             details=f"non-primary chamber for caliber '{caliber_name}'",
         )
@@ -601,8 +603,9 @@ class EntityResolver:
         if manufacturer_id:
             stmt = stmt.where(Bullet.manufacturer_id == manufacturer_id)
         if bullet_diameter_inches is not None:
+            dia_tol = self._config.bullet_diameter_tolerance_inches
             stmt = stmt.where(
-                Bullet.bullet_diameter_inches.between(bullet_diameter_inches - 0.001, bullet_diameter_inches + 0.001)
+                Bullet.bullet_diameter_inches.between(bullet_diameter_inches - dia_tol, bullet_diameter_inches + dia_tol)
             )
         else:
             logger.warning("match_bullet called without diameter filter — may match across caliber families")
@@ -636,8 +639,17 @@ class EntityResolver:
             for bullet in candidates:
                 if bullet.product_line_id != resolved_pl_id:
                     continue
-                weight_matches = _weight_matches(bullet.weight_grains, weight, tolerance=0.5, context=bullet.name)
-                conf = 0.93 if weight_matches else 0.80
+                weight_matches = _weight_matches(
+                    bullet.weight_grains,
+                    weight,
+                    tolerance=self._config.composite_weight_tolerance_grains,
+                    context=bullet.name,
+                )
+                conf = (
+                    self._config.product_line_with_weight_confidence
+                    if weight_matches
+                    else self._config.product_line_no_weight_confidence
+                )
                 detail = (
                     f"product_line_id={resolved_pl_id}, weight={weight}"
                     if weight_matches
@@ -658,12 +670,17 @@ class EntityResolver:
                 norm_bullet_pl = _normalize_product_line(bullet.product_line)
                 if norm_bullet_pl != norm_extracted_pl:
                     continue
-                weight_matches = _weight_matches(bullet.weight_grains, weight, tolerance=0.5, context=bullet.name)
+                weight_matches = _weight_matches(
+                    bullet.weight_grains,
+                    weight,
+                    tolerance=self._config.composite_weight_tolerance_grains,
+                    context=bullet.name,
+                )
                 if weight_matches:
-                    conf = 0.93
+                    conf = self._config.product_line_with_weight_confidence
                     detail = f"product_line={norm_extracted_pl}, weight={weight}"
                 else:
-                    conf = 0.80
+                    conf = self._config.product_line_no_weight_confidence
                     detail = f"product_line={norm_extracted_pl}, no weight match"
                 all_scored.append((bullet.id, conf, "product_line", detail))
 
@@ -676,15 +693,19 @@ class EntityResolver:
                 logger.warning("composite_key: cannot parse weight %r — skipping tier", weight)
                 weight_f = None
             for bullet in candidates:
-                if weight_f is not None and abs(bullet.weight_grains - weight_f) < 0.5:
+                if weight_f is not None and abs(bullet.weight_grains - weight_f) < self._config.composite_weight_tolerance_grains:
                     if name and bullet.name:
                         jaccard = _name_similarity(name, bullet.name)
                         containment = _bullet_name_score(name, bullet.name)
                         name_score = max(jaccard, containment)
                     else:
                         name_score = 0.0
-                    if name_score > 0.55:
-                        conf = round(0.85 + name_score * 0.1, 2)
+                    if name_score > self._config.composite_name_score_threshold:
+                        conf = round(
+                            self._config.composite_confidence_base
+                            + name_score * self._config.composite_confidence_score_weight,
+                            2,
+                        )
                         all_scored.append(
                             (bullet.id, conf, "composite_key", f"weight={weight}, name_score={name_score:.2f}")
                         )
@@ -696,16 +717,20 @@ class EntityResolver:
                 jaccard = _name_similarity(name, bullet.name)
                 containment = _bullet_name_score(name, bullet.name)
                 score = max(jaccard, containment)
-                if score > 0.5:
+                if score > self._config.fuzzy_name_threshold:
                     if weight is not None:
                         try:
-                            weight_agrees = abs(bullet.weight_grains - float(weight)) <= 1.0
+                            weight_agrees = abs(bullet.weight_grains - float(weight)) <= self._config.fuzzy_weight_tolerance_grains
                         except (ValueError, TypeError):
                             logger.warning("fuzzy_name: cannot parse weight %r for bullet %s", weight, bullet.name)
                             weight_agrees = False
                     else:
                         weight_agrees = False
-                    confidence_factor = 0.8 if weight_agrees else 0.4
+                    confidence_factor = (
+                        self._config.fuzzy_weight_agrees_factor
+                        if weight_agrees
+                        else self._config.fuzzy_weight_mismatch_factor
+                    )
                     conf = round(score * confidence_factor, 2)
                     all_scored.append(
                         (
@@ -763,15 +788,19 @@ class EntityResolver:
                 logger.warning("composite_key (cartridge): cannot parse weight %r — skipping tier", weight)
                 weight_f = None
             for cart in candidates:
-                if weight_f is not None and abs(cart.bullet_weight_grains - weight_f) < 0.5:
+                if weight_f is not None and abs(cart.bullet_weight_grains - weight_f) < self._config.composite_weight_tolerance_grains:
                     if name and cart.name:
                         jaccard = _name_similarity(name, cart.name)
                         containment = _bullet_name_score(name, cart.name)
                         name_score = max(jaccard, containment)
                     else:
                         name_score = 0.0
-                    if name_score > 0.55:
-                        conf = round(0.85 + name_score * 0.1, 2)
+                    if name_score > self._config.composite_name_score_threshold:
+                        conf = round(
+                            self._config.composite_confidence_base
+                            + name_score * self._config.composite_confidence_score_weight,
+                            2,
+                        )
                         all_scored.append(
                             (cart.id, conf, "composite_key", f"weight={weight}, name_score={name_score:.2f}")
                         )
@@ -783,16 +812,20 @@ class EntityResolver:
                 jaccard = _name_similarity(name, cart.name)
                 containment = _bullet_name_score(name, cart.name)
                 score = max(jaccard, containment)
-                if score > 0.5:
+                if score > self._config.fuzzy_name_threshold:
                     if weight is not None:
                         try:
-                            weight_agrees = abs(cart.bullet_weight_grains - float(weight)) <= 1.0
+                            weight_agrees = abs(cart.bullet_weight_grains - float(weight)) <= self._config.fuzzy_weight_tolerance_grains
                         except (ValueError, TypeError):
                             logger.warning("fuzzy_name (cartridge): cannot parse weight %r for %s", weight, cart.name)
                             weight_agrees = False
                     else:
                         weight_agrees = False
-                    confidence_factor = 0.8 if weight_agrees else 0.4
+                    confidence_factor = (
+                        self._config.fuzzy_weight_agrees_factor
+                        if weight_agrees
+                        else self._config.fuzzy_weight_mismatch_factor
+                    )
                     conf = round(score * confidence_factor, 2)
                     all_scored.append(
                         (
@@ -827,8 +860,12 @@ class EntityResolver:
         methods_tried.append("composite_key")
         for rifle in candidates:
             name_score = _name_similarity(model_name, rifle.model)
-            if name_score > 0.5:
-                conf = round(0.85 + name_score * 0.1, 2)
+            if name_score > self._config.rifle_composite_name_threshold:
+                conf = round(
+                    self._config.composite_confidence_base
+                    + name_score * self._config.composite_confidence_score_weight,
+                    2,
+                )
                 all_scored.append((rifle.id, conf, "composite_key", f"model_score={name_score:.2f}"))
 
         # Tier 3: Fuzzy — search all rifles by this manufacturer, with chamber agreement check
@@ -839,9 +876,13 @@ class EntityResolver:
             )
             for rifle in all_by_mfr:
                 score = _name_similarity(model_name, rifle.model)
-                if score > 0.5:
+                if score > self._config.rifle_fuzzy_name_threshold:
                     chamber_agrees = chamber_id is not None and rifle.chamber_id == chamber_id
-                    confidence_factor = 0.8 if chamber_agrees else 0.4
+                    confidence_factor = (
+                        self._config.rifle_fuzzy_chamber_agrees_factor
+                        if chamber_agrees
+                        else self._config.rifle_fuzzy_chamber_mismatch_factor
+                    )
                     conf = round(score * confidence_factor, 2)
                     all_scored.append(
                         (
@@ -952,7 +993,8 @@ class EntityResolver:
                             weight_diff = abs(matched_bullet.weight_grains - float(weight))
                         except (ValueError, TypeError):
                             weight_diff = 0.0
-                        if weight_diff > _BULLET_WEIGHT_GATE_GRAINS:
+                        weight_gate = self._config.bullet_weight_gate_grains
+                        if weight_diff > weight_gate:
                             logger.info(
                                 "Rejecting bullet match '%s' (%.0fgr) for cartridge bullet '%.0fgr %s' "
                                 "— weight diff %.0fgr exceeds gate (%.0fgr)",
@@ -961,7 +1003,7 @@ class EntityResolver:
                                 float(weight),
                                 bullet_name,
                                 weight_diff,
-                                _BULLET_WEIGHT_GATE_GRAINS,
+                                weight_gate,
                             )
                             result.unresolved_refs.append(
                                 f"bullet: {bullet_name} (weight mismatch: "
@@ -971,15 +1013,17 @@ class EntityResolver:
                             )
                             bullet_match = MatchResult(
                                 matched=False,
-                                details=f"weight gate: {weight_diff:.0f}gr diff exceeds {_BULLET_WEIGHT_GATE_GRAINS:.0f}gr limit",
+                                details=f"weight gate: {weight_diff:.0f}gr diff exceeds {weight_gate:.0f}gr limit",
                                 methods_tried=bullet_match.methods_tried,
                             )
                 # Require minimum confidence for bullet FK assignment — low-confidence
                 # fuzzy matches (e.g. weight-mismatched Tier 3) should be flagged, not assigned.
-                if bullet_match.matched and bullet_match.confidence >= 0.5:
+                if bullet_match.matched and bullet_match.confidence >= self._config.bullet_fk_min_confidence:
                     result.bullet_id = bullet_match.entity_id
                     # Boost confidence when cartridge BC/weight exactly match the bullet
-                    boost, bc_warnings = _bc_weight_confidence_boost(extracted, bullet_match.entity_id, self._session)
+                    boost, bc_warnings = _bc_weight_confidence_boost(
+                        extracted, bullet_match.entity_id, self._session, self._config
+                    )
                     result.bullet_match_confidence = min(bullet_match.confidence + boost, 1.0)
                     result.warnings.extend(bc_warnings)
                 elif bullet_match.matched:
@@ -998,19 +1042,17 @@ class EntityResolver:
         return result
 
 
-_BULLET_WEIGHT_GATE_GRAINS = 5.0  # Max weight diff (grains) for cartridge→bullet linkage; rejects wrong-weight matches
-_BC_TOLERANCE = 5e-4  # Covers manufacturer rounding at 3 decimal places (max rounding error = 0.0005)
-
-
-def _bc_weight_confidence_boost(extracted: dict, bullet_id: str, session: Session) -> tuple[float, list[str]]:
+def _bc_weight_confidence_boost(
+    extracted: dict,
+    bullet_id: str,
+    session: Session,
+    config: ResolutionConfig = DEFAULT_CONFIG,
+) -> tuple[float, list[str]]:
     """Compare cartridge-extracted BC/weight against the matched bullet's published values.
 
     Returns a (boost, warnings) tuple:
-      - boost: additive confidence increase (0.0–0.15) for matching signals
+      - boost: additive confidence increase per agreeing signal (weight/BC G1/BC G7)
       - warnings: list of disagreement warnings (informational, not disqualifying)
-
-    Weight uses ±0.5 gr tolerance (same as composite key matching).
-    BC uses ±5e-4 tolerance to absorb manufacturer rounding at 3 decimal places.
     """
     boost = 0.0
     warnings: list[str] = []
@@ -1019,32 +1061,32 @@ def _bc_weight_confidence_boost(extracted: dict, bullet_id: str, session: Sessio
         logger.warning("Bullet %s referenced by BC/weight boost not found in DB", bullet_id)
         return boost, warnings
 
-    # Weight agreement (±0.5 gr — same tolerance as match_bullet composite key)
+    # Weight agreement (same tolerance as composite-key matching)
     cart_weight = _get_value(extracted, "bullet_weight_grains")
     if cart_weight is not None and bullet.weight_grains is not None:
         try:
-            if abs(float(cart_weight) - bullet.weight_grains) <= 0.5:
-                boost += 0.05
+            if abs(float(cart_weight) - bullet.weight_grains) <= config.composite_weight_tolerance_grains:
+                boost += config.bc_weight_boost_per_signal
         except (ValueError, TypeError):
             logger.warning("Cannot compare weight for bullet %s: cart_weight=%r is not numeric", bullet_id, cart_weight)
 
-    # BC G1 match (±5e-4 tolerance)
+    # BC G1 match
     cart_g1 = _get_value(extracted, "bc_g1")
     if cart_g1 is not None and bullet.bc_g1_published is not None:
         try:
-            if abs(float(cart_g1) - bullet.bc_g1_published) < _BC_TOLERANCE:
-                boost += 0.05
+            if abs(float(cart_g1) - bullet.bc_g1_published) < config.bc_tolerance:
+                boost += config.bc_weight_boost_per_signal
             else:
                 warnings.append(f"bc_g1 mismatch: cartridge={cart_g1}, bullet={bullet.bc_g1_published}")
         except (ValueError, TypeError):
             logger.warning("Cannot compare bc_g1 for bullet %s: cart_g1=%r is not numeric", bullet_id, cart_g1)
 
-    # BC G7 match (±5e-4 tolerance)
+    # BC G7 match
     cart_g7 = _get_value(extracted, "bc_g7")
     if cart_g7 is not None and bullet.bc_g7_published is not None:
         try:
-            if abs(float(cart_g7) - bullet.bc_g7_published) < _BC_TOLERANCE:
-                boost += 0.05
+            if abs(float(cart_g7) - bullet.bc_g7_published) < config.bc_tolerance:
+                boost += config.bc_weight_boost_per_signal
             else:
                 warnings.append(f"bc_g7 mismatch: cartridge={cart_g7}, bullet={bullet.bc_g7_published}")
         except (ValueError, TypeError):
