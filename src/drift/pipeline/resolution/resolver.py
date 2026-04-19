@@ -605,7 +605,9 @@ class EntityResolver:
         if bullet_diameter_inches is not None:
             dia_tol = self._config.bullet_diameter_tolerance_inches
             stmt = stmt.where(
-                Bullet.bullet_diameter_inches.between(bullet_diameter_inches - dia_tol, bullet_diameter_inches + dia_tol)
+                Bullet.bullet_diameter_inches.between(
+                    bullet_diameter_inches - dia_tol, bullet_diameter_inches + dia_tol
+                )
             )
         else:
             logger.warning("match_bullet called without diameter filter — may match across caliber families")
@@ -693,7 +695,10 @@ class EntityResolver:
                 logger.warning("composite_key: cannot parse weight %r — skipping tier", weight)
                 weight_f = None
             for bullet in candidates:
-                if weight_f is not None and abs(bullet.weight_grains - weight_f) < self._config.composite_weight_tolerance_grains:
+                if (
+                    weight_f is not None
+                    and abs(bullet.weight_grains - weight_f) < self._config.composite_weight_tolerance_grains
+                ):
                     if name and bullet.name:
                         jaccard = _name_similarity(name, bullet.name)
                         containment = _bullet_name_score(name, bullet.name)
@@ -720,7 +725,9 @@ class EntityResolver:
                 if score > self._config.fuzzy_name_threshold:
                     if weight is not None:
                         try:
-                            weight_agrees = abs(bullet.weight_grains - float(weight)) <= self._config.fuzzy_weight_tolerance_grains
+                            weight_agrees = (
+                                abs(bullet.weight_grains - float(weight)) <= self._config.fuzzy_weight_tolerance_grains
+                            )
                         except (ValueError, TypeError):
                             logger.warning("fuzzy_name: cannot parse weight %r for bullet %s", weight, bullet.name)
                             weight_agrees = False
@@ -788,7 +795,10 @@ class EntityResolver:
                 logger.warning("composite_key (cartridge): cannot parse weight %r — skipping tier", weight)
                 weight_f = None
             for cart in candidates:
-                if weight_f is not None and abs(cart.bullet_weight_grains - weight_f) < self._config.composite_weight_tolerance_grains:
+                if (
+                    weight_f is not None
+                    and abs(cart.bullet_weight_grains - weight_f) < self._config.composite_weight_tolerance_grains
+                ):
                     if name and cart.name:
                         jaccard = _name_similarity(name, cart.name)
                         containment = _bullet_name_score(name, cart.name)
@@ -815,7 +825,10 @@ class EntityResolver:
                 if score > self._config.fuzzy_name_threshold:
                     if weight is not None:
                         try:
-                            weight_agrees = abs(cart.bullet_weight_grains - float(weight)) <= self._config.fuzzy_weight_tolerance_grains
+                            weight_agrees = (
+                                abs(cart.bullet_weight_grains - float(weight))
+                                <= self._config.fuzzy_weight_tolerance_grains
+                            )
                         except (ValueError, TypeError):
                             logger.warning("fuzzy_name (cartridge): cannot parse weight %r for %s", weight, cart.name)
                             weight_agrees = False

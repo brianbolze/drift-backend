@@ -1,0 +1,816 @@
+# Golden-set regression fixtures for the entity resolver.
+#
+# Each entry labels an LLM-style extracted entity dict against the entity_id
+# we expect it to resolve to in data/drift.db. The test harness runs the
+# resolver against production SQLite and asserts per-tier accuracy meets the
+# captured baseline (see tests/test_resolution_golden_set.py).
+#
+# ## Why this file exists
+#
+# Steps 1–3 of the entity resolution refactor retuned the resolver's tiers
+# (rapidfuzz replacing Jaccard, a new product_line_alias tier, stricter
+# normalization). Every tier's confidence distribution shifted as a result.
+# Without a regression net, a future tuning pass has no way to tell whether
+# it traded away matches we already get right. This fixture locks the
+# current behavior.
+#
+# ## Tier conventions
+#
+# - easy:   deterministic match expected (exact_sku or product_line_alias
+#           with weight). Any regression here is a severe bug.
+# - medium: composite_key or product_line tier expected. The resolver has
+#           to combine weight + name evidence. Regression here usually
+#           means a threshold tuned too strictly.
+# - hard:   fuzzy_name tier expected, OR an "ambiguous" case where the
+#           right answer is "flag don't match" (expected_entity_id: null).
+#           Regression here can be acceptable depending on direction.
+#
+# ## Maintenance
+#
+# When drift.db entities are added, deleted, or renamed by curation patches,
+# entries here may start failing. The test harness reports missing entity_ids
+# explicitly so the fixture can be updated alongside the DB change. When
+# real extractions from data/pipeline/extracted/ become available, they
+# should be appended under each section to supplement the hand-crafted
+# entries below (which were modeled on realistic LLM output patterns).
+#
+# ## Entry schema
+#
+# - entity_type: bullet | cartridge
+# - tier: easy | medium | hard
+# - category: subtype tag (e.g. exact_sku, composite_key, pl_alias)
+# - description: human-readable label
+# - extraction: dict passed to EntityResolver.resolve() — fields wrapped in
+#   {value: ..., confidence: ...} ExtractedValue format
+# - expected_entity_id: UUID in data/drift.db, or null for "should not match"
+
+entries:
+  # ═════════════════════════════════════════════════════════════════════════
+  # EASY — exact_sku tier
+  # ═════════════════════════════════════════════════════════════════════════
+
+  - entity_type: bullet
+    tier: easy
+    category: exact_sku
+    description: Hornady 178gr ELD Match with full SKU
+    expected_entity_id: 521f2837-7c5f-45dd-895a-aae9f95932ad
+    extraction:
+      name: {value: "30 Cal .308 178 gr ELD Match"}
+      manufacturer: {value: "Hornady"}
+      bullet_diameter_inches: {value: 0.308}
+      weight_grains: {value: 178.0}
+      sku: {value: "30713"}
+
+  - entity_type: bullet
+    tier: easy
+    category: exact_sku
+    description: Hornady 135gr A-Tip Match (unicode hyphen + trademark)
+    expected_entity_id: 57ea93a0-eda0-4dc0-a327-5cec15636c5f
+    extraction:
+      name: {value: "6.5mm .264 135 gr A-Tip Match"}
+      manufacturer: {value: "Hornady Inc"}
+      bullet_diameter_inches: {value: 0.264}
+      weight_grains: {value: 135.0}
+      sku: {value: "26179"}
+
+  - entity_type: bullet
+    tier: easy
+    category: exact_sku
+    description: Sierra MatchKing 183gr 7mm SMK
+    expected_entity_id: 7707bf26-26ee-430e-8fbd-ba96b4436cbf
+    extraction:
+      name: {value: "7MM 183 GR HPBT/CN MatchKing"}
+      manufacturer: {value: "Sierra Bullets"}
+      bullet_diameter_inches: {value: 0.284}
+      weight_grains: {value: 183.0}
+      sku: {value: "1983"}
+      product_line: {value: "MatchKing"}
+
+  - entity_type: bullet
+    tier: easy
+    category: exact_sku
+    description: Barnes 30cal 208gr LRX BT
+    expected_entity_id: 92e3a491-d212-4838-a893-d80092073cff
+    extraction:
+      name: {value: "0.308 30 CAL LRX BT 208 GR"}
+      manufacturer: {value: "Barnes Bullets"}
+      bullet_diameter_inches: {value: 0.308}
+      weight_grains: {value: 208.0}
+      sku: {value: "30311"}
+
+  - entity_type: bullet
+    tier: easy
+    category: exact_sku
+    description: Berger 300gr Hybrid OTM
+    expected_entity_id: d987b0d6-770a-4262-be3a-113212be4119
+    extraction:
+      name: {value: "338 Caliber 300 Grain Hybrid OTM Tactical Rifle Bullet"}
+      manufacturer: {value: "Berger Bullets"}
+      bullet_diameter_inches: {value: 0.338}
+      weight_grains: {value: 300.0}
+      sku: {value: "33109"}
+
+  - entity_type: bullet
+    tier: easy
+    category: exact_sku
+    description: Nosler 7mm 175gr AccuBond Long Range
+    expected_entity_id: 4fa959d1-dabc-459a-ba60-d2b31fdb49a1
+    extraction:
+      name: {value: "7mm 175gr AccuBond Long Range"}
+      manufacturer: {value: "Nosler"}
+      bullet_diameter_inches: {value: 0.284}
+      weight_grains: {value: 175.0}
+      sku: {value: "58517"}
+
+  - entity_type: bullet
+    tier: easy
+    category: exact_sku
+    description: Lapua Scenar 185gr (SKU with spaces)
+    expected_entity_id: 0836d953-eb5f-4734-bcaf-22e3ba38c921
+    extraction:
+      name: {value: "Scenar OTM GB432 185gr"}
+      manufacturer: {value: "Lapua"}
+      bullet_diameter_inches: {value: 0.308}
+      weight_grains: {value: 185.0}
+      sku: {value: "4 PL/HL 7071"}
+
+  - entity_type: bullet
+    tier: easy
+    category: exact_sku
+    description: Hornady 6mm 103gr ELD-X
+    expected_entity_id: d16d4ebd-3504-46b1-9e3f-429684e07c7d
+    extraction:
+      name: {value: "6mm .243 103 gr ELD-X"}
+      manufacturer: {value: "Hornady"}
+      bullet_diameter_inches: {value: 0.243}
+      weight_grains: {value: 103.0}
+      sku: {value: "24550"}
+
+  - entity_type: cartridge
+    tier: easy
+    category: exact_sku
+    description: Hornady 375 H&H 270gr SP-RP Superformance
+    expected_entity_id: 0a68f77c-b46f-446a-8775-d79a225798c5
+    extraction:
+      name: {value: "375 H&H 270 gr SP-RP Superformance"}
+      manufacturer: {value: "Hornady"}
+      caliber: {value: ".375 H&H Magnum"}
+      bullet_weight_grains: {value: 270.0}
+      muzzle_velocity_fps: {value: 2690}
+      sku: {value: "8508"}
+
+  - entity_type: cartridge
+    tier: easy
+    category: exact_sku
+    description: Federal 6.5CM 143gr ELD-X
+    expected_entity_id: aa9c8dc1-dda5-4731-be9b-07a7260fc3f9
+    extraction:
+      name: {value: "Federal 6.5 Creedmoor 143gr ELD-X"}
+      manufacturer: {value: "Federal"}
+      caliber: {value: "6.5 Creedmoor"}
+      bullet_weight_grains: {value: 143.0}
+      muzzle_velocity_fps: {value: 2700}
+      sku: {value: "P65CRDELDX1"}
+
+  - entity_type: cartridge
+    tier: easy
+    category: exact_sku
+    description: Hornady 5.56 NATO 75gr BTHP Superformance Match
+    expected_entity_id: 23201128-1068-4521-81e5-4b67a9f743ca
+    extraction:
+      name: {value: "5.56 NATO 75 gr BTHP Superformance Match"}
+      manufacturer: {value: "Hornady"}
+      caliber: {value: "5.56x45mm NATO"}
+      bullet_weight_grains: {value: 75.0}
+      sku: {value: "81264"}
+
+  - entity_type: cartridge
+    tier: easy
+    category: exact_sku
+    description: Winchester 270 Win 130gr Power-Point
+    expected_entity_id: 5810b9e1-56fc-4735-875a-d10c7eb73b08
+    extraction:
+      name: {value: "270 Winchester 130 Grain Power-Point"}
+      manufacturer: {value: "Winchester"}
+      caliber: {value: ".270 Winchester"}
+      bullet_weight_grains: {value: 130.0}
+      sku: {value: "X2705"}
+
+  - entity_type: cartridge
+    tier: easy
+    category: exact_sku
+    description: Nosler 22 Nosler 77gr Custom Competition
+    expected_entity_id: 9ab8587d-c10f-433e-ad70-be31b21a4b14
+    extraction:
+      name: {value: "22 Nosler 77gr Custom Competition Match Grade Ammunition"}
+      manufacturer: {value: "Nosler"}
+      caliber: {value: ".22 Nosler"}
+      bullet_weight_grains: {value: 77.0}
+      sku: {value: "60016"}
+
+  - entity_type: cartridge
+    tier: easy
+    category: exact_sku
+    description: Federal 416 Rigby 400gr Sledgehammer Solid
+    expected_entity_id: 0722f535-533a-4241-958a-5357a3f89c12
+    extraction:
+      name: {value: "Safari Trophy Bonded Sledgehammer Solid 416 Rigby 400gr"}
+      manufacturer: {value: "Federal"}
+      caliber: {value: ".416 Rigby"}
+      bullet_weight_grains: {value: 400.0}
+      sku: {value: "P416T2"}
+
+  # ═════════════════════════════════════════════════════════════════════════
+  # MEDIUM — composite_key, product_line, product_line_alias tiers
+  # ═════════════════════════════════════════════════════════════════════════
+
+  - entity_type: bullet
+    tier: medium
+    category: composite_key
+    description: Hornady 178gr ELD Match — no SKU, full name + weight
+    expected_entity_id: 521f2837-7c5f-45dd-895a-aae9f95932ad
+    extraction:
+      name: {value: "30 Cal .308 178 gr ELD Match"}
+      manufacturer: {value: "Hornady"}
+      bullet_diameter_inches: {value: 0.308}
+      weight_grains: {value: 178.0}
+
+  - entity_type: bullet
+    tier: medium
+    category: composite_key
+    description: Sierra MatchKing 175gr 30cal — no SKU
+    expected_entity_id: 513829e0-bec7-4cb2-bc2c-65eb7f3037df
+    extraction:
+      name: {value: "30 CAL 175 GR HPBT MATCHKING"}
+      manufacturer: {value: "Sierra Bullets"}
+      bullet_diameter_inches: {value: 0.308}
+      weight_grains: {value: 175.0}
+
+  - entity_type: bullet
+    tier: medium
+    category: composite_key
+    description: Barnes 6.5mm LRX 127gr — no SKU
+    expected_entity_id: 9c4c79c5-6740-4cbc-919e-9a7d40b78971
+    extraction:
+      name: {value: "0.264 6.5MM LRX 127 GR BT"}
+      manufacturer: {value: "Barnes Bullets"}
+      bullet_diameter_inches: {value: 0.264}
+      weight_grains: {value: 127.0}
+
+  - entity_type: bullet
+    tier: medium
+    category: composite_key
+    description: Berger 185gr Juggernaut Target — no SKU
+    expected_entity_id: a45bbd49-3b0a-42a1-94d9-1a83d8102e06
+    extraction:
+      name: {value: "30 Caliber 185 Grain Juggernaut Target Rifle Bullet"}
+      manufacturer: {value: "Berger Bullets"}
+      bullet_diameter_inches: {value: 0.308}
+      weight_grains: {value: 185.0}
+
+  - entity_type: bullet
+    tier: medium
+    category: product_line
+    description: Nosler 6mm 105gr RDF (product_line match)
+    expected_entity_id: 8ca85ed6-df2c-4fe6-b190-697c1d91c73d
+    extraction:
+      name: {value: "6mm 105gr RDF"}
+      manufacturer: {value: "Nosler"}
+      bullet_diameter_inches: {value: 0.243}
+      weight_grains: {value: 105.0}
+      product_line: {value: "RDF"}
+
+  - entity_type: bullet
+    tier: medium
+    category: product_line
+    description: Nosler 6.5mm 130gr AccuBond (PL match)
+    expected_entity_id: 2621e228-31e2-437b-948a-02880957bdb9
+    extraction:
+      name: {value: "6.5mm 130gr AccuBond"}
+      manufacturer: {value: "Nosler"}
+      bullet_diameter_inches: {value: 0.264}
+      weight_grains: {value: 130.0}
+      product_line: {value: "AccuBond"}
+
+  - entity_type: bullet
+    tier: medium
+    category: pl_alias
+    description: Hornady ELDM alias → ELD Match
+    expected_entity_id: 3e33707d-de25-44f0-990a-d596dc73b4d7
+    extraction:
+      name: {value: "6.5mm 147gr ELDM"}
+      manufacturer: {value: "Hornady"}
+      bullet_diameter_inches: {value: 0.264}
+      weight_grains: {value: 147.0}
+      product_line: {value: "ELDM"}
+
+  - entity_type: bullet
+    tier: medium
+    category: pl_alias
+    description: Sierra SMK alias → MatchKing
+    expected_entity_id: d11d668c-406e-4b6f-ad32-1bade6e40bcd
+    extraction:
+      name: {value: "6.5mm 140gr SMK"}
+      manufacturer: {value: "Sierra Bullets"}
+      bullet_diameter_inches: {value: 0.264}
+      weight_grains: {value: 140.0}
+      product_line: {value: "SMK"}
+
+  - entity_type: bullet
+    tier: medium
+    category: pl_alias
+    description: Nosler ABLR alias → AccuBond Long Range
+    expected_entity_id: 4fa959d1-dabc-459a-ba60-d2b31fdb49a1
+    extraction:
+      name: {value: "7mm 175gr ABLR"}
+      manufacturer: {value: "Nosler"}
+      bullet_diameter_inches: {value: 0.284}
+      weight_grains: {value: 175.0}
+      product_line: {value: "ABLR"}
+
+  - entity_type: bullet
+    tier: medium
+    category: pl_alias
+    description: Sierra TMK alias → Tipped MatchKing (6mm 116gr)
+    expected_entity_id: 517133c0-a2f5-4725-ba03-e92b767b0594
+    extraction:
+      name: {value: "6mm 116gr TMK"}
+      manufacturer: {value: "Sierra Bullets"}
+      bullet_diameter_inches: {value: 0.243}
+      weight_grains: {value: 116.0}
+      product_line: {value: "TMK"}
+
+  - entity_type: bullet
+    tier: medium
+    category: composite_key
+    description: Lapua Scenar 250gr 338 — no SKU
+    expected_entity_id: af9c53c3-cf28-47f8-9023-214095fa82e1
+    extraction:
+      name: {value: "16,2 g / 250 gr Scenar OTM GB488"}
+      manufacturer: {value: "Lapua"}
+      bullet_diameter_inches: {value: 0.338}
+      weight_grains: {value: 250.0}
+
+  - entity_type: bullet
+    tier: medium
+    category: composite_key
+    description: Barnes TTSX 22cal 50gr — no SKU
+    expected_entity_id: ace81340-fd1e-43e2-9021-bc25dca7782c
+    extraction:
+      name: {value: "0.224 22 CAL TTSX 50 GR FB"}
+      manufacturer: {value: "Barnes Bullets"}
+      bullet_diameter_inches: {value: 0.224}
+      weight_grains: {value: 50.0}
+
+  - entity_type: bullet
+    tier: medium
+    category: composite_key
+    description: Hornady 7mm 190gr A-Tip Match — no SKU
+    expected_entity_id: a4a2cb90-61bc-40a6-849c-c33dbbd40620
+    extraction:
+      name: {value: "7mm .284 190 gr A-Tip Match"}
+      manufacturer: {value: "Hornady"}
+      bullet_diameter_inches: {value: 0.284}
+      weight_grains: {value: 190.0}
+
+  - entity_type: bullet
+    tier: medium
+    category: composite_key
+    description: Nosler 30cal 168gr HPBT Custom Competition
+    expected_entity_id: 4e13c9ce-3d84-4ed2-964f-cd7f39998b27
+    extraction:
+      name: {value: "30 Caliber 168gr HPBT Custom Competition"}
+      manufacturer: {value: "Nosler"}
+      bullet_diameter_inches: {value: 0.308}
+      weight_grains: {value: 168.0}
+
+  - entity_type: bullet
+    tier: medium
+    category: composite_key
+    description: Berger 7mm 190gr Long Range Hybrid Target
+    expected_entity_id: f6a1a0cc-b0a4-47de-8b31-7e8be03d8d7a
+    extraction:
+      name: {value: "7 mm 190 Grain Long Range Hybrid Target Rifle Bullet"}
+      manufacturer: {value: "Berger Bullets"}
+      bullet_diameter_inches: {value: 0.284}
+      weight_grains: {value: 190.0}
+
+  - entity_type: cartridge
+    tier: medium
+    category: composite_key
+    description: Federal ELD-X 6.5 PRC 143gr — no SKU
+    expected_entity_id: 0eac1260-366e-4c61-85d7-dc1732ee995d
+    extraction:
+      name: {value: "ELD-X, 6.5 PRC, 143 Grain, ELD-X, 2900 fps"}
+      manufacturer: {value: "Federal"}
+      caliber: {value: "6.5 PRC"}
+      bullet_weight_grains: {value: 143.0}
+      muzzle_velocity_fps: {value: 2900}
+
+  - entity_type: cartridge
+    tier: medium
+    category: composite_key
+    description: Winchester 308 Win 150gr Ballistic Silvertip — no SKU
+    expected_entity_id: 6b758a68-1ba6-44d9-90e8-dadba18c5950
+    extraction:
+      name: {value: "308 Winchester, 150 Grain Ballistic Silvertip"}
+      manufacturer: {value: "Winchester"}
+      caliber: {value: ".308 Winchester"}
+      bullet_weight_grains: {value: 150.0}
+
+  - entity_type: cartridge
+    tier: medium
+    category: composite_key
+    description: Hornady 375 Ruger 270gr InterLock
+    expected_entity_id: 360ad749-8707-4003-8fbe-14717c6e2dc1
+    extraction:
+      name: {value: "375 Ruger 270 gr InterLock SP-RP"}
+      manufacturer: {value: "Hornady"}
+      caliber: {value: ".375 Ruger"}
+      bullet_weight_grains: {value: 270.0}
+
+  - entity_type: cartridge
+    tier: medium
+    category: composite_key
+    description: Hornady 7mm PRC 180gr ELD Match — no SKU
+    expected_entity_id: 402dfa01-b330-4236-b5dc-089393435a7d
+    extraction:
+      name: {value: "7mm PRC 180 gr ELD Match"}
+      manufacturer: {value: "Hornady"}
+      caliber: {value: "7mm PRC"}
+      bullet_weight_grains: {value: 180.0}
+
+  # ═════════════════════════════════════════════════════════════════════════
+  # HARD — fuzzy_name, ambiguous, and "should not match" cases
+  # ═════════════════════════════════════════════════════════════════════════
+
+  - entity_type: bullet
+    tier: hard
+    category: fuzzy_name
+    description: Hornady 308 178 ELDM — minimal tokens, manufacturer omitted from name
+    expected_entity_id: 521f2837-7c5f-45dd-895a-aae9f95932ad
+    extraction:
+      name: {value: "178gr ELD Match"}
+      manufacturer: {value: "Hornady"}
+      bullet_diameter_inches: {value: 0.308}
+      weight_grains: {value: 178.0}
+
+  - entity_type: bullet
+    tier: hard
+    category: fuzzy_name
+    description: Barnes LRX 208gr — terse name only
+    expected_entity_id: 92e3a491-d212-4838-a893-d80092073cff
+    extraction:
+      name: {value: "LRX 208gr"}
+      manufacturer: {value: "Barnes Bullets"}
+      bullet_diameter_inches: {value: 0.308}
+      weight_grains: {value: 208.0}
+
+  - entity_type: bullet
+    tier: hard
+    category: fuzzy_name
+    description: Sierra SMK 183gr 7mm — abbreviated product line
+    expected_entity_id: 7707bf26-26ee-430e-8fbd-ba96b4436cbf
+    extraction:
+      name: {value: "183 gr SMK"}
+      manufacturer: {value: "Sierra Bullets"}
+      bullet_diameter_inches: {value: 0.284}
+      weight_grains: {value: 183.0}
+
+  - entity_type: bullet
+    tier: hard
+    category: fuzzy_name
+    description: Nosler 6mm RDF — no explicit weight match on name
+    expected_entity_id: 8ca85ed6-df2c-4fe6-b190-697c1d91c73d
+    extraction:
+      name: {value: "RDF 105gr"}
+      manufacturer: {value: "Nosler"}
+      bullet_diameter_inches: {value: 0.243}
+      weight_grains: {value: 105.0}
+
+  - entity_type: bullet
+    tier: hard
+    category: fuzzy_name
+    description: Hornady A-Tip 230gr 308 — abbreviated
+    expected_entity_id: bfb09375-dbd4-4001-b107-f218f55ecc8b
+    extraction:
+      name: {value: "A-Tip Match 230gr"}
+      manufacturer: {value: "Hornady"}
+      bullet_diameter_inches: {value: 0.308}
+      weight_grains: {value: 230.0}
+
+  - entity_type: bullet
+    tier: hard
+    category: fuzzy_name
+    description: Berger Juggernaut 185gr — abbreviated
+    expected_entity_id: a45bbd49-3b0a-42a1-94d9-1a83d8102e06
+    extraction:
+      name: {value: "Juggernaut Target 185"}
+      manufacturer: {value: "Berger Bullets"}
+      bullet_diameter_inches: {value: 0.308}
+      weight_grains: {value: 185.0}
+
+  - entity_type: cartridge
+    tier: hard
+    category: fuzzy_name
+    description: Federal ELD-X 6.5CM 143gr — minimal tokens
+    expected_entity_id: aa9c8dc1-dda5-4731-be9b-07a7260fc3f9
+    extraction:
+      name: {value: "6.5 Creedmoor 143gr ELD-X"}
+      manufacturer: {value: "Federal"}
+      caliber: {value: "6.5 Creedmoor"}
+      bullet_weight_grains: {value: 143.0}
+
+  - entity_type: cartridge
+    tier: hard
+    category: fuzzy_name
+    description: Hornady 375 H&H 300gr DGS — short extracted name
+    expected_entity_id: 06ec047a-9bb0-464f-af59-70999b2513c1
+    extraction:
+      name: {value: "375 H&H 300gr DGS"}
+      manufacturer: {value: "Hornady"}
+      caliber: {value: ".375 H&H Magnum"}
+      bullet_weight_grains: {value: 300.0}
+
+  - entity_type: bullet
+    tier: hard
+    category: no_match_expected
+    description: Totally unknown bullet — shouldn't match anything
+    expected_entity_id: null
+    extraction:
+      name: {value: "Acme Unobtainium 742gr Hypertip"}
+      manufacturer: {value: "Acme Tactical"}
+      bullet_diameter_inches: {value: 0.308}
+      weight_grains: {value: 742.0}
+
+  - entity_type: bullet
+    tier: hard
+    category: no_match_expected
+    description: Known manufacturer but non-existent weight variant
+    expected_entity_id: null
+    extraction:
+      name: {value: "30 Cal .308 999 gr ELD Match"}
+      manufacturer: {value: "Hornady"}
+      bullet_diameter_inches: {value: 0.308}
+      weight_grains: {value: 999.0}
+
+  - entity_type: cartridge
+    tier: hard
+    category: no_match_expected
+    description: Nonexistent wildcat caliber cartridge
+    expected_entity_id: null
+    extraction:
+      name: {value: "6.5-284 Norma Wildcat 140gr HPBT"}
+      manufacturer: {value: "Acme Tactical"}
+      caliber: {value: "6.5-284 Norma"}
+      bullet_weight_grains: {value: 140.0}
+
+  # ═════════════════════════════════════════════════════════════════════════
+  # Extended coverage — additional cartridge + edge cases
+  # ═════════════════════════════════════════════════════════════════════════
+
+  - entity_type: cartridge
+    tier: easy
+    category: exact_sku
+    description: Winchester 308 Win 150gr Ballistic Silvertip
+    expected_entity_id: 6b758a68-1ba6-44d9-90e8-dadba18c5950
+    extraction:
+      name: {value: "308 Winchester, 150 Grain Ballistic Silvertip"}
+      manufacturer: {value: "Winchester"}
+      caliber: {value: ".308 Winchester"}
+      bullet_weight_grains: {value: 150.0}
+      sku: {value: "SBST308"}
+
+  - entity_type: cartridge
+    tier: easy
+    category: exact_sku
+    description: Hornady 7mm PRC 175gr ELD-X Precision Hunter
+    expected_entity_id: 7672bad5-3f19-4c99-88b1-00b8897baddc
+    extraction:
+      name: {value: "7mm PRC 175 gr ELD-X Precision Hunter"}
+      manufacturer: {value: "Hornady"}
+      caliber: {value: "7mm PRC"}
+      bullet_weight_grains: {value: 175.0}
+      sku: {value: "80712"}
+
+  - entity_type: cartridge
+    tier: easy
+    category: exact_sku
+    description: Nosler 7mm Rem Mag 168gr ABLR Trophy Grade
+    expected_entity_id: d696e196-4898-4ae5-a352-4d40e53e96f9
+    extraction:
+      name: {value: "7mm Rem Mag 168gr AccuBond Long Range Trophy Grade Ammunition"}
+      manufacturer: {value: "Nosler"}
+      caliber: {value: "7mm Remington Magnum"}
+      bullet_weight_grains: {value: 168.0}
+      sku: {value: "60108"}
+
+  - entity_type: cartridge
+    tier: easy
+    category: exact_sku
+    description: Federal 7mm PRC 175gr ELD-X
+    expected_entity_id: 61135362-bcfc-49f1-90ed-317e217ac047
+    extraction:
+      name: {value: "ELD-X, 7MM PRC, 175 Grain, ELD-X, 3000 fps"}
+      manufacturer: {value: "Federal"}
+      caliber: {value: "7mm PRC"}
+      bullet_weight_grains: {value: 175.0}
+      muzzle_velocity_fps: {value: 3000}
+      sku: {value: "P7PRCELDX1"}
+
+  - entity_type: cartridge
+    tier: medium
+    category: composite_key
+    description: Hornady 5.56 NATO 62gr FMJ Frontier — no SKU
+    expected_entity_id: 4e76f8f6-0427-4da1-af6b-fe6bcf1a2a29
+    extraction:
+      name: {value: "5.56 NATO 62 gr FMJ Frontier"}
+      manufacturer: {value: "Hornady"}
+      caliber: {value: "5.56x45mm NATO"}
+      bullet_weight_grains: {value: 62.0}
+
+  - entity_type: cartridge
+    tier: medium
+    category: composite_key
+    description: Nosler 222 Rem 50gr Ballistic Tip — no SKU
+    expected_entity_id: 712b0293-0438-4b12-87b8-aa7380a171d1
+    extraction:
+      name: {value: "222 Remington 50gr Ballistic Tip SP Ammunition"}
+      manufacturer: {value: "Nosler"}
+      caliber: {value: ".222 Remington"}
+      bullet_weight_grains: {value: 50.0}
+
+  - entity_type: cartridge
+    tier: medium
+    category: composite_key
+    description: Federal 458 Lott 500gr Sledgehammer Solid — no SKU
+    expected_entity_id: c1cda3e6-030c-4e24-90f0-f6b8470d12aa
+    extraction:
+      name: {value: "Safari Trophy Bonded Sledgehammer Solid, 458 Lott, 500 Grain"}
+      manufacturer: {value: "Federal"}
+      caliber: {value: ".458 Lott"}
+      bullet_weight_grains: {value: 500.0}
+
+  - entity_type: cartridge
+    tier: medium
+    category: composite_key
+    description: Hornady 6.5CM 140gr BTHP American Gunner
+    expected_entity_id: 13671eab-0701-4c46-94b9-e437a43933c0
+    extraction:
+      name: {value: "6.5 Creedmoor 140 gr BTHP American Gunner"}
+      manufacturer: {value: "Hornady"}
+      caliber: {value: "6.5 Creedmoor"}
+      bullet_weight_grains: {value: 140.0}
+
+  - entity_type: cartridge
+    tier: medium
+    category: composite_key
+    description: Winchester 30-06 190gr — short name without SKU
+    expected_entity_id: 4b066963-909c-492b-a0a6-e7c04641ffef
+    extraction:
+      name: {value: "30-06 Springfield, 190 Grain"}
+      manufacturer: {value: "Winchester"}
+      caliber: {value: ".30-06 Springfield"}
+      bullet_weight_grains: {value: 190.0}
+
+  - entity_type: cartridge
+    tier: hard
+    category: fuzzy_name
+    description: Federal 30-06 165gr Trophy Bonded Tip — abbreviated
+    expected_entity_id: c1286566-2ea3-431a-8fb2-71520a67d0e6
+    extraction:
+      name: {value: "Trophy Bonded Tip 30-06 165gr"}
+      manufacturer: {value: "Federal"}
+      caliber: {value: ".30-06 Springfield"}
+      bullet_weight_grains: {value: 165.0}
+
+  - entity_type: cartridge
+    tier: hard
+    category: fuzzy_name
+    description: Nosler 7mm-08 140gr Ballistic Tip — terse
+    expected_entity_id: 9cbbbedf-270b-4b3d-a8f9-5c9db2cd6ed7
+    extraction:
+      name: {value: "7mm-08 Rem 140gr Ballistic Tip"}
+      manufacturer: {value: "Nosler"}
+      caliber: {value: "7mm-08 Remington"}
+      bullet_weight_grains: {value: 140.0}
+
+  # ─── Additional bullet coverage ──────────────────────────────────────────
+
+  - entity_type: bullet
+    tier: easy
+    category: exact_sku
+    description: Hornady 338 285gr ELD Match
+    expected_entity_id: b62ff2d0-239d-4f7a-89c1-98d1446435c2
+    extraction:
+      name: {value: "338 Cal .338 285 gr ELD Match"}
+      manufacturer: {value: "Hornady"}
+      bullet_diameter_inches: {value: 0.338}
+      weight_grains: {value: 285.0}
+      sku: {value: "33381"}
+
+  - entity_type: bullet
+    tier: easy
+    category: exact_sku
+    description: Hornady 7mm 180gr ELD Match
+    expected_entity_id: bf4ed38e-2eac-40c2-9f50-9dfb1f204fb4
+    extraction:
+      name: {value: "7mm .284 180 gr ELD Match"}
+      manufacturer: {value: "Hornady"}
+      bullet_diameter_inches: {value: 0.284}
+      weight_grains: {value: 180.0}
+      sku: {value: "28503"}
+
+  - entity_type: bullet
+    tier: easy
+    category: exact_sku
+    description: Barnes 338 LRX 250gr
+    expected_entity_id: 9246132b-8cfb-4069-867a-b5303ca46803
+    extraction:
+      name: {value: "0.338 338 CAL LRX 250 GR BT"}
+      manufacturer: {value: "Barnes Bullets"}
+      bullet_diameter_inches: {value: 0.338}
+      weight_grains: {value: 250.0}
+      sku: {value: "31150"}
+
+  - entity_type: bullet
+    tier: medium
+    category: composite_key
+    description: Nosler 270cal 130gr Ballistic Silvertip — no SKU
+    expected_entity_id: f5853de4-afce-4e26-9fa6-45c4c533cbb2
+    extraction:
+      name: {value: "270 Caliber 130gr Ballistic Silvertip"}
+      manufacturer: {value: "Nosler"}
+      bullet_diameter_inches: {value: 0.277}
+      weight_grains: {value: 130.0}
+
+  - entity_type: bullet
+    tier: medium
+    category: composite_key
+    description: Nosler 338 225gr Partition
+    expected_entity_id: 0216a5cc-b422-4bea-b65f-63b3cbffd1d3
+    extraction:
+      name: {value: "338 Caliber 225gr Partition"}
+      manufacturer: {value: "Nosler"}
+      bullet_diameter_inches: {value: 0.338}
+      weight_grains: {value: 225.0}
+
+  - entity_type: bullet
+    tier: medium
+    category: composite_key
+    description: Berger 338 300gr Hybrid OTM — no SKU
+    expected_entity_id: d987b0d6-770a-4262-be3a-113212be4119
+    extraction:
+      name: {value: "338 Caliber 300 Grain Hybrid OTM Tactical Rifle Bullet"}
+      manufacturer: {value: "Berger Bullets"}
+      bullet_diameter_inches: {value: 0.338}
+      weight_grains: {value: 300.0}
+
+  - entity_type: bullet
+    tier: medium
+    category: pl_alias
+    description: Sierra TMK alias — 30cal 168gr Tipped MatchKing
+    expected_entity_id: 09c96f7b-fb28-48e6-9327-b08a80814f89
+    extraction:
+      name: {value: "30 cal 168gr TMK"}
+      manufacturer: {value: "Sierra Bullets"}
+      bullet_diameter_inches: {value: 0.308}
+      weight_grains: {value: 168.0}
+      product_line: {value: "TMK"}
+
+  - entity_type: bullet
+    tier: hard
+    category: no_match_baseline
+    description: >-
+      Hornady terse "180gr ELDM" without explicit product_line — current
+      behavior is no match (alias table lookup needs explicit PL field;
+      name-level "ELDM" falls below fuzzy threshold). Captures the gap; a
+      future enhancement that tokenizes PL aliases inline would flip this.
+    expected_entity_id: null
+    extraction:
+      name: {value: "180gr ELDM"}
+      manufacturer: {value: "Hornady"}
+      bullet_diameter_inches: {value: 0.284}
+      weight_grains: {value: 180.0}
+
+  - entity_type: bullet
+    tier: hard
+    category: fuzzy_name
+    description: Barnes 50gr TTSX — terse
+    expected_entity_id: ace81340-fd1e-43e2-9021-bc25dca7782c
+    extraction:
+      name: {value: "TTSX 50gr FB"}
+      manufacturer: {value: "Barnes Bullets"}
+      bullet_diameter_inches: {value: 0.224}
+      weight_grains: {value: 50.0}
+
+  - entity_type: bullet
+    tier: hard
+    category: fuzzy_name
+    description: Lapua Scenar 250gr 338 — terse with gram weight in name
+    expected_entity_id: af9c53c3-cf28-47f8-9023-214095fa82e1
+    extraction:
+      name: {value: "Scenar 250gr"}
+      manufacturer: {value: "Lapua"}
+      bullet_diameter_inches: {value: 0.338}
+      weight_grains: {value: 250.0}
