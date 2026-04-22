@@ -25,6 +25,7 @@ from pathlib import Path
 from drift.pipeline.config import (
     BATCH_DIR,
     EXTRACTED_DIR,
+    FETCHED_DIR,
     MANIFEST_PATH,
     REDUCED_DIR,
     REVIEW_DIR,
@@ -149,6 +150,58 @@ def _load_pending_items(  # noqa: C901
     return pending, hash_lookup
 
 
+def _read_raw_html(uhash: str) -> str | None:
+    """Load raw HTML from fetched cache by url_hash, or None if missing."""
+    raw_path = FETCHED_DIR / f"{uhash}.html"
+    if not raw_path.exists():
+        return None
+    try:
+        return raw_path.read_text(encoding="utf-8")
+    except OSError as e:
+        logger.warning("Failed to read raw HTML at %s: %s", raw_path, e)
+        return None
+
+
+def _partition_pending_via_parser(engine, pending, flagged_items):
+    """Split pending items into (parser-handled, LLM-required).
+
+    Items a domain parser can fully handle are saved immediately and kept out
+    of the LLM batch; the remainder are returned for batch submission.
+    """
+    parsed_count = 0
+    parser_flagged = 0
+    batch_items: list = []
+    item_meta: dict[str, dict] = {}
+
+    from drift.pipeline.extraction.batch import BatchItem
+
+    for item in pending:
+        uhash = item["url_hash"]
+        url = item["url"]
+        entity_type = item["entity_type"]
+
+        raw_html = _read_raw_html(uhash)
+        parser_result = engine.try_parse(url, entity_type, raw_html) if raw_html else None
+        if parser_result is not None:
+            _save_extraction(uhash, url, entity_type, parser_result, flagged_items)
+            parsed_count += 1
+            if parser_result.warnings:
+                parser_flagged += 1
+            logger.info(
+                "[parser:%s] %s (%d entities)",
+                parser_result.parser_name,
+                url,
+                len(parser_result.entities),
+            )
+            continue
+
+        reduced_html = Path(item["reduced_html_path"]).read_text(encoding="utf-8")
+        batch_items.append(BatchItem(url_hash=uhash, url=url, entity_type=entity_type, reduced_html=reduced_html))
+        item_meta[uhash] = {"url": url, "entity_type": entity_type}
+
+    return batch_items, item_meta, {"parsed": parsed_count, "parser_flagged": parser_flagged}
+
+
 def _save_extraction(uhash: str, url: str, entity_type: str, result, flagged_items: list[dict]) -> None:
     """Save an extraction result to the cache and flag if needed."""
     extraction_data = {
@@ -157,6 +210,8 @@ def _save_extraction(uhash: str, url: str, entity_type: str, result, flagged_ite
         "entity_type": entity_type,
         "schema_version": SCHEMA_VERSIONS.get(entity_type, 1),
         "model": result.model,
+        "extraction_method": getattr(result, "extraction_method", "llm"),
+        "parser_name": getattr(result, "parser_name", None),
         "usage": result.usage,
         "entity_count": len(result.entities),
         "entities": result.raw_entities,
@@ -238,11 +293,12 @@ def _run_sync(args: argparse.Namespace, provider_name: str) -> None:
         url = item["url"]
         entity_type = item["entity_type"]
         reduced_html = Path(item["reduced_html_path"]).read_text(encoding="utf-8")
+        raw_html = _read_raw_html(uhash)
 
         logger.info("[%d/%d] EXTRACT (%s): %s", i + 1, total, entity_type, url)
 
         try:
-            result = engine.extract(reduced_html, entity_type)
+            result = engine.extract(reduced_html, entity_type, url=url, raw_html=raw_html)
             _save_extraction(uhash, url, entity_type, result, flagged_items)
 
             logger.info(
@@ -301,7 +357,7 @@ def _run_sync(args: argparse.Namespace, provider_name: str) -> None:
 
 def _run_batch(args: argparse.Namespace) -> None:
     """Batch extraction via Anthropic Message Batches API."""
-    from drift.pipeline.extraction.batch import BatchExtractor, BatchItem
+    from drift.pipeline.extraction.batch import BatchExtractor
     from drift.pipeline.extraction.providers.anthropic_provider import AnthropicProvider
 
     pending, _ = _load_pending_items(args.manifest, args.limit, args.reextract)
@@ -320,23 +376,25 @@ def _run_batch(args: argparse.Namespace) -> None:
     engine = ExtractionEngine(provider=provider, model=args.model)
     batch_extractor = BatchExtractor(engine=engine, client=provider.client)
 
-    # Build batch items
-    batch_items = []
-    item_meta: dict[str, dict] = {}  # url_hash → {url, entity_type}
-    for item in pending:
-        reduced_html = Path(item["reduced_html_path"]).read_text(encoding="utf-8")
-        batch_items.append(
-            BatchItem(
-                url_hash=item["url_hash"],
-                url=item["url"],
-                entity_type=item["entity_type"],
-                reduced_html=reduced_html,
-            )
+    flagged_items: list[dict] = []
+    batch_items, item_meta, parser_stats = _partition_pending_via_parser(engine, pending, flagged_items)
+    if parser_stats["parsed"]:
+        logger.info(
+            "Parser pre-filter: %d items extracted locally, %d remaining for batch",
+            parser_stats["parsed"],
+            len(batch_items),
         )
-        item_meta[item["url_hash"]] = {
-            "url": item["url"],
-            "entity_type": item["entity_type"],
-        }
+
+    if not batch_items:
+        flagged_path = _write_flagged(flagged_items)
+        print()
+        print(
+            f"Done: {parser_stats['parsed']} parsed, {skipped} skipped "
+            f"(of {skipped + total} total) — no batch submitted"
+        )
+        if flagged_path:
+            print(f"Flagged items written to: {flagged_path}")
+        return
 
     # Submit and save batch metadata
     batch_id = batch_extractor.submit(batch_items)
@@ -354,15 +412,17 @@ def _run_batch(args: argparse.Namespace) -> None:
     item_types = {uhash: meta["entity_type"] for uhash, meta in item_meta.items()}
     results = batch_extractor.collect(batch_id, item_types)
 
-    # Save results
-    flagged_items: list[dict] = []
+    # Save results (flagged_items is populated by parser pre-filter already)
     stats = _process_batch_results(results, item_meta, flagged_items)
     flagged_path = _write_flagged(flagged_items)
 
+    total_succeeded = stats["succeeded"] + parser_stats["parsed"]
+    total_flagged = stats["flagged"] + parser_stats["parser_flagged"]
     print()
     print(
-        f"Done (batch {batch_id}): {stats['succeeded']} extracted, {skipped} skipped, "
-        f"{stats['errored']} errored, {stats['flagged']} flagged "
+        f"Done (batch {batch_id}): {total_succeeded} extracted "
+        f"({parser_stats['parsed']} via parser, {stats['succeeded']} via LLM), "
+        f"{skipped} skipped, {stats['errored']} errored, {total_flagged} flagged "
         f"(of {skipped + total} total)"
     )
     if flagged_path:

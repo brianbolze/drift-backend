@@ -12,6 +12,7 @@ import logging
 import random
 import re
 import time
+from urllib.parse import urlparse
 
 import pydantic
 
@@ -271,7 +272,14 @@ _SCHEMA_MAP: dict[str, type[EntityType]] = {
 
 
 class ExtractionResult:
-    """Result of extracting entities from a single page."""
+    """Result of extracting entities from a single page.
+
+    ``extraction_method`` records which path produced the result:
+    ``"parser"`` — deterministic parser succeeded; ``usage`` is zero.
+    ``"parser_fellthrough_to_llm"`` — a parser applied but couldn't handle
+    the page; the LLM ran and produced this result.
+    ``"llm"`` — no parser was registered/applicable for the domain.
+    """
 
     def __init__(
         self,
@@ -281,6 +289,8 @@ class ExtractionResult:
         warnings: list[str],
         model: str,
         usage: dict,
+        extraction_method: str = "llm",
+        parser_name: str | None = None,
     ):
         self.entities = entities
         self.raw_entities = raw_entities
@@ -288,6 +298,8 @@ class ExtractionResult:
         self.warnings = warnings
         self.model = model
         self.usage = usage
+        self.extraction_method = extraction_method
+        self.parser_name = parser_name
 
 
 class ExtractionEngine:
@@ -367,18 +379,127 @@ class ExtractionEngine:
         """The model string this engine uses."""
         return self._model
 
-    def extract(self, reduced_html: str, entity_type: str) -> ExtractionResult:
+    def _resolve_parser(self, url: str, entity_type: str):  # -> BaseParser | None
+        """Return the registered parser for ``url``'s domain when applicable."""
+        from drift.pipeline.extraction.parsers import get_parser_for_domain
+
+        domain = urlparse(url).netloc.lower()
+        parser = get_parser_for_domain(domain)
+        if parser is None or entity_type not in parser.supported_entity_types:
+            return None
+        return parser
+
+    def try_parse(
+        self,
+        url: str,
+        entity_type: str,
+        raw_html: str | None,
+    ) -> ExtractionResult | None:
+        """Attempt deterministic parser extraction for ``url``.
+
+        Returns an ExtractionResult (with ``extraction_method="parser"``) when
+        a parser is registered for the domain, the parser produces a valid
+        result, and all entities pass validation ranges + the Pydantic gate.
+
+        Returns ``None`` in every fallthrough case — no parser registered,
+        entity type unsupported, raw HTML missing, parser returned None,
+        parser raised, or parser output failed validation. Callers should
+        fall through to the LLM path.
+        """
+        from drift.pipeline.extraction.parsers import ParserError
+
+        parser = self._resolve_parser(url, entity_type)
+        if parser is None:
+            return None
+        if not raw_html:
+            logger.debug("Parser %s: no raw HTML available for %s — LLM fallback", parser.name, url)
+            return None
+
+        try:
+            parser_result = parser.parse(raw_html, url, entity_type)
+        except ParserError as e:
+            logger.warning("Parser %s raised ParserError on %s: %s — LLM fallback", parser.name, url, e)
+            return None
+        except Exception:
+            logger.exception("Parser %s raised unexpectedly on %s — LLM fallback", parser.name, url)
+            return None
+
+        if parser_result is None:
+            logger.debug("Parser %s declined %s — LLM fallback", parser.name, url)
+            return None
+
+        if entity_type not in _SCHEMA_MAP:
+            logger.warning(
+                "Parser %s returned result for unknown entity_type %r — LLM fallback", parser.name, entity_type
+            )
+            return None
+
+        raw_entities = [e.model_dump() for e in parser_result.entities]
+        range_warnings = validate_ranges(raw_entities)
+        if range_warnings:
+            logger.warning(
+                "Parser %s produced out-of-range values on %s: %s — LLM fallback",
+                parser.name,
+                url,
+                range_warnings,
+            )
+            return None
+
+        # Pydantic gate — no-op in the happy case, catches drift if a parser
+        # ever returns a dict shape the current schema can't load.
+        pydantic_class = _SCHEMA_MAP[entity_type]
+        validated: list[EntityType] = []
+        for raw in raw_entities:
+            try:
+                validated.append(pydantic_class.model_validate(raw))
+            except pydantic.ValidationError as e:
+                logger.warning(
+                    "Parser %s produced Pydantic-invalid entity on %s: %s — LLM fallback",
+                    parser.name,
+                    url,
+                    e,
+                )
+                return None
+
+        return ExtractionResult(
+            entities=validated,
+            raw_entities=raw_entities,
+            bc_sources=list(parser_result.bc_sources),
+            warnings=list(parser_result.warnings),
+            model=self._model,
+            usage={"input_tokens": 0, "output_tokens": 0},
+            extraction_method="parser",
+            parser_name=parser.name,
+        )
+
+    def extract(
+        self,
+        reduced_html: str,
+        entity_type: str,
+        *,
+        url: str | None = None,
+        raw_html: str | None = None,
+    ) -> ExtractionResult:
         """Extract entities from reduced HTML (synchronous, single request).
 
-        Uses exponential backoff on rate limit errors.
+        When ``url`` and ``raw_html`` are both provided, the engine first tries
+        a deterministic parser for the URL's domain. On any fallthrough
+        condition (no parser, parser returns None, raises, or produces
+        invalid output), the LLM path runs exactly as before — the resulting
+        ExtractionResult carries ``extraction_method="parser_fellthrough_to_llm"``
+        so telemetry can distinguish it from a pure-LLM run.
 
-        Args:
-            reduced_html: HTML that has been through the reducer.
-            entity_type: One of "bullet", "cartridge", "rifle".
-
-        Returns:
-            ExtractionResult with parsed entities, BC sources, and validation warnings.
+        Uses exponential backoff on rate limit errors for the LLM path.
         """
+        fellthrough_from_parser = False
+        if url:
+            applicable_parser = self._resolve_parser(url, entity_type) if raw_html else None
+            if applicable_parser is not None:
+                parser_result = self.try_parse(url, entity_type, raw_html)
+                if parser_result is not None:
+                    return parser_result
+                fellthrough_from_parser = True
+
         system_prompt, user_message = self.build_messages(reduced_html, entity_type)
 
         logger.info("Extracting %s entities with %s (%d chars input)", entity_type, self._model, len(reduced_html))
@@ -422,13 +543,20 @@ class ExtractionEngine:
         usage = {
             "input_tokens": llm_response.input_tokens,
             "output_tokens": llm_response.output_tokens,
+            "cache_creation_input_tokens": llm_response.cache_creation_input_tokens,
+            "cache_read_input_tokens": llm_response.cache_read_input_tokens,
         }
 
         logger.info(
-            "Response: %d chars, %d input / %d output tokens",
+            "Response: %d chars, %d input / %d output tokens (cache write=%s, read=%s)",
             len(llm_response.text),
             usage["input_tokens"],
             usage["output_tokens"],
+            usage["cache_creation_input_tokens"],
+            usage["cache_read_input_tokens"],
         )
 
-        return self.parse_response(llm_response.text, entity_type, usage=usage)
+        llm_result = self.parse_response(llm_response.text, entity_type, usage=usage)
+        if fellthrough_from_parser:
+            llm_result.extraction_method = "parser_fellthrough_to_llm"
+        return llm_result

@@ -169,3 +169,12 @@ DOMAIN_CONTENT_SELECTORS: dict[str, str] = {
     "cuttingedgebullets.com": "#main",  # Shopify — uses div#main, not <main>
     "lehighdefense.com": "main#maincontent",  # Magento 2
 }
+
+# ── Parser-First Extraction ─────────────────────────────────────────────────
+# Per-domain deterministic parser override. Domains listed here run through a
+# typed parser first; the LLM path is used as a fallback when the parser
+# returns None, raises, or produces out-of-range values.
+
+DOMAIN_PARSER: dict[str, str] = {
+    "www.hornady.com": "hornady",
+}
