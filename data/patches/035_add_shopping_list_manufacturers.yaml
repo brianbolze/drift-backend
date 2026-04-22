@@ -1,0 +1,47 @@
+patch:
+  id: 035_add_shopping_list_manufacturers
+  author: agent
+  date: '2026-04-22'
+  description: >
+    Add PMC, Fiocchi, and HSM to the manufacturer table. These are high-volume
+    retail ammunition brands (PMC Bronze / X-Tac, Fiocchi Extrema / Range
+    Dynamics, HSM Trophy Gold / Tipping Point) identified in the 2026-04-07
+    factory cartridge shopping list as zero-coverage manufacturers. Adding
+    the manufacturer rows unblocks Firecrawl-map URL discovery and subsequent
+    pipeline ingestion; no cartridges or bullets are added here.
+
+operations:
+
+  - action: create_manufacturer
+    name: PMC
+    short_name: PMC
+    country: South Korea
+    website_url: https://pmcammo.com
+    type_tags: [cartridge_manufacturer]
+    notes: >
+      Poongsan Corporation (Precision Made Cartridges). High-volume retail
+      ammo — Bronze, X-Tac, Gold Line. Budget pricing, broad caliber coverage.
+
+  - action: create_manufacturer
+    name: Fiocchi
+    short_name: Fiocchi
+    alt_names: ["Fiocchi Munizioni", "Fiocchi of America"]
+    country: Italy
+    website_url: https://www.fiocchiusa.com
+    type_tags: [cartridge_manufacturer]
+    notes: >
+      Italian manufacturer (Fiocchi Munizioni S.p.A.) with strong US retail
+      presence via Fiocchi of America. Product lines include Extrema, Range
+      Dynamics, Field Dynamics, Target Max.
+
+  - action: create_manufacturer
+    name: HSM
+    short_name: HSM
+    alt_names: ["HSM Ammunition", "Hunting Shack"]
+    country: United States
+    website_url: https://thehuntingshack.com
+    type_tags: [cartridge_manufacturer]
+    notes: >
+      Hunting Shack Munitions (Stevensville, MT). Known for Trophy Gold
+      (Berger-loaded hunting), Tipping Point (Sierra Game Changer), and
+      Low Recoil hunting ammunition.

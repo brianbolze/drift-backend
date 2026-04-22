@@ -28,6 +28,7 @@ from drift.models import (
     Caliber,
     Cartridge,
     EntityAlias,
+    Manufacturer,
     RifleModel,
 )
 from drift.resolution.aliases import lookup_entity
@@ -118,6 +119,21 @@ class CreateCaliberOp(BaseModel):
     year_introduced: int | None = Field(None, ge=1800, le=2030)
     is_common_lr: bool = False
     source_url: str | None = Field(None, max_length=500)
+
+
+class CreateManufacturerOp(BaseModel):
+    model_config = ConfigDict(str_strip_whitespace=True)
+
+    action: Literal["create_manufacturer"]
+    name: str = Field(..., min_length=1, max_length=255)
+    short_name: str | None = Field(None, max_length=50)
+    alt_names: list[str] | None = None
+    website_url: str | None = Field(None, max_length=500)
+    logo_url: str | None = Field(None, max_length=500)
+    type_tags: list[str] | None = None
+    country: str | None = Field(None, max_length=100)
+    parent_company: str | None = Field(None, max_length=255)
+    notes: str | None = None
 
 
 class CreateBulletOp(BaseModel):
@@ -267,6 +283,7 @@ class AddEntityAliasOp(BaseModel):
 
 Operation = Annotated[
     Union[
+        CreateManufacturerOp,
         CreateCaliberOp,
         CreateBulletOp,
         CreateCartridgeOp,
@@ -326,6 +343,10 @@ def _resolve_bullet(session: Session, manufacturer_id: str, name: str) -> str:
 
 def _caliber_exists(session: Session, name: str) -> Caliber | None:
     return session.scalars(select(Caliber).where(func.lower(Caliber.name) == name.lower())).first()
+
+
+def _manufacturer_exists(session: Session, name: str) -> Manufacturer | None:
+    return session.scalars(select(Manufacturer).where(func.lower(Manufacturer.name) == name.lower())).first()
 
 
 def _bullet_exists(session: Session, manufacturer_id: str, name: str, sku: str | None) -> Bullet | None:
@@ -390,6 +411,31 @@ class ApplyStats:
 
 
 # ── Operation Handlers ───────────────────────────────────────────────────────
+
+
+def _apply_create_manufacturer(session: Session, op: CreateManufacturerOp, stats: ApplyStats, index: int) -> None:
+    existing = _manufacturer_exists(session, op.name)
+    if existing:
+        stats.skipped += 1
+        stats.details.append(f"  [{index}] SKIP create_manufacturer: {op.name!r} (id={existing.id})")
+        return
+
+    manufacturer = Manufacturer(
+        id=str(uuid.uuid4()),
+        name=op.name,
+        short_name=op.short_name,
+        alt_names=op.alt_names,
+        website_url=op.website_url,
+        logo_url=op.logo_url,
+        type_tags=op.type_tags,
+        country=op.country,
+        parent_company=op.parent_company,
+        notes=op.notes,
+    )
+    session.add(manufacturer)
+    session.flush()
+    stats.created += 1
+    stats.details.append(f"  [{index}] CREATE manufacturer: {op.name!r} (id={manufacturer.id})")
 
 
 def _apply_create_caliber(session: Session, op: CreateCaliberOp, stats: ApplyStats, index: int) -> None:
@@ -725,6 +771,7 @@ def _apply_add_entity_alias(session: Session, op: AddEntityAliasOp, stats: Apply
 
 
 _HANDLERS = {
+    "create_manufacturer": _apply_create_manufacturer,
     "create_caliber": _apply_create_caliber,
     "create_bullet": _apply_create_bullet,
     "create_cartridge": _apply_create_cartridge,
