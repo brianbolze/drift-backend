@@ -187,10 +187,16 @@ class ResolutionConfig:
     # Mag fuzzy-matched to .338-378 Wby Mag in the caliber table, so the
     # bullet search filtered to .338 and missed the actual .308 bullet).
     # Accepted only when the fallback's weight exactly matches the cartridge
-    # (±1 gr) and name similarity meets ``fallback_min_name_confidence``.
+    # (±1 gr) and raw name similarity (extracted vs matched bullet name)
+    # meets ``fallback_min_raw_name_similarity``. The older
+    # ``fallback_min_name_confidence`` gated on the composite-inflated
+    # ``MatchResult.confidence``, which is ≥0.85 for any composite_key hit
+    # regardless of name quality — so it was effectively a no-op and let
+    # cross-caliber bullets through (see v6 regression, 2026-04-22).
     enable_relaxed_diameter_fallback: bool = True
     fallback_weight_tolerance_grains: float = 1.0
     fallback_min_name_confidence: float = 0.85
+    fallback_min_raw_name_similarity: float = 0.9
     # Confidence penalty applied to a relaxed-diameter match (multiplicative).
     fallback_confidence_penalty: float = 0.9
 

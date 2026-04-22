@@ -1049,10 +1049,23 @@ class EntityResolver:
                             fb_weight_diff = abs(fb_bullet.weight_grains - float(weight)) if fb_bullet else float("inf")
                         except (TypeError, ValueError):
                             fb_weight_diff = float("inf")
+                        # Raw name similarity between extracted bullet name and the
+                        # fallback-matched bullet name. Gating on this (not on
+                        # MatchResult.confidence) prevents the composite_key tier's
+                        # 0.85 base from auto-passing cross-caliber picks.
+                        fb_raw_name_sim = (
+                            max(
+                                _name_similarity(bullet_name, fb_bullet.name),
+                                _bullet_name_score(bullet_name, fb_bullet.name),
+                            )
+                            if fb_bullet and bullet_name and fb_bullet.name
+                            else 0.0
+                        )
                         if (
                             fb_bullet is not None
                             and fb_weight_diff <= self._config.fallback_weight_tolerance_grains
                             and fallback.confidence >= self._config.fallback_min_name_confidence
+                            and fb_raw_name_sim >= self._config.fallback_min_raw_name_similarity
                         ):
                             penalty = self._config.fallback_confidence_penalty
                             bullet_match = MatchResult(
@@ -1063,19 +1076,36 @@ class EntityResolver:
                                 details=(
                                     f"relaxed-diameter fallback: {fb_bullet.name} "
                                     f'({fb_bullet.bullet_diameter_inches}", {fb_bullet.weight_grains}gr) '
-                                    f'vs cartridge diameter {cart_bullet_diameter}"'
+                                    f'vs cartridge diameter {cart_bullet_diameter}", '
+                                    f"raw_name_sim={fb_raw_name_sim:.2f}"
                                 ),
                                 alternatives=fallback.alternatives,
                                 methods_tried=(bullet_match.methods_tried or []) + ["relaxed_diameter"],
                             )
                             logger.info(
                                 "Relaxed-diameter fallback recovered %s for cartridge bullet '%s %.0fgr' "
-                                '(caliber-resolved diameter %.3f", bullet diameter %.3f")',
+                                '(caliber-resolved diameter %.3f", bullet diameter %.3f", raw_name_sim=%.2f)',
                                 fb_bullet.name,
                                 bullet_name,
                                 float(weight),
                                 cart_bullet_diameter,
                                 fb_bullet.bullet_diameter_inches,
+                                fb_raw_name_sim,
+                            )
+                        elif fb_bullet is not None:
+                            logger.info(
+                                "Relaxed-diameter fallback REJECTED %s for cartridge bullet '%s %.0fgr' "
+                                "(weight_diff=%.1fgr, fallback_conf=%.2f, raw_name_sim=%.2f; "
+                                "gates weight≤%.1f, conf≥%.2f, name_sim≥%.2f)",
+                                fb_bullet.name,
+                                bullet_name,
+                                float(weight),
+                                fb_weight_diff,
+                                fallback.confidence,
+                                fb_raw_name_sim,
+                                self._config.fallback_weight_tolerance_grains,
+                                self._config.fallback_min_name_confidence,
+                                self._config.fallback_min_raw_name_similarity,
                             )
 
                 # Require minimum confidence for bullet FK assignment — low-confidence

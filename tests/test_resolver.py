@@ -1847,3 +1847,228 @@ class TestBulletProductLineAlias:
             bullet_diameter_inches=0.308,
         )
         assert "product_line_alias" in result.methods_tried
+
+
+# ---------------------------------------------------------------------------
+# Relaxed-diameter fallback — v6 regression suite (2026-04-22)
+#
+# The fallback was introduced in 1875a00 to recover cartridges whose caliber
+# fuzzy-matched to a wrong-diameter variant. In the v6 dry-run it over-matched
+# 21 cartridges to wrong-caliber bullets (e.g. 30-06 165gr → .357 Handgun Solid)
+# because its ``fallback_min_name_confidence`` gate was applied to the
+# composite-inflated ``MatchResult.confidence`` — whose 0.85 floor equals the
+# gate. Fix adds ``fallback_min_raw_name_similarity`` gated on the extracted
+# name vs matched bullet name (raw similarity, not the composite-inflated
+# confidence). These 5 tests lock both the over-match reject (3, 5) and the
+# legitimate recovery path (4).
+# ---------------------------------------------------------------------------
+
+
+class TestRelaxedDiameterFallback:
+    """Regression tests pinning the v6 fix for fallback over-matching."""
+
+    @pytest.fixture()
+    def fallback_db(self, db):
+        """Seed minimal DB exercising the fallback path across multiple calibers."""
+        nosler = Manufacturer(name="Nosler", type_tags=["bullet_maker", "ammo_maker"], country="USA")
+        federal = Manufacturer(name="Federal", type_tags=["ammo_maker"], country="USA")
+        db.add_all([nosler, federal])
+        db.flush()
+
+        cal_308 = Caliber(name=".30-06 Springfield", bullet_diameter_inches=0.308)
+        cal_375 = Caliber(name=".375 H&H Magnum", bullet_diameter_inches=0.375)
+        cal_357 = Caliber(name=".357 Magnum", bullet_diameter_inches=0.357)
+        cal_458 = Caliber(name=".458 Winchester Magnum", bullet_diameter_inches=0.458)
+        # A caliber missing from DB: ".30-378 Weatherby" — fixture doesn't insert
+        # it. The resolver will fuzzy-match it to ".30-06 Springfield" (same .308)
+        # OR ".338-378" (different diameter) depending on what's available. For
+        # test 4 we want the resolver to land on a wrong-diameter caliber so the
+        # fallback path actually fires. Seed ".338-378 Weatherby Magnum" to win
+        # that fuzzy match.
+        cal_338_378 = Caliber(name=".338-378 Weatherby Magnum", bullet_diameter_inches=0.338)
+        db.add_all([cal_308, cal_375, cal_357, cal_458, cal_338_378])
+        db.flush()
+
+        # Bullets used by each test. Names chosen to expose the over-match pattern
+        # observed in the v6 regression — wrong-caliber bullet with matching weight
+        # but dissimilar name should be rejected; right-caliber bullet with matching
+        # weight and very similar name should be picked.
+        bullets = {
+            # Test 1: cross-caliber weight collision (180gr in .308 and .338)
+            "bt_hunting_308_180": Bullet(
+                manufacturer_id=nosler.id,
+                name="30 Caliber 180gr Ballistic Tip Hunting",
+                bullet_diameter_inches=0.308,
+                weight_grains=180.0,
+            ),
+            "accubond_338_180": Bullet(
+                manufacturer_id=nosler.id,
+                name="338 Caliber 180gr AccuBond",
+                bullet_diameter_inches=0.338,
+                weight_grains=180.0,
+            ),
+            # Test 2: .375 H&H 300gr Trophy Bonded Sledgehammer vs .458 JHP decoy
+            "sledgehammer_375_300": Bullet(
+                manufacturer_id=federal.id,
+                name="Trophy Bonded Sledgehammer Solid, .375, 300 Grain",
+                bullet_diameter_inches=0.375,
+                weight_grains=300.0,
+            ),
+            "jhp_458_300": Bullet(
+                manufacturer_id=federal.id,
+                name="Jacketed Hollow Point Rifle Bullet, .458, 300 Grain",
+                bullet_diameter_inches=0.458,
+                weight_grains=300.0,
+            ),
+            # Test 3: no right-caliber BT bullet exists at 165gr; decoys in wrong
+            # calibers (.357 Handgun Solid + .308 InterLock SP at 165gr).
+            "handgun_357_165": Bullet(
+                manufacturer_id=nosler.id,
+                name=".357 165gr Handgun Solid",
+                bullet_diameter_inches=0.357,
+                weight_grains=165.0,
+            ),
+            "interlock_308_165": Bullet(
+                manufacturer_id=nosler.id,
+                name="30 Caliber 165gr InterLock SP",
+                bullet_diameter_inches=0.308,
+                weight_grains=165.0,
+            ),
+            # Test 4: .30-378 Wby bullet lives at .308, caliber table only has
+            # .338-378 at 0.338 (so cartridge's caliber_id resolves to wrong
+            # diameter and the primary match returns nothing usable — fallback
+            # must kick in and pick the .308 bullet with matching name).
+            "legit_308_210": Bullet(
+                manufacturer_id=nosler.id,
+                name="30 Caliber 210gr AccuBond Long Range",
+                bullet_diameter_inches=0.308,
+                weight_grains=210.0,
+            ),
+            # Test 5: decoy bullet with inflated composite confidence but low raw
+            # name similarity. Name "Foo Bar" vs extracted "Ballistic Tip Hunting"
+            # will produce name_score ≈ 0.55 (just above composite_name_score_threshold)
+            # → confidence ≈ 0.85 + 0.1×0.55 ≈ 0.905 via composite_key. Passes
+            # the old confidence gate, fails the new raw-name gate.
+            "decoy_composite_trap": Bullet(
+                manufacturer_id=nosler.id,
+                name="30 Caliber 165gr Foo Bar Tip",
+                bullet_diameter_inches=0.277,
+                weight_grains=165.0,
+            ),
+        }
+        db.add_all(bullets.values())
+        db.commit()
+        return {
+            "mfrs": {"nosler": nosler, "federal": federal},
+            "calibers": {
+                "308": cal_308,
+                "375": cal_375,
+                "357": cal_357,
+                "458": cal_458,
+                "338_378": cal_338_378,
+            },
+            "bullets": bullets,
+        }
+
+    def test_1_cross_caliber_weight_collision_picks_right_diameter(self, fallback_db, db):
+        """Primary diameter-filtered path must pick .308 when caliber resolves correctly,
+        even though a same-weight .338 bullet exists. This doesn't exercise the fallback
+        — it validates the non-fallback baseline before the fallback even fires."""
+        resolver = EntityResolver(db)
+        result = resolver.resolve(
+            {
+                "name": {"value": "Nosler 30-06 180gr Ballistic Tip Hunting"},
+                "manufacturer": {"value": "Nosler"},
+                "caliber": {"value": ".30-06 Springfield"},
+                "bullet_name": {"value": "30 Caliber 180gr Ballistic Tip Hunting"},
+                "bullet_weight_grains": {"value": 180.0},
+            },
+            "cartridge",
+        )
+        assert (
+            result.bullet_id == fallback_db["bullets"]["bt_hunting_308_180"].id
+        ), "Expected .308 180gr Ballistic Tip Hunting, got wrong bullet"
+
+    def test_2_sledgehammer_375_not_458_jhp(self, fallback_db, db):
+        """.375 H&H 300gr Sledgehammer must not resolve to .458 JHP via fallback."""
+        resolver = EntityResolver(db)
+        result = resolver.resolve(
+            {
+                "name": {"value": "Federal Safari 375 H&H Magnum 300gr Trophy Bonded Sledgehammer Solid"},
+                "manufacturer": {"value": "Federal"},
+                "caliber": {"value": ".375 H&H Magnum"},
+                "bullet_name": {"value": "Trophy Bonded Sledgehammer Solid, .375, 300 Grain"},
+                "bullet_weight_grains": {"value": 300.0},
+            },
+            "cartridge",
+        )
+        assert (
+            result.bullet_id == fallback_db["bullets"]["sledgehammer_375_300"].id
+        ), "Expected .375 Sledgehammer; .458 JHP leakage indicates fallback over-match"
+
+    def test_3_no_right_bullet_fallback_must_not_pick_357_handgun(self, fallback_db, db):
+        """When the extracted bullet name "Ballistic Tip Hunting" has no .308 match at
+        165gr, the fallback must NOT accept ".357 165gr Handgun Solid". Either it picks
+        a correct-caliber bullet (not seeded here) or returns unmatched — but the .357
+        Handgun Solid has raw_name_sim ≪ 0.90 to "Ballistic Tip Hunting" and must be
+        rejected. This pins the exact failure mode observed in the v6 regression."""
+        resolver = EntityResolver(db)
+        result = resolver.resolve(
+            {
+                "name": {"value": "Nosler 30-06 Springfield 165gr Ballistic Tip Hunting"},
+                "manufacturer": {"value": "Nosler"},
+                "caliber": {"value": ".30-06 Springfield"},
+                "bullet_name": {"value": "30 Caliber 165gr Ballistic Tip Hunting"},
+                "bullet_weight_grains": {"value": 165.0},
+            },
+            "cartridge",
+        )
+        assert (
+            result.bullet_id != fallback_db["bullets"]["handgun_357_165"].id
+        ), ".357 Handgun Solid selected for a .308 cartridge — fallback gate failed"
+
+    def test_4_legitimate_recovery_wrong_caliber_resolved(self, fallback_db, db):
+        """Legitimate use case: extracted caliber ".30-378 Wby Mag" isn't in the caliber
+        table, so the resolver fuzzy-matches it to ".338-378 Weatherby Magnum" (wrong
+        diameter). Primary match filters to .338 and finds nothing. The fallback then
+        searches unfiltered, finds the .308 bullet whose name matches the extracted
+        bullet name nearly perfectly, and should recover it."""
+        resolver = EntityResolver(db)
+        result = resolver.resolve(
+            {
+                "name": {"value": "Nosler 30-378 Weatherby Magnum 210gr AccuBond Long Range"},
+                "manufacturer": {"value": "Nosler"},
+                "caliber": {"value": ".30-378 Weatherby Magnum"},
+                "bullet_name": {"value": "30 Caliber 210gr AccuBond Long Range"},
+                "bullet_weight_grains": {"value": 210.0},
+            },
+            "cartridge",
+        )
+        assert result.bullet_id == fallback_db["bullets"]["legit_308_210"].id, (
+            "Fallback failed to recover the .308 bullet when caliber fuzzy-resolved " "to wrong-diameter .338-378"
+        )
+
+    def test_5_composite_inflation_does_not_bypass_raw_name_gate(self, fallback_db, db):
+        """Direct regression pin: fallback candidate produces confidence ≈0.89 via the
+        composite_key base (0.85 + name_score*0.1) with name_score just above the
+        composite_name_score_threshold (0.55). Old gate ``fallback.confidence >= 0.85``
+        accepts; new raw-name gate rejects. This test MUST fail before the fix and
+        pass after."""
+        resolver = EntityResolver(db)
+        # Point the cartridge at a caliber whose primary lookup returns nothing so
+        # fallback fires. Decoy bullet has matching weight (165gr) but a dissimilar
+        # name ("Foo Bar Tip" vs "Ballistic Tip Hunting") that produces low raw
+        # name similarity despite clearing composite_name_score_threshold.
+        result = resolver.resolve(
+            {
+                "name": {"value": "Nosler 30-378 Weatherby Magnum 165gr Ballistic Tip Hunting"},
+                "manufacturer": {"value": "Nosler"},
+                "caliber": {"value": ".30-378 Weatherby Magnum"},
+                "bullet_name": {"value": "30 Caliber 165gr Ballistic Tip Hunting"},
+                "bullet_weight_grains": {"value": 165.0},
+            },
+            "cartridge",
+        )
+        assert (
+            result.bullet_id != fallback_db["bullets"]["decoy_composite_trap"].id
+        ), "Decoy bullet accepted via composite-inflated confidence — raw-name gate failed"
