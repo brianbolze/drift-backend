@@ -1,0 +1,74 @@
+{
+  "url": "https://www.hornady.com/ammunition/rifle/338-arc-285-gr-fmj-frontier",
+  "entity_type": "cartridge",
+  "entities": [
+    {
+      "name": {
+        "value": "338 ARC (Subsonic) 285 gr FMJ Frontier",
+        "source_text": "338 ARC (Subsonic) 285 gr FMJ Frontier\u00ae",
+        "confidence": 1.0
+      },
+      "manufacturer": {
+        "value": "Hornady",
+        "source_text": "hornady.com",
+        "confidence": 1.0
+      },
+      "caliber": {
+        "value": "338 ARC (Subsonic)",
+        "source_text": "caliber=338 ARC (Subsonic)",
+        "confidence": 1.0
+      },
+      "bullet_name": {
+        "value": "FMJ",
+        "source_text": "<a href=\"/bullets/fmj\" title=\"FMJ\">285 gr FMJ</a>",
+        "confidence": 0.9
+      },
+      "bullet_weight_grains": {
+        "value": 285.0,
+        "source_text": "\"weight\":285",
+        "confidence": 1.0
+      },
+      "bc_g1": {
+        "value": null,
+        "source_text": "",
+        "confidence": 0.0
+      },
+      "bc_g7": {
+        "value": null,
+        "source_text": "",
+        "confidence": 0.0
+      },
+      "bullet_length_inches": {
+        "value": null,
+        "source_text": "",
+        "confidence": 0.0
+      },
+      "muzzle_velocity_fps": {
+        "value": 1050,
+        "source_text": "\"muzzlevelocity\":1050",
+        "confidence": 1.0
+      },
+      "test_barrel_length_inches": {
+        "value": 24.0,
+        "source_text": "Test Barrel (24\"",
+        "confidence": 0.9
+      },
+      "round_count": {
+        "value": 20,
+        "source_text": "\"box_count\":20",
+        "confidence": 1.0
+      },
+      "product_line": {
+        "value": "Frontier",
+        "source_text": "<a href=\"https://www.hornady.com/ammunition/frontier\" title=\"Frontier\u00ae\">Frontier",
+        "confidence": 1.0
+      },
+      "sku": {
+        "value": "FR430",
+        "source_text": "sku=FR430",
+        "confidence": 1.0
+      }
+    }
+  ],
+  "bc_sources": []
+}

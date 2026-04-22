@@ -1,0 +1,89 @@
+{
+  "url": "https://www.hornady.com/ammunition/rifle/22-creedmoor-69-gr-eld-vt",
+  "entity_type": "cartridge",
+  "entities": [
+    {
+      "name": {
+        "value": "22 Creedmoor 69 gr ELD-VT V-MATCH",
+        "source_text": "22 Creedmoor 69 gr ELD-VT\u00ae V-MATCH\u00ae",
+        "confidence": 1.0
+      },
+      "manufacturer": {
+        "value": "Hornady",
+        "source_text": "hornady.com",
+        "confidence": 1.0
+      },
+      "caliber": {
+        "value": "22 Creedmoor",
+        "source_text": "cartridgename=22 Creedmoor",
+        "confidence": 1.0
+      },
+      "bullet_name": {
+        "value": "ELD\u2011VT",
+        "source_text": "<a href=\"/eld-vt\" title=\"ELD\u2011VT\u00ae\">69 gr ELD\u2011VT\u00ae</a>",
+        "confidence": 0.9
+      },
+      "bullet_weight_grains": {
+        "value": 69.0,
+        "source_text": "\"weight\":69",
+        "confidence": 1.0
+      },
+      "bc_g1": {
+        "value": 0.424,
+        "source_text": "\"ball_coef\":0.424",
+        "confidence": 1.0
+      },
+      "bc_g7": {
+        "value": 0.214,
+        "source_text": "\"ball_coef_2\":0.214",
+        "confidence": 1.0
+      },
+      "bullet_length_inches": {
+        "value": null,
+        "source_text": "",
+        "confidence": 0.0
+      },
+      "muzzle_velocity_fps": {
+        "value": 3550,
+        "source_text": "\"muzzlevelocity\":3550",
+        "confidence": 1.0
+      },
+      "test_barrel_length_inches": {
+        "value": 24.0,
+        "source_text": "Test Barrel (24\"",
+        "confidence": 0.9
+      },
+      "round_count": {
+        "value": 20,
+        "source_text": "\"box_count\":20",
+        "confidence": 1.0
+      },
+      "product_line": {
+        "value": "V\u2011Match",
+        "source_text": "<a href=\"https://www.hornady.com/v-match\" title=\"V\u2011Match\u00ae\">V\u2011Match\u00ae</a>",
+        "confidence": 1.0
+      },
+      "sku": {
+        "value": "83414",
+        "source_text": "sku=83414",
+        "confidence": 1.0
+      }
+    }
+  ],
+  "bc_sources": [
+    {
+      "bullet_name": "ELD\u2011VT",
+      "bc_type": "g1",
+      "bc_value": 0.424,
+      "source": "cartridge_page",
+      "source_methodology": null
+    },
+    {
+      "bullet_name": "ELD\u2011VT",
+      "bc_type": "g7",
+      "bc_value": 0.214,
+      "source": "cartridge_page",
+      "source_methodology": null
+    }
+  ]
+}

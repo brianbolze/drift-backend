@@ -1,0 +1,82 @@
+{
+  "url": "https://www.hornady.com/ammunition/handgun/9mm-p-luger-124-gr-flexlock-critical-duty",
+  "entity_type": "cartridge",
+  "entities": [
+    {
+      "name": {
+        "value": "9mm +P Luger 124 gr FlexLock Critical Duty",
+        "source_text": "9mm +P Luger 124 gr FlexLock<sup>\u00ae</sup> Critical Duty<sup>\u00ae</sup>",
+        "confidence": 1.0
+      },
+      "manufacturer": {
+        "value": "Hornady",
+        "source_text": "hornady.com",
+        "confidence": 1.0
+      },
+      "caliber": {
+        "value": "9mm Luger +P",
+        "source_text": "caliber=9mm Luger +P",
+        "confidence": 1.0
+      },
+      "bullet_name": {
+        "value": "FlexLock",
+        "source_text": "124 gr FlexLock\u00ae",
+        "confidence": 0.9
+      },
+      "bullet_weight_grains": {
+        "value": 124.0,
+        "source_text": "\"weight\":124",
+        "confidence": 1.0
+      },
+      "bc_g1": {
+        "value": 0.165,
+        "source_text": "\"ball_coef\":0.165",
+        "confidence": 1.0
+      },
+      "bc_g7": {
+        "value": null,
+        "source_text": "",
+        "confidence": 0.0
+      },
+      "bullet_length_inches": {
+        "value": null,
+        "source_text": "",
+        "confidence": 0.0
+      },
+      "muzzle_velocity_fps": {
+        "value": 1175,
+        "source_text": "\"muzzlevelocity\":1175",
+        "confidence": 1.0
+      },
+      "test_barrel_length_inches": {
+        "value": 4.0,
+        "source_text": "Test Barrel (4\"",
+        "confidence": 0.9
+      },
+      "round_count": {
+        "value": 25,
+        "source_text": "\"box_count\":25",
+        "confidence": 1.0
+      },
+      "product_line": {
+        "value": "Critical Duty",
+        "source_text": "<a href=\"https://www.hornady.com/ammunition/critical-duty\" title=\"Critical Duty\u00ae",
+        "confidence": 1.0
+      },
+      "sku": {
+        "value": "90216",
+        "source_text": "sku=90216",
+        "confidence": 1.0
+      }
+    }
+  ],
+  "bc_sources": [
+    {
+      "bullet_name": "FlexLock",
+      "bc_type": "g1",
+      "bc_value": 0.165,
+      "source": "cartridge_page",
+      "source_methodology": null
+    }
+  ]
+}

@@ -1,0 +1,82 @@
+{
+  "url": "https://www.hornady.com/ammunition/rifle/300-savage-150-gr-sst-superformance",
+  "entity_type": "cartridge",
+  "entities": [
+    {
+      "name": {
+        "value": "300 Savage 150 gr SST Superformance",
+        "source_text": "300 Savage 150 gr SST<sup>\u00ae</sup> Superformance<sup>\u00ae</sup>",
+        "confidence": 1.0
+      },
+      "manufacturer": {
+        "value": "Hornady",
+        "source_text": "hornady.com",
+        "confidence": 1.0
+      },
+      "caliber": {
+        "value": "300 Savage",
+        "source_text": "cartridgename=300 Savage",
+        "confidence": 1.0
+      },
+      "bullet_name": {
+        "value": "SST",
+        "source_text": "<a href=\"/bullets/sst-(super-shock-tip)\" title=\"SST\u00ae (Super Shock Tip)\">150 gr S",
+        "confidence": 0.9
+      },
+      "bullet_weight_grains": {
+        "value": 150.0,
+        "source_text": "\"weight\":150",
+        "confidence": 1.0
+      },
+      "bc_g1": {
+        "value": 0.37,
+        "source_text": "\"ball_coef\":0.37",
+        "confidence": 1.0
+      },
+      "bc_g7": {
+        "value": null,
+        "source_text": "",
+        "confidence": 0.0
+      },
+      "bullet_length_inches": {
+        "value": null,
+        "source_text": "",
+        "confidence": 0.0
+      },
+      "muzzle_velocity_fps": {
+        "value": 2740,
+        "source_text": "\"muzzlevelocity\":2740",
+        "confidence": 1.0
+      },
+      "test_barrel_length_inches": {
+        "value": 24.0,
+        "source_text": "Test Barrel (24\"",
+        "confidence": 0.9
+      },
+      "round_count": {
+        "value": 20,
+        "source_text": "\"box_count\":20",
+        "confidence": 1.0
+      },
+      "product_line": {
+        "value": "Superformance",
+        "source_text": "<a href=\"https://www.hornady.com/ammunition/superformance\" title=\"Superformance\u00ae",
+        "confidence": 1.0
+      },
+      "sku": {
+        "value": "82221",
+        "source_text": "sku=82221",
+        "confidence": 1.0
+      }
+    }
+  ],
+  "bc_sources": [
+    {
+      "bullet_name": "SST",
+      "bc_type": "g1",
+      "bc_value": 0.37,
+      "source": "cartridge_page",
+      "source_methodology": null
+    }
+  ]
+}
