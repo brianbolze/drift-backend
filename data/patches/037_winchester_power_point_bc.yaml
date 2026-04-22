@@ -1,0 +1,18 @@
+patch:
+  id: "037_winchester_power_point_bc"
+  author: agent
+  date: "2026-04-22"
+  description: >
+    Add estimated G1 BC (0.314) to Winchester Power-Point 30 Cal 150gr so cart
+    X300BLK (300 BLK) survives the production BC-less filter. V5 had it wrongly
+    linked to Ballistic Silvertip; v6 correctly resolves to Power-Point (per
+    Winchester's X300BLK product URL) but Power-Point has no published BC.
+
+operations:
+
+  - action: update_bullet
+    manufacturer: "Winchester"
+    name: "Power-Point 30 Cal 150gr"
+    set:
+      bc_g1_estimated: 0.314
+      bc_source_notes: "Estimated from Winchester Super-X 150gr .308 Power-Point published trajectory data (third-party reloading references; Winchester does not publish BCs on the Power-Point product pages). Added 2026-04-22 to preserve v5→v6 PK stability for cart X300BLK after the resolver correctly relinked it from Ballistic Silvertip to Power-Point."
