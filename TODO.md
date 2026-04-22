@@ -38,6 +38,7 @@ Lightweight tech debt and engineering improvement tracker. Agents and humans app
 - [ ] Stale flagged entries persist on re-extraction — `_write_flagged` deduplicates by hash, so old warnings stick around (source: code review, 2026-03-06)
 - [ ] Sierra parser (PR #3 of parser-first rollout) — 248 cached extractions, label/value HTML table. Gated on Hornady's agreement report, which is now landed (source: parser_first_extraction.md, 2026-04-22)
 - [ ] Investigate 15 Hornady pages where the parser declines — likely missing inline product JSON, empty title, or no diameter in title. LLM handles them fine; worth understanding the shape before adding more domain parsers. Run `python scripts/parser_vs_db_report.py hornady` to list them. (source: parser rollout, 2026-04-22)
+- [ ] After Sierra, pick a cartridge-heavy manufacturer (Nosler / Federal / Black Hills) for PR #4 rather than another bullet-only site — Hornady and Sierra both stress the bullet path; the cartridge path (bullet_name linkage + resolver BC-boost) should be exercised on a second manufacturer before the parser pattern is generalized further (source: rollout review, 2026-04-22)
 
 ## Code / Tooling
 
