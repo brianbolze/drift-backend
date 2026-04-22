@@ -38,6 +38,10 @@ from drift.pipeline.utils import url_hash
 logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
 logger = logging.getLogger(__name__)
 
+# Sentinel used when a manifest entry lacks an explicit priority.
+# Chosen large enough to never collide with a real (human-assigned) priority value.
+_PRIORITY_MISSING = 10**9
+
 
 def _collect_rereduce_items(domain_filter: str | None) -> tuple[list[tuple], int]:
     """Scan reduced cache for items eligible for re-reduction. Returns (items, skipped_count)."""
@@ -135,6 +139,12 @@ async def main() -> None:  # noqa: C901
         "--delay", type=float, default=FIRECRAWL_RATE_LIMIT_SECONDS, help="Delay between requests (seconds)"
     )
     parser.add_argument("--limit", type=int, default=0, help="Max URLs to process (0 = all)")
+    parser.add_argument(
+        "--priority-max",
+        type=int,
+        default=0,
+        help="Only process entries with priority <= N (0 = no filter). Manifest entries missing a priority field are excluded when --priority-max is set.",
+    )
     parser.add_argument("--rereduce", action="store_true", help="Re-run reduction on fetched HTML without re-fetching")
     parser.add_argument("--domain", type=str, default=None, help="Domain filter for --rereduce (substring match)")
     args = parser.parse_args()
@@ -160,15 +170,22 @@ async def main() -> None:  # noqa: C901
 
     stats = {"fetched": 0, "skipped": 0, "failed": 0, "total": 0}
 
-    # Separate cached from pending, then apply limit to pending items only
+    # Separate cached from pending, then apply priority filter + sort + limit.
     pending = []
-    for entry in manifest:
+    for idx, entry in enumerate(manifest):
         uhash = url_hash(entry["url"])
         reduced_cache = REDUCED_DIR / f"{uhash}.json"
         if reduced_cache.exists():
             stats["skipped"] += 1
-        else:
-            pending.append(entry)
+            continue
+        priority = entry.get("priority", _PRIORITY_MISSING)
+        if args.priority_max > 0 and priority > args.priority_max:
+            continue
+        pending.append((priority, idx, entry))
+
+    # Stable sort: priority ascending (1 = highest), then original manifest order.
+    pending.sort(key=lambda t: (t[0], t[1]))
+    pending = [entry for _, _, entry in pending]
 
     if args.limit > 0:
         pending = pending[: args.limit]

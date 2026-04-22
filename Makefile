@@ -10,6 +10,7 @@ PYTHON := python3
 PIPELINE_PROVIDER ?=
 PIPELINE_MODEL ?=
 PIPELINE_LIMIT ?= 0
+PIPELINE_PRIORITY_MAX ?= 0
 
 # Default target
 .DEFAULT_GOAL := help
@@ -72,6 +73,7 @@ help: ## Show this help message
 	@echo "  PIPELINE_PROVIDER    LLM provider: anthropic (default) or openai"
 	@echo "  PIPELINE_MODEL       Specific model to use (see 'make pipeline-models')"
 	@echo "  PIPELINE_LIMIT       Max URLs to process (0 = all, default: 0)"
+	@echo "  PIPELINE_PRIORITY_MAX  Only process entries with priority <= N (0 = no filter)"
 	@echo ""
 	@echo "Pipeline Examples:"
 	@echo "  make pipeline-models                      # List all available models"
@@ -165,24 +167,29 @@ pipeline-validate: ## Validate pipeline manifest and configuration
 	$(VENV)/python scripts/validate_manifest.py
 
 pipeline-fetch: ## Fetch data from external sources
-	$(VENV)/python scripts/pipeline_fetch.py
+	$(VENV)/python scripts/pipeline_fetch.py \
+		$(if $(filter-out 0,$(PIPELINE_LIMIT)),--limit $(PIPELINE_LIMIT)) \
+		$(if $(filter-out 0,$(PIPELINE_PRIORITY_MAX)),--priority-max $(PIPELINE_PRIORITY_MAX))
 
 pipeline-extract: ## Extract data (batch for Anthropic, sync for OpenAI — auto-detected)
 	$(VENV)/python scripts/pipeline_extract.py \
 		$(if $(PIPELINE_PROVIDER),--provider $(PIPELINE_PROVIDER)) \
 		$(if $(PIPELINE_MODEL),--model $(PIPELINE_MODEL)) \
-		$(if $(filter-out 0,$(PIPELINE_LIMIT)),--limit $(PIPELINE_LIMIT))
+		$(if $(filter-out 0,$(PIPELINE_LIMIT)),--limit $(PIPELINE_LIMIT)) \
+		$(if $(filter-out 0,$(PIPELINE_PRIORITY_MAX)),--priority-max $(PIPELINE_PRIORITY_MAX))
 
 pipeline-extract-batch: ## Extract using Anthropic batch API (50% cheaper, no rate limits)
 	$(VENV)/python scripts/pipeline_extract.py --batch \
 		$(if $(PIPELINE_MODEL),--model $(PIPELINE_MODEL)) \
-		$(if $(filter-out 0,$(PIPELINE_LIMIT)),--limit $(PIPELINE_LIMIT))
+		$(if $(filter-out 0,$(PIPELINE_LIMIT)),--limit $(PIPELINE_LIMIT)) \
+		$(if $(filter-out 0,$(PIPELINE_PRIORITY_MAX)),--priority-max $(PIPELINE_PRIORITY_MAX))
 
 pipeline-extract-sync: ## Extract sequentially with retries (for small runs or OpenAI)
 	$(VENV)/python scripts/pipeline_extract.py --sync \
 		$(if $(PIPELINE_PROVIDER),--provider $(PIPELINE_PROVIDER)) \
 		$(if $(PIPELINE_MODEL),--model $(PIPELINE_MODEL)) \
-		$(if $(filter-out 0,$(PIPELINE_LIMIT)),--limit $(PIPELINE_LIMIT))
+		$(if $(filter-out 0,$(PIPELINE_LIMIT)),--limit $(PIPELINE_LIMIT)) \
+		$(if $(filter-out 0,$(PIPELINE_PRIORITY_MAX)),--priority-max $(PIPELINE_PRIORITY_MAX))
 
 pipeline-extract-poll: ## Poll/collect results from a pending batch (prompts for batch ID)
 	@read -p "Batch ID: " bid; \

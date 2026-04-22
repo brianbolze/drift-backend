@@ -43,10 +43,21 @@ from drift.pipeline.utils import url_hash
 logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
 logger = logging.getLogger(__name__)
 
+# Sentinel used when a reduced file has no matching manifest entry (or the entry
+# has no priority). Chosen large enough to never collide with a real priority.
+_PRIORITY_MISSING = 10**9
+
 
 def _url_hash_from_manifest(manifest: list[dict]) -> dict[str, dict]:
     """Build a lookup from url_hash -> manifest entry."""
     return {url_hash(entry["url"]): entry for entry in manifest}
+
+
+def _build_priority_lookup(manifest: list[dict]) -> dict[str, tuple[int, int]]:
+    """Map url_hash -> (priority, manifest_index) for stable priority-aware sorting."""
+    return {
+        url_hash(entry["url"]): (entry.get("priority", _PRIORITY_MISSING), idx) for idx, entry in enumerate(manifest)
+    }
 
 
 def _infer_provider_from_model(model: str | None) -> str | None:
@@ -65,6 +76,7 @@ def _load_pending_items(  # noqa: C901
     manifest_path: Path,
     limit: int,
     reextract: bool,
+    priority_max: int = 0,
 ) -> tuple[list[dict], dict[str, dict]]:
     """Scan reduced files and return pending items that need extraction.
 
@@ -77,6 +89,7 @@ def _load_pending_items(  # noqa: C901
 
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
     hash_lookup = _url_hash_from_manifest(manifest)
+    priority_lookup = _build_priority_lookup(manifest)
 
     reduced_files = sorted(REDUCED_DIR.glob("*.json"))
     if not reduced_files:
@@ -134,6 +147,10 @@ def _load_pending_items(  # noqa: C901
             logger.warning("SKIP (no reduced HTML): %s", url)
             continue
 
+        priority, _ = priority_lookup.get(uhash, (_PRIORITY_MISSING, _PRIORITY_MISSING))
+        if priority_max > 0 and priority > priority_max:
+            continue
+
         pending.append(
             {
                 "url_hash": uhash,
@@ -142,6 +159,10 @@ def _load_pending_items(  # noqa: C901
                 "reduced_html_path": str(reduced_html_path),
             }
         )
+
+    # Stable sort: priority ascending (1 = highest), then original manifest order.
+    # Reduced files without a manifest entry sort last.
+    pending.sort(key=lambda item: priority_lookup.get(item["url_hash"], (_PRIORITY_MISSING, _PRIORITY_MISSING)))
 
     # Apply limit to *pending* items, not total file count
     if limit > 0:
@@ -268,7 +289,7 @@ def _write_flagged(flagged_items: list[dict]) -> Path | None:
 
 def _run_sync(args: argparse.Namespace, provider_name: str) -> None:
     """Sequential extraction with retry logic."""
-    pending, _ = _load_pending_items(args.manifest, args.limit, args.reextract)
+    pending, _ = _load_pending_items(args.manifest, args.limit, args.reextract, args.priority_max)
 
     total = len(pending)
     all_reduced = len(sorted(REDUCED_DIR.glob("*.json")))
@@ -360,7 +381,7 @@ def _run_batch(args: argparse.Namespace) -> None:
     from drift.pipeline.extraction.batch import BatchExtractor
     from drift.pipeline.extraction.providers.anthropic_provider import AnthropicProvider
 
-    pending, _ = _load_pending_items(args.manifest, args.limit, args.reextract)
+    pending, _ = _load_pending_items(args.manifest, args.limit, args.reextract, args.priority_max)
 
     total = len(pending)
     all_reduced = len(sorted(REDUCED_DIR.glob("*.json")))
@@ -536,6 +557,12 @@ def main() -> None:
     )
     parser.add_argument("--model", type=str, default=None, help="LLM model to use")
     parser.add_argument("--limit", type=int, default=0, help="Max pending (uncached) URLs to process (0 = all)")
+    parser.add_argument(
+        "--priority-max",
+        type=int,
+        default=0,
+        help="Only process entries with priority <= N (0 = no filter). Reduced files with no matching manifest entry are excluded when --priority-max is set.",
+    )
     parser.add_argument("--reextract", action="store_true", help="Re-extract even if cached")
 
     mode = parser.add_mutually_exclusive_group()
