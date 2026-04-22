@@ -1,0 +1,686 @@
+# BC reconciliation — review-required cases generated 2026-04-22
+# Each block below has its `set:` block COMMENTED OUT so `make curate` will
+# reject this file until the operator picks a value. Workflow:
+#   1. For each bullet below, inspect the source list and pick the correct value.
+#   2. Uncomment the `set:` block and fill in ONE of the recommended values.
+#   3. Move this file to data/patches/ and run `make curate-commit`.
+
+patch:
+  id: "bc_reconcile_review_2026-04-22"
+  author: "bc_reconcile.py (automated draft)"
+  date: "2026-04-22"
+  description: "BC reconciliation — bullets with multi-source disagreement above threshold."
+
+operations:
+
+  # ============================================================
+  # Sierra Bullets — 338 CAL 250 GR HPBT MATCHKING (SMK)
+  # bullet_id: 5a58d110-1509-467f-a3a7-32e5575c59e3
+  # bc_type:   G1
+  # spread:    13.2% (threshold: 8.0%)
+  # sources:
+  #   priority=3 manufacturer       unknown    value=0.5870  https://sierrabullets.com/338-cal-250-gr-hpbt-matchking-smk/
+  #   priority=4 cartridge_page     unknown    value=0.6700  https://www.hornady.com/ammunition/rifle/338-lapua-250-gr-bthp-match
+  # recommended by priority ladder: manufacturer (0.5870)
+  # ============================================================
+  - action: update_bullet
+    manufacturer: "Sierra Bullets"
+    name: "338 CAL 250 GR HPBT MATCHKING (SMK)"
+    # set:  # UNCOMMENT AND PICK ONE
+    #   bc_g1_published: 0.5870
+
+  # ============================================================
+  # Hornady — 338 Cal .338 285 gr ELD® Match
+  # bullet_id: b62ff2d0-239d-4f7a-89c1-98d1446435c2
+  # bc_type:   G7
+  # spread:    5.7% (threshold: 5.0%)
+  # sources:
+  #   priority=3 manufacturer       unknown    value=0.4170  https://www.hornady.com/bullets/rifle/338-cal-338-285-gr-eld-match
+  #   priority=4 cartridge_page     unknown    value=0.3940  https://www.hornady.com/ammunition/rifle/338-lapua-285-gr-eld-match
+  # recommended by priority ladder: manufacturer (0.4170)
+  # ============================================================
+  - action: update_bullet
+    manufacturer: "Hornady"
+    name: "338 Cal .338 285 gr ELD® Match"
+    # set:  # UNCOMMENT AND PICK ONE
+    #   bc_g7_published: 0.4170
+
+  # ============================================================
+  # Barnes Bullets — 0.284" 7MM LRX BT
+  # bullet_id: 356992ca-894a-416b-9f90-a6538ef5c52f
+  # bc_type:   G1
+  # spread:    35.9% (threshold: 8.0%)
+  # sources:
+  #   priority=3 manufacturer       unknown    value=0.4340  https://barnesbullets.com/0-284-7mm-lrx-bt/
+  #   priority=3 manufacturer       unknown    value=0.4490  https://barnesbullets.com/0-284-7mm-lrx-bt/
+  #   priority=3 manufacturer       unknown    value=0.6080  https://barnesbullets.com/0-284-7mm-lrx-bt/
+  #   priority=3 manufacturer       unknown    value=0.5130  https://barnesbullets.com/0-284-7mm-lrx-bt/
+  #   priority=3 manufacturer       unknown    value=0.4670  https://barnesbullets.com/0-284-7mm-lrx-bt/
+  #   priority=4 cartridge_page     unknown    value=0.4340  https://barnesbullets.com/vor-tx-lr-lrx-7mm-rem-mag-139-gr-bt
+  # recommended by priority ladder: manufacturer (0.4340)
+  # ============================================================
+  - action: update_bullet
+    manufacturer: "Barnes Bullets"
+    name: "0.284\" 7MM LRX BT"
+    # set:  # UNCOMMENT AND PICK ONE
+    #   bc_g1_published: 0.4340
+
+  # ============================================================
+  # Barnes Bullets — 0.458" 45-70 Barnes Original Semi-Spitzer FB
+  # bullet_id: 0c828159-6bdc-44da-aa90-56c2273299e6
+  # bc_type:   G1
+  # spread:    28.8% (threshold: 8.0%)
+  # sources:
+  #   priority=3 manufacturer       unknown    value=0.2910  https://barnesbullets.com/0-458-45-70-barnes-original-semi-spitzer-fb
+  #   priority=3 manufacturer       unknown    value=0.3890  https://barnesbullets.com/0-458-45-70-barnes-original-semi-spitzer-fb
+  # recommended by priority ladder: manufacturer (0.2910)
+  # ============================================================
+  - action: update_bullet
+    manufacturer: "Barnes Bullets"
+    name: "0.458\" 45-70 Barnes Original Semi-Spitzer FB"
+    # set:  # UNCOMMENT AND PICK ONE
+    #   bc_g1_published: 0.2910
+
+  # ============================================================
+  # Barnes Bullets — 0.458" 458 CAL TSX FB 300gr
+  # bullet_id: c90ea492-a974-4608-b9fb-843812a2e16a
+  # bc_type:   G1
+  # spread:    35.8% (threshold: 8.0%)
+  # sources:
+  #   priority=3 manufacturer       unknown    value=0.2340  https://barnesbullets.com/0-458-458-cal-tsx-fb
+  #   priority=4 cartridge_page     unknown    value=0.1630  https://barnesbullets.com/vor-tx-rifle-tsx-45-70-govt-300-gr-fn-fb
+  # recommended by priority ladder: manufacturer (0.2340)
+  # ============================================================
+  - action: update_bullet
+    manufacturer: "Barnes Bullets"
+    name: "0.458\" 458 CAL TSX FB 300gr"
+    # set:  # UNCOMMENT AND PICK ONE
+    #   bc_g1_published: 0.2340
+
+  # ============================================================
+  # Barnes Bullets — 0.458" 458 CAL Banded Solid RN
+  # bullet_id: e8985bc0-250d-491a-8363-085e884a9b0b
+  # bc_type:   G1
+  # spread:    12.0% (threshold: 8.0%)
+  # sources:
+  #   priority=3 manufacturer       unknown    value=0.2670  https://barnesbullets.com/0-458-458-cal-banded-solid-rn
+  #   priority=3 manufacturer       unknown    value=0.3010  https://barnesbullets.com/0-458-458-cal-banded-solid-rn
+  # recommended by priority ladder: manufacturer (0.2670)
+  # ============================================================
+  - action: update_bullet
+    manufacturer: "Barnes Bullets"
+    name: "0.458\" 458 CAL Banded Solid RN"
+    # set:  # UNCOMMENT AND PICK ONE
+    #   bc_g1_published: 0.2670
+
+  # ============================================================
+  # Barnes Bullets — 0.358" 35 CAL TTSX 200 GR BT
+  # bullet_id: e2f3094b-eef7-4e8d-9130-0bcef18da49a
+  # bc_type:   G1
+  # spread:    21.5% (threshold: 8.0%)
+  # sources:
+  #   priority=3 manufacturer       unknown    value=0.3690  https://barnesbullets.com/0-358-35-cal-ttsx-200-gr-bt
+  #   priority=4 cartridge_page     unknown    value=0.2950  https://barnesbullets.com/vor-tx-rifle-ttsx-35-whelen
+  #   priority=4 cartridge_page     unknown    value=0.3690  https://barnesbullets.com/vor-tx-rifle-ttsx-35-whelen
+  # recommended by priority ladder: manufacturer (0.3690)
+  # ============================================================
+  - action: update_bullet
+    manufacturer: "Barnes Bullets"
+    name: "0.358\" 35 CAL TTSX 200 GR BT"
+    # set:  # UNCOMMENT AND PICK ONE
+    #   bc_g1_published: 0.3690
+
+  # ============================================================
+  # Barnes Bullets — 0.323" 8MM TSX BT
+  # bullet_id: aee41d84-d755-455d-af56-94bf8dc94797
+  # bc_type:   G1
+  # spread:    10.0% (threshold: 8.0%)
+  # sources:
+  #   priority=3 manufacturer       unknown    value=0.3810  https://barnesbullets.com/0-323-8mm-tsx-bt
+  #   priority=3 manufacturer       unknown    value=0.4210  https://barnesbullets.com/0-323-8mm-tsx-bt
+  # recommended by priority ladder: manufacturer (0.3810)
+  # ============================================================
+  - action: update_bullet
+    manufacturer: "Barnes Bullets"
+    name: "0.323\" 8MM TSX BT"
+    # set:  # UNCOMMENT AND PICK ONE
+    #   bc_g1_published: 0.3810
+
+  # ============================================================
+  # Barnes Bullets — 0.284" 7MM TSX FB 160 GR
+  # bullet_id: a436a743-a334-4bf8-824e-659bef91ec2a
+  # bc_type:   G1
+  # spread:    12.2% (threshold: 8.0%)
+  # sources:
+  #   priority=3 manufacturer       unknown    value=0.3920  https://barnesbullets.com/0-284-7mm-tsx-fb
+  #   priority=4 cartridge_page     unknown    value=0.4430  https://barnesbullets.com/vor-tx-rifle-tsx-7mm-rem-mag-160-gr-bt
+  # recommended by priority ladder: manufacturer (0.3920)
+  # ============================================================
+  - action: update_bullet
+    manufacturer: "Barnes Bullets"
+    name: "0.284\" 7MM TSX FB 160 GR"
+    # set:  # UNCOMMENT AND PICK ONE
+    #   bc_g1_published: 0.3920
+
+  # ============================================================
+  # Barnes Bullets — 0.366" 9.3MM TSX FB
+  # bullet_id: cbb60441-19f6-4bb9-88aa-8d2a1549e868
+  # bc_type:   G1
+  # spread:    13.0% (threshold: 8.0%)
+  # sources:
+  #   priority=3 manufacturer       unknown    value=0.3610  https://barnesbullets.com/0-366-9-3mm-tsx-fb
+  #   priority=3 manufacturer       unknown    value=0.4110  https://barnesbullets.com/0-366-9-3mm-tsx-fb
+  # recommended by priority ladder: manufacturer (0.3610)
+  # ============================================================
+  - action: update_bullet
+    manufacturer: "Barnes Bullets"
+    name: "0.366\" 9.3MM TSX FB"
+    # set:  # UNCOMMENT AND PICK ONE
+    #   bc_g1_published: 0.3610
+
+  # ============================================================
+  # Barnes Bullets — 0.375" 375 CAL Banded Solid RN
+  # bullet_id: 0feeebe9-e803-4cb0-898e-9d7600e3b9b4
+  # bc_type:   G1
+  # spread:    31.7% (threshold: 8.0%)
+  # sources:
+  #   priority=3 manufacturer       unknown    value=0.2300  https://barnesbullets.com/0-375-375-cal-banded-solid-rn
+  #   priority=3 manufacturer       unknown    value=0.2830  https://barnesbullets.com/0-375-375-cal-banded-solid-rn
+  #   priority=3 manufacturer       unknown    value=0.2070  https://barnesbullets.com/0-375-375-cal-banded-solid-rn
+  # recommended by priority ladder: manufacturer (0.2300)
+  # ============================================================
+  - action: update_bullet
+    manufacturer: "Barnes Bullets"
+    name: "0.375\" 375 CAL Banded Solid RN"
+    # set:  # UNCOMMENT AND PICK ONE
+    #   bc_g1_published: 0.2300
+
+  # ============================================================
+  # Barnes Bullets — 0.224" 22 CAL TSX BT
+  # bullet_id: e85b7add-e248-4a3a-8963-a71b16237e26
+  # bc_type:   G1
+  # spread:    8.7% (threshold: 8.0%)
+  # sources:
+  #   priority=3 manufacturer       unknown    value=0.2960  https://barnesbullets.com/0-224-22-cal-tsx-bt
+  #   priority=3 manufacturer       unknown    value=0.3230  https://barnesbullets.com/0-224-22-cal-tsx-bt
+  # recommended by priority ladder: manufacturer (0.2960)
+  # ============================================================
+  - action: update_bullet
+    manufacturer: "Barnes Bullets"
+    name: "0.224\" 22 CAL TSX BT"
+    # set:  # UNCOMMENT AND PICK ONE
+    #   bc_g1_published: 0.2960
+
+  # ============================================================
+  # Barnes Bullets — 0.416" 416 CAL Banded Solid RN
+  # bullet_id: 72a8eefc-ccaa-4ca0-bc4b-39c3f9afed12
+  # bc_type:   G1
+  # spread:    18.4% (threshold: 8.0%)
+  # sources:
+  #   priority=3 manufacturer       unknown    value=0.2170  https://barnesbullets.com/0-416-416-cal-banded-solid-rn
+  #   priority=3 manufacturer       unknown    value=0.2610  https://barnesbullets.com/0-416-416-cal-banded-solid-rn
+  # recommended by priority ladder: manufacturer (0.2170)
+  # ============================================================
+  - action: update_bullet
+    manufacturer: "Barnes Bullets"
+    name: "0.416\" 416 CAL Banded Solid RN"
+    # set:  # UNCOMMENT AND PICK ONE
+    #   bc_g1_published: 0.2170
+
+  # ============================================================
+  # Barnes Bullets — 0.458" 45-70 TSX FN FB
+  # bullet_id: e1337ece-c62a-4186-8845-a341407ad562
+  # bc_type:   G1
+  # spread:    18.1% (threshold: 8.0%)
+  # sources:
+  #   priority=3 manufacturer       unknown    value=0.1360  https://barnesbullets.com/0-458-45-70-tsx-fn-fb
+  #   priority=3 manufacturer       unknown    value=0.1630  https://barnesbullets.com/0-458-45-70-tsx-fn-fb
+  # recommended by priority ladder: manufacturer (0.1360)
+  # ============================================================
+  - action: update_bullet
+    manufacturer: "Barnes Bullets"
+    name: "0.458\" 45-70 TSX FN FB"
+    # set:  # UNCOMMENT AND PICK ONE
+    #   bc_g1_published: 0.1360
+
+  # ============================================================
+  # Hornady — 30 Cal .308 220 gr InterLock® RN
+  # bullet_id: d692621d-8544-42ae-b9be-0c0a17fe4ba8
+  # bc_type:   G1
+  # spread:    29.3% (threshold: 8.0%)
+  # sources:
+  #   priority=3 manufacturer       unknown    value=0.3000  https://www.hornady.com/bullets/rifle/30-cal-308-220-gr-interlock-rn
+  #   priority=4 cartridge_page     unknown    value=0.3000  https://www.hornady.com/ammunition/rifle/308-win-220-gr-rn-custom-international
+  #   priority=4 cartridge_page     unknown    value=0.2200  https://www.hornady.com/ammunition/rifle/30-06-springfield-220-gr-rn-custom-international
+  # recommended by priority ladder: manufacturer (0.3000)
+  # ============================================================
+  - action: update_bullet
+    manufacturer: "Hornady"
+    name: "30 Cal .308 220 gr InterLock® RN"
+    # set:  # UNCOMMENT AND PICK ONE
+    #   bc_g1_published: 0.3000
+
+  # ============================================================
+  # Hornady — 30 Cal .308 160 gr FTX® (30-30 Win)
+  # bullet_id: aeea5939-f4ef-4cfc-9afd-f08887f485f9
+  # bc_type:   G1
+  # spread:    24.0% (threshold: 8.0%)
+  # sources:
+  #   priority=3 manufacturer       unknown    value=0.3300  https://www.hornady.com/bullets/rifle/30-cal-308-160-gr-ftx-30-30-win
+  #   priority=4 cartridge_page     unknown    value=0.3950  https://www.hornady.com/ammunition/rifle/308-marlin-express-160-gr-ftx-leverevolution
+  #   priority=4 cartridge_page     unknown    value=0.3300  https://www.hornady.com/ammunition/rifle/30-30-win-160-gr-ftx-leverevolution
+  #   priority=4 cartridge_page     unknown    value=0.3130  https://www.hornady.com/ammunition/rifle/308-win-155-gr-critical-defense
+  # recommended by priority ladder: manufacturer (0.3300)
+  # ============================================================
+  - action: update_bullet
+    manufacturer: "Hornady"
+    name: "30 Cal .308 160 gr FTX® (30-30 Win)"
+    # set:  # UNCOMMENT AND PICK ONE
+    #   bc_g1_published: 0.3300
+
+  # ============================================================
+  # Hornady — 6.5mm .264 100 gr ELD‑VT®
+  # bullet_id: c8c50ad9-dc38-4728-830c-09f27759c5d7
+  # bc_type:   G7
+  # spread:    16.7% (threshold: 5.0%)
+  # sources:
+  #   priority=3 manufacturer       unknown    value=0.2260  https://www.hornady.com/bullets/rifle/6.5mm-.264-100-gr-eld-vt
+  #   priority=4 cartridge_page     unknown    value=0.2660  https://www.hornady.com/ammunition/rifle/6.5-grendel-100-gr-eld-vt-v-match
+  #   priority=4 cartridge_page     unknown    value=0.2260  https://www.hornady.com/ammunition/rifle/6mm-creedmoor-100-gr-eld-vt-v-match
+  # recommended by priority ladder: manufacturer (0.2260)
+  # ============================================================
+  - action: update_bullet
+    manufacturer: "Hornady"
+    name: "6.5mm .264 100 gr ELD‑VT®"
+    # set:  # UNCOMMENT AND PICK ONE
+    #   bc_g7_published: 0.2260
+
+  # ============================================================
+  # Hornady — 22 Cal .224 35 gr V‑MAX®
+  # bullet_id: 0ad95e6e-2573-48df-9b07-5581bd8d2a71
+  # bc_type:   G1
+  # spread:    13.4% (threshold: 8.0%)
+  # sources:
+  #   priority=3 manufacturer       unknown    value=0.1090  https://www.hornady.com/bullets/rifle/22-cal-224-35-gr-v-max
+  #   priority=4 cartridge_page     unknown    value=0.0950  https://www.hornady.com/ammunition/rimfire/22-wmr-30-gr-v-max
+  #   priority=4 cartridge_page     unknown    value=0.1090  https://www.hornady.com/ammunition/rifle/22-hornet-35-gr-v-max-83270
+  # recommended by priority ladder: manufacturer (0.1090)
+  # ============================================================
+  - action: update_bullet
+    manufacturer: "Hornady"
+    name: "22 Cal .224 35 gr V‑MAX®"
+    # set:  # UNCOMMENT AND PICK ONE
+    #   bc_g1_published: 0.1090
+
+  # ============================================================
+  # Hornady — 25 Cal .257 117 gr InterLock® RN
+  # bullet_id: a02f4578-e485-4673-ba7a-5fcaea9d7ea0
+  # bc_type:   G1
+  # spread:    46.7% (threshold: 8.0%)
+  # sources:
+  #   priority=3 manufacturer       unknown    value=0.2430  https://www.hornady.com/bullets/rifle/25-cal-257-117-gr-interlock-rn
+  #   priority=4 cartridge_page     unknown    value=0.3910  https://www.hornady.com/ammunition/rifle/25-06-rem-117-gr-interlock-btsp-american-whitetail
+  # recommended by priority ladder: manufacturer (0.2430)
+  # ============================================================
+  - action: update_bullet
+    manufacturer: "Hornady"
+    name: "25 Cal .257 117 gr InterLock® RN"
+    # set:  # UNCOMMENT AND PICK ONE
+    #   bc_g1_published: 0.2430
+
+  # ============================================================
+  # Hornady — 35 Cal .358 200 gr InterLock® RN
+  # bullet_id: d0e9913e-41e6-4091-9d69-91a2f746f129
+  # bc_type:   G1
+  # spread:    36.5% (threshold: 8.0%)
+  # sources:
+  #   priority=3 manufacturer       unknown    value=0.1950  https://www.hornady.com/bullets/rifle/35-cal-358-200-gr-interlock-rn
+  #   priority=4 cartridge_page     unknown    value=0.2820  https://www.hornady.com/ammunition/rifle/35-whelen-200-gr-sp-superformance
+  # recommended by priority ladder: manufacturer (0.1950)
+  # ============================================================
+  - action: update_bullet
+    manufacturer: "Hornady"
+    name: "35 Cal .358 200 gr InterLock® RN"
+    # set:  # UNCOMMENT AND PICK ONE
+    #   bc_g1_published: 0.1950
+
+  # ============================================================
+  # Hornady — 22 Cal .224 75 gr BTHP
+  # bullet_id: 26334620-ff8f-4b35-995a-9df5f6dea386
+  # bc_type:   G1
+  # spread:    10.5% (threshold: 8.0%)
+  # sources:
+  #   priority=3 manufacturer       unknown    value=0.3950  https://www.hornady.com/bullets/rifle/22-cal-224-75-gr-bthp-600
+  #   priority=4 cartridge_page     unknown    value=0.3550  https://www.hornady.com/ammunition/rifle/5.56-nato-75-gr-bthp-match-t2-frontier
+  #   priority=4 cartridge_page     unknown    value=0.3950  https://www.hornady.com/ammunition/rifle/223-remington-75-gr-bthp-match-black
+  # recommended by priority ladder: manufacturer (0.3950)
+  # ============================================================
+  - action: update_bullet
+    manufacturer: "Hornady"
+    name: "22 Cal .224 75 gr BTHP"
+    # set:  # UNCOMMENT AND PICK ONE
+    #   bc_g1_published: 0.3950
+
+  # ============================================================
+  # Sierra Bullets — 30 CAL 125 GR HP/CN MATCHKING (SMK)
+  # bullet_id: b8eca1ea-5ec0-446a-83f8-bdbbb3a17f6c
+  # bc_type:   G1
+  # spread:    8.7% (threshold: 8.0%)
+  # sources:
+  #   priority=3 manufacturer       unknown    value=0.3490  https://sierrabullets.com/30-cal-125-gr-hp-cn-matchking-smk
+  #   priority=4 cartridge_page     unknown    value=0.3200  https://www.hornady.com/ammunition/rifle/300-blackout-125-gr-hp-american-gunner
+  # recommended by priority ladder: manufacturer (0.3490)
+  # ============================================================
+  - action: update_bullet
+    manufacturer: "Sierra Bullets"
+    name: "30 CAL 125 GR HP/CN MATCHKING (SMK)"
+    # set:  # UNCOMMENT AND PICK ONE
+    #   bc_g1_published: 0.3490
+
+  # ============================================================
+  # Nosler — 270 Caliber 130gr Expansion Tip Lead Free (50ct)
+  # bullet_id: 1542a242-d6d0-4d93-8e31-b270edb839b3
+  # bc_type:   G1
+  # spread:    101.5% (threshold: 8.0%)
+  # sources:
+  #   priority=3 manufacturer       unknown    value=0.4590  https://www.nosler.com/270-caliber-130gr-expansion-tip-lead-free-50ct.html
+  #   priority=4 cartridge_page     unknown    value=0.1500  https://www.nosler.com/270-wsm-130gr-expansion-tip-ammunition.html
+  # recommended by priority ladder: manufacturer (0.4590)
+  # ============================================================
+  - action: update_bullet
+    manufacturer: "Nosler"
+    name: "270 Caliber 130gr Expansion Tip Lead Free (50ct)"
+    # set:  # UNCOMMENT AND PICK ONE
+    #   bc_g1_published: 0.4590
+
+  # ============================================================
+  # Barnes Bullets — 0.308" 30 CAL TTSX BT 130 GR
+  # bullet_id: 42536384-ee12-480e-a7eb-de0fdf2dd21d
+  # bc_type:   G1
+  # spread:    34.2% (threshold: 8.0%)
+  # sources:
+  #   priority=3 manufacturer       unknown    value=0.3500  https://barnesbullets.com/0-308-30-cal-ttsx-bt
+  #   priority=4 cartridge_page     unknown    value=0.3370  https://barnesbullets.com/vor-tx-rr-ttsx-30-06-sprg-130-gr-bt
+  #   priority=4 cartridge_page     unknown    value=0.4400  https://barnesbullets.com/vor-tx-rifle-ttsx-308-win
+  #   priority=4 cartridge_page     unknown    value=0.4700  https://barnesbullets.com/vor-tx-rifle-ttsx-308-win
+  #   priority=4 cartridge_page     unknown    value=0.3500  https://barnesbullets.com/vor-tx-rifle-ttsx-308-win
+  # recommended by priority ladder: manufacturer (0.3500)
+  # ============================================================
+  - action: update_bullet
+    manufacturer: "Barnes Bullets"
+    name: "0.308\" 30 CAL TTSX BT 130 GR"
+    # set:  # UNCOMMENT AND PICK ONE
+    #   bc_g1_published: 0.3500
+
+  # ============================================================
+  # Barnes Bullets — 0.308" 30 CAL TTSX BT 150 GR
+  # bullet_id: 17a9df4e-f70e-416f-8e18-7ace2c32087b
+  # bc_type:   G1
+  # spread:    31.0% (threshold: 8.0%)
+  # sources:
+  #   priority=3 manufacturer       unknown    value=0.4200  https://barnesbullets.com/0-308-30-cal-ttsx-bt
+  #   priority=4 cartridge_page     unknown    value=0.4400  https://barnesbullets.com/vor-tx-rifle-ttsx-30-06-sprg
+  #   priority=4 cartridge_page     unknown    value=0.4840  https://barnesbullets.com/vor-tx-rifle-ttsx-30-06-sprg
+  #   priority=4 cartridge_page     unknown    value=0.4700  https://barnesbullets.com/vor-tx-rifle-ttsx-30-06-sprg
+  #   priority=4 cartridge_page     unknown    value=0.4420  https://barnesbullets.com/vor-tx-rifle-ttsx-300-wsm
+  #   priority=4 cartridge_page     unknown    value=0.4200  https://barnesbullets.com/vor-tx-rifle-ttsx-300-wsm
+  #   priority=4 cartridge_page     unknown    value=0.3500  https://barnesbullets.com/vor-tx-rifle-ttsx-308-win
+  # recommended by priority ladder: manufacturer (0.4200)
+  # ============================================================
+  - action: update_bullet
+    manufacturer: "Barnes Bullets"
+    name: "0.308\" 30 CAL TTSX BT 150 GR"
+    # set:  # UNCOMMENT AND PICK ONE
+    #   bc_g1_published: 0.4200
+
+  # ============================================================
+  # Barnes Bullets — 0.308" 30 CAL TTSX BT 165 GR
+  # bullet_id: 9bdc5558-4791-45c9-8a31-6a41cb3373ef
+  # bc_type:   G1
+  # spread:    14.3% (threshold: 8.0%)
+  # sources:
+  #   priority=3 manufacturer       unknown    value=0.4420  https://barnesbullets.com/0-308-30-cal-ttsx-bt
+  #   priority=4 cartridge_page     unknown    value=0.4420  https://barnesbullets.com/vor-tx-rifle-ttsx-300-wsm
+  #   priority=4 cartridge_page     unknown    value=0.4200  https://barnesbullets.com/vor-tx-rifle-ttsx-300-wsm
+  #   priority=4 cartridge_page     unknown    value=0.4840  https://barnesbullets.com/vor-tx-rifle-ttsx-300-win-mag
+  # recommended by priority ladder: manufacturer (0.4420)
+  # ============================================================
+  - action: update_bullet
+    manufacturer: "Barnes Bullets"
+    name: "0.308\" 30 CAL TTSX BT 165 GR"
+    # set:  # UNCOMMENT AND PICK ONE
+    #   bc_g1_published: 0.4420
+
+  # ============================================================
+  # Barnes Bullets — 0.308" 30 CAL TTSX BT 168 GR
+  # bullet_id: 22aa202a-32bf-4bd7-83f4-d4e2bad4b11b
+  # bc_type:   G1
+  # spread:    30.3% (threshold: 8.0%)
+  # sources:
+  #   priority=3 manufacturer       unknown    value=0.4700  https://barnesbullets.com/0-308-30-cal-ttsx-bt
+  #   priority=4 cartridge_page     unknown    value=0.4400  https://barnesbullets.com/vor-tx-rifle-ttsx-30-06-sprg
+  #   priority=4 cartridge_page     unknown    value=0.4840  https://barnesbullets.com/vor-tx-rifle-ttsx-30-06-sprg
+  #   priority=4 cartridge_page     unknown    value=0.4700  https://barnesbullets.com/vor-tx-rifle-ttsx-30-06-sprg
+  #   priority=4 cartridge_page     unknown    value=0.3500  https://barnesbullets.com/vor-tx-rifle-ttsx-308-win
+  # recommended by priority ladder: manufacturer (0.4700)
+  # ============================================================
+  - action: update_bullet
+    manufacturer: "Barnes Bullets"
+    name: "0.308\" 30 CAL TTSX BT 168 GR"
+    # set:  # UNCOMMENT AND PICK ONE
+    #   bc_g1_published: 0.4700
+
+  # ============================================================
+  # Barnes Bullets — 0.308" 30 CAL TTSX BT 180 GR
+  # bullet_id: 771d7e44-8010-4785-afaf-0f51228ec696
+  # bc_type:   G1
+  # spread:    14.0% (threshold: 8.0%)
+  # sources:
+  #   priority=3 manufacturer       unknown    value=0.4840  https://barnesbullets.com/0-308-30-cal-ttsx-bt
+  #   priority=4 cartridge_page     unknown    value=0.4400  https://barnesbullets.com/vor-tx-rifle-ttsx-30-06-sprg
+  #   priority=4 cartridge_page     unknown    value=0.4840  https://barnesbullets.com/vor-tx-rifle-ttsx-30-06-sprg
+  #   priority=4 cartridge_page     unknown    value=0.4700  https://barnesbullets.com/vor-tx-rifle-ttsx-30-06-sprg
+  #   priority=4 cartridge_page     unknown    value=0.4420  https://barnesbullets.com/vor-tx-rifle-ttsx-300-win-mag
+  #   priority=4 cartridge_page     unknown    value=0.4200  https://barnesbullets.com/vor-tx-rifle-ttsx-300-win-mag
+  # recommended by priority ladder: manufacturer (0.4840)
+  # ============================================================
+  - action: update_bullet
+    manufacturer: "Barnes Bullets"
+    name: "0.308\" 30 CAL TTSX BT 180 GR"
+    # set:  # UNCOMMENT AND PICK ONE
+    #   bc_g1_published: 0.4840
+
+  # ============================================================
+  # Barnes Bullets — 0.458" 45-70 Barnes Original Semi-Spitzer FB
+  # bullet_id: 4432e7b6-926b-45f2-8047-bd87f4226972
+  # bc_type:   G1
+  # spread:    28.8% (threshold: 8.0%)
+  # sources:
+  #   priority=3 manufacturer       unknown    value=0.2910  https://barnesbullets.com/0-458-45-70-barnes-original-semi-spitzer-fb
+  #   priority=3 manufacturer       unknown    value=0.3890  https://barnesbullets.com/0-458-45-70-barnes-original-semi-spitzer-fb
+  # recommended by priority ladder: manufacturer (0.2910)
+  # ============================================================
+  - action: update_bullet
+    manufacturer: "Barnes Bullets"
+    name: "0.458\" 45-70 Barnes Original Semi-Spitzer FB"
+    # set:  # UNCOMMENT AND PICK ONE
+    #   bc_g1_published: 0.2910
+
+  # ============================================================
+  # Barnes Bullets — 0.308" 30 CAL LRX BT 190 GR
+  # bullet_id: 1904ab17-bbdc-48be-9fe8-e7084fb9a5c6
+  # bc_type:   G1
+  # spread:    8.1% (threshold: 8.0%)
+  # sources:
+  #   priority=3 manufacturer       unknown    value=0.5410  https://barnesbullets.com/0-308-30-cal-lrx-bt/
+  #   priority=4 cartridge_page     unknown    value=0.4990  https://barnesbullets.com/vor-tx-lr-lrx-300-win-mag-190-gr-bt
+  # recommended by priority ladder: manufacturer (0.5410)
+  # ============================================================
+  - action: update_bullet
+    manufacturer: "Barnes Bullets"
+    name: "0.308\" 30 CAL LRX BT 190 GR"
+    # set:  # UNCOMMENT AND PICK ONE
+    #   bc_g1_published: 0.5410
+
+  # ============================================================
+  # Barnes Bullets — 0.458" 458 CAL Banded Solid RN
+  # bullet_id: 458e7c17-3119-4031-9b9b-af352cb74495
+  # bc_type:   G1
+  # spread:    12.0% (threshold: 8.0%)
+  # sources:
+  #   priority=3 manufacturer       unknown    value=0.2670  https://barnesbullets.com/0-458-458-cal-banded-solid-rn
+  #   priority=3 manufacturer       unknown    value=0.3010  https://barnesbullets.com/0-458-458-cal-banded-solid-rn
+  # recommended by priority ladder: manufacturer (0.2670)
+  # ============================================================
+  - action: update_bullet
+    manufacturer: "Barnes Bullets"
+    name: "0.458\" 458 CAL Banded Solid RN"
+    # set:  # UNCOMMENT AND PICK ONE
+    #   bc_g1_published: 0.2670
+
+  # ============================================================
+  # Barnes Bullets — 0.323" 8MM TSX BT
+  # bullet_id: f7bdc22f-1e80-4e93-b37d-76f5c074fd70
+  # bc_type:   G1
+  # spread:    10.0% (threshold: 8.0%)
+  # sources:
+  #   priority=3 manufacturer       unknown    value=0.3810  https://barnesbullets.com/0-323-8mm-tsx-bt
+  #   priority=3 manufacturer       unknown    value=0.4210  https://barnesbullets.com/0-323-8mm-tsx-bt
+  # recommended by priority ladder: manufacturer (0.3810)
+  # ============================================================
+  - action: update_bullet
+    manufacturer: "Barnes Bullets"
+    name: "0.323\" 8MM TSX BT"
+    # set:  # UNCOMMENT AND PICK ONE
+    #   bc_g1_published: 0.3810
+
+  # ============================================================
+  # Barnes Bullets — 0.366" 9.3MM TSX FB
+  # bullet_id: bc401ff2-9de7-4310-826a-61ca32f337ee
+  # bc_type:   G1
+  # spread:    13.0% (threshold: 8.0%)
+  # sources:
+  #   priority=3 manufacturer       unknown    value=0.3610  https://barnesbullets.com/0-366-9-3mm-tsx-fb
+  #   priority=3 manufacturer       unknown    value=0.4110  https://barnesbullets.com/0-366-9-3mm-tsx-fb
+  # recommended by priority ladder: manufacturer (0.3610)
+  # ============================================================
+  - action: update_bullet
+    manufacturer: "Barnes Bullets"
+    name: "0.366\" 9.3MM TSX FB"
+    # set:  # UNCOMMENT AND PICK ONE
+    #   bc_g1_published: 0.3610
+
+  # ============================================================
+  # Barnes Bullets — 0.277" 270 CAL LRX BT
+  # bullet_id: 6b8f0203-5691-469e-95c0-d2a632d60120
+  # bc_type:   G1
+  # spread:    15.4% (threshold: 8.0%)
+  # sources:
+  #   priority=3 manufacturer       unknown    value=0.4630  https://barnesbullets.com/0-277-270-cal-lrx-bt
+  #   priority=3 manufacturer       unknown    value=0.5400  https://barnesbullets.com/0-277-270-cal-lrx-bt
+  # recommended by priority ladder: manufacturer (0.4630)
+  # ============================================================
+  - action: update_bullet
+    manufacturer: "Barnes Bullets"
+    name: "0.277\" 270 CAL LRX BT"
+    # set:  # UNCOMMENT AND PICK ONE
+    #   bc_g1_published: 0.4630
+
+  # ============================================================
+  # Barnes Bullets — 0.375" 375 CAL Banded Solid RN
+  # bullet_id: 0fda824d-6ab2-4261-8453-54fa2506af4e
+  # bc_type:   G1
+  # spread:    31.7% (threshold: 8.0%)
+  # sources:
+  #   priority=3 manufacturer       unknown    value=0.2300  https://barnesbullets.com/0-375-375-cal-banded-solid-rn
+  #   priority=3 manufacturer       unknown    value=0.2830  https://barnesbullets.com/0-375-375-cal-banded-solid-rn
+  #   priority=3 manufacturer       unknown    value=0.2070  https://barnesbullets.com/0-375-375-cal-banded-solid-rn
+  # recommended by priority ladder: manufacturer (0.2300)
+  # ============================================================
+  - action: update_bullet
+    manufacturer: "Barnes Bullets"
+    name: "0.375\" 375 CAL Banded Solid RN"
+    # set:  # UNCOMMENT AND PICK ONE
+    #   bc_g1_published: 0.2300
+
+  # ============================================================
+  # Barnes Bullets — 0.375" 375 CAL Banded Solid RN
+  # bullet_id: d2538154-9e8f-4648-b373-0ccb1c168877
+  # bc_type:   G1
+  # spread:    31.7% (threshold: 8.0%)
+  # sources:
+  #   priority=3 manufacturer       unknown    value=0.2300  https://barnesbullets.com/0-375-375-cal-banded-solid-rn
+  #   priority=3 manufacturer       unknown    value=0.2830  https://barnesbullets.com/0-375-375-cal-banded-solid-rn
+  #   priority=3 manufacturer       unknown    value=0.2070  https://barnesbullets.com/0-375-375-cal-banded-solid-rn
+  # recommended by priority ladder: manufacturer (0.2300)
+  # ============================================================
+  - action: update_bullet
+    manufacturer: "Barnes Bullets"
+    name: "0.375\" 375 CAL Banded Solid RN"
+    # set:  # UNCOMMENT AND PICK ONE
+    #   bc_g1_published: 0.2300
+
+  # ============================================================
+  # Barnes Bullets — 0.416" 416 CAL Banded Solid RN
+  # bullet_id: d06135e8-d523-42ca-b89d-6784d3ab1d73
+  # bc_type:   G1
+  # spread:    18.4% (threshold: 8.0%)
+  # sources:
+  #   priority=3 manufacturer       unknown    value=0.2170  https://barnesbullets.com/0-416-416-cal-banded-solid-rn
+  #   priority=3 manufacturer       unknown    value=0.2610  https://barnesbullets.com/0-416-416-cal-banded-solid-rn
+  # recommended by priority ladder: manufacturer (0.2170)
+  # ============================================================
+  - action: update_bullet
+    manufacturer: "Barnes Bullets"
+    name: "0.416\" 416 CAL Banded Solid RN"
+    # set:  # UNCOMMENT AND PICK ONE
+    #   bc_g1_published: 0.2170
+
+  # ============================================================
+  # Sierra Bullets — 6MM 105 GR HPBT/CN MatchKing (SMK)
+  # bullet_id: 7e2e1ce4-7a67-4074-a3d8-5d8cacf0d790
+  # bc_type:   G1
+  # spread:    8.5% (threshold: 8.0%)
+  # sources:
+  #   priority=3 manufacturer       unknown    value=0.5770  https://sierrabullets.com/6mm-105-gr-hpbt-cn-matchking-smk
+  #   priority=4 cartridge_page     unknown    value=0.5300  https://www.hornady.com/ammunition/rifle/6mm-creedmoor-105-gr-bthp-hornady-black
+  # recommended by priority ladder: manufacturer (0.5770)
+  # ============================================================
+  - action: update_bullet
+    manufacturer: "Sierra Bullets"
+    name: "6MM 105 GR HPBT/CN MatchKing (SMK)"
+    # set:  # UNCOMMENT AND PICK ONE
+    #   bc_g1_published: 0.5770
+
+  # ============================================================
+  # Barnes Bullets — 0.358" 35 CAL TTSX 180 GR FB
+  # bullet_id: ca6a1712-f202-45b0-aa18-8e88ec72148a
+  # bc_type:   G1
+  # spread:    23.1% (threshold: 8.0%)
+  # sources:
+  #   priority=3 manufacturer       unknown    value=0.2950  https://barnesbullets.com/0-358-35-cal-ttsx-180-gr-fb
+  #   priority=4 cartridge_page     unknown    value=0.2950  https://barnesbullets.com/vor-tx-rifle-ttsx-35-whelen
+  #   priority=4 cartridge_page     unknown    value=0.3690  https://barnesbullets.com/vor-tx-rifle-ttsx-35-whelen
+  # recommended by priority ladder: manufacturer (0.2950)
+  # ============================================================
+  - action: update_bullet
+    manufacturer: "Barnes Bullets"
+    name: "0.358\" 35 CAL TTSX 180 GR FB"
+    # set:  # UNCOMMENT AND PICK ONE
+    #   bc_g1_published: 0.2950
+
+  # ============================================================
+  # Barnes Bullets — 0.458" 45-70 TSX FN FB
+  # bullet_id: ee060a29-3b4f-4b5e-a062-c9eeac0f0417
+  # bc_type:   G1
+  # spread:    18.1% (threshold: 8.0%)
+  # sources:
+  #   priority=3 manufacturer       unknown    value=0.1360  https://barnesbullets.com/0-458-45-70-tsx-fn-fb
+  #   priority=3 manufacturer       unknown    value=0.1630  https://barnesbullets.com/0-458-45-70-tsx-fn-fb
+  # recommended by priority ladder: manufacturer (0.1360)
+  # ============================================================
+  - action: update_bullet
+    manufacturer: "Barnes Bullets"
+    name: "0.458\" 45-70 TSX FN FB"
+    # set:  # UNCOMMENT AND PICK ONE
+    #   bc_g1_published: 0.1360

@@ -23,6 +23,8 @@ PIPELINE_PRIORITY_MAX ?= 0
 .PHONY: install test lint format clean
 .PHONY: migrate new-migration seed reset-seed describe-db
 .PHONY: pipeline-install pipeline-models pipeline-shopping-list pipeline-validate pipeline-fetch
+.PHONY: pipeline-sitemap-watch pipeline-sitemap-watch-dry pipeline-maintenance-digest pipeline-refresh
+.PHONY: bc-reconcile bc-reconcile-commit
 .PHONY: pipeline-extract pipeline-extract-batch pipeline-extract-sync
 .PHONY: pipeline-extract-openai pipeline-extract-anthropic
 .PHONY: pipeline-extract-gpt-5 pipeline-extract-gpt-5-nano pipeline-extract-claude-4
@@ -162,6 +164,24 @@ pipeline-cowork-prompts: ## Generate CoWork research prompts for URL discovery
 pipeline-merge-cowork: ## Merge CoWork research results into URL manifest (prompts for file)
 	@read -p "CoWork JSON file path: " file; \
 	$(VENV)/python scripts/merge_cowork_results.py "$$file"
+
+pipeline-sitemap-watch: ## Diff manufacturer sitemaps for newly-published URLs
+	$(VENV)/python scripts/sitemap_watch.py $(if $(SITEMAP_SLUG),--slug $(SITEMAP_SLUG))
+
+pipeline-sitemap-watch-dry: ## Dry-run sitemap watcher (no snapshot/discovery files written)
+	$(VENV)/python scripts/sitemap_watch.py --dry-run $(if $(SITEMAP_SLUG),--slug $(SITEMAP_SLUG))
+
+pipeline-maintenance-digest: ## Generate weekly pipeline-maintenance digest (current ISO week)
+	$(VENV)/python scripts/pipeline_maintenance_digest.py $(if $(DIGEST_WEEK),--week $(DIGEST_WEEK))
+
+pipeline-refresh: ## Re-parse cached HTML and report drift vs cached extractions
+	$(VENV)/python scripts/pipeline_refresh.py $(if $(REFRESH_DOMAIN),--domain $(REFRESH_DOMAIN)) $(if $(filter-out 0,$(REFRESH_LIMIT)),--limit $(REFRESH_LIMIT))
+
+bc-reconcile: ## Reconcile canonical BC values from BulletBCSource rows (dry-run)
+	$(VENV)/python scripts/bc_reconcile.py
+
+bc-reconcile-commit: ## Reconcile canonical BC values and commit to DB
+	$(VENV)/python scripts/bc_reconcile.py --commit
 
 pipeline-validate: ## Validate pipeline manifest and configuration
 	$(VENV)/python scripts/validate_manifest.py
