@@ -119,9 +119,7 @@ def _compare_cartridge(parser_entity, db_row: Cartridge) -> list[str]:
     diffs: list[str] = []
 
     if not _numbers_agree(parser_entity.bullet_weight_grains.value, db_row.bullet_weight_grains):
-        diffs.append(
-            f"weight: parser={parser_entity.bullet_weight_grains.value} db={db_row.bullet_weight_grains}"
-        )
+        diffs.append(f"weight: parser={parser_entity.bullet_weight_grains.value} db={db_row.bullet_weight_grains}")
 
     pmv = parser_entity.muzzle_velocity_fps.value
     if pmv is not None and db_row.muzzle_velocity_fps is not None:
@@ -217,9 +215,7 @@ def run_report(parser_name: str, out_path: Path) -> int:  # noqa: C901
                     continue
                 if db_row.is_locked:
                     outcome.locked_rows += 1
-                bc_sources = list(
-                    session.scalars(select(BulletBCSource).where(BulletBCSource.bullet_id == db_row.id))
-                )
+                bc_sources = list(session.scalars(select(BulletBCSource).where(BulletBCSource.bullet_id == db_row.id)))
                 # Track BC source coverage
                 for bc_field, bc_type in [("bc_g1", "g1"), ("bc_g7", "g7")]:
                     parser_bc = getattr(pentity, bc_field).value
@@ -281,10 +277,13 @@ def run_report(parser_name: str, out_path: Path) -> int:  # noqa: C901
     )
     lines.append(f"- Matched rows that are `is_locked=True` (curation-protected): {outcome.locked_rows}")
     lines.append("")
-    lines.append(f"- Parser BC values already represented in DB (canonical or bullet_bc_source): "
-                 f"**{outcome.bc_present_in_db}**")
-    lines.append(f"- Parser BC values **not** in DB (new data the parser would add): "
-                 f"**{outcome.bc_missing_from_db}**")
+    lines.append(
+        f"- Parser BC values already represented in DB (canonical or bullet_bc_source): "
+        f"**{outcome.bc_present_in_db}**"
+    )
+    lines.append(
+        f"- Parser BC values **not** in DB (new data the parser would add): " f"**{outcome.bc_missing_from_db}**"
+    )
     lines.append("")
 
     if field_diff_counter:
