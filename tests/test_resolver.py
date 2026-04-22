@@ -2205,3 +2205,289 @@ class TestCartridgeCaliberCompatibility:
     # Integration test 4 (full store pipeline) lives in tests/test_pipeline_store.py
     # ::TestCrossDiameterGuard::test_4_forensic_replay_no_cross_diameter_matched_updated
     # because it requires the store harness (_run_main + _NoCloseSession).
+
+
+class TestCartridgeSkuMismatchDisqualifier:
+    """Regression tests for v6 product-line tier regression (2026-04-22) — cart SKU cross-match.
+
+    `match_cartridge`'s composite_key and fuzzy_name tiers used to score any
+    candidate with matching caliber + weight + name-overlap, regardless of
+    whether the extracted SKU differed from the candidate's SKU. Hornady's
+    "6.5 CM 129gr SST American Whitetail TIPPED" (SKU 81509) got composite-key
+    matched to extracted "6.5 CM 129gr InterLock American Whitetail" (SKU 81489)
+    — two distinct Hornady products sharing "American Whitetail" — and the
+    store-commit overwrote the SST TIPPED cart's bullet_id with the InterLock
+    bullet. The disqualifier drops candidates whose SKU differs (when both
+    extracted and candidate have non-null SKUs), forcing the extraction to
+    auto-create a new cart instead of relinking an existing one.
+    """
+
+    @pytest.fixture()
+    def sku_collision_db(self, db):
+        """Seed two Hornady 6.5 CM 129gr cartridges with different SKUs —
+        reproduces the SST TIPPED vs InterLock AW case #4 shape."""
+        mfr = Manufacturer(name="Hornady", type_tags=["bullet_maker", "ammo_maker"], country="USA")
+        db.add(mfr)
+        db.flush()
+
+        cal = Caliber(name="6.5 Creedmoor", bullet_diameter_inches=0.264)
+        db.add(cal)
+        db.flush()
+
+        # Two 129gr bullets — SST (the one the existing cart points at) and InterLock SP
+        b_sst = Bullet(
+            manufacturer_id=mfr.id,
+            name="6.5mm .264 129 gr SST",
+            product_line="SST",
+            bullet_diameter_inches=0.264,
+            weight_grains=129.0,
+        )
+        b_interlock = Bullet(
+            manufacturer_id=mfr.id,
+            name="6.5mm .264 129 gr InterLock SP",
+            product_line="InterLock",
+            bullet_diameter_inches=0.264,
+            weight_grains=129.0,
+        )
+        db.add_all([b_sst, b_interlock])
+        db.flush()
+
+        cart_sst = Cartridge(
+            manufacturer_id=mfr.id,
+            caliber_id=cal.id,
+            bullet_id=b_sst.id,
+            name="6.5 Creedmoor 129 gr SST American Whitetail TIPPED",
+            sku="81509",
+            product_line="American Whitetail TIPPED",
+            bullet_weight_grains=129.0,
+            muzzle_velocity_fps=2950,
+        )
+        db.add(cart_sst)
+        db.commit()
+
+        return {
+            "mfr": mfr,
+            "cal": cal,
+            "b_sst": b_sst,
+            "b_interlock": b_interlock,
+            "cart_sst": cart_sst,
+        }
+
+    def test_1_different_sku_disqualifies_composite_key(self, sku_collision_db, db):
+        """Extracted InterLock AW cart with SKU 81489 must NOT composite-key match
+        the existing SST TIPPED cart with SKU 81509. Both are 6.5 CM 129gr Hornady
+        cartridges with overlapping 'American Whitetail' tokens, but their SKUs
+        identify them as distinct products."""
+        resolver = EntityResolver(db)
+        existing = sku_collision_db["cart_sst"]
+        result = resolver.match_cartridge(
+            {
+                "name": {"value": "6.5 Creedmoor 129 gr. InterLock American Whitetail"},
+                "sku": {"value": "81489"},
+                "bullet_weight_grains": {"value": 129.0},
+            },
+            manufacturer_id=sku_collision_db["mfr"].id,
+            caliber_id=sku_collision_db["cal"].id,
+        )
+        assert not result.matched or result.entity_id != existing.id, (
+            "SKU mismatch disqualifier failed: extracted SKU 81489 (InterLock AW) "
+            "cross-matched the existing SKU 81509 (SST TIPPED) cart via composite_key — "
+            "these are different products and must not be conflated"
+        )
+
+    def test_2_null_candidate_sku_still_matches(self, sku_collision_db, db):
+        """A candidate cart with no SKU remains eligible for composite_key even when
+        the extraction has a SKU — we disqualify on SKU *mismatch*, not SKU *absence*.
+        Historical records without SKUs are common and must stay matchable."""
+        db.query(Cartridge).filter(Cartridge.id == sku_collision_db["cart_sst"].id).update({"sku": None})
+        db.commit()
+        resolver = EntityResolver(db)
+        existing = sku_collision_db["cart_sst"]
+        result = resolver.match_cartridge(
+            {
+                "name": {"value": "6.5 Creedmoor 129 gr SST American Whitetail TIPPED"},
+                "sku": {"value": "81509"},
+                "bullet_weight_grains": {"value": 129.0},
+            },
+            manufacturer_id=sku_collision_db["mfr"].id,
+            caliber_id=sku_collision_db["cal"].id,
+        )
+        # Null candidate SKU, non-null extracted SKU, names agree → composite_key hits
+        assert (
+            result.matched and result.entity_id == existing.id
+        ), "SKU disqualifier wrongly filtered out a candidate with null SKU"
+
+    def test_3_null_extracted_sku_still_matches(self, sku_collision_db, db):
+        """A no-SKU extraction still matches against a cart with a SKU. We only
+        disqualify when BOTH have SKUs and they differ."""
+        resolver = EntityResolver(db)
+        existing = sku_collision_db["cart_sst"]
+        result = resolver.match_cartridge(
+            {
+                "name": {"value": "6.5 Creedmoor 129 gr SST American Whitetail TIPPED"},
+                "bullet_weight_grains": {"value": 129.0},
+                # no SKU in extraction
+            },
+            manufacturer_id=sku_collision_db["mfr"].id,
+            caliber_id=sku_collision_db["cal"].id,
+        )
+        assert (
+            result.matched and result.entity_id == existing.id
+        ), "SKU disqualifier wrongly filtered candidate when extracted had no SKU"
+
+    def test_4_matching_sku_still_uses_exact_tier(self, sku_collision_db, db):
+        """Sanity: matching SKUs still hit exact_sku tier at conf 1.0 — the
+        disqualifier only affects composite_key/fuzzy (Tiers 2/3)."""
+        resolver = EntityResolver(db)
+        existing = sku_collision_db["cart_sst"]
+        result = resolver.match_cartridge(
+            {
+                "name": {"value": "6.5 Creedmoor 129 gr SST American Whitetail TIPPED"},
+                "sku": {"value": "81509"},
+                "bullet_weight_grains": {"value": 129.0},
+            },
+            manufacturer_id=sku_collision_db["mfr"].id,
+            caliber_id=sku_collision_db["cal"].id,
+        )
+        assert result.matched and result.entity_id == existing.id
+        assert result.method == "exact_sku"
+        assert result.confidence == 1.0
+
+
+class TestCartBulletManufacturerPreference:
+    """Regression tests for v6 product-line tier regression (2026-04-22) — bullet cross-brand tie.
+
+    When a cartridge's extracted bullet_name tokenized equivalently against two
+    same-diameter same-weight bullets from different manufacturers, composite_key
+    assigned identical confidence to both and the pick went to whichever came
+    first in candidate iteration. For Hornady BLACK 6mm ARC 105gr BTHP, both
+    Hornady's "6mm .243 105 gr BTHP Match" and Sierra's "6MM 105 GR HPBT/CN
+    MatchKing (SMK)" scored composite_key=0.95 (name_score=1.00 after
+    BTHP↔HPBT↔{hollow,point,boat,tail} abbreviation expansion), and Sierra won.
+    The fix runs a narrow same-manufacturer pass first; the broad cross-brand
+    search (needed for Federal-loaded Sierra MatchKing cases) only fires when
+    the narrow pass returns no high-confidence hit.
+    """
+
+    @pytest.fixture()
+    def cross_brand_db(self, db):
+        """Seed cross-brand 105gr bullets + a Hornady BLACK cart whose bullet
+        extraction ('BTHP' token) scores equivalently against both."""
+        hornady = Manufacturer(name="Hornady", type_tags=["bullet_maker", "ammo_maker"], country="USA")
+        sierra = Manufacturer(name="Sierra Bullets", type_tags=["bullet_maker"], country="USA")
+        federal = Manufacturer(name="Federal", type_tags=["ammo_maker"], country="USA")
+        db.add_all([hornady, sierra, federal])
+        db.flush()
+
+        cal = Caliber(name="6mm ARC", bullet_diameter_inches=0.243)
+        db.add(cal)
+        db.flush()
+
+        # Hornady Match BTHP bullet (the correct pick for Hornady BLACK cartridge)
+        b_hornady = Bullet(
+            manufacturer_id=hornady.id,
+            name="6mm .243 105 gr BTHP Match",
+            product_line="Match",
+            bullet_diameter_inches=0.243,
+            weight_grains=105.0,
+        )
+        # Sierra MatchKing HPBT (what the bug picked — scores equivalently via HPBT↔BTHP)
+        b_sierra = Bullet(
+            manufacturer_id=sierra.id,
+            name="6MM 105 GR HPBT/CN MatchKing (SMK)",
+            bullet_diameter_inches=0.243,
+            weight_grains=105.0,
+        )
+        db.add_all([b_hornady, b_sierra])
+        db.flush()
+        return {
+            "hornady": hornady,
+            "sierra": sierra,
+            "federal": federal,
+            "cal": cal,
+            "b_hornady": b_hornady,
+            "b_sierra": b_sierra,
+        }
+
+    def test_1_same_mfr_wins_over_cross_brand_tie(self, cross_brand_db, db):
+        """A Hornady-manufactured cartridge with bullet_name 'BTHP' should resolve
+        to the Hornady Match BTHP bullet, not the Sierra SMK HPBT, even though
+        both score composite_key=0.95. Without the narrow same-mfr pass, the
+        tie is broken by iteration order — flaky and cross-brand-biased."""
+        resolver = EntityResolver(db)
+        result = resolver.resolve(
+            {
+                "name": {"value": "6mm ARC 105 gr BTHP Hornady BLACK"},
+                "manufacturer": {"value": "Hornady"},
+                "caliber": {"value": "6mm ARC"},
+                "sku": {"value": "81604"},
+                "bullet_name": {"value": "BTHP"},
+                "bullet_weight_grains": {"value": 105.0},
+                "product_line": {"value": "Hornady BLACK"},
+            },
+            "cartridge",
+        )
+        assert result.bullet_id == cross_brand_db["b_hornady"].id, (
+            "Same-manufacturer preference failed: Hornady BLACK cart with bullet_name='BTHP' "
+            "should resolve to Hornady Match BTHP, not Sierra SMK HPBT (cross-brand tie bug)"
+        )
+
+    def test_2_cross_brand_fallback_still_works_when_no_same_mfr_bullet(self, cross_brand_db, db):
+        """Federal Gold Medal-style case: the cart is from a manufacturer (Federal)
+        that makes no bullets in the candidate pool, so the narrow pass misses
+        and the broad cross-brand search runs — resolving the Sierra SMK component
+        bullet. This is the 'factory-loaded component bullet' path that the
+        broad search was originally designed to handle."""
+        resolver = EntityResolver(db)
+        result = resolver.resolve(
+            {
+                "name": {"value": "Gold Medal Sierra MatchKing, 6mm ARC, 105 Grain"},
+                "manufacturer": {"value": "Federal"},
+                "caliber": {"value": "6mm ARC"},
+                "bullet_name": {"value": "HPBT MatchKing"},
+                "bullet_weight_grains": {"value": 105.0},
+            },
+            "cartridge",
+        )
+        # Federal has no bullets → narrow pass misses → broad picks Sierra SMK
+        assert result.bullet_id == cross_brand_db["b_sierra"].id, (
+            "Cross-brand fallback broken: Federal cartridge should still resolve to "
+            "Sierra MatchKing when Federal has no matching-diameter bullet"
+        )
+
+    def test_3_narrow_below_threshold_falls_through_to_broad(self, cross_brand_db, db):
+        """If narrow same-mfr search finds only a low-confidence hit (below
+        cart_bullet_mfr_preferred_min_confidence), the broad search still runs.
+        Prevents a weak same-mfr fuzzy hit from blocking a strong cross-brand
+        composite_key match."""
+        # Add a weak-match Hornady bullet of the same diameter/weight but totally
+        # different name — narrow pass would score fuzzy_name only (<0.9).
+        weak_hornady_bullet = Bullet(
+            manufacturer_id=cross_brand_db["hornady"].id,
+            name="6mm .243 105 gr CX Monolithic Solid",
+            product_line="CX",
+            bullet_diameter_inches=0.243,
+            weight_grains=105.0,
+        )
+        db.add(weak_hornady_bullet)
+        # Also remove the Hornady BTHP to force a real mismatch
+        db.delete(cross_brand_db["b_hornady"])
+        db.commit()
+
+        resolver = EntityResolver(db)
+        result = resolver.resolve(
+            {
+                "name": {"value": "6mm ARC 105 gr BTHP Hornady BLACK"},
+                "manufacturer": {"value": "Hornady"},
+                "caliber": {"value": "6mm ARC"},
+                "sku": {"value": "81604"},
+                "bullet_name": {"value": "BTHP"},
+                "bullet_weight_grains": {"value": 105.0},
+            },
+            "cartridge",
+        )
+        # Narrow pass finds only CX Monolithic at fuzzy — below 0.9 threshold
+        # Broad pass finds Sierra SMK at composite_key 0.95 → wins
+        assert result.bullet_id == cross_brand_db["b_sierra"].id, (
+            "Threshold gating failed: weak same-mfr fuzzy hit should not block broad " "cross-brand composite_key match"
+        )

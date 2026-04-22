@@ -800,6 +800,18 @@ class EntityResolver:
             stmt = stmt.where(Cartridge.caliber_id == caliber_id)
 
         candidates = list(self._session.scalars(stmt))
+
+        # SKU-mismatch disqualifier: when the extraction has a SKU, any
+        # candidate with a *different* non-null SKU is a different product.
+        # Tier 1 (exact_sku) would have caught a matching SKU already, so at
+        # this point a non-null candidate SKU must differ from the extracted
+        # one. Dropping those prevents composite_key/fuzzy from cross-matching
+        # sibling products in the same caliber+weight (e.g. Hornady
+        # "SST American Whitetail TIPPED" SKU 81509 vs extracted "InterLock
+        # American Whitetail" SKU 81489 — both 6.5 CM 129gr but distinct
+        # products). Candidates with null SKU remain eligible.
+        if sku:
+            candidates = [c for c in candidates if not c.sku or c.sku == sku]
         all_scored: list[tuple[str, float, str, str]] = []
 
         # Tier 2: Composite key — weight match + best name similarity
@@ -1009,10 +1021,26 @@ class EntityResolver:
                 cart_bullet_diameter = cal_obj.bullet_diameter_inches if cal_obj else None
                 weight = _get_value(extracted, "bullet_weight_grains")
                 bullet_stub = {"name": {"value": bullet_name}, "weight_grains": {"value": weight}}
-                # Search across ALL bullet manufacturers — factory ammo often uses
-                # bullets from a different company (e.g. Federal loads Sierra MatchKings).
-                # Diameter + weight narrow the candidates; name similarity picks the best.
-                bullet_match = self.match_bullet(bullet_stub, None, cart_bullet_diameter)
+                # Two-pass bullet resolution. First try restricting to the
+                # cartridge's own manufacturer — when the ammo maker also makes
+                # the bullet (Hornady BLACK → Hornady Match, Nosler Trophy Grade →
+                # Nosler AccuBond), this gives a same-brand match and avoids ties
+                # with cross-brand bullets that tokenize to the same score
+                # (extracted "BTHP" matches both Hornady "BTHP Match" and Sierra
+                # "HPBT MatchKing" at composite_key 0.95). Fall back to the full
+                # cross-brand pool only when the narrow search misses — that's
+                # what lets factory ammo from brands that don't make bullets
+                # (Federal Gold Medal carrying Sierra MatchKing, Black Hills
+                # carrying Berger) still resolve correctly.
+                bullet_match = MatchResult(matched=False)
+                if self._config.enable_cart_bullet_mfr_preference and result.manufacturer_id:
+                    narrow = self.match_bullet(bullet_stub, result.manufacturer_id, cart_bullet_diameter)
+                    if narrow.matched and narrow.confidence >= self._config.cart_bullet_mfr_preferred_min_confidence:
+                        bullet_match = narrow
+                if not bullet_match.matched:
+                    # Cross-brand fallback — manufacturer_id=None lets factory
+                    # ammo match component bullets from another manufacturer.
+                    bullet_match = self.match_bullet(bullet_stub, None, cart_bullet_diameter)
                 # Hard weight gate: reject bullet matches where weight disagrees beyond
                 # tolerance. Prevents linking to wrong-weight bullets when the correct
                 # weight variant hasn't been ingested yet (e.g. 150gr CX → 110gr CX).

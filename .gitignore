@@ -42,6 +42,9 @@ temp/
 # Forensic evidence (local-only, not shipped)
 data/forensic/
 
+# Local DB backups (before risky operations)
+data/drift.db.*.bak
+
 # Pipeline cache (large/generated) — keep config and manifests
 data/pipeline/*
 !data/pipeline/rejected_calibers.json

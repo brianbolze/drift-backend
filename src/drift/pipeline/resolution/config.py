@@ -200,6 +200,21 @@ class ResolutionConfig:
     # Confidence penalty applied to a relaxed-diameter match (multiplicative).
     fallback_confidence_penalty: float = 0.9
 
+    # Cartridge→bullet two-pass resolution: first try restricting the bullet
+    # candidate pool to the cartridge's own manufacturer. If that narrow search
+    # returns a match with confidence ≥ this threshold, accept it. Only fall
+    # back to the cross-brand search (manufacturer_id=None, needed for
+    # factory-loaded component bullets like Federal Gold Medal carrying a
+    # Sierra MatchKing) when the narrow search misses. This breaks ties that
+    # previously went to whichever bullet happened to come first in the
+    # candidate list — e.g. Hornady BLACK 105gr BTHP vs Sierra SMK 105gr both
+    # scored composite_key=0.95 and SMK won by iteration order. Threshold is
+    # set just below the 0.93 product_line + weight ceiling so that a
+    # product_line-tier hit by the cartridge's own manufacturer is enough to
+    # skip the fallback, but a weak fuzzy-tier same-brand hit is not.
+    enable_cart_bullet_mfr_preference: bool = True
+    cart_bullet_mfr_preferred_min_confidence: float = 0.9
+
     # ── Pipeline store action gates ──────────────────────────────────────────
     # These drive the store script's create / match / flag decision. Separated
     # from resolver-internal confidence scalars because the store is the
