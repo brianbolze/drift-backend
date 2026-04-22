@@ -45,6 +45,7 @@ NUMERIC_ABS_TOL = 0.01
 PARSER_TO_MANUFACTURER = {
     "hornady": "Hornady",
     "sierra": "Sierra Bullets",
+    "nosler": "Nosler",
 }
 
 
@@ -58,6 +59,12 @@ def _entity_type_for_url(parser_name: str, url: str) -> str | None:
         return None
     if parser_name == "sierra":
         return "bullet"  # Sierra is bullet-only
+    if parser_name == "nosler":
+        # Nosler URL slugs: ammunition pages end with "-ammunition.html", bullets
+        # are product pages with grain weight + bullet line (no "-ammunition").
+        if "-ammunition.html" in url:
+            return "cartridge"
+        return "bullet"
     return None
 
 

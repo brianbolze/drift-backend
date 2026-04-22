@@ -424,3 +424,115 @@ def test_sierra_parser_matches_golden(html_path):
 
     actual, expected = run_golden_case(SierraParser(), html_path)
     assert actual == expected, f"Golden mismatch in {html_path.name}"
+
+
+# ── Nosler parser golden set ──────────────────────────────────────────────
+
+
+_NOSLER_CASES = _discover_cases("nosler")
+
+
+@pytest.mark.skipif(not _NOSLER_CASES, reason="No Nosler fixtures present")
+@pytest.mark.parametrize("html_path", _NOSLER_CASES, ids=lambda p: p.stem)
+def test_nosler_parser_matches_golden(html_path):
+    from drift.pipeline.extraction.parsers.nosler import NoslerParser
+
+    actual, expected = run_golden_case(NoslerParser(), html_path)
+    assert actual == expected, f"Golden mismatch in {html_path.name}"
+
+
+# ── Nosler MV edge cases (per engineer guidance: over-represent prose MV) ──
+
+
+class TestNoslerMuzzleVelocityExtraction:
+    """The VELOCITY (FPS) table is the one fragile part of Nosler parsing.
+    Cover the shapes that regex-on-markup can fail on."""
+
+    def _parser(self):
+        from drift.pipeline.extraction.parsers.nosler import NoslerParser
+
+        return NoslerParser()
+
+    def _spec_table(self, name="Test 150gr Ammunition"):
+        """Minimal spec table Nosler cartridge pages always carry."""
+        return f"""
+        <table>
+          <tr><th>Product Name</th><td>{name}</td></tr>
+          <tr><th>Cartridge</th><td>30-06 Springfield</td></tr>
+          <tr><th>Bullet Type</th><td>AccuBond</td></tr>
+          <tr><th>Bullet Weight</th><td>150gr</td></tr>
+          <tr><th>Test Barrel Length</th><td>24"</td></tr>
+          <tr><th>Box Qty</th><td>20</td></tr>
+          <tr><th>Manufacturer SKU</th><td>99999</td></tr>
+        </table>
+        <div><span itemprop="sku">99999</span></div>
+        """
+
+    def _velocity_table(self, muzzle_text):
+        return f"""
+        <th>VELOCITY (FPS)</th>
+        <tr>
+          <td>Muzzle</td><td>100</td><td>200</td><td>300</td>
+        </tr>
+        <tr>
+          <td>{muzzle_text}</td><td>2800</td><td>2600</td><td>2400</td>
+        </tr>
+        """
+
+    def test_plain_mv_extracted(self):
+        html = self._spec_table() + self._velocity_table("2950")
+        r = self._parser().parse(html, "https://www.nosler.com/test-ammunition.html", "cartridge")
+        assert r is not None
+        assert r.entities[0].muzzle_velocity_fps.value == 2950
+
+    def test_comma_thousands_stripped(self):
+        """MV like '3,950' should parse as 3950, not crash or return None."""
+        html = self._spec_table() + self._velocity_table("3,950")
+        r = self._parser().parse(html, "https://www.nosler.com/test-ammunition.html", "cartridge")
+        assert r is not None
+        assert r.entities[0].muzzle_velocity_fps.value == 3950
+
+    def test_missing_velocity_table_is_null_not_fatal(self):
+        """NoslerCustom / specialty loads have no VELOCITY table — parser must
+        still return the cartridge with null MV, not None."""
+        html = self._spec_table()
+        r = self._parser().parse(html, "https://www.nosler.com/specialty-ammunition.html", "cartridge")
+        assert r is not None
+        assert r.entities[0].muzzle_velocity_fps.value is None
+
+    def test_whitespace_around_value(self):
+        html = self._spec_table() + self._velocity_table("  2700  ")
+        r = self._parser().parse(html, "https://www.nosler.com/test-ammunition.html", "cartridge")
+        assert r is not None
+        assert r.entities[0].muzzle_velocity_fps.value == 2700
+
+    def test_row_attributes_on_tds(self):
+        """HTML in the wild: <td class="..." data-th="...">...</td>. The
+        parser regex must tolerate attributes on the table cells."""
+        html = self._spec_table() + """
+            <th>VELOCITY (FPS)</th>
+            <tr>
+              <td class="col">Muzzle</td><td class="col">100</td>
+            </tr>
+            <tr>
+              <td class="col data" data-th="muzzle">2850</td><td class="col">2700</td>
+            </tr>
+            """
+        r = self._parser().parse(html, "https://www.nosler.com/test-ammunition.html", "cartridge")
+        assert r is not None
+        assert r.entities[0].muzzle_velocity_fps.value == 2850
+
+    def test_out_of_range_mv_would_trigger_fallback(self):
+        """A runaway MV (e.g. 39500 misread as 39,500 after strip) would
+        fail validate_ranges downstream and fall to LLM. Here we just
+        confirm the parser emits the number it sees — the engine's range
+        check handles rejection."""
+        html = self._spec_table() + self._velocity_table("39500")
+        r = self._parser().parse(html, "https://www.nosler.com/test-ammunition.html", "cartridge")
+        assert r is not None
+        assert r.entities[0].muzzle_velocity_fps.value == 39500
+        # validate_ranges should flag this
+        from drift.pipeline.extraction.engine import validate_ranges
+
+        warnings = validate_ranges([r.entities[0].model_dump()])
+        assert any("muzzle_velocity_fps" in w for w in warnings)

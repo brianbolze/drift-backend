@@ -11,13 +11,21 @@
 - **Parser vs current DB** ([parser_vs_db_hornady.md](parser_vs_db_hornady.md)): joined by `source_url`; 339/339 DB rows match parser output bit-for-bit. Zero new BCs. 422 URLs not in DB are all handgun/pistol loads correctly filtered by `rejected_calibers.json`.
 - **Telemetry**: new cache records carry `extraction_method: "parser" | "parser_fellthrough_to_llm" | "llm"` + `parser_name`.
 
-Parsers now active on: `www.hornady.com`, `sierrabullets.com`. Next target per rollout plan: a cartridge-heavy manufacturer (Nosler / Federal / Black Hills) to exercise the cartridge path on a second site.
+Parsers now active on: `www.hornady.com`, `sierrabullets.com`, `www.nosler.com`. BaseParser ABC held through all three without modification.
 
 ### Sierra — second parser (2026-04-22)
 
 - **Agreement** ([parser_agreement_sierra.md](parser_agreement_sierra.md)): 240/248 pages parsed; 100% agreement on name, manufacturer, diameter, weight; 99.6% bc_g1, 99.3% bc_g7, 88.8% sku (remaining sku noise is trailing-suffix inconsistency in the LLM cache, not parser drift). 5 structural mismatches are "related products" cross-sell sections where the LLM over-extracted — parser correctly returns only the page's primary product.
 - **Vs DB** ([parser_vs_db_sierra.md](parser_vs_db_sierra.md)): 127/141 matched rows agree on all compared fields. 14 mismatches are all SKU suffixes (`9290` vs `9290T` etc.) where the DB kept the full BigCommerce Item # on a minority of rows (14 of 144 Sierra rows in the DB) — internal DB inconsistency, not a parser defect. Zero BC / weight / diameter discrepancies.
 - **Product line**: Sierra's `Product Family` attribute is a direct lift — LLM had been returning null for this field on all 248 Sierra pages. Parser fills it with canonical values like "MatchKing", "GameKing", "Tipped MatchKing", "Sports Master".
+
+### Nosler — third parser (2026-04-22)
+
+- **Agreement** ([parser_agreement_nosler.md](parser_agreement_nosler.md)): 422/454 pages parsed. Bullets: 100% on diameter, bc_g1, bc_g7, sectional_density, sku; 99.0% weight; 97.9% manufacturer; 95.4% name. Cartridges: 100% on name, manufacturer, bullet_weight, sku; 98.5% MV; 96.1% caliber. The only non-zero disagreement is "parser=null, LLM=value" on cartridge BCs (14 G1 + 2 G7) — expected, since Nosler publishes cartridge BCs only on separate load-data pages and the parser correctly refuses to invent them.
+- **Vs DB** ([parser_vs_db_nosler.md](parser_vs_db_nosler.md)): 229/231 matched rows agree on every compared field. 2 weight diffs are Nosler's own page typos (416-cal 400gr Solid and 458-cal 500gr Solid both have the caliber pasted into the `Bullet Weight` spec row — the LLM silently corrected this, the parser reports what the page says). Zero BC / MV / SKU discrepancies. 191 URLs not in DB.
+- **Resolver linkage** (new test: [tests/pipeline/test_parser_resolver_integration.py](../tests/pipeline/test_parser_resolver_integration.py)): over 228 parser-extracted Nosler cartridges with null BCs, 144 (63%) resolve to a bullet with confidence ≥0.9; the remaining 84 resolve to `bullet_id=None` (the expected behavior per the engineer's pre-rollout note — cartridges whose bullet families aren't in the DB yet). **Zero sub-0.5 confidences**, so the `bullet_fk_min_confidence` gate never drops a resolvable match.
+- **Abstraction stress test**: BaseParser ABC didn't need widening through Hornady (inline JSON) → Sierra (BigCommerce attributes) → Nosler (Magento spec-table rows). Three genuinely different extraction styles, same `parse(raw_html, url, entity_type) → ParserResult | None` contract.
+- **Nosler page defects flagged for curation**: the two Solid bullet pages with caliber-in-weight typo; the 37% cartridge→bullet_id=None rate (batch with Hornady/Sierra backfill pass).
 
 ## Why
 

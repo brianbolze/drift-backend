@@ -1,0 +1,74 @@
+{
+  "url": "https://www.nosler.com/30-378-wby-mag-210gr-accubond-long-range-trophy-grade-ammunition.html",
+  "entity_type": "cartridge",
+  "entities": [
+    {
+      "name": {
+        "value": "30-378 Wby Mag 210gr AccuBond Long Range Trophy Grade Ammunition",
+        "source_text": "30-378 Wby Mag 210gr AccuBond Long Range Trophy Grade Ammunition",
+        "confidence": 1.0
+      },
+      "manufacturer": {
+        "value": "Nosler",
+        "source_text": "nosler.com",
+        "confidence": 1.0
+      },
+      "caliber": {
+        "value": "30-378 Weatherby Magnum",
+        "source_text": "Cartridge=30-378 Weatherby Magnum",
+        "confidence": 1.0
+      },
+      "bullet_name": {
+        "value": "AccuBond Long Range",
+        "source_text": "Bullet Type=AccuBond Long Range",
+        "confidence": 1.0
+      },
+      "bullet_weight_grains": {
+        "value": 210.0,
+        "source_text": "Bullet Weight=210gr",
+        "confidence": 1.0
+      },
+      "bc_g1": {
+        "value": null,
+        "source_text": "",
+        "confidence": 0.0
+      },
+      "bc_g7": {
+        "value": null,
+        "source_text": "",
+        "confidence": 0.0
+      },
+      "bullet_length_inches": {
+        "value": null,
+        "source_text": "",
+        "confidence": 0.0
+      },
+      "muzzle_velocity_fps": {
+        "value": 3040,
+        "source_text": "VELOCITY Muzzle=3040",
+        "confidence": 0.8
+      },
+      "test_barrel_length_inches": {
+        "value": 24.0,
+        "source_text": "Test Barrel=24\"",
+        "confidence": 1.0
+      },
+      "round_count": {
+        "value": 20,
+        "source_text": "Box Qty=20",
+        "confidence": 1.0
+      },
+      "product_line": {
+        "value": null,
+        "source_text": "",
+        "confidence": 0.0
+      },
+      "sku": {
+        "value": "60133",
+        "source_text": "sku=60133",
+        "confidence": 1.0
+      }
+    }
+  ],
+  "bc_sources": []
+}

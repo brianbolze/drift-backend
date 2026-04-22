@@ -1,0 +1,74 @@
+{
+  "url": "https://www.nosler.com/7mm-08-rem-140gr-ballistic-tip-hunting-ammunition.html",
+  "entity_type": "cartridge",
+  "entities": [
+    {
+      "name": {
+        "value": "7mm-08 Rem 140gr Ballistic Tip Hunting Ammunition",
+        "source_text": "7mm-08 Rem 140gr Ballistic Tip Hunting Ammunition",
+        "confidence": 1.0
+      },
+      "manufacturer": {
+        "value": "Nosler",
+        "source_text": "nosler.com",
+        "confidence": 1.0
+      },
+      "caliber": {
+        "value": "7mm-08 Remington",
+        "source_text": "Cartridge=7mm-08 Remington",
+        "confidence": 1.0
+      },
+      "bullet_name": {
+        "value": "Ballistic Tip Hunting",
+        "source_text": "Bullet Type=Ballistic Tip Hunting",
+        "confidence": 1.0
+      },
+      "bullet_weight_grains": {
+        "value": 140.0,
+        "source_text": "Bullet Weight=140gr",
+        "confidence": 1.0
+      },
+      "bc_g1": {
+        "value": null,
+        "source_text": "",
+        "confidence": 0.0
+      },
+      "bc_g7": {
+        "value": null,
+        "source_text": "",
+        "confidence": 0.0
+      },
+      "bullet_length_inches": {
+        "value": null,
+        "source_text": "",
+        "confidence": 0.0
+      },
+      "muzzle_velocity_fps": {
+        "value": 2825,
+        "source_text": "VELOCITY Muzzle=2825",
+        "confidence": 0.8
+      },
+      "test_barrel_length_inches": {
+        "value": 24.0,
+        "source_text": "Test Barrel=24\"",
+        "confidence": 1.0
+      },
+      "round_count": {
+        "value": 20,
+        "source_text": "Box Qty=20",
+        "confidence": 1.0
+      },
+      "product_line": {
+        "value": null,
+        "source_text": "",
+        "confidence": 0.0
+      },
+      "sku": {
+        "value": "40059",
+        "source_text": "sku=40059",
+        "confidence": 1.0
+      }
+    }
+  ],
+  "bc_sources": []
+}

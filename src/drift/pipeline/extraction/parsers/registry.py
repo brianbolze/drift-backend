@@ -30,4 +30,8 @@ def _instantiate(name: str) -> BaseParser | None:
         from drift.pipeline.extraction.parsers.sierra import SierraParser
 
         return SierraParser()
+    if name == "nosler":
+        from drift.pipeline.extraction.parsers.nosler import NoslerParser
+
+        return NoslerParser()
     return None

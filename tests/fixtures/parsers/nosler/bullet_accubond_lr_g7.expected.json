@@ -1,0 +1,94 @@
+{
+  "url": "https://www.nosler.com/338-caliber-265gr-accubond-long-range-100ct.html",
+  "entity_type": "bullet",
+  "entities": [
+    {
+      "name": {
+        "value": "338 Caliber 265gr AccuBond Long Range (100ct)",
+        "source_text": "338 Caliber 265gr AccuBond Long Range (100ct)",
+        "confidence": 1.0
+      },
+      "manufacturer": {
+        "value": "Nosler",
+        "source_text": "nosler.com",
+        "confidence": 1.0
+      },
+      "bullet_diameter_inches": {
+        "value": 0.338,
+        "source_text": "Diameter=0.338",
+        "confidence": 1.0
+      },
+      "weight_grains": {
+        "value": 265.0,
+        "source_text": "Bullet Weight=265gr",
+        "confidence": 1.0
+      },
+      "bc_g1": {
+        "value": 0.732,
+        "source_text": "BC G1=0.732",
+        "confidence": 1.0
+      },
+      "bc_g7": {
+        "value": 0.369,
+        "source_text": "BC G7=0.369",
+        "confidence": 1.0
+      },
+      "length_inches": {
+        "value": 1.7,
+        "source_text": "OAL=1.700",
+        "confidence": 1.0
+      },
+      "sectional_density": {
+        "value": 0.331,
+        "source_text": "SD=0.331",
+        "confidence": 1.0
+      },
+      "base_type": {
+        "value": "boat_tail",
+        "source_text": "Bullet Base=Boat Tail",
+        "confidence": 0.9
+      },
+      "tip_type": {
+        "value": "polymer_tip",
+        "source_text": "Bullet Type=AccuBond Long Range",
+        "confidence": 0.7
+      },
+      "type_tags": {
+        "value": [],
+        "source_text": "",
+        "confidence": 0.0
+      },
+      "used_for": {
+        "value": [],
+        "source_text": "",
+        "confidence": 0.0
+      },
+      "product_line": {
+        "value": "AccuBond Long Range",
+        "source_text": "Bullet Type=AccuBond Long Range",
+        "confidence": 1.0
+      },
+      "sku": {
+        "value": "58454",
+        "source_text": "sku=58454",
+        "confidence": 1.0
+      }
+    }
+  ],
+  "bc_sources": [
+    {
+      "bullet_name": "338 Caliber 265gr AccuBond Long Range (100ct)",
+      "bc_type": "g1",
+      "bc_value": 0.732,
+      "source": "manufacturer",
+      "source_methodology": null
+    },
+    {
+      "bullet_name": "338 Caliber 265gr AccuBond Long Range (100ct)",
+      "bc_type": "g7",
+      "bc_value": 0.369,
+      "source": "manufacturer",
+      "source_methodology": null
+    }
+  ]
+}
