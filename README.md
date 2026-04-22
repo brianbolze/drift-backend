@@ -1,6 +1,33 @@
 # Drift Ballistics Backend
 
-Data pipeline and search backend for the Drift Ballistics app. Scrapes manufacturer product data, extracts structured ammo/firearms specs via LLM, and exports a bundled SQLite database for on-device search.
+Data pipeline and bundled SQLite database for the Drift Ballistics iOS app. Scrapes manufacturer product pages, extracts structured ammo and rifle specs via LLM, resolves entities against a canonical reference set, and publishes a stripped-down SQLite file over the air.
+
+Offline-first: all LLM extraction happens at ingestion time. The iOS app never calls an inference API.
+
+## Architecture
+
+```
+MANIFEST → FETCH → REDUCE → EXTRACT → NORMALIZE → RESOLVE → STORE
+                                                              │
+                                                              ▼
+                                              data/drift.db (source of truth)
+                                                              │
+                                                ┌─────────────┴─────────────┐
+                                                ▼                           ▼
+                                   data/patches/*.yaml             export-production-db
+                                   (manual curation)               data/production/drift.db
+                                                                            │
+                                                                            ▼
+                                                                       publish-db
+                                                              Cloudflare R2 (data.driftballistics.com)
+```
+
+Two data flows feed `data/drift.db`:
+
+- **Pipeline** — automated scrape + LLM extraction for bulk coverage. See [docs/pipeline_README.md](docs/pipeline_README.md).
+- **Curation patches** — human-authored YAML for fixes, gap-fills, and protected records. See [docs/curation_README.md](docs/curation_README.md).
+
+Everything downstream (production export, OTA publish) runs from `data/drift.db`.
 
 ## Setup
 
@@ -8,7 +35,7 @@ Data pipeline and search backend for the Drift Ballistics app. Scrapes manufactu
 make install    # creates venv, installs deps, runs migrations
 ```
 
-Or manually:
+Manual equivalent:
 
 ```bash
 python3 -m venv .venv
@@ -17,57 +44,91 @@ pip install -e ".[dev]"
 alembic upgrade head
 ```
 
+For pipeline work add the LLM extras:
+
+```bash
+make pipeline-install   # installs anthropic + openai SDKs
+```
+
 ## Common Commands
 
 ```bash
-make test       # run tests
-make lint       # black + isort + flake8 (check only)
-make format     # black + isort (auto-fix)
-make migrate    # run pending migrations
-make seed       # load reference data (idempotent)
-make reset-seed # wipe all data tables and reload from scratch
+make help                       # prints organized command reference
+make test                       # run test suite
+make format && make lint        # required before committing
+
+# Database
+make migrate                    # apply pending migrations
+make describe-db                # schema + row counts
+make seed                       # load reference data from data/seed.sql (idempotent)
+
+# Pipeline (see docs/pipeline_README.md)
+make pipeline-fetch             # download HTML for manifest URLs
+make pipeline-extract           # LLM extraction (provider auto-detected)
+make pipeline-store             # dry-run resolve and preview DB changes
+make pipeline-store-commit      # write resolved data to drift.db
+
+# Curation (see docs/curation_README.md)
+make curate                     # preview YAML patches
+make curate-commit              # apply patches to drift.db
+
+# Production
+make export-production-db       # build stripped iOS DB at data/production/drift.db
+make publish-db CHANGELOG="…"   # dry-run upload to R2
+make publish-db-commit CHANGELOG="…"   # upload production DB + manifest to R2
 ```
 
-## Code Style
-
-Formatting: **Black** (line-length 120). Linting: **flake8** + bugbear. Import sorting: **isort** (black profile). All configured in `pyproject.toml` and `.flake8`.
-
-VS Code: settings are in `.vscode/settings.json` — format-on-save is enabled.
-
-## Seed Data
-
-All reference data (manufacturers, calibers, chambers, platforms, rankings, etc.) lives in `data/seed.sql` — a single SQL file dumped from the verified database. The seed is idempotent (`INSERT OR IGNORE`) and handles FK ordering automatically.
-
-To regenerate `seed.sql` after making changes to the database:
-
-```bash
-python scripts/dump_seed.py   # (or manually: sqlite3 data/drift.db .dump)
-```
-
-Archived curation scripts and JSON files from the original data build-out are in `scripts/_archive/` and `data/_archive/`.
+LLM provider is selected via `PIPELINE_PROVIDER` (`anthropic` | `openai`); model via `PIPELINE_MODEL`. See `make help` for the full list.
 
 ## Project Structure
 
 ```
 src/drift/
-├── models/         # SQLAlchemy models (Manufacturer, Caliber, Bullet, etc.)
-├── schemas/        # Pydantic schemas
-├── pipeline/       # Scraping + extraction pipeline
-└── cli/            # Human review tooling
-scripts/
-├── seed_db.py      # Load/reset seed data
-└── dump_seed.py    # Regenerate seed.sql from drift.db
+├── models/             # SQLAlchemy 2.0 ORM (Bullet, Cartridge, RifleModel, EntityAlias, …)
+├── pipeline/           # Scrape → reduce → extract → normalize → resolve → store
+│   ├── fetching/
+│   ├── reduction/
+│   ├── extraction/
+│   ├── normalization.py
+│   ├── resolution/     # EntityResolver, ResolutionConfig, MatchResult
+│   └── config.py       # validation ranges, enum allowlists, reducer hints
+├── resolution/
+│   └── aliases.py      # lookup_entity — shared by curation + pipeline
+├── curation.py         # YAML patch loader + applier
+├── display_name.py     # canonical display-name builders
+└── database.py         # engine + session factory
+
+scripts/                # CLI entry points (pipeline_*, curate, export_production_db, publish_db, …)
 data/
-├── drift.db        # SQLite database (source of truth)
-└── seed.sql        # Seed data (auto-generated from drift.db)
-docs/               # Design docs, research, domain reference
-sql/                # Common, helpful SQL queries
-alembic/            # Database migrations
+├── drift.db            # SQLite source of truth
+├── seed.sql            # reference data dump (manufacturers, calibers, chambers, platforms)
+├── patches/            # numbered YAML curation patches (001_, 002_, …)
+├── production/drift.db # iOS-bundled DB (generated)
+└── pipeline/           # generated cache: fetched/, reduced/, extracted/, review/, batches/
+
+alembic/                # migrations
+tests/                  # pytest
+docs/                   # design docs and references (see below)
+sql/                    # ad-hoc queries
 ```
+
+## Code Style
+
+- **Black** (line length 120), **isort** (black profile), **flake8 + bugbear**. Configured in `pyproject.toml` and `.flake8`.
+- Python 3.11+, SQLAlchemy 2.0 (`session.scalars(select(...))`), Pydantic 2.0.
+- See [docs/python-code-patterns.md](docs/python-code-patterns.md) for the Pydantic Fields pattern and base schema config.
+- VS Code format-on-save is enabled via `.vscode/settings.json`.
+
+Always run `make format && make lint && make test` before committing.
 
 ## Key Docs
 
-- `docs/engineering_overview.md` — Domain primer and architecture
-- `docs/wi2_design_proposal.md` — Schema spec and pipeline design (source of truth)
-- `docs/wi2-doro-learnings.md` — Pipeline patterns from prior system
-- `docs/python-code-patterns.md` — Code style preferences
+| Doc | When to read |
+| --- | --- |
+| [docs/engineering_overview.md](docs/engineering_overview.md) | Ballistics domain primer (BC, DOPE, solver concepts) |
+| [docs/pipeline_README.md](docs/pipeline_README.md) | Full pipeline workflow and stage-by-stage reference |
+| [docs/curation_README.md](docs/curation_README.md) | YAML patch format and operations reference |
+| [docs/python-code-patterns.md](docs/python-code-patterns.md) | Pydantic Fields pattern and base schema config |
+| [docs/wi2_design_proposal.md](docs/wi2_design_proposal.md) | Original schema spec (slightly outdated; cross-reference against current models) |
+| [docs/db_summary.md](docs/db_summary.md) | Snapshot of current row counts and coverage |
+| [CLAUDE.md](CLAUDE.md) | Agent instructions, gotchas, command quick-reference |

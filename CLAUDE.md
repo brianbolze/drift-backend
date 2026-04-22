@@ -25,12 +25,13 @@ IMPORTANT: Always run `make format && make lint && make test` before committing.
 ## Architecture
 
 ```
-MANIFEST -> FETCH -> REDUCE -> EXTRACT -> RESOLVE -> STORE
+MANIFEST -> FETCH -> REDUCE -> EXTRACT -> NORMALIZE -> RESOLVE -> STORE
 ```
 
 - **Models**: `src/drift/models/` (SQLAlchemy 2.0 ORM)
-- **Schemas**: `src/drift/schemas/` (Pydantic 2.0 validation)
-- **Pipeline**: `src/drift/pipeline/` (scraping, extraction, resolution)
+- **Pipeline**: `src/drift/pipeline/` (scraping, reduction, extraction, normalization, resolution)
+- **Pydantic schemas**: `src/drift/curation.py`, `src/drift/pipeline/extraction/schemas.py`, `src/drift/pipeline/fetching/schemas.py`
+- **Resolution helpers**: `src/drift/resolution/aliases.py` (`lookup_entity` shared by curation + pipeline)
 - **Scripts**: `scripts/` (CLI entry points, called via Makefile)
 - **Curation**: `src/drift/curation.py` (YAML patch applier), `data/patches/` (numbered YAML patches)
 - **Database**: `data/drift.db` (SQLite, source of truth)
@@ -57,9 +58,10 @@ MANIFEST -> FETCH -> REDUCE -> EXTRACT -> RESOLVE -> STORE
 
 Read these docs when working in specific areas:
 
-- `docs/engineering_overview.md` -- ballistics domain primer (read before BC, DOPE, or solver work)
-- `docs/wi2_design_proposal.md` -- full schema spec (read when modifying models), albeit slightly outdated
+- `docs/engineering_overview.md` -- ballistics domain primer + engineering glossary (read before BC, DOPE, or solver work)
 - `docs/pipeline_README.md` -- pipeline workflow and stage documentation
+- `docs/curation_README.md` -- YAML patch format and operations reference
+- `docs/wi2_design_proposal.md` -- original schema spec (slightly outdated; cross-reference against current models)
 - `docs/python-code-patterns.md` -- Pydantic Fields pattern, base schema config
 
 ## Pipeline Quick Reference
@@ -91,7 +93,6 @@ make curate-commit    # Write to DB
 - Operations: `create_bullet`, `create_cartridge`, `create_rifle`, `update_bullet`, `update_cartridge`, `add_bc_source`, `add_entity_alias`
 - Name resolution uses EntityAlias table (same as pipeline)
 - Idempotent: safe to re-run — existing records are skipped
-- See `curation_plan.md` for full design and YAML format spec
 
 ## Production Export
 

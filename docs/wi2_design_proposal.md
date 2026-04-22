@@ -1,6 +1,14 @@
 # WI-2: Ammo & Firearms Data Library — Design Proposal
 
-**Status:** Draft
+> **Historical reference (2026-02-20).** This is the original design doc that bootstrapped the WI-2 backend. The schema, pipeline stages, and curation system have evolved since — code is now the source of truth.
+>
+> Read this for the *why* (motivating principles, original tradeoffs, open questions at the time). For *what's actually shipping*, use:
+> - `src/drift/models/` — current schema
+> - [docs/pipeline_README.md](pipeline_README.md) — current pipeline workflow
+> - [docs/curation_README.md](curation_README.md) — current curation system
+> - [docs/engineering_overview.md](engineering_overview.md) — current glossary and gotchas
+
+**Status:** Historical / Reference
 **Date:** 2026-02-20
 **Author:** Engineering
 

@@ -237,7 +237,7 @@ The engineering work described in the companion docs is **architecture-independe
 
 ------
 
-## Glossary — Quick Reference
+## Glossary — Domain Terms
 
 | Term                 | Meaning                                                      |
 | -------------------- | ------------------------------------------------------------ |
@@ -257,4 +257,53 @@ The engineering work described in the companion docs is **architecture-independe
 
 ------
 
-*Last updated: February 2026*
+## Glossary — Backend Engineering Terms
+
+Terms specific to this repo's pipeline, models, and tooling. Source of truth for each is in parentheses.
+
+### Schema and provenance
+
+| Term | Meaning |
+| --- | --- |
+| **Bullet** | Canonical projectile entity. Cartridge and UserLoadProfile reference Bullet (not the reverse). (`src/drift/models/bullet.py`) |
+| **Cartridge** | Factory loaded ammunition. Holds a FK to one Bullet via `bullet_id` plus a confidence + method describing how that link was made. (`src/drift/models/cartridge.py`) |
+| **Caliber vs Chamber** | Caliber is a cartridge dimension (e.g. .223 Rem). Chamber is a rifle property (e.g. .223 Wylde). One chamber can accept multiple calibers. (`src/drift/models/{caliber,chamber}.py`) |
+| **EntityAlias** | Many-to-one mapping from a raw extracted name → canonical entity row. Used by curation and pipeline alike — never match manufacturer/caliber/bullet names by raw string. (`src/drift/models/entity_alias.py`) |
+| **BulletProductLine** | Cross-manufacturer grouping of bullets that share a product family name (e.g. "ELD Match", "VLD Hunting"). Drives the Tier 2 product-line resolver tier. (`src/drift/models/bullet_product_line.py`) |
+| **BulletBCSource** | Audit row for one BC observation (G1 or G7) on a Bullet, with `source` (manufacturer / cartridge_page / third_party) and `source_url`. Multiple sources per bullet allowed; never write a BC to Bullet without also writing a BulletBCSource. (`src/drift/models/bullet.py`) |
+| **data_source** | Per-row column on bullet/cartridge/rifle. Values: `manual` (curation), `extracted` (pipeline), `seed`, `legacy`. Drives is_locked defaults and is stripped on production export. |
+| **is_locked** | Boolean on bullet/cartridge/rifle. When true, the pipeline-store will not overwrite the row even if a higher-confidence match comes in. Curation patches set this to true on every record they create. |
+| **extraction_confidence** | LLM-reported per-record confidence (0–1) carried through from the extract stage. Stripped on production export. |
+| **bullet_match_method** / **bullet_match_confidence** | Per-cartridge provenance of the cartridge → bullet linkage (e.g. `composite_key`, `fuzzy_name`, `product_line+weight`) so we can audit how a particular row got its bullet. Persisted on Cartridge. |
+| **display_name** | Canonical human-readable name builder for each entity type. Always use these — never concatenate name fields ad hoc. (`src/drift/display_name.py`) |
+
+### Pipeline and resolution
+
+| Term | Meaning |
+| --- | --- |
+| **manifest** | The seed list of URLs the pipeline scrapes, one per entity type. Lives under `data/pipeline/manifest/`. |
+| **batch API** | Anthropic's [Message Batches](https://docs.claude.com/en/api/messages-batches) endpoint — 50% cheaper, no rate limits, ~24h SLA. Default for Anthropic extraction. |
+| **reducer strategy** | Per-domain HTML reduction approach. Options: `generic` (BeautifulSoup strip), `main_content` (semantic main-content extraction), `jsonld_only` (extract only JSON-LD blocks for SPA pages). See `DOMAIN_REDUCER_STRATEGY` in `src/drift/pipeline/config.py`. |
+| **normalize_entity** | Raw-text → canonical-key normalization (case fold, punctuation, abbreviations). Applied before alias lookup and fuzzy matching. (`src/drift/pipeline/normalization.py`) |
+| **lookup_entity** | Deterministic `name → entity_id` resolution via the EntityAlias table. Shared between curation and pipeline so both paths agree on what "Hornady" means. (`src/drift/resolution/aliases.py`) |
+| **EntityResolver** | Three-tier resolver (SKU → composite key → fuzzy name) used by `pipeline_store`. Returns a `MatchResult`. (`src/drift/pipeline/resolution/`) |
+| **ResolutionConfig** | Frozen dataclass holding every threshold, tolerance, and confidence scalar the resolver uses. Tune via constructor injection; the default is captured by `tests/test_resolution_golden_set.py`. (`src/drift/pipeline/resolution/config.py`) |
+| **MatchResult** | Resolver output: `entity_id`, `confidence`, `method`, `alternatives` (top runner-ups), `methods_tried`, `is_ambiguous` (gap to runner-up < threshold). |
+| **token_set_ratio** | rapidfuzz similarity metric (0–1) used for fuzzy-tier name comparison. Order-insensitive, bag-of-tokens. |
+| **action gates** | The `match_confidence_threshold`, `auto_create_confidence_ceiling`, `alias_auto_promote_threshold` knobs in ResolutionConfig that decide whether the store auto-matches, auto-creates, flags for review, or auto-promotes an EntityAlias. |
+| **rejected_calibers** | `data/pipeline/rejected_calibers.json` — explicit allowlist-by-exclusion of calibers we don't ingest (pistol, shotgun, exotic). The store auto-rejects any extracted entity referencing one. |
+| **dry-run** | Default mode for `pipeline-store` and `curate`. Resolves and reports without committing. Pass `--commit` to write. |
+| **savepoint-per-operation** | Curation isolation pattern — each YAML operation runs inside its own SQLite savepoint so a single failure doesn't poison the rest of the patch. |
+
+### Tooling and publish
+
+| Term | Meaning |
+| --- | --- |
+| **production DB** | `data/production/drift.db` — stripped iOS-bundled copy of `drift.db`. Drops pipeline tables (`alembic_version`, `bullet_bc_source`), drops pipeline columns (`data_source`, `is_locked`, `extraction_confidence`, `bullet_match_*`), filters bad rows (zero-MV, weight-mismatched, bogus-diameter), VACUUMs. (`scripts/export_production_db.py`) |
+| **OTA publish** | Cloudflare R2 upload of `production/drift.db` + `manifest.json` to `data.driftballistics.com`. Auto-versioned, SHA-256 integrity, validates PK stability against the previous version. (`scripts/publish_db.py`) |
+| **PK stability check** | Pre-publish guard that compares primary keys between the new and last-published production DBs. Failing PKs would invalidate iOS-side foreign-key references in user data. |
+| **SCHEMA_VERSION** | Constant in `scripts/publish_db.py`. Bump when the production DB schema changes incompatibly so the iOS app can refuse to load mismatched bundles. |
+
+------
+
+*Last updated: April 2026*
