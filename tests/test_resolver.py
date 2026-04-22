@@ -2072,3 +2072,136 @@ class TestRelaxedDiameterFallback:
         assert (
             result.bullet_id != fallback_db["bullets"]["decoy_composite_trap"].id
         ), "Decoy bullet accepted via composite-inflated confidence — raw-name gate failed"
+
+
+# ---------------------------------------------------------------------------
+# Caliber-blindness regression suite (v6 compound fix, 2026-04-22)
+#
+# The v6 dry-run surfaced cross-caliber matches at match_cartridge's SKU tier
+# (e.g. ".375 H&H 300gr AccuBond" matching ".308 Winchester" at exact_sku 1.0
+# because Nosler's SKU pattern repeats across calibers). The composite_key
+# tier ALSO cross-matched when the extracted caliber fuzzy-resolved to a
+# different caliber_id (e.g. ".22 ARC" → "6mm ARC"). Fix lives in
+# match_cartridge. Integration test 4 guards against regression at the
+# cartridge-resolution layer with representative bad pairs drawn from
+# data/forensic/v6-resolver-regression-2026-04-22/relinks.tsv.
+# ---------------------------------------------------------------------------
+
+
+class TestCartridgeCaliberCompatibility:
+    """Regression tests for v6 compound fix — caliber-blind cartridge matches."""
+
+    @pytest.fixture()
+    def multi_caliber_db(self, db):
+        """Seed DB with cartridges across multiple calibers where SKU or name overlap could cross-match."""
+        nosler = Manufacturer(name="Nosler", type_tags=["bullet_maker", "ammo_maker"], country="USA")
+        hornady = Manufacturer(name="Hornady", type_tags=["bullet_maker", "ammo_maker"], country="USA")
+        federal = Manufacturer(name="Federal", type_tags=["ammo_maker"], country="USA")
+        db.add_all([nosler, hornady, federal])
+        db.flush()
+
+        cal_308 = Caliber(name=".308 Winchester", bullet_diameter_inches=0.308)
+        cal_375 = Caliber(name=".375 H&H Magnum", bullet_diameter_inches=0.375)
+        cal_300hh = Caliber(name=".300 H&H Magnum", bullet_diameter_inches=0.308)
+        cal_257 = Caliber(name=".257 Roberts", bullet_diameter_inches=0.257)
+        cal_6arc = Caliber(name="6mm ARC", bullet_diameter_inches=0.243)
+        # NOTE: .22 ARC deliberately NOT seeded — mirrors the real DB gap that
+        # let the caliber resolver fuzzy-collapse ".22 ARC" to "6mm ARC".
+        db.add_all([cal_308, cal_375, cal_300hh, cal_257, cal_6arc])
+        db.flush()
+
+        bullets = {
+            "b308_180": Bullet(
+                manufacturer_id=nosler.id,
+                name="30 Caliber 180gr AccuBond",
+                bullet_diameter_inches=0.308,
+                weight_grains=180.0,
+            ),
+            "b6arc_80": Bullet(
+                manufacturer_id=hornady.id,
+                name="6mm .243 80 gr ELD-VT",
+                bullet_diameter_inches=0.243,
+                weight_grains=80.0,
+            ),
+            "b224_80": Bullet(
+                manufacturer_id=hornady.id,
+                name="22 Cal .224 80 gr ELD-X",
+                bullet_diameter_inches=0.224,
+                weight_grains=80.0,
+            ),
+        }
+        db.add_all(bullets.values())
+        db.flush()
+
+        carts = {
+            "c308_180": Cartridge(
+                manufacturer_id=nosler.id,
+                caliber_id=cal_308.id,
+                bullet_id=bullets["b308_180"].id,
+                name="308 Win 180gr AccuBond Trophy Grade Ammunition",
+                sku="TG-180",
+                bullet_weight_grains=180.0,
+                muzzle_velocity_fps=2750,
+            ),
+            "c6arc_80": Cartridge(
+                manufacturer_id=hornady.id,
+                caliber_id=cal_6arc.id,
+                bullet_id=bullets["b6arc_80"].id,
+                name="6mm ARC 80 gr ELD-VT V-Match",
+                sku="81611",
+                bullet_weight_grains=80.0,
+                muzzle_velocity_fps=3100,
+            ),
+        }
+        db.add_all(carts.values())
+        db.commit()
+
+        return {
+            "mfrs": {"nosler": nosler, "hornady": hornady, "federal": federal},
+            "calibers": {"308": cal_308, "375": cal_375, "300hh": cal_300hh, "257": cal_257, "6arc": cal_6arc},
+            "bullets": bullets,
+            "carts": carts,
+        }
+
+    def test_1_sku_collision_across_calibers_rejected(self, multi_caliber_db, db):
+        """Extracted ".375 H&H 300gr AccuBond" with SKU "TG-180" (collision with the
+        existing .308 Win cartridge's SKU) must NOT cross-match. Pre-fix, unqualified
+        SKU lookup returned the .308 Win cartridge at confidence 1.0 regardless of
+        extracted caliber. Fix gates SKU lookup on caliber_id."""
+        resolver = EntityResolver(db)
+        existing_308 = multi_caliber_db["carts"]["c308_180"]
+        result = resolver.match_cartridge(
+            {
+                "name": {"value": "375 H&H Mag 300gr AccuBond"},
+                "sku": {"value": existing_308.sku},
+                "bullet_weight_grains": {"value": 300.0},
+            },
+            manufacturer_id=multi_caliber_db["mfrs"]["nosler"].id,
+            caliber_id=multi_caliber_db["calibers"]["375"].id,
+        )
+        assert result.entity_id != existing_308.id, (
+            "SKU tier returned the .308 Win cartridge when extracted was .375 H&H — "
+            "cross-caliber SKU collision not caught"
+        )
+
+    def test_2_composite_key_tier_requires_caliber_match(self, multi_caliber_db, db):
+        """composite_key must hard-filter on caliber_id. Passing a caliber_id that
+        doesn't match the existing 6mm ARC cartridge's caliber_id should exclude
+        that cart from the candidate pool — proving caliber_id is a hard gate."""
+        resolver = EntityResolver(db)
+        existing_6arc = multi_caliber_db["carts"]["c6arc_80"]
+        result = resolver.match_cartridge(
+            {
+                "name": {"value": "22 ARC 80 gr ELD-X Precision Hunter"},
+                "bullet_weight_grains": {"value": 80.0},
+            },
+            manufacturer_id=multi_caliber_db["mfrs"]["hornady"].id,
+            caliber_id=multi_caliber_db["calibers"]["257"].id,  # arbitrary non-matching
+        )
+        assert (
+            result.entity_id != existing_6arc.id
+        ), "composite_key cross-matched .22 ARC extract to 6mm ARC despite non-matching caliber_id"
+
+    # Integration test 4 (full store pipeline) lives in tests/test_pipeline_store.py
+    # ::TestCrossDiameterGuard::test_4_forensic_replay_no_cross_diameter_matched_updated
+    # because it requires the store harness (_run_main + _NoCloseSession).

@@ -762,18 +762,34 @@ class EntityResolver:
         weight = _get_value(extracted, "bullet_weight_grains")
         methods_tried: list[str] = []
 
-        # Tier 1: Exact SKU match (deterministic, short-circuits)
+        # Tier 1: Exact SKU match — gated on caliber_id. Manufacturers reuse SKU
+        # patterns across calibers (Nosler's Trophy Grade line shares suffix stems
+        # between .308 Win, .375 H&H, .300 H&H, .257 Rob, etc.), so an unqualified
+        # SKU lookup can cross-match to a wrong-caliber cartridge at confidence
+        # 1.0. v6 forensic saw: ".375 H&H 300gr AccuBond" match ".308 Winchester"
+        # via exact_sku 1.00 and overwrite its bullet_id. When caliber_id is
+        # unknown (caliber couldn't be resolved) we *skip* the SKU tier rather
+        # than risk a cross-caliber promotion — downstream tiers will flag it.
         if sku:
             methods_tried.append("exact_sku")
-            cart = self._session.scalars(select(Cartridge).where(Cartridge.sku == sku)).first()
-            if cart:
-                return MatchResult(
-                    matched=True,
-                    entity_id=cart.id,
-                    confidence=1.0,
-                    method="exact_sku",
-                    details=f"SKU={sku}",
-                    methods_tried=methods_tried,
+            if caliber_id:
+                cart = self._session.scalars(
+                    select(Cartridge).where(Cartridge.sku == sku, Cartridge.caliber_id == caliber_id)
+                ).first()
+                if cart:
+                    return MatchResult(
+                        matched=True,
+                        entity_id=cart.id,
+                        confidence=1.0,
+                        method="exact_sku",
+                        details=f"SKU={sku}",
+                        methods_tried=methods_tried,
+                    )
+            else:
+                logger.warning(
+                    "Cartridge exact_sku tier skipped: caliber_id unresolved for SKU=%r "
+                    "(would risk cross-caliber match at conf 1.0)",
+                    sku,
                 )
 
         # Build candidate pool for tier 2/3
