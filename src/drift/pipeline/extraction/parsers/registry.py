@@ -26,4 +26,8 @@ def _instantiate(name: str) -> BaseParser | None:
         from drift.pipeline.extraction.parsers.hornady import HornadyParser
 
         return HornadyParser()
+    if name == "sierra":
+        from drift.pipeline.extraction.parsers.sierra import SierraParser
+
+        return SierraParser()
     return None

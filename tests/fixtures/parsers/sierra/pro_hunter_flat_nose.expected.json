@@ -1,0 +1,92 @@
+{
+  "url": "https://sierrabullets.com/375-cal-200-gr-fn-pro-hunter",
+  "entity_type": "bullet",
+  "entities": [
+    {
+      "name": {
+        "value": "375 CAL 200 GR FN PRO-HUNTER",
+        "source_text": "375 CAL 200 GR FN PRO-HUNTER",
+        "confidence": 1.0
+      },
+      "manufacturer": {
+        "value": "Sierra Bullets",
+        "source_text": "sierrabullets.com",
+        "confidence": 1.0
+      },
+      "bullet_diameter_inches": {
+        "value": 0.375,
+        "source_text": "Bullet Diameter=0.375",
+        "confidence": 1.0
+      },
+      "weight_grains": {
+        "value": 200.0,
+        "source_text": "Bullet Weight=200",
+        "confidence": 1.0
+      },
+      "bc_g1": {
+        "value": 0.195,
+        "source_text": "G1 BC=0.195",
+        "confidence": 1.0
+      },
+      "bc_g7": {
+        "value": null,
+        "source_text": "",
+        "confidence": 0.0
+      },
+      "length_inches": {
+        "value": null,
+        "source_text": "",
+        "confidence": 0.0
+      },
+      "sectional_density": {
+        "value": null,
+        "source_text": "",
+        "confidence": 0.0
+      },
+      "base_type": {
+        "value": "flat_base",
+        "source_text": "Bullet Type=Flatnose (FN)",
+        "confidence": 0.8
+      },
+      "tip_type": {
+        "value": "meplat",
+        "source_text": "Bullet Type=Flatnose (FN)",
+        "confidence": 0.8
+      },
+      "type_tags": {
+        "value": [
+          "hunting"
+        ],
+        "source_text": "Purpose/Pursuit\u2192['hunting']",
+        "confidence": 0.7
+      },
+      "used_for": {
+        "value": [
+          "hunting_deer",
+          "hunting_elk"
+        ],
+        "source_text": "Purpose/Pursuit\u2192['hunting_deer', 'hunting_elk']",
+        "confidence": 0.7
+      },
+      "product_line": {
+        "value": "Pro-Hunter",
+        "source_text": "Product Family=Pro-Hunter",
+        "confidence": 1.0
+      },
+      "sku": {
+        "value": "2900",
+        "source_text": "sku=2900",
+        "confidence": 1.0
+      }
+    }
+  ],
+  "bc_sources": [
+    {
+      "bullet_name": "375 CAL 200 GR FN PRO-HUNTER",
+      "bc_type": "g1",
+      "bc_value": 0.195,
+      "source": "manufacturer",
+      "source_methodology": null
+    }
+  ]
+}

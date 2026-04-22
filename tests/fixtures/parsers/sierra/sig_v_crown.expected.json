@@ -1,0 +1,91 @@
+{
+  "url": "https://sierrabullets.com/9mm-90-gr-jhp-sig-v-crown",
+  "entity_type": "bullet",
+  "entities": [
+    {
+      "name": {
+        "value": "9MM 90 GR JHP - SIG V-CROWN",
+        "source_text": "9MM 90 GR JHP - SIG V-CROWN",
+        "confidence": 1.0
+      },
+      "manufacturer": {
+        "value": "Sierra Bullets",
+        "source_text": "sierrabullets.com",
+        "confidence": 1.0
+      },
+      "bullet_diameter_inches": {
+        "value": 0.355,
+        "source_text": "Bullet Diameter=0.355",
+        "confidence": 1.0
+      },
+      "weight_grains": {
+        "value": 90.0,
+        "source_text": "Bullet Weight=90",
+        "confidence": 1.0
+      },
+      "bc_g1": {
+        "value": 0.094,
+        "source_text": "G1 BC=0.094",
+        "confidence": 1.0
+      },
+      "bc_g7": {
+        "value": null,
+        "source_text": "",
+        "confidence": 0.0
+      },
+      "length_inches": {
+        "value": null,
+        "source_text": "",
+        "confidence": 0.0
+      },
+      "sectional_density": {
+        "value": null,
+        "source_text": "",
+        "confidence": 0.0
+      },
+      "base_type": {
+        "value": null,
+        "source_text": "",
+        "confidence": 0.0
+      },
+      "tip_type": {
+        "value": "hollow_point",
+        "source_text": "Bullet Type=Jacketed Hollow Point (JHP)",
+        "confidence": 0.8
+      },
+      "type_tags": {
+        "value": [
+          "tactical"
+        ],
+        "source_text": "Purpose/Pursuit\u2192['tactical']",
+        "confidence": 0.7
+      },
+      "used_for": {
+        "value": [
+          "self_defense"
+        ],
+        "source_text": "Purpose/Pursuit\u2192['self_defense']",
+        "confidence": 0.7
+      },
+      "product_line": {
+        "value": "Sig V-Crown",
+        "source_text": "Product Family=Sig V-Crown",
+        "confidence": 1.0
+      },
+      "sku": {
+        "value": "9990",
+        "source_text": "sku=9990",
+        "confidence": 1.0
+      }
+    }
+  ],
+  "bc_sources": [
+    {
+      "bullet_name": "9MM 90 GR JHP - SIG V-CROWN",
+      "bc_type": "g1",
+      "bc_value": 0.094,
+      "source": "manufacturer",
+      "source_methodology": null
+    }
+  ]
+}

@@ -409,3 +409,18 @@ def test_hornady_parser_matches_golden(html_path):
 
     actual, expected = run_golden_case(HornadyParser(), html_path)
     assert actual == expected, f"Golden mismatch in {html_path.name}"
+
+
+# ── Sierra parser golden set ──────────────────────────────────────────────
+
+
+_SIERRA_CASES = _discover_cases("sierra")
+
+
+@pytest.mark.skipif(not _SIERRA_CASES, reason="No Sierra fixtures present")
+@pytest.mark.parametrize("html_path", _SIERRA_CASES, ids=lambda p: p.stem)
+def test_sierra_parser_matches_golden(html_path):
+    from drift.pipeline.extraction.parsers.sierra import SierraParser
+
+    actual, expected = run_golden_case(SierraParser(), html_path)
+    assert actual == expected, f"Golden mismatch in {html_path.name}"

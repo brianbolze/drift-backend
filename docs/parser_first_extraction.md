@@ -11,7 +11,13 @@
 - **Parser vs current DB** ([parser_vs_db_hornady.md](parser_vs_db_hornady.md)): joined by `source_url`; 339/339 DB rows match parser output bit-for-bit. Zero new BCs. 422 URLs not in DB are all handgun/pistol loads correctly filtered by `rejected_calibers.json`.
 - **Telemetry**: new cache records carry `extraction_method: "parser" | "parser_fellthrough_to_llm" | "llm"` + `parser_name`.
 
-Parsers now active on: `www.hornady.com`. Next target per rollout plan: Sierra (248 cached extractions).
+Parsers now active on: `www.hornady.com`, `sierrabullets.com`. Next target per rollout plan: a cartridge-heavy manufacturer (Nosler / Federal / Black Hills) to exercise the cartridge path on a second site.
+
+### Sierra — second parser (2026-04-22)
+
+- **Agreement** ([parser_agreement_sierra.md](parser_agreement_sierra.md)): 240/248 pages parsed; 100% agreement on name, manufacturer, diameter, weight; 99.6% bc_g1, 99.3% bc_g7, 88.8% sku (remaining sku noise is trailing-suffix inconsistency in the LLM cache, not parser drift). 5 structural mismatches are "related products" cross-sell sections where the LLM over-extracted — parser correctly returns only the page's primary product.
+- **Vs DB** ([parser_vs_db_sierra.md](parser_vs_db_sierra.md)): 127/141 matched rows agree on all compared fields. 14 mismatches are all SKU suffixes (`9290` vs `9290T` etc.) where the DB kept the full BigCommerce Item # on a minority of rows (14 of 144 Sierra rows in the DB) — internal DB inconsistency, not a parser defect. Zero BC / weight / diameter discrepancies.
+- **Product line**: Sierra's `Product Family` attribute is a direct lift — LLM had been returning null for this field on all 248 Sierra pages. Parser fills it with canonical values like "MatchKing", "GameKing", "Tipped MatchKing", "Sports Master".
 
 ## Why
 

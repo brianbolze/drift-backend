@@ -1,0 +1,100 @@
+{
+  "url": "https://sierrabullets.com/270-cal-135-gr-hpbt-matchking-smk",
+  "entity_type": "bullet",
+  "entities": [
+    {
+      "name": {
+        "value": "270 CAL 135 GR HPBT MatchKing (SMK)",
+        "source_text": "270 CAL 135 GR HPBT MatchKing (SMK)",
+        "confidence": 1.0
+      },
+      "manufacturer": {
+        "value": "Sierra Bullets",
+        "source_text": "sierrabullets.com",
+        "confidence": 1.0
+      },
+      "bullet_diameter_inches": {
+        "value": 0.277,
+        "source_text": "Bullet Diameter=0.277",
+        "confidence": 1.0
+      },
+      "weight_grains": {
+        "value": 135.0,
+        "source_text": "Bullet Weight=135",
+        "confidence": 1.0
+      },
+      "bc_g1": {
+        "value": 0.505,
+        "source_text": "G1 BC=0.505",
+        "confidence": 1.0
+      },
+      "bc_g7": {
+        "value": 0.245,
+        "source_text": "G7 BC=0.245",
+        "confidence": 1.0
+      },
+      "length_inches": {
+        "value": null,
+        "source_text": "",
+        "confidence": 0.0
+      },
+      "sectional_density": {
+        "value": null,
+        "source_text": "",
+        "confidence": 0.0
+      },
+      "base_type": {
+        "value": "boat_tail",
+        "source_text": "Bullet Type=Hollow Point Boat Tail (HPBT)",
+        "confidence": 0.8
+      },
+      "tip_type": {
+        "value": "hollow_point",
+        "source_text": "Bullet Type=Hollow Point Boat Tail (HPBT)",
+        "confidence": 0.8
+      },
+      "type_tags": {
+        "value": [
+          "match",
+          "target"
+        ],
+        "source_text": "Purpose/Pursuit\u2192['match', 'target']",
+        "confidence": 0.7
+      },
+      "used_for": {
+        "value": [
+          "competition",
+          "precision"
+        ],
+        "source_text": "Purpose/Pursuit\u2192['competition', 'precision']",
+        "confidence": 0.7
+      },
+      "product_line": {
+        "value": "MatchKing",
+        "source_text": "Product Family=MatchKing",
+        "confidence": 1.0
+      },
+      "sku": {
+        "value": "1833",
+        "source_text": "sku=1833",
+        "confidence": 1.0
+      }
+    }
+  ],
+  "bc_sources": [
+    {
+      "bullet_name": "270 CAL 135 GR HPBT MatchKing (SMK)",
+      "bc_type": "g1",
+      "bc_value": 0.505,
+      "source": "manufacturer",
+      "source_methodology": null
+    },
+    {
+      "bullet_name": "270 CAL 135 GR HPBT MatchKing (SMK)",
+      "bc_type": "g7",
+      "bc_value": 0.245,
+      "source": "manufacturer",
+      "source_methodology": null
+    }
+  ]
+}

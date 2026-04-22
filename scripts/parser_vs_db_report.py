@@ -39,6 +39,27 @@ DB_PATH = Path(__file__).resolve().parent.parent / "data" / "drift.db"
 NUMERIC_REL_TOL = 0.01  # 1% — DB values may have been rounded during earlier ingests
 NUMERIC_ABS_TOL = 0.01
 
+# The manufacturer name in the DB for each parser's domain. Add an entry
+# when a new parser lands; otherwise the report has no way to scope the
+# DB query to the right rows.
+PARSER_TO_MANUFACTURER = {
+    "hornady": "Hornady",
+    "sierra": "Sierra Bullets",
+}
+
+
+# How each parser's URLs split into entity types.
+def _entity_type_for_url(parser_name: str, url: str) -> str | None:
+    if parser_name == "hornady":
+        if "/bullets/" in url:
+            return "bullet"
+        if "/ammunition/" in url:
+            return "cartridge"
+        return None
+    if parser_name == "sierra":
+        return "bullet"  # Sierra is bullet-only
+    return None
+
 
 @dataclasses.dataclass
 class Outcome:
@@ -164,10 +185,18 @@ def run_report(parser_name: str, out_path: Path) -> int:  # noqa: C901
     not_in_db_samples: dict[str, list[str]] = defaultdict(list)  # entity_type → [urls]
     field_diff_counter: Counter = Counter()
 
+    mfr_name = PARSER_TO_MANUFACTURER.get(parser_name)
+    if mfr_name is None:
+        print(
+            f"No PARSER_TO_MANUFACTURER entry for {parser_name!r} — add one before running this report.",
+            file=sys.stderr,
+        )
+        return 2
+
     with Session(engine) as session:
-        mfr = session.scalar(select(Manufacturer).where(Manufacturer.name == "Hornady"))
+        mfr = session.scalar(select(Manufacturer).where(Manufacturer.name == mfr_name))
         if mfr is None:
-            print("No Hornady manufacturer row in DB — nothing to compare.", file=sys.stderr)
+            print(f"No {mfr_name!r} manufacturer row in DB — nothing to compare.", file=sys.stderr)
             return 1
 
         # Prefetch DB rows keyed by source_url.
@@ -188,12 +217,8 @@ def run_report(parser_name: str, out_path: Path) -> int:  # noqa: C901
                 continue
             html = raw_path.read_text(encoding="utf-8")
 
-            # Determine entity type from URL shape (matches Hornady's URL layout).
-            if "/bullets/" in url:
-                entity_type = "bullet"
-            elif "/ammunition/" in url:
-                entity_type = "cartridge"
-            else:
+            entity_type = _entity_type_for_url(parser_name, url)
+            if entity_type is None:
                 continue
 
             try:
@@ -266,7 +291,8 @@ def run_report(parser_name: str, out_path: Path) -> int:  # noqa: C901
     lines.append("")
     lines.append("## Coverage")
     lines.append("")
-    lines.append(f"- Hornady URLs in fetched cache: **{outcome.total_urls}**")
+    lines.append(f"- Manufacturer (DB): `{mfr_name}`")
+    lines.append(f"- URLs in fetched cache: **{outcome.total_urls}**")
     lines.append(f"- Parser extracted a result: **{outcome.total_urls - outcome.parser_declined}**")
     lines.append(f"- Parser declined: {outcome.parser_declined}")
     lines.append(f"- Matched DB row, all fields agree: **{outcome.in_db_match}**")

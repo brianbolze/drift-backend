@@ -36,7 +36,7 @@ Lightweight tech debt and engineering improvement tracker. Agents and humans app
 - [ ] Nosler BCs only in load data section — product pages return null BC, need to scrape load data pages separately (source: pipeline working notes)
 - [ ] `HttpxFetcher` creates new `AsyncClient` per request — no connection reuse/keep-alive across same-host URLs; same issue with `FirecrawlFetcher` reinstantiating `FirecrawlApp` per call (source: code review, 2026-03-06)
 - [ ] Stale flagged entries persist on re-extraction — `_write_flagged` deduplicates by hash, so old warnings stick around (source: code review, 2026-03-06)
-- [ ] Sierra parser (PR #3 of parser-first rollout) — 248 cached extractions, label/value HTML table. Gated on Hornady's agreement report, which is now landed (source: parser_first_extraction.md, 2026-04-22)
+- [x] ~~Sierra parser (PR #3 of parser-first rollout)~~ Landed 2026-04-22. 240/248 parsed; 127/141 DB matches with only SKU-suffix mismatches (14 DB rows in inconsistent state). See `docs/parser_agreement_sierra.md`.
 - [ ] Investigate 15 Hornady pages where the parser declines — likely missing inline product JSON, empty title, or no diameter in title. LLM handles them fine; worth understanding the shape before adding more domain parsers. Run `python scripts/parser_vs_db_report.py hornady` to list them. (source: parser rollout, 2026-04-22)
 - [ ] After Sierra, pick a cartridge-heavy manufacturer (Nosler / Federal / Black Hills) for PR #4 rather than another bullet-only site — Hornady and Sierra both stress the bullet path; the cartridge path (bullet_name linkage + resolver BC-boost) should be exercised on a second manufacturer before the parser pattern is generalized further (source: rollout review, 2026-04-22)
 

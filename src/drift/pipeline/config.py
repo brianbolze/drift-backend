@@ -177,4 +177,5 @@ DOMAIN_CONTENT_SELECTORS: dict[str, str] = {
 
 DOMAIN_PARSER: dict[str, str] = {
     "www.hornady.com": "hornady",
+    "sierrabullets.com": "sierra",
 }
