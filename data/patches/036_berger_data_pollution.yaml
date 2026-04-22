@@ -1,0 +1,122 @@
+patch:
+  id: "036_berger_data_pollution"
+  author: agent
+  date: "2026-04-22"
+  description: >
+    Remove 9 Berger data-pollution bullets (cartridge-named rows misclassified
+    as bullets) that the post-v6 same-mfr preference now picks over legitimate
+    Lapua/Berger component bullets. For 5 currently-linked cartridges, redirect
+    to the correct legitimate bullet first, then delete. One create: Berger
+    30 Caliber 185 Grain Classic Hunter (no legitimate 185gr Classic Hunter
+    component existed; BCs 0.533/0.273 carry over from the deleted row).
+
+operations:
+
+# ── Create the missing legitimate Berger 30 Caliber 185gr Classic Hunter ────
+# Needed as redirect target for carts b5bd6e5e and 08c4d85a before we can
+# delete the data-pollution row d4776d6e.
+
+  - action: create_bullet
+    manufacturer: "Berger Bullets"
+    name: "30 Caliber 185 Grain Classic Hunter Rifle Bullet"
+    weight_grains: 185.0
+    bullet_diameter_inches: 0.308
+    bc_g1: 0.533
+    bc_g7: 0.273
+    source_url: "https://bergerbullets.com/product/30-caliber-185-grain-classic-hunter/"
+    base_type: "boat_tail"
+    tip_type: "hollow_point"
+    construction: "lead_core"
+    type_tags: ["hunting"]
+    used_for: ["hunting"]
+    bc_source: "manufacturer"
+    bc_source_methodology: "published"
+    bc_source_notes: "BC values carried over from the data-pollution row d4776d6e, which captured Berger's factory-ammo-page BCs for the Classic Hunter 185gr line."
+
+# ── Redirect the 5 carts currently linked to data-pollution bullets ─────────
+
+  # c794512b → Lapua 7,8 g / 120 gr Scenar-L OTM GB547 (3ce59123)
+  - action: update_cartridge
+    manufacturer: "Berger Bullets"
+    name: "6.5mm Creedmoor 120gr Lapua Scenar-L Rifle Ammunition"
+    set:
+      bullet: "7,8 g / 120 gr Scenar-L OTM GB547"
+      bullet_manufacturer: "Lapua"
+
+  # aa539e27 → Berger 30 Caliber 185 Grain Juggernaut Target Rifle Bullet (a45bbd49)
+  - action: update_cartridge
+    manufacturer: "Berger Bullets"
+    name: "300 Winchester Magnum 185gr Juggernaut OTM Tactical Rifle Ammunition"
+    set:
+      bullet: "30 Caliber 185 Grain Juggernaut Target Rifle Bullet"
+      bullet_manufacturer: "Berger Bullets"
+
+  # d4776d6e → newly-created Berger 30 Caliber 185 Grain Classic Hunter (above)
+  - action: update_cartridge
+    manufacturer: "Berger Bullets"
+    name: "300 Winchester Magnum 185 Grain Classic Hunter Rifle Ammunition"
+    set:
+      bullet: "30 Caliber 185 Grain Classic Hunter Rifle Bullet"
+      bullet_manufacturer: "Berger Bullets"
+
+  - action: update_cartridge
+    manufacturer: "Berger Bullets"
+    name: "308 Winchester 185 Grain Classic Hunter Rifle Ammunition"
+    set:
+      bullet: "30 Caliber 185 Grain Classic Hunter Rifle Bullet"
+      bullet_manufacturer: "Berger Bullets"
+
+  # f833a087 → Berger 30 Caliber 215 Grain Hybrid Target Rifle Bullet (263697a0)
+  - action: update_cartridge
+    manufacturer: "Berger Bullets"
+    name: "DISCONTINUED – 300 Winchester Magnum 215gr Hybrid Target Rifle Ammunition"
+    set:
+      bullet: "30 Caliber 215 Grain Hybrid Target Rifle Bullet"
+      bullet_manufacturer: "Berger Bullets"
+
+# ── Delete the 9 data-pollution bullets ─────────────────────────────────────
+
+  - action: delete_bullet
+    manufacturer: "Berger Bullets"
+    name: "6.5 mm Creedmoor 120gr Lapua Scenar-L"
+    reason: "Cartridge-named row misclassified as bullet. Linked cart redirected to Lapua 7,8 g / 120 gr Scenar-L OTM GB547."
+
+  - action: delete_bullet
+    manufacturer: "Berger Bullets"
+    name: "260 Remington 136gr Lapua Scenar -L"
+    reason: "Cartridge-named row misclassified as bullet. No carts currently reference it; resolver picks Lapua 8,8 g / 136 gr Scenar-L OTM GB546 instead."
+
+  - action: delete_bullet
+    manufacturer: "Berger Bullets"
+    name: "300 Winchester Magnum 168 Grain Classic Hunter Rifle Ammunition"
+    reason: "Cartridge-named row misclassified as bullet. No carts reference it; legitimate Berger 30 Caliber 168 Grain Classic Hunter Rifle Bullet exists."
+
+  - action: delete_bullet
+    manufacturer: "Berger Bullets"
+    name: "300 Winchester Magnum 185gr Juggernaut OTM Tactical Rifle Ammunition"
+    reason: "Cartridge-named row misclassified as bullet. Linked cart redirected to Berger 30 Caliber 185 Grain Juggernaut Target Rifle Bullet."
+
+  - action: delete_bullet
+    manufacturer: "Berger Bullets"
+    name: "300 Winchester Magnum 185 Grain Classic Hunter Rifle Ammunition"
+    reason: "Cartridge-named row misclassified as bullet. Two linked carts redirected to the newly-created Berger 30 Caliber 185 Grain Classic Hunter Rifle Bullet."
+
+  - action: delete_bullet
+    manufacturer: "Berger Bullets"
+    name: "300 Norma Magnum 215 Grain Hybrid OTM Tactical Rifle Ammunition"
+    reason: "Cartridge-named row misclassified as bullet. Linked cart redirected to Berger 30 Caliber 215 Grain Hybrid Target Rifle Bullet."
+
+  - action: delete_bullet
+    manufacturer: "Berger Bullets"
+    name: "338 Lapua Magnum 250gr Elite Hunter Rifle Ammunition"
+    reason: "Cartridge-named row misclassified as bullet. No carts reference it; resolver falls back to legitimate 338 Caliber 250 Grain Hybrid OTM Tactical bullet or flags as unresolved."
+
+  - action: delete_bullet
+    manufacturer: "Berger Bullets"
+    name: "338 Lapua Magnum 300 Grain Elite Hunter Rifle Ammunition"
+    reason: "Cartridge-named row misclassified as bullet. No carts reference it; resolver picks 338 Caliber 300 Grain Hybrid OTM Tactical Rifle Bullet."
+
+  - action: delete_bullet
+    manufacturer: "Berger Bullets"
+    name: "338 Lapua Magnum 300gr Lapua Scenar"
+    reason: "Cartridge-named row misclassified as bullet (case 26 of v6 regression). Resolver will pick legitimate Lapua 19,4 g / 300 gr Scenar OTM GB528 instead."
