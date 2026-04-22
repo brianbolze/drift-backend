@@ -26,6 +26,7 @@ Lightweight tech debt and engineering improvement tracker. Agents and humans app
 - [ ] 17 rifle bullets (diam ≤ .375) missing all BC fields, excl CE/Nosler/Winchester — Sierra 4 (2026 new products, BCs not yet published), Federal 4, Lehigh 4, Lapua 3, Norma 1, Swift 1. None are match/LR-critical. Down from 33 after metadata enrichment patches 028-030. (source: QA report, 2026-03-06, updated 2026-03-29)
 - [ ] C13: Sako TRG Precision .308 174gr (id=afee55ff) wrong weight (174→175gr) and wrong G1 BC (0.472→0.467). Other Sako 174gr entries (Powerhead Blade, Powerhead Blade Pro) may also be wrong. Sako SPA prevents direct verification — needs curation patch. (source: QA spot-check, 2026-04-06)
 - [ ] Norma BondStrike 6.5 Creedmoor 143gr cartridge has BC enrichment opportunity — G1=0.629, G7=0.313 available on Norma site but not yet captured (source: QA spot-check, 2026-04-06)
+- [ ] Investigate 37 same-diameter cartridge→bullet relinks surfaced during v6 store-commit dry-run (product_line tier vs composite_key scoring shift + alias auto-promote interaction). Forensic evidence: data/forensic/v6-resolver-regression-2026-04-22/relinks.tsv. Mixed signal — some look like improvements, some downgrades. Needs replay-with-toggle to diagnose. (source: agent, 2026-04-22)
 
 ## Pipeline Improvements
 
@@ -64,6 +65,7 @@ Lightweight tech debt and engineering improvement tracker. Agents and humans app
 
 - [ ] .303 British missing chamber record — caliber exists with 2 factory loads (Hornady, Federal) but no chamber, no `chamber_accepts_caliber` link, and no `caliber_platform` assignment. Users can't select it in profile creation. Fix: create chamber, link as primary, assign bolt-action platform. (source: data audit, 2026-03-30)
 - [ ] .45-70 Government missing platform assignment — chamber and caliber exist but no `caliber_platform` record, so it won't appear in the platform-filtered caliber picker. Fix: add bolt-action platform link. (source: data audit, 2026-03-30)
+- [ ] Add `.30-40 Krag` caliber + reassign Winchester 30-40 Krag 180gr cartridge currently resolved to `.30-06 Springfield` — curation patch post-v6 (source: agent, 2026-04-22)
 
 ## iOS Search / Filtering Support
 
