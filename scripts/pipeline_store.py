@@ -55,6 +55,31 @@ _PIPELINE_ALIAS_TYPE = "extracted_fuzzy"
 # promotion so the next run can hit the deterministic lookup path.
 _FUZZY_MATCH_METHODS = frozenset({"composite_key", "fuzzy_name"})
 
+# Defense-in-depth tolerance for the cross-diameter overwrite guard. Looser
+# than the resolver's bullet_diameter_tolerance_inches (0.001") — this is a
+# last-line sanity check, not a primary matcher, and some legitimate variants
+# (e.g. 0.308 vs 0.3095 vs 0.3105 for .30 cal) sit within a few thousandths
+# of each other. 0.005" distinguishes .277 from .284 while absorbing noise.
+_CROSS_DIAMETER_GUARD_TOLERANCE_INCHES = 0.005
+
+
+def _bullet_diameter_compatible(
+    bullet_dia: float | None, caliber_dia: float | None, tol: float = _CROSS_DIAMETER_GUARD_TOLERANCE_INCHES
+) -> bool:
+    """Return True when a bullet's diameter is within ``tol`` of a caliber's.
+
+    Used as a last-line guard before overwriting a cartridge's bullet_id —
+    the resolver is supposed to enforce this, but a bug anywhere upstream
+    (bad caliber fuzzy-match, cross-caliber SKU match, relaxed-diameter
+    fallback) can produce a resolution that pairs a .308 cartridge with a
+    .277 bullet. The store refuses to commit such a pairing regardless of
+    how high the resolver's confidence is.
+    """
+    if bullet_dia is None or caliber_dia is None:
+        return False
+    return abs(bullet_dia - caliber_dia) <= tol
+
+
 _LOW_CONFIDENCE_REPORT_THRESHOLD = DEFAULT_CONFIG.low_confidence_report_threshold
 
 # Valid data_source values for provenance tracking
@@ -497,6 +522,7 @@ def main() -> None:  # noqa: C901
             "flagged": 0,
             "rejected": 0,
             "skipped_locked": 0,
+            "blocked_cross_diameter": 0,
             "alias_suggestions": 0,
             "alias_auto_promoted": 0,
             "methods": {},
@@ -508,6 +534,7 @@ def main() -> None:  # noqa: C901
             "flagged": 0,
             "rejected": 0,
             "skipped_locked": 0,
+            "blocked_cross_diameter": 0,
             "alias_suggestions": 0,
             "alias_auto_promoted": 0,
             "methods": {},
@@ -519,6 +546,7 @@ def main() -> None:  # noqa: C901
             "flagged": 0,
             "rejected": 0,
             "skipped_locked": 0,
+            "blocked_cross_diameter": 0,
             "alias_suggestions": 0,
             "alias_auto_promoted": 0,
             "methods": {},
@@ -685,9 +713,52 @@ def main() -> None:  # noqa: C901
                     # Check if FK references should be updated on the existing entity.
                     # This allows re-runs with improved resolvers to fix previously committed
                     # bad matches (e.g. wrong bullet_id assigned before abbreviation expansion).
+                    # BUT: reject any overwrite whose bullet diameter disagrees with the
+                    # existing cartridge's caliber diameter. This is a defense-in-depth
+                    # guard against resolver bugs that produce cross-diameter pairings;
+                    # see v6 regression forensic (2026-04-22) for the failure mode.
                     if entity_type == "cartridge" and resolution.match.entity_id:
                         existing_cart = existing or session.get(Cartridge, resolution.match.entity_id)
-                        if existing_cart and resolution.bullet_id and existing_cart.bullet_id != resolution.bullet_id:
+                        guard_blocked = False
+                        if existing_cart and resolution.bullet_id:
+                            proposed_bullet = session.get(Bullet, resolution.bullet_id)
+                            existing_caliber = (
+                                session.get(Caliber, existing_cart.caliber_id) if existing_cart.caliber_id else None
+                            )
+                            proposed_dia = proposed_bullet.bullet_diameter_inches if proposed_bullet else None
+                            existing_cal_dia = existing_caliber.bullet_diameter_inches if existing_caliber else None
+                            if not _bullet_diameter_compatible(proposed_dia, existing_cal_dia):
+                                guard_blocked = True
+                                entry["action"] = "blocked_cross_diameter"
+                                entry["proposed_bullet_id"] = resolution.bullet_id
+                                entry["proposed_bullet_diameter_inches"] = proposed_dia
+                                entry["existing_caliber_diameter_inches"] = existing_cal_dia
+                                entry.setdefault("warnings", []).append(
+                                    f"cross-diameter overwrite blocked: proposed bullet {resolution.bullet_id} "
+                                    f'({proposed_dia}") incompatible with existing cartridge caliber '
+                                    f'({existing_cal_dia}")'
+                                )
+                                stats[entity_type]["blocked_cross_diameter"] = (
+                                    stats[entity_type].get("blocked_cross_diameter", 0) + 1
+                                )
+                                logger.warning(
+                                    '  [%d] BLOCKED cross-diameter overwrite: %s (cartridge caliber=%s") ← '
+                                    'bullet %s (dia=%s"). Resolver method=%s conf=%.2f',
+                                    j + 1,
+                                    existing_cart.name[:60] if existing_cart.name else existing_cart.id,
+                                    existing_cal_dia,
+                                    resolution.bullet_id[:8],
+                                    proposed_dia,
+                                    resolution.bullet_match_method,
+                                    resolution.bullet_match_confidence or 0.0,
+                                )
+
+                        if (
+                            not guard_blocked
+                            and existing_cart
+                            and resolution.bullet_id
+                            and existing_cart.bullet_id != resolution.bullet_id
+                        ):
                             entry["action"] = "matched_updated"
                             entry["old_bullet_id"] = existing_cart.bullet_id
                             stats[entity_type]["updated"] = stats[entity_type].get("updated", 0) + 1
@@ -702,7 +773,9 @@ def main() -> None:  # noqa: C901
                                 existing_cart.bullet_id = resolution.bullet_id
                                 existing_cart.bullet_match_confidence = resolution.bullet_match_confidence
                                 existing_cart.bullet_match_method = resolution.bullet_match_method
-                        elif existing_cart and not existing_cart.bullet_id and resolution.bullet_id:
+                        elif (
+                            not guard_blocked and existing_cart and not existing_cart.bullet_id and resolution.bullet_id
+                        ):
                             entry["action"] = "matched_updated"
                             entry["old_bullet_id"] = None
                             stats[entity_type]["updated"] = stats[entity_type].get("updated", 0) + 1
@@ -716,8 +789,10 @@ def main() -> None:  # noqa: C901
                                 existing_cart.bullet_id = resolution.bullet_id
                                 existing_cart.bullet_match_confidence = resolution.bullet_match_confidence
                                 existing_cart.bullet_match_method = resolution.bullet_match_method
-                        # Also create BulletBCSource rows for matched cartridges with BC data
-                        if args.commit and resolution.bullet_id:
+                        # Also create BulletBCSource rows for matched cartridges with BC data —
+                        # skip when guard blocked the overwrite (the bullet is for a different
+                        # caliber and BC data shouldn't be associated with it).
+                        if args.commit and resolution.bullet_id and not guard_blocked:
                             _add_cartridge_bc_sources(session, resolution.bullet_id, bc_sources, entity, url)
                 elif resolution.match.matched:
                     # Low-confidence match — check if this is a new weight variant that
@@ -838,6 +913,9 @@ def main() -> None:  # noqa: C901
             parts.append(f"{rejected} rejected")
         if locked:
             parts.append(f"{locked} skipped (locked)")
+        blocked_xdia = counts.get("blocked_cross_diameter", 0)
+        if blocked_xdia:
+            parts.append(f"{blocked_xdia} blocked (cross-diameter)")
         if suggested:
             parts.append(f"{suggested} alias suggestions")
         if promoted:

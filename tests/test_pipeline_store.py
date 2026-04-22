@@ -895,3 +895,340 @@ def _fuzzy_bullet_extraction(name: str, *, weight: float = 178.0) -> dict:
         "bc_sources": [],
         "data_source": "pipeline",
     }
+
+
+# ---------------------------------------------------------------------------
+# Cross-diameter guard (v6 compound fix, 2026-04-22)
+#
+# When the store considers overwriting a cartridge's bullet_id (matched_updated
+# action), it must refuse to write a bullet whose diameter disagrees with the
+# existing cartridge's caliber diameter. This is the last-line defense against
+# resolver bugs that pair cross-diameter entities. See forensic:
+# data/forensic/v6-resolver-regression-2026-04-22/relinks.tsv
+# ---------------------------------------------------------------------------
+
+
+_bullet_diameter_compatible = _store_mod._bullet_diameter_compatible
+
+
+class TestCrossDiameterGuard:
+    """Regression tests for the pipeline_store cross-diameter overwrite guard."""
+
+    def test_3a_compatible_diameter_accepts(self):
+        """Same diameter within tolerance → compatible."""
+        assert _bullet_diameter_compatible(0.308, 0.308) is True
+        assert _bullet_diameter_compatible(0.3085, 0.308) is True  # within 0.005
+        assert _bullet_diameter_compatible(0.308, 0.3095) is True  # within 0.005
+
+    def test_3b_cross_diameter_rejects(self):
+        """Different diameters outside tolerance → incompatible."""
+        assert _bullet_diameter_compatible(0.308, 0.277) is False  # .30 vs .270 Win
+        assert _bullet_diameter_compatible(0.308, 0.338) is False  # .30 vs .338
+        assert _bullet_diameter_compatible(0.224, 0.243) is False  # .22 vs 6mm
+        assert _bullet_diameter_compatible(0.308, 0.357) is False  # .30 vs .357 pistol
+
+    def test_3c_none_values_reject(self):
+        """Missing diameter on either side → incompatible (conservative default)."""
+        assert _bullet_diameter_compatible(None, 0.308) is False
+        assert _bullet_diameter_compatible(0.308, None) is False
+        assert _bullet_diameter_compatible(None, None) is False
+
+    def test_3d_store_blocks_cross_diameter_overwrite_end_to_end(self, db, monkeypatch, tmp_path):
+        """End-to-end: seed an existing .308 Win cartridge pointing to a correct .308
+        bullet. Feed an extraction whose resolved bullet has .277 diameter. The store
+        must NOT overwrite bullet_id, must record action=blocked_cross_diameter, and
+        must increment stats[cartridge][blocked_cross_diameter]."""
+        # Seed scenario
+        nosler = Manufacturer(name="Nosler", type_tags=["ammo_maker"], country="USA")
+        db.add(nosler)
+        db.flush()
+
+        cal_308 = Caliber(name=".308 Winchester", bullet_diameter_inches=0.308)
+        db.add(cal_308)
+        db.flush()
+
+        correct_bullet = Bullet(
+            manufacturer_id=nosler.id,
+            name="30 Caliber 180gr AccuBond",
+            bullet_diameter_inches=0.308,
+            weight_grains=180.0,
+        )
+        wrong_bullet = Bullet(
+            manufacturer_id=nosler.id,
+            name="270 Caliber 180gr Partition",
+            bullet_diameter_inches=0.277,
+            weight_grains=180.0,
+        )
+        db.add_all([correct_bullet, wrong_bullet])
+        db.flush()
+
+        existing_cart = Cartridge(
+            manufacturer_id=nosler.id,
+            caliber_id=cal_308.id,
+            bullet_id=correct_bullet.id,
+            name="308 Win 180gr AccuBond",
+            sku="TG-180",
+            bullet_weight_grains=180.0,
+            muzzle_velocity_fps=2750,
+        )
+        db.add(existing_cart)
+        db.commit()
+
+        # Monkeypatch the resolver so resolve() returns a ResolutionResult pairing
+        # the existing cartridge with the WRONG-diameter bullet.
+        from drift.pipeline.resolution.resolver import EntityResolver as _EntityResolver
+        from drift.pipeline.resolution.resolver import (
+            MatchResult,
+            ResolutionResult,
+        )
+
+        original_resolve = _EntityResolver.resolve
+
+        def stub_resolve(self, extracted, entity_type):
+            if entity_type != "cartridge":
+                return original_resolve(self, extracted, entity_type)
+            return ResolutionResult(
+                entity_type="cartridge",
+                manufacturer_id=nosler.id,
+                caliber_id=cal_308.id,
+                bullet_id=wrong_bullet.id,
+                bullet_match_confidence=0.95,
+                bullet_match_method="composite_key",
+                match=MatchResult(
+                    matched=True,
+                    entity_id=existing_cart.id,
+                    confidence=1.0,
+                    method="exact_sku",
+                ),
+            )
+
+        monkeypatch.setattr(_EntityResolver, "resolve", stub_resolve)
+
+        # Build a minimal cartridge extraction
+        extraction = {
+            "url": "https://example.com/nosler/308win-180gr-accubond",
+            "entity_type": "cartridge",
+            "entities": [
+                {
+                    "name": {"value": "308 Win 180gr AccuBond", "confidence": 0.9},
+                    "manufacturer": {"value": "Nosler", "confidence": 0.95},
+                    "caliber": {"value": ".308 Winchester", "confidence": 0.95},
+                    "sku": {"value": "TG-180", "confidence": 0.95},
+                    "bullet_name": {"value": "270 Caliber 180gr Partition", "confidence": 0.9},
+                    "bullet_weight_grains": {"value": 180.0, "confidence": 0.95},
+                    "muzzle_velocity_fps": {"value": 2750, "confidence": 0.9},
+                }
+            ],
+            "bc_sources": [],
+            "data_source": "pipeline",
+        }
+
+        # Plumb into pipeline_store main
+        extracted_dir = tmp_path / "extracted"
+        extracted_dir.mkdir()
+        (extracted_dir / "test.json").write_text(json.dumps(extraction), encoding="utf-8")
+        report_path = tmp_path / "store_report.json"
+        rejected_path = tmp_path / "rejected_calibers.json"
+
+        monkeypatch.setattr(_store_mod, "EXTRACTED_DIR", extracted_dir)
+        monkeypatch.setattr(_store_mod, "STORE_REPORT_PATH", report_path)
+        monkeypatch.setattr(_store_mod, "REJECTED_CALIBERS_PATH", rejected_path)
+
+        class _Factory:
+            def __call__(self_inner):
+                return _NoCloseSession(db)
+
+        monkeypatch.setattr(_store_mod, "get_session_factory", lambda: _Factory())
+        monkeypatch.setattr(sys, "argv", ["pipeline_store.py", "--commit"])
+
+        _store_mod.main()
+
+        report = json.loads(report_path.read_text(encoding="utf-8"))
+        blocked_entries = [e for e in report["entries"] if e.get("action") == "blocked_cross_diameter"]
+        assert len(blocked_entries) == 1, (
+            f"Expected 1 blocked_cross_diameter entry; got {len(blocked_entries)}. "
+            f"Actions seen: {[e.get('action') for e in report['entries']]}"
+        )
+        entry = blocked_entries[0]
+        assert entry["proposed_bullet_id"] == wrong_bullet.id
+        assert abs(entry["proposed_bullet_diameter_inches"] - 0.277) < 1e-6
+        assert abs(entry["existing_caliber_diameter_inches"] - 0.308) < 1e-6
+        assert any("cross-diameter" in w for w in entry.get("warnings", []))
+        assert report["stats"]["cartridge"]["blocked_cross_diameter"] == 1
+
+        # Critically: the existing cartridge's bullet_id must NOT have been overwritten.
+        db.refresh(existing_cart)
+        assert (
+            existing_cart.bullet_id == correct_bullet.id
+        ), "Store wrote the cross-diameter bullet_id despite the guard"
+
+    def test_4_forensic_replay_no_cross_diameter_matched_updated(self, db, monkeypatch, tmp_path):
+        """Integration: run the full pipeline_store against 5 representative bad
+        pairs drawn from the v6 forensic (see
+        data/forensic/v6-resolver-regression-2026-04-22/relinks.tsv). Assert the
+        resulting store_report contains ZERO ``matched_updated`` actions whose
+        proposed bullet diameter disagrees with the existing cartridge's
+        caliber diameter. Cross-diameter proposals may still occur at the
+        resolver layer — the store guard converts them to
+        ``blocked_cross_diameter`` instead of committing."""
+        # Seed DB
+        nosler = Manufacturer(name="Nosler", type_tags=["ammo_maker"], country="USA")
+        hornady = Manufacturer(name="Hornady", type_tags=["ammo_maker"], country="USA")
+        db.add_all([nosler, hornady])
+        db.flush()
+
+        cal_308 = Caliber(name=".308 Winchester", bullet_diameter_inches=0.308)
+        cal_375 = Caliber(name=".375 H&H Magnum", bullet_diameter_inches=0.375)
+        cal_6arc = Caliber(name="6mm ARC", bullet_diameter_inches=0.243)
+        cal_257 = Caliber(name=".257 Roberts", bullet_diameter_inches=0.257)
+        db.add_all([cal_308, cal_375, cal_6arc, cal_257])
+        db.flush()
+
+        b_308_180 = Bullet(
+            manufacturer_id=nosler.id,
+            name="30 Caliber 180gr AccuBond",
+            bullet_diameter_inches=0.308,
+            weight_grains=180.0,
+        )
+        b_6arc_80 = Bullet(
+            manufacturer_id=hornady.id,
+            name="6mm .243 80 gr ELD-VT",
+            bullet_diameter_inches=0.243,
+            weight_grains=80.0,
+        )
+        b_224_80 = Bullet(
+            manufacturer_id=hornady.id,
+            name="22 Cal .224 80 gr ELD-X",
+            bullet_diameter_inches=0.224,
+            weight_grains=80.0,
+        )
+        db.add_all([b_308_180, b_6arc_80, b_224_80])
+        db.flush()
+
+        # Existing cartridges in DB
+        cart_308 = Cartridge(
+            manufacturer_id=nosler.id,
+            caliber_id=cal_308.id,
+            bullet_id=b_308_180.id,
+            name="308 Win 180gr AccuBond",
+            sku="TG-180",
+            bullet_weight_grains=180.0,
+            muzzle_velocity_fps=2750,
+        )
+        cart_6arc = Cartridge(
+            manufacturer_id=hornady.id,
+            caliber_id=cal_6arc.id,
+            bullet_id=b_6arc_80.id,
+            name="6mm ARC 80 gr ELD-VT V-Match",
+            sku="81611",
+            bullet_weight_grains=80.0,
+            muzzle_velocity_fps=3100,
+        )
+        db.add_all([cart_308, cart_6arc])
+        db.commit()
+
+        # 5 cartridge extractions drawn from forensic patterns
+        extraction = {
+            "url": "https://example.com/forensic-replay",
+            "entity_type": "cartridge",
+            "entities": [
+                # 1. .375 H&H with SKU collision — must not cross-match .308 cart
+                {
+                    "name": {"value": "375 H&H Mag 300gr AccuBond", "confidence": 0.95},
+                    "manufacturer": {"value": "Nosler", "confidence": 0.95},
+                    "caliber": {"value": ".375 H&H Magnum", "confidence": 0.95},
+                    "sku": {"value": "TG-180", "confidence": 0.95},
+                    "bullet_name": {"value": "30 Caliber 300gr AccuBond", "confidence": 0.9},
+                    "bullet_weight_grains": {"value": 300.0, "confidence": 0.95},
+                    "muzzle_velocity_fps": {"value": 2600, "confidence": 0.9},
+                },
+                # 2. .22 ARC — caliber absent → fuzzy-resolves to 6mm ARC. Store
+                #    guard should prevent the .224 bullet pairing from writing to
+                #    the existing 6mm ARC cartridge.
+                {
+                    "name": {"value": "22 ARC 80 gr ELD-X Precision Hunter", "confidence": 0.9},
+                    "manufacturer": {"value": "Hornady", "confidence": 0.95},
+                    "caliber": {"value": ".22 ARC", "confidence": 0.9},
+                    "bullet_name": {"value": "22 Cal .224 80 gr ELD-X", "confidence": 0.9},
+                    "bullet_weight_grains": {"value": 80.0, "confidence": 0.95},
+                    "muzzle_velocity_fps": {"value": 3100, "confidence": 0.9},
+                },
+                # 3. Legitimate .308 Win 180gr match — should update cleanly
+                {
+                    "name": {"value": "308 Win 180gr AccuBond Trophy Grade", "confidence": 0.95},
+                    "manufacturer": {"value": "Nosler", "confidence": 0.95},
+                    "caliber": {"value": ".308 Winchester", "confidence": 0.95},
+                    "sku": {"value": "TG-180", "confidence": 0.95},
+                    "bullet_name": {"value": "30 Caliber 180gr AccuBond", "confidence": 0.95},
+                    "bullet_weight_grains": {"value": 180.0, "confidence": 0.95},
+                    "muzzle_velocity_fps": {"value": 2750, "confidence": 0.9},
+                },
+                # 4. .257 Roberts with .224 bullet in extract — cross-diameter pairing
+                {
+                    "name": {"value": "Nosler Obscure Load 80gr", "confidence": 0.9},
+                    "manufacturer": {"value": "Nosler", "confidence": 0.95},
+                    "caliber": {"value": ".257 Roberts", "confidence": 0.95},
+                    "bullet_name": {"value": "22 Cal .224 80 gr ELD-X", "confidence": 0.9},
+                    "bullet_weight_grains": {"value": 80.0, "confidence": 0.95},
+                    "muzzle_velocity_fps": {"value": 3200, "confidence": 0.9},
+                },
+                # 5. Weight-only collision: same weight exists in 6mm and .22, bullet
+                #    name matches .224. Resolver might find a match; store guard
+                #    must reject cross-diameter write.
+                {
+                    "name": {"value": "Weight Collision Cart 80gr", "confidence": 0.9},
+                    "manufacturer": {"value": "Hornady", "confidence": 0.95},
+                    "caliber": {"value": "6mm ARC", "confidence": 0.95},
+                    "bullet_name": {"value": "22 Cal .224 80 gr ELD-X", "confidence": 0.9},
+                    "bullet_weight_grains": {"value": 80.0, "confidence": 0.95},
+                    "muzzle_velocity_fps": {"value": 3100, "confidence": 0.9},
+                },
+            ],
+            "bc_sources": [],
+            "data_source": "pipeline",
+        }
+
+        # Set up pipeline_store paths
+        extracted_dir = tmp_path / "extracted"
+        extracted_dir.mkdir()
+        (extracted_dir / "test.json").write_text(json.dumps(extraction), encoding="utf-8")
+        report_path = tmp_path / "store_report.json"
+        rejected_path = tmp_path / "rejected_calibers.json"
+
+        monkeypatch.setattr(_store_mod, "EXTRACTED_DIR", extracted_dir)
+        monkeypatch.setattr(_store_mod, "STORE_REPORT_PATH", report_path)
+        monkeypatch.setattr(_store_mod, "REJECTED_CALIBERS_PATH", rejected_path)
+
+        class _Factory:
+            def __call__(self_inner):
+                return _NoCloseSession(db)
+
+        monkeypatch.setattr(_store_mod, "get_session_factory", lambda: _Factory())
+        monkeypatch.setattr(sys, "argv", ["pipeline_store.py"])  # dry-run
+
+        _store_mod.main()
+
+        report = json.loads(report_path.read_text(encoding="utf-8"))
+
+        # Assertion: no matched_updated entry has cross-diameter pairing.
+        cross_diameter_matched_updates = []
+        for e in report["entries"]:
+            if e.get("action") != "matched_updated":
+                continue
+            cart_id = e.get("match_entity_id")
+            new_bid = e.get("bullet_id")
+            if not cart_id or not new_bid:
+                continue
+            existing_cart = db.get(Cartridge, cart_id)
+            new_bullet = db.get(Bullet, new_bid)
+            if existing_cart and new_bullet:
+                cal = db.get(Caliber, existing_cart.caliber_id)
+                if cal and abs(cal.bullet_diameter_inches - new_bullet.bullet_diameter_inches) > 0.005:
+                    cross_diameter_matched_updates.append(
+                        f"cart={existing_cart.name[:40]} (cal={cal.bullet_diameter_inches})  "
+                        f"← bullet={new_bullet.name[:40]} ({new_bullet.bullet_diameter_inches})"
+                    )
+
+        assert (
+            not cross_diameter_matched_updates
+        ), "Store produced cross-diameter matched_updated entries:\n  " + "\n  ".join(cross_diameter_matched_updates)
