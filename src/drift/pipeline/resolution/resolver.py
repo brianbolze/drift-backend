@@ -77,6 +77,7 @@ class ResolutionResult:
     chamber_id: str | None = None
     bullet_id: str | None = None
     bullet_match_confidence: float | None = None
+    bullet_match_method: str | None = None
     bullet_diameter_inches: float | None = None
     unresolved_refs: list[str] = field(default_factory=list)
     warnings: list[str] = field(default_factory=list)
@@ -1038,6 +1039,7 @@ class EntityResolver:
                         extracted, bullet_match.entity_id, self._session, self._config
                     )
                     result.bullet_match_confidence = min(bullet_match.confidence + boost, 1.0)
+                    result.bullet_match_method = bullet_match.method
                     result.warnings.extend(bc_warnings)
                 elif bullet_match.matched:
                     result.unresolved_refs.append(

@@ -492,6 +492,8 @@ def _apply_create_cartridge(session: Session, op: CreateCartridgeOp, stats: Appl
         source_url=op.source_url,
         data_source="manual",
         is_locked=True,
+        bullet_match_confidence=1.0,
+        bullet_match_method="manual",
     )
     session.add(cartridge)
     session.flush()
@@ -571,7 +573,13 @@ def _apply_update_cartridge(session: Session, op: UpdateCartridgeOp, stats: Appl
         bullet_name = updates.pop("bullet")
         bullet_mfr_name = updates.pop("bullet_manufacturer", None)
         bullet_mfr_id = _resolve_manufacturer(session, bullet_mfr_name) if bullet_mfr_name else mfr_id
-        updates["bullet_id"] = _resolve_bullet(session, bullet_mfr_id, bullet_name)
+        new_bullet_id = _resolve_bullet(session, bullet_mfr_id, bullet_name)
+        updates["bullet_id"] = new_bullet_id
+        # Only tag a curated match when the FK actually changes — otherwise a no-op
+        # relink would rewrite confidence/method fields and surface as an update.
+        if cartridge.bullet_id != new_bullet_id:
+            updates["bullet_match_confidence"] = 1.0
+            updates["bullet_match_method"] = "manual"
     elif "bullet_manufacturer" in updates:
         raise ValueError("'bullet_manufacturer' requires 'bullet' to also be set")
 

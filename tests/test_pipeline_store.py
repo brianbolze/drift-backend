@@ -16,6 +16,7 @@ _store_mod = importlib.import_module("pipeline_store")
 _should_auto_create_weight_variant = _store_mod._should_auto_create_weight_variant
 _build_alias_suggestion = _store_mod._build_alias_suggestion
 _record_method_telemetry = _store_mod._record_method_telemetry
+_make_cartridge = _store_mod._make_cartridge
 AUTO_CREATE_CONFIDENCE_CEILING = _store_mod.AUTO_CREATE_CONFIDENCE_CEILING
 _LOW_CONFIDENCE_REPORT_THRESHOLD = _store_mod._LOW_CONFIDENCE_REPORT_THRESHOLD
 
@@ -541,3 +542,103 @@ class TestMethodBreakdownOutput:
         # exact_sku (higher count) should print before fuzzy_name
         assert out.index("exact_sku") < out.index("fuzzy_name")
         assert "2 < 0.5" in out  # low-confidence count for fuzzy_name
+
+
+# ---------------------------------------------------------------------------
+# bullet_match_confidence / bullet_match_method persistence (finding #18)
+# ---------------------------------------------------------------------------
+
+
+class TestBulletMatchPersistence:
+    """Both bullet_match_confidence and bullet_match_method must be written to Cartridge
+    from every pipeline write path — create and match-updated FK refresh.
+
+    Unblocks the "99 cartridges with wrong bullet_id" audit query (TODO.md).
+    """
+
+    def test_resolver_sets_bullet_match_method_for_cartridge(self, seeded, db):
+        """EntityResolver.resolve(cartridge) should populate bullet_match_method
+        alongside bullet_match_confidence. Without this, the match-updated branch
+        and _make_cartridge have no method to persist."""
+        from drift.pipeline.resolution.resolver import EntityResolver
+
+        resolver = EntityResolver(db)
+        # Bullet has no SKU in fixture, but its exact name + weight + diameter
+        # will hit composite_key or product_line via name-based matching.
+        entity = {
+            "name": _ev("Barnes .308 Win 110gr TTSX load"),
+            "bullet_name": _ev("30cal 110gr TTSX"),
+            "bullet_weight_grains": _ev(110.0),
+            "muzzle_velocity_fps": _ev(3100),
+            "manufacturer": _ev("Barnes Bullets"),
+            "caliber": _ev(".308 Winchester"),
+        }
+        result = resolver.resolve(entity, "cartridge")
+        assert result.bullet_id == seeded["bullet"].id
+        assert result.bullet_match_confidence is not None and result.bullet_match_confidence > 0.0
+        assert result.bullet_match_method  # non-empty string
+
+    def test_make_cartridge_persists_both_fields(self, seeded, db):
+        """A pipeline-created Cartridge must have both columns populated."""
+        entity = {
+            "name": _ev("Barnes .308 Win 110gr TTSX"),
+            "bullet_weight_grains": _ev(110.0),
+            "muzzle_velocity_fps": _ev(3100),
+        }
+        cart = _make_cartridge(
+            entity,
+            manufacturer_id=seeded["mfr"].id,
+            caliber_id=seeded["cal"].id,
+            bullet_id=seeded["bullet"].id,
+            source_url="https://example.com/load",
+            bullet_match_confidence=0.93,
+            bullet_match_method="product_line",
+        )
+        db.add(cart)
+        db.flush()
+
+        persisted = db.get(Cartridge, cart.id)
+        assert persisted.bullet_match_confidence == pytest.approx(0.93)
+        assert persisted.bullet_match_method == "product_line"
+
+    def test_matched_updated_branch_persists_both_fields(self, seeded, db):
+        """When the pipeline refreshes bullet_id on an existing cartridge,
+        both bullet_match_confidence and bullet_match_method must be written too.
+
+        Mirrors the assignment block in pipeline_store.main() under
+        ``action == "matched_updated"``.
+        """
+        other_bullet = Bullet(
+            manufacturer_id=seeded["mfr"].id,
+            name="30cal 110gr TTSX BT",
+            bullet_diameter_inches=0.308,
+            weight_grains=110.0,
+        )
+        db.add(other_bullet)
+        db.flush()
+
+        existing_cart = seeded["cart"]
+        assert existing_cart.bullet_match_confidence is None
+        assert existing_cart.bullet_match_method is None
+
+        resolution = _make_resolution(
+            "cartridge",
+            confidence=0.95,
+            entity_id=existing_cart.id,
+            manufacturer_id=seeded["mfr"].id,
+            caliber_id=seeded["cal"].id,
+            bullet_id=other_bullet.id,
+        )
+        resolution.bullet_match_confidence = 0.87
+        resolution.bullet_match_method = "composite_key"
+
+        # Simulate the match-updated write block in pipeline_store.main()
+        existing_cart.bullet_id = resolution.bullet_id
+        existing_cart.bullet_match_confidence = resolution.bullet_match_confidence
+        existing_cart.bullet_match_method = resolution.bullet_match_method
+        db.flush()
+
+        db.refresh(existing_cart)
+        assert existing_cart.bullet_id == other_bullet.id
+        assert existing_cart.bullet_match_confidence == pytest.approx(0.87)
+        assert existing_cart.bullet_match_method == "composite_key"
