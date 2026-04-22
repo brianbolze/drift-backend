@@ -132,9 +132,23 @@ class TestSchemaValidation:
         with pytest.raises(ValidationError, match="Cannot update fields"):
             _make_patch([{"action": "update_bullet", "manufacturer": "X", "name": "Y", "set": {"id": "bad"}}])
 
-    def test_update_bullet_rejects_is_locked(self):
-        with pytest.raises(ValidationError, match="Cannot update fields"):
-            _make_patch([{"action": "update_bullet", "manufacturer": "X", "name": "Y", "set": {"is_locked": False}}])
+    def test_update_bullet_allows_is_locked_and_data_source(self):
+        """Curation patches may set ``is_locked`` / ``data_source`` on an
+        existing bullet — needed to protect a pipeline-ingested row against
+        a known re-extraction defect (see patch 034 for the shipping use case)."""
+        patch = _make_patch(
+            [
+                {
+                    "action": "update_bullet",
+                    "manufacturer": "X",
+                    "name": "Y",
+                    "set": {"is_locked": True, "data_source": "manual"},
+                }
+            ]
+        )
+        op = patch.operations[0]
+        assert op.set["is_locked"] is True
+        assert op.set["data_source"] == "manual"
 
     def test_update_cartridge_allowlist_enforcement(self):
         with pytest.raises(ValidationError, match="Cannot update fields"):

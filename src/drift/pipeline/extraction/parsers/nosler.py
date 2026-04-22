@@ -13,9 +13,11 @@ Stable bullet spec keys (99%+ coverage): ``Diameter``, ``Bullet Weight``,
 Stable cartridge keys: ``Cartridge`` (caliber), ``Bullet Type`` (bullet_name
 linkage — "AccuBond", "Ballistic Tip", "Partition"), ``Bullet Weight``,
 ``Test Barrel Length``, ``Box Qty`` (round_count), ``Manufacturer SKU``.
-BC fields are absent on cartridge pages (Nosler publishes BCs on separate
-load-data pages) so cartridges always ship with null BCs — matches current
-LLM behavior, no regression.
+A minority of cartridge pages (notably the Whitetail Country product line)
+also publish ``BC G1`` / ``BC G7`` in the same spec table; when present,
+the parser lifts them with full confidence. Most Nosler cartridges don't
+publish BC on their product page — BCs live on separate load-data pages —
+so the majority still ship with null BCs.
 
 Third parser after Hornady (inline JSON) and Sierra (BigCommerce attribute
 array). This one stresses table-row scraping, the BaseParser ABC didn't
@@ -354,6 +356,12 @@ class NoslerParser(BaseParser):
         except ValueError:
             round_count = None
 
+        # A minority of Nosler cartridge pages (notably the Whitetail Country
+        # product line) publish BC G1/G7 in the same spec table as bullet pages.
+        # Lift when present; null when the spec row is absent.
+        cart_bc_g1 = _parse_float(spec.get("BC G1"))
+        cart_bc_g7 = _parse_float(spec.get("BC G7"))
+
         try:
             cartridge = ExtractedCartridge(
                 name=_value(name, name_raw[:80], 1.0),
@@ -361,10 +369,8 @@ class NoslerParser(BaseParser):
                 caliber=_value(caliber, f"Cartridge={caliber}", 1.0),
                 bullet_name=(_value(bullet_name, f"Bullet Type={bullet_name}", 1.0) if bullet_name else _null()),
                 bullet_weight_grains=_value(weight, f"Bullet Weight={spec.get('Bullet Weight')}", 1.0),
-                # BC fields are never on Nosler cartridge pages (BCs live on
-                # separate load-data pages). Matches current LLM behavior.
-                bc_g1=_null(),
-                bc_g7=_null(),
+                bc_g1=(_value(cart_bc_g1, f"BC G1={spec.get('BC G1')}", 1.0) if cart_bc_g1 is not None else _null()),
+                bc_g7=(_value(cart_bc_g7, f"BC G7={spec.get('BC G7')}", 1.0) if cart_bc_g7 is not None else _null()),
                 bullet_length_inches=_null(),
                 muzzle_velocity_fps=(
                     _value(muzzle_velocity, f"VELOCITY Muzzle={muzzle_velocity}", 0.8)

@@ -1,0 +1,51 @@
+patch:
+  id: 034_parser_rollout_curation
+  author: agent
+  date: '2026-04-22'
+  description: >
+    Lock three DB rows against defects surfaced during the parser-first rollout
+    (Sierra + 2x Nosler). Each target is a manufacturer page where the parser
+    extracts values that are technically correct-for-the-page but wrong in the
+    DB's canonical record. Locking preserves the DB's good values and prevents
+    future re-extraction from adding duplicate bc_source rows or overwriting
+    weights. No new records. Defensive only.
+
+operations:
+
+# ── Sierra: 35 cal 155gr Pro-Hunter — page publishes two different G1 BCs ───
+
+  # Primary BigCommerce attribute array has G1=0.176; a secondary JSON-in-JSON
+  # block on the same page has G1=0.182. DB captured 0.182 (LLM picked the
+  # second block). On re-extraction the parser reads the primary array and
+  # would emit 0.176 — store bc_source dedup is 1e-9 tight so this creates
+  # a duplicate bullet_bc_source row rather than deduping. Lock the bullet.
+  - action: update_bullet
+    manufacturer: "Sierra Bullets"
+    name: "35 CAL 155 GR FN PRO-HUNTER"
+    set:
+      is_locked: true
+      data_source: manual
+      bc_source_notes: "Sierra page publishes 0.176 + 0.182 G1 simultaneously; 0.182 locked per curation review 2026-04-22."
+
+# ── Nosler: 416 Caliber 400gr Solid — page typo "Bullet Weight: 416gr" ──────
+
+  # Nosler's product page has the caliber pasted into the Bullet Weight spec
+  # row ("416gr" for a 400gr bullet). DB already has correct 400gr (LLM
+  # silently corrected). Parser honestly reports what the page says (416)
+  # and matched_existing wouldn't overwrite — but locking is cheap insurance
+  # and flags the row as manually reviewed.
+  - action: update_bullet
+    manufacturer: "Nosler"
+    name: "416 Caliber 400gr Solid (25ct)"
+    set:
+      is_locked: true
+      data_source: manual
+
+# ── Nosler: 458 Caliber 500gr Solid — same shape as above (page says 458gr) ─
+
+  - action: update_bullet
+    manufacturer: "Nosler"
+    name: "458 Caliber 500gr Solid (25ct)"
+    set:
+      is_locked: true
+      data_source: manual

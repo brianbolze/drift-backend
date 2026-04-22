@@ -47,6 +47,7 @@ _BULLET_UPDATE_FIELDS = frozenset(
         "bc_g7_published",
         "bc_g1_estimated",
         "bc_g7_estimated",
+        "bc_source_notes",
         "length_inches",
         "sectional_density",
         "base_type",
@@ -59,6 +60,11 @@ _BULLET_UPDATE_FIELDS = frozenset(
         "source_url",
         "overall_popularity_rank",
         "lr_popularity_rank",
+        # Curation-protection flags — let a patch lock a pipeline-ingested row
+        # to prevent future re-extraction from overwriting it or adding
+        # duplicate bc_source rows.
+        "is_locked",
+        "data_source",
     }
 )
 
@@ -78,6 +84,9 @@ _CARTRIDGE_UPDATE_FIELDS = frozenset(
         "sku",
         "overall_popularity_rank",
         "lr_popularity_rank",
+        # Curation-protection flags (see bullet note above).
+        "is_locked",
+        "data_source",
     }
 )
 

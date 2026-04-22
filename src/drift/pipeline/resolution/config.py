@@ -180,6 +180,20 @@ class ResolutionConfig:
     # lookup is added to unresolved_refs for later review.
     bullet_fk_min_confidence: float = 0.5
 
+    # Relaxed-diameter fallback: when the primary diameter-filtered match
+    # returns nothing or gets weight-gated, retry the bullet lookup without
+    # the diameter filter. Recovers the "wrong caliber resolved → wrong
+    # diameter → no bullet at that diameter" failure mode (e.g. 30-378 Wby
+    # Mag fuzzy-matched to .338-378 Wby Mag in the caliber table, so the
+    # bullet search filtered to .338 and missed the actual .308 bullet).
+    # Accepted only when the fallback's weight exactly matches the cartridge
+    # (±1 gr) and name similarity meets ``fallback_min_name_confidence``.
+    enable_relaxed_diameter_fallback: bool = True
+    fallback_weight_tolerance_grains: float = 1.0
+    fallback_min_name_confidence: float = 0.85
+    # Confidence penalty applied to a relaxed-diameter match (multiplicative).
+    fallback_confidence_penalty: float = 0.9
+
     # ── Pipeline store action gates ──────────────────────────────────────────
     # These drive the store script's create / match / flag decision. Separated
     # from resolver-internal confidence scalars because the store is the

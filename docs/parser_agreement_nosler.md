@@ -36,14 +36,26 @@ Numeric comparison allows ±0.5% relative (to absorb unit-conversion rounding). 
 | `manufacturer` | 228 | 0 | 0 | 0 | 0 | 100.0% |
 | `caliber` | 219 | 9 | 0 | 0 | 0 | 96.1% |
 | `bullet_weight_grains` | 228 | 0 | 0 | 0 | 0 | 100.0% |
-| `bc_g1` | 0 | 0 | 14 | 0 | 214 | 0.0% |
-| `bc_g7` | 0 | 0 | 2 | 0 | 226 | 0.0% |
-| `muzzle_velocity_fps` | 203 | 2 | 1 | 0 | 22 | 98.5% |
+| `bc_g1` | 13 | 1 | 0 | 0 | 214 | 92.9% |
+| `bc_g7` | 1 | 1 | 0 | 0 | 226 | 50.0% |
+| `muzzle_velocity_fps` | 205 | 0 | 1 | 0 | 22 | 99.5% |
 | `sku` | 228 | 0 | 0 | 0 | 0 | 100.0% |
 
 ## Disagreement samples
 
 Up to 5 examples per field where parser and LLM diverge. Most are LLM noise (trademark handling, variant product-line extraction, regex-vs-prose bullet names). Treat as an investigation list, not a bug list.
+
+### `bc_g1`
+
+| URL | Parser | LLM |
+|---|---|---|
+| `https://www.nosler.com/270-wsm-130gr-expansion-tip-ammunition.html` | 15.0 | 0.15 |
+
+### `bc_g7`
+
+| URL | Parser | LLM |
+|---|---|---|
+| `https://www.nosler.com/270-wsm-130gr-expansion-tip-ammunition.html` | 11.0 | 0.11 |
 
 ### `caliber`
 
@@ -63,13 +75,6 @@ Up to 5 examples per field where parser and LLM diverge. Most are LLM noise (tra
 | `https://www.nosler.com/30-caliber-175gr-rdf-100ct.html` | 'Nosler' | 'NOSLER INC.' |
 | `https://www.nosler.com/6mm-105gr-rdf-100ct.html` | 'Nosler' | 'NOSLER INC.' |
 | `https://www.nosler.com/6-5mm-130gr-rdf-100ct.html` | 'Nosler' | 'NOSLER INC.' |
-
-### `muzzle_velocity_fps`
-
-| URL | Parser | LLM |
-|---|---|---|
-| `https://www.nosler.com/35-whelen-225gr-accubond-trophy-grade-ammunition.html` | 3642 | 2700 |
-| `https://www.nosler.com/6-8mm-spc-115gr-custom-competition-match-grade-ammunition.html` | 1660 | 2550 |
 
 ### `name`
 

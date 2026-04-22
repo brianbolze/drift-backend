@@ -1030,6 +1030,54 @@ class EntityResolver:
                                 details=f"weight gate: {weight_diff:.0f}gr diff exceeds {weight_gate:.0f}gr limit",
                                 methods_tried=bullet_match.methods_tried,
                             )
+                # Relaxed-diameter fallback: if the primary diameter-filtered
+                # match returned nothing usable (unmatched or weight-gated),
+                # retry without the diameter filter. Recovers cartridges whose
+                # caliber fuzzy-matched to the wrong variant (e.g. 30-378 Wby
+                # Mag → .338-378 Wby Mag), narrowing the bullet search to the
+                # wrong diameter and missing a bullet that does exist.
+                if (
+                    not bullet_match.matched
+                    and self._config.enable_relaxed_diameter_fallback
+                    and weight is not None
+                    and cart_bullet_diameter is not None
+                ):
+                    fallback = self.match_bullet(bullet_stub, None, None)
+                    if fallback.matched:
+                        fb_bullet = self._session.get(Bullet, fallback.entity_id)
+                        try:
+                            fb_weight_diff = abs(fb_bullet.weight_grains - float(weight)) if fb_bullet else float("inf")
+                        except (TypeError, ValueError):
+                            fb_weight_diff = float("inf")
+                        if (
+                            fb_bullet is not None
+                            and fb_weight_diff <= self._config.fallback_weight_tolerance_grains
+                            and fallback.confidence >= self._config.fallback_min_name_confidence
+                        ):
+                            penalty = self._config.fallback_confidence_penalty
+                            bullet_match = MatchResult(
+                                matched=True,
+                                entity_id=fallback.entity_id,
+                                confidence=fallback.confidence * penalty,
+                                method=f"{fallback.method}+relaxed_diameter",
+                                details=(
+                                    f"relaxed-diameter fallback: {fb_bullet.name} "
+                                    f'({fb_bullet.bullet_diameter_inches}", {fb_bullet.weight_grains}gr) '
+                                    f'vs cartridge diameter {cart_bullet_diameter}"'
+                                ),
+                                alternatives=fallback.alternatives,
+                                methods_tried=(bullet_match.methods_tried or []) + ["relaxed_diameter"],
+                            )
+                            logger.info(
+                                "Relaxed-diameter fallback recovered %s for cartridge bullet '%s %.0fgr' "
+                                '(caliber-resolved diameter %.3f", bullet diameter %.3f")',
+                                fb_bullet.name,
+                                bullet_name,
+                                float(weight),
+                                cart_bullet_diameter,
+                                fb_bullet.bullet_diameter_inches,
+                            )
+
                 # Require minimum confidence for bullet FK assignment — low-confidence
                 # fuzzy matches (e.g. weight-mismatched Tier 3) should be flagged, not assigned.
                 if bullet_match.matched and bullet_match.confidence >= self._config.bullet_fk_min_confidence:

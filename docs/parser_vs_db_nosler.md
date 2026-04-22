@@ -8,8 +8,8 @@ Ran `nosler` parser over every cached page on `www.nosler.com` and joined by `so
 - URLs in fetched cache: **455**
 - Parser extracted a result: **422**
 - Parser declined: 33
-- Matched DB row, all fields agree: **229**
-- Matched DB row, at least one field differs: **2**
+- Matched DB row, all fields agree: **228**
+- Matched DB row, at least one field differs: **3**
 - URL not in DB (filtered by rejected-caliber list, failed to resolve, or not ingested): **191**
 - Matched rows that are `is_locked=True` (curation-protected): 0
 
@@ -21,8 +21,12 @@ Ran `nosler` parser over every cached page on `www.nosler.com` and joined by `so
 | Field | Count |
 |---|---:|
 | `weight` | 2 |
+| `bc_g1` | 1 |
 
 ## Diffs (first 30)
+
+### `https://www.nosler.com/270-wsm-130gr-expansion-tip-ammunition.html` _cartridge_
+- bc_g1: parser=15.0 db=0.459
 
 ### `https://www.nosler.com/416-caliber-400gr-solid-25ct.html` _bullet_
 - weight: parser=416.0 db=400.0
