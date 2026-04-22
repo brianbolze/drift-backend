@@ -201,6 +201,20 @@ class ResolutionConfig:
     # so the reporting threshold can move without affecting gating behavior.
     low_confidence_report_threshold: float = 0.5
 
+    # Gate for auto-promoting a fuzzy-tier EntityAlias suggestion directly into
+    # the DB on pipeline-store-commit. When a fuzzy win has confidence strictly
+    # above this AND is not ambiguous (runner-up gap ≥ ambiguity_gap_threshold),
+    # the store inserts the alias row itself rather than emitting a suggestion
+    # for a human-authored curation patch.
+    #
+    # 0.85 is set above the product-line-no-weight confidence (0.80) so that
+    # only matches with at least two agreeing signals (weight + name, or a BC
+    # boost on top of a composite hit) can auto-promote — the goal is to pick
+    # off the obvious wins, not to expand the gate silently. Ambiguous matches
+    # are excluded regardless of confidence because a tight runner-up means the
+    # alias would teach the resolver a mapping we aren't sure of.
+    alias_auto_promote_threshold: float = 0.85
+
 
 # Module-level singleton used by the resolver and pipeline store. Tests or
 # calibration harnesses can construct alternate configs and pass them through

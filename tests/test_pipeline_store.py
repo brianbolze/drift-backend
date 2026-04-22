@@ -2,22 +2,26 @@
 """Tests for pipeline_store auto-create weight variant logic."""
 
 import importlib
+import json
 import sys
 from pathlib import Path
 
 import pytest
 
 from drift.models import Bullet, Caliber, Cartridge, Chamber, EntityAlias, Manufacturer, RifleModel
-from drift.pipeline.resolution.resolver import MatchResult, ResolutionResult
+from drift.pipeline.resolution.resolver import AlternativeMatch, MatchResult, ResolutionResult
 
 _SCRIPTS_DIR = Path(__file__).resolve().parent.parent / "scripts"
 sys.path.insert(0, str(_SCRIPTS_DIR))
 _store_mod = importlib.import_module("pipeline_store")
 _should_auto_create_weight_variant = _store_mod._should_auto_create_weight_variant
 _build_alias_suggestion = _store_mod._build_alias_suggestion
+_should_auto_promote_alias = _store_mod._should_auto_promote_alias
+_create_pipeline_alias = _store_mod._create_pipeline_alias
 _record_method_telemetry = _store_mod._record_method_telemetry
 _make_cartridge = _store_mod._make_cartridge
 AUTO_CREATE_CONFIDENCE_CEILING = _store_mod.AUTO_CREATE_CONFIDENCE_CEILING
+ALIAS_AUTO_PROMOTE_THRESHOLD = _store_mod.ALIAS_AUTO_PROMOTE_THRESHOLD
 _LOW_CONFIDENCE_REPORT_THRESHOLD = _store_mod._LOW_CONFIDENCE_REPORT_THRESHOLD
 
 
@@ -642,3 +646,252 @@ class TestBulletMatchPersistence:
         assert existing_cart.bullet_id == other_bullet.id
         assert existing_cart.bullet_match_confidence == pytest.approx(0.87)
         assert existing_cart.bullet_match_method == "composite_key"
+
+
+# ---------------------------------------------------------------------------
+# Alias auto-promotion tests
+# ---------------------------------------------------------------------------
+
+
+def _match(confidence, method="fuzzy_name", *, entity_id="some-id", runner_up=None):
+    """Build a MatchResult with optional runner-up for ambiguity gating."""
+    alternatives = (
+        [AlternativeMatch(entity_id="other", confidence=runner_up, method=method)] if runner_up is not None else []
+    )
+    return MatchResult(
+        matched=True,
+        entity_id=entity_id,
+        confidence=confidence,
+        method=method,
+        alternatives=alternatives,
+    )
+
+
+class TestShouldAutoPromoteAlias:
+    """Gate predicate: confidence strictly above threshold AND not ambiguous."""
+
+    def test_above_threshold_no_alternatives_returns_true(self):
+        assert _should_auto_promote_alias(_match(0.9)) is True
+
+    def test_at_threshold_returns_false(self):
+        """Strictly greater-than — equal confidence shouldn't auto-promote."""
+        assert _should_auto_promote_alias(_match(ALIAS_AUTO_PROMOTE_THRESHOLD)) is False
+
+    def test_below_threshold_returns_false(self):
+        assert _should_auto_promote_alias(_match(0.75)) is False
+
+    def test_ambiguous_match_returns_false(self):
+        """Runner-up within ambiguity_gap_threshold → don't promote even above threshold."""
+        m = _match(0.9, runner_up=0.88)
+        assert m.is_ambiguous is True
+        assert _should_auto_promote_alias(m) is False
+
+    def test_above_threshold_with_wide_gap_returns_true(self):
+        """Runner-up below ambiguity_gap_threshold distance → not ambiguous."""
+        m = _match(0.9, runner_up=0.4)
+        assert m.is_ambiguous is False
+        assert _should_auto_promote_alias(m) is True
+
+
+class TestCreatePipelineAlias:
+    """Writes an EntityAlias row with the pipeline's alias_type marker."""
+
+    def test_writes_entity_alias_row(self, seeded, db):
+        suggestion = {
+            "entity_type": "bullet",
+            "entity_id": seeded["bullet"].id,
+            "canonical_name": seeded["bullet"].name,
+            "alias": "Barnes 30 Cal 110gr TTSX",
+            "method": "fuzzy_name",
+            "confidence": 0.91,
+        }
+        alias_id = _create_pipeline_alias(db, suggestion)
+        persisted = db.get(EntityAlias, alias_id)
+        assert persisted is not None
+        assert persisted.entity_type == "bullet"
+        assert persisted.entity_id == seeded["bullet"].id
+        assert persisted.alias == "Barnes 30 Cal 110gr TTSX"
+        assert persisted.alias_type == "extracted_fuzzy"
+
+
+class TestMainLoopAutoPromotion:
+    """End-to-end: invoke main() over a crafted extraction file and inspect the
+    resulting store_report + DB state.
+
+    We exercise the whole store loop (not just the helpers) because the gate
+    decision lives inside main() and the real concern is the dry-run/commit
+    divergence and the entry/stats shape."""
+
+    @pytest.fixture()
+    def _bullet_seed(self, db, monkeypatch, tmp_path):
+        """Seed a bullet whose name will fuzzy-match an extracted variant
+        strongly enough to auto-promote, plus enough supporting entities for
+        normalize→resolve→store to make it all the way through."""
+        mfr = Manufacturer(name="Hornady", type_tags=["bullet_maker"], country="USA")
+        db.add(mfr)
+        db.flush()
+
+        cal = Caliber(name=".308 Winchester", alt_names=[".308 Win"], bullet_diameter_inches=0.308)
+        db.add(cal)
+        db.flush()
+
+        bullet = Bullet(
+            manufacturer_id=mfr.id,
+            name="30 Cal .308 178 gr ELD-X",
+            bullet_diameter_inches=0.308,
+            weight_grains=178.0,
+            bc_g1_published=0.552,
+        )
+        db.add(bullet)
+        db.commit()
+
+        return {"mfr": mfr, "cal": cal, "bullet": bullet}
+
+    def _run_main(self, db, monkeypatch, tmp_path, extraction: dict, *, commit: bool) -> dict:
+        """Run pipeline_store.main() with a single extraction JSON and return the report."""
+        extracted_dir = tmp_path / "extracted"
+        extracted_dir.mkdir()
+        (extracted_dir / "test.json").write_text(json.dumps(extraction), encoding="utf-8")
+        report_path = tmp_path / "store_report.json"
+        rejected_path = tmp_path / "rejected_calibers.json"
+
+        monkeypatch.setattr(_store_mod, "EXTRACTED_DIR", extracted_dir)
+        monkeypatch.setattr(_store_mod, "STORE_REPORT_PATH", report_path)
+        monkeypatch.setattr(_store_mod, "REJECTED_CALIBERS_PATH", rejected_path)
+
+        # Patch the session factory so main() reuses the test db session.
+        class _Factory:
+            def __call__(self_inner):
+                return _NoCloseSession(db)
+
+        monkeypatch.setattr(_store_mod, "get_session_factory", lambda: _Factory())
+        argv = ["pipeline_store.py"] + (["--commit"] if commit else [])
+        monkeypatch.setattr(sys, "argv", argv)
+
+        _store_mod.main()
+        return json.loads(report_path.read_text(encoding="utf-8"))
+
+    def test_commit_above_threshold_auto_promotes(self, db, monkeypatch, tmp_path, _bullet_seed):
+        """Commit + high-confidence fuzzy win + unambiguous → alias written, row marked."""
+        extraction = _fuzzy_bullet_extraction("Hornady 30 Cal 178gr ELDX Match")
+        report = self._run_main(db, monkeypatch, tmp_path, extraction, commit=True)
+
+        assert len(report["alias_auto_promoted"]) == 1
+        promoted = report["alias_auto_promoted"][0]
+        assert promoted["status"] == "alias_auto_promoted"
+        assert promoted["alias_id"]
+        assert promoted["entity_id"] == _bullet_seed["bullet"].id
+        assert report["stats"]["bullet"]["alias_auto_promoted"] == 1
+        assert report["alias_suggestions"] == []
+
+        # The EntityAlias row exists in the DB and carries the pipeline marker.
+        alias = db.get(EntityAlias, promoted["alias_id"])
+        assert alias is not None
+        assert alias.alias_type == "extracted_fuzzy"
+        assert alias.alias == "Hornady 30 Cal 178gr ELDX Match"
+
+    def test_dry_run_above_threshold_suggests_only(self, db, monkeypatch, tmp_path, _bullet_seed):
+        """Dry-run never writes, even when the gate would pass on commit."""
+        extraction = _fuzzy_bullet_extraction("Hornady 30 Cal 178gr ELDX Match")
+        report = self._run_main(db, monkeypatch, tmp_path, extraction, commit=False)
+
+        assert report["alias_auto_promoted"] == []
+        assert len(report["alias_suggestions"]) == 1
+        assert report["alias_suggestions"][0]["status"] == "suggested"
+        assert report["stats"]["bullet"]["alias_auto_promoted"] == 0
+        assert report["stats"]["bullet"]["alias_suggestions"] == 1
+        # No EntityAlias rows were written.
+        assert db.query(EntityAlias).count() == 0
+
+    def test_commit_below_threshold_suggests_only(self, db, monkeypatch, tmp_path, _bullet_seed):
+        """Gate below → suggestion only, even on commit. Threshold monkeypatched
+        up to isolate this from resolver scoring drift."""
+        monkeypatch.setattr(_store_mod, "ALIAS_AUTO_PROMOTE_THRESHOLD", 0.99)
+        extraction = _fuzzy_bullet_extraction("Hornady 30 Cal 178gr ELDX Match")
+        report = self._run_main(db, monkeypatch, tmp_path, extraction, commit=True)
+
+        assert report["alias_auto_promoted"] == []
+        assert len(report["alias_suggestions"]) == 1
+        assert report["alias_suggestions"][0]["status"] == "suggested"
+        assert report["stats"]["bullet"]["alias_auto_promoted"] == 0
+        assert db.query(EntityAlias).count() == 0
+
+    def test_commit_ambiguous_match_suggests_only(self, db, monkeypatch, tmp_path, _bullet_seed):
+        """Ambiguous match (runner-up within gap) → suggestion only even above threshold.
+
+        Simulated by stubbing the gate predicate — the end-to-end concern here is
+        that main() consults the predicate, not that the predicate itself works
+        (``TestShouldAutoPromoteAlias`` covers that)."""
+        monkeypatch.setattr(_store_mod, "_should_auto_promote_alias", lambda match: False)
+        extraction = _fuzzy_bullet_extraction("Hornady 30 Cal 178gr ELDX Match")
+        report = self._run_main(db, monkeypatch, tmp_path, extraction, commit=True)
+
+        assert report["alias_auto_promoted"] == []
+        assert len(report["alias_suggestions"]) == 1
+        assert report["alias_suggestions"][0]["status"] == "suggested"
+        assert db.query(EntityAlias).count() == 0
+
+    def test_preexisting_alias_is_noop(self, db, monkeypatch, tmp_path, _bullet_seed):
+        """When the alias already exists, _build_alias_suggestion returns None
+        and auto-promote has nothing to write."""
+        db.add(
+            EntityAlias(
+                entity_type="bullet",
+                entity_id=_bullet_seed["bullet"].id,
+                alias="Hornady 30 Cal 178gr ELDX Match",
+                alias_type="abbreviation",
+            )
+        )
+        db.commit()
+        before = db.query(EntityAlias).count()
+
+        extraction = _fuzzy_bullet_extraction("Hornady 30 Cal 178gr ELDX Match")
+        report = self._run_main(db, monkeypatch, tmp_path, extraction, commit=True)
+
+        assert report["alias_auto_promoted"] == []
+        assert report["alias_suggestions"] == []
+        assert db.query(EntityAlias).count() == before
+
+
+class _NoCloseSession:
+    """Wrap a test db session so main() can call session.close() without
+    actually closing the fixture-owned session.
+
+    Also swallows commit/rollback so test assertions can still inspect the
+    session state after main() runs."""
+
+    def __init__(self, inner):
+        self._inner = inner
+
+    def __getattr__(self, name):
+        return getattr(self._inner, name)
+
+    def close(self):  # no-op — outer fixture owns lifecycle
+        pass
+
+    def commit(self):
+        self._inner.flush()
+
+    def rollback(self):
+        pass
+
+
+def _fuzzy_bullet_extraction(name: str, *, weight: float = 178.0) -> dict:
+    """Build a minimal extraction JSON that the pipeline store can process end-to-end.
+
+    The bullet diameter (.308") is set so the diameter gate passes against the
+    seeded Hornady ELD-X test bullet."""
+    return {
+        "url": "https://example.com/hornady/eldx-178",
+        "entity_type": "bullet",
+        "entities": [
+            {
+                "name": {"value": name, "confidence": 0.9},
+                "manufacturer": {"value": "Hornady", "confidence": 0.95},
+                "bullet_diameter_inches": {"value": 0.308, "confidence": 0.95},
+                "weight_grains": {"value": weight, "confidence": 0.95},
+            }
+        ],
+        "bc_sources": [],
+        "data_source": "pipeline",
+    }

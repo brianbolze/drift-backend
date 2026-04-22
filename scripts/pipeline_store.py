@@ -43,6 +43,12 @@ logger = logging.getLogger(__name__)
 # See drift.pipeline.resolution.config for rationale on each value.
 MATCH_CONFIDENCE_THRESHOLD = DEFAULT_CONFIG.match_confidence_threshold
 AUTO_CREATE_CONFIDENCE_CEILING = DEFAULT_CONFIG.auto_create_confidence_ceiling
+ALIAS_AUTO_PROMOTE_THRESHOLD = DEFAULT_CONFIG.alias_auto_promote_threshold
+
+# alias_type written on pipeline-promoted EntityAlias rows. Distinguishes
+# pipeline-sourced aliases from curator-authored ones (which use semantic types
+# like "abbreviation" / "predecessor") for later audit or rollback.
+_PIPELINE_ALIAS_TYPE = "extracted_fuzzy"
 
 # Winning match methods that are non-deterministic (use similarity thresholds on names).
 # A matched_existing entry decided by one of these is a candidate for EntityAlias
@@ -118,6 +124,34 @@ def _build_alias_suggestion(
         "method": match.method,
         "confidence": round(match.confidence, 3),
     }
+
+
+def _should_auto_promote_alias(match) -> bool:
+    """True when a fuzzy match clears the auto-promote gate (high-confidence + unambiguous).
+
+    The caller still owns the "is this even a fuzzy tier win" check via
+    ``_build_alias_suggestion`` — this predicate only decides whether, once a
+    suggestion exists, we write it directly instead of deferring to a curator.
+    """
+    return match.confidence > ALIAS_AUTO_PROMOTE_THRESHOLD and not match.is_ambiguous
+
+
+def _create_pipeline_alias(session, suggestion: dict) -> str:
+    """Insert an EntityAlias row for an auto-promoted suggestion. Returns its id.
+
+    Caller is responsible for the gate check and for ensuring no duplicate alias
+    exists (``_build_alias_suggestion`` already filters pre-existing rows).
+    """
+    alias = EntityAlias(
+        id=str(uuid.uuid4()),
+        entity_type=suggestion["entity_type"],
+        entity_id=suggestion["entity_id"],
+        alias=suggestion["alias"],
+        alias_type=_PIPELINE_ALIAS_TYPE,
+    )
+    session.add(alias)
+    session.flush()
+    return alias.id
 
 
 def _record_method_telemetry(stats: dict, entity_type: str, match) -> None:
@@ -464,6 +498,7 @@ def main() -> None:  # noqa: C901
             "rejected": 0,
             "skipped_locked": 0,
             "alias_suggestions": 0,
+            "alias_auto_promoted": 0,
             "methods": {},
         },
         "cartridge": {
@@ -474,6 +509,7 @@ def main() -> None:  # noqa: C901
             "rejected": 0,
             "skipped_locked": 0,
             "alias_suggestions": 0,
+            "alias_auto_promoted": 0,
             "methods": {},
         },
         "rifle": {
@@ -484,6 +520,7 @@ def main() -> None:  # noqa: C901
             "rejected": 0,
             "skipped_locked": 0,
             "alias_suggestions": 0,
+            "alias_auto_promoted": 0,
             "methods": {},
         },
     }
@@ -622,8 +659,28 @@ def main() -> None:  # noqa: C901
 
                     suggestion = _build_alias_suggestion(session, entity_type, resolution.match, existing, name)
                     if suggestion is not None:
+                        # Commit + gate both pass → write the alias directly so the next
+                        # run hits the deterministic alias path. Otherwise (dry-run, low
+                        # confidence, or ambiguous) leave it as a suggestion for a curator.
+                        if args.commit and _should_auto_promote_alias(resolution.match):
+                            alias_id = _create_pipeline_alias(session, suggestion)
+                            suggestion["status"] = "alias_auto_promoted"
+                            suggestion["alias_id"] = alias_id
+                            stats[entity_type]["alias_auto_promoted"] = (
+                                stats[entity_type].get("alias_auto_promoted", 0) + 1
+                            )
+                            logger.info(
+                                "  [%d] ALIAS AUTO-PROMOTED: %r → %s (%s, %.0f%%)",
+                                j + 1,
+                                suggestion["alias"],
+                                suggestion["entity_id"],
+                                suggestion["method"],
+                                resolution.match.confidence * 100,
+                            )
+                        else:
+                            suggestion["status"] = "suggested"
+                            stats[entity_type]["alias_suggestions"] = stats[entity_type].get("alias_suggestions", 0) + 1
                         entry["alias_suggestion"] = suggestion
-                        stats[entity_type]["alias_suggestions"] = stats[entity_type].get("alias_suggestions", 0) + 1
 
                     # Check if FK references should be updated on the existing entity.
                     # This allows re-runs with improved resolvers to fix previously committed
@@ -737,14 +794,26 @@ def main() -> None:  # noqa: C901
         if session is not None:
             session.close()
 
-    # Collect alias suggestions into a top-level list for easy curator scanning
-    alias_suggestions = [e["alias_suggestion"] for e in report_entries if "alias_suggestion" in e]
+    # Split alias entries into pending suggestions (for curator review) vs.
+    # auto-promoted (for audit). Status is set when the suggestion is attached
+    # to an entry; legacy entries without a status default to "suggested".
+    alias_suggestions = [
+        e["alias_suggestion"]
+        for e in report_entries
+        if "alias_suggestion" in e and e["alias_suggestion"].get("status", "suggested") == "suggested"
+    ]
+    alias_auto_promoted = [
+        e["alias_suggestion"]
+        for e in report_entries
+        if "alias_suggestion" in e and e["alias_suggestion"].get("status") == "alias_auto_promoted"
+    ]
 
     # Write report
     report = {
         "mode": mode,
         "stats": stats,
         "alias_suggestions": alias_suggestions,
+        "alias_auto_promoted": alias_auto_promoted,
         "entries": report_entries,
     }
     STORE_REPORT_PATH.parent.mkdir(parents=True, exist_ok=True)
@@ -757,6 +826,7 @@ def main() -> None:  # noqa: C901
         rejected = counts.get("rejected", 0)
         locked = counts.get("skipped_locked", 0)
         suggested = counts.get("alias_suggestions", 0)
+        promoted = counts.get("alias_auto_promoted", 0)
         parts = [
             f"{counts['created']} created",
             f"{counts['matched']} matched",
@@ -770,6 +840,8 @@ def main() -> None:  # noqa: C901
             parts.append(f"{locked} skipped (locked)")
         if suggested:
             parts.append(f"{suggested} alias suggestions")
+        if promoted:
+            parts.append(f"{promoted} aliases auto-promoted")
         print(f"  {etype}: {', '.join(parts)}")
     _print_method_breakdown(stats)
     print(f"\nReport written to: {STORE_REPORT_PATH}")
