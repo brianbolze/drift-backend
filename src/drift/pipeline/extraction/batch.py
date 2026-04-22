@@ -75,7 +75,13 @@ class BatchExtractor:
                     params=MessageCreateParamsNonStreaming(
                         model=self._engine.model,
                         max_tokens=MAX_TOKENS,
-                        system=system_prompt,
+                        system=[
+                            {
+                                "type": "text",
+                                "text": system_prompt,
+                                "cache_control": {"type": "ephemeral"},
+                            }
+                        ],
                         messages=[{"role": "user", "content": user_message}],
                     ),
                 )
@@ -199,6 +205,8 @@ class BatchExtractor:
                 usage = {
                     "input_tokens": message.usage.input_tokens,
                     "output_tokens": message.usage.output_tokens,
+                    "cache_creation_input_tokens": getattr(message.usage, "cache_creation_input_tokens", None),
+                    "cache_read_input_tokens": getattr(message.usage, "cache_read_input_tokens", None),
                 }
 
                 if message.stop_reason == "max_tokens":

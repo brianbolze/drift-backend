@@ -26,6 +26,19 @@ class TestLLMResponse:
         assert r.text == "hello"
         assert r.input_tokens == 10
         assert r.output_tokens == 5
+        assert r.cache_creation_input_tokens is None
+        assert r.cache_read_input_tokens is None
+
+    def test_cache_fields(self):
+        r = LLMResponse(
+            text="hello",
+            input_tokens=10,
+            output_tokens=5,
+            cache_creation_input_tokens=2000,
+            cache_read_input_tokens=500,
+        )
+        assert r.cache_creation_input_tokens == 2000
+        assert r.cache_read_input_tokens == 500
 
     def test_frozen(self):
         r = LLMResponse(text="hello", input_tokens=10, output_tokens=5)
@@ -76,6 +89,8 @@ class TestAnthropicProvider:
         mock_response.content = [mock_content]
         mock_response.usage.input_tokens = 100
         mock_response.usage.output_tokens = 50
+        mock_response.usage.cache_creation_input_tokens = 2000
+        mock_response.usage.cache_read_input_tokens = 0
         mock_client.messages.create.return_value = mock_response
 
         result = provider.complete(
@@ -89,13 +104,44 @@ class TestAnthropicProvider:
         assert result.text == '{"result": "ok"}'
         assert result.input_tokens == 100
         assert result.output_tokens == 50
+        assert result.cache_creation_input_tokens == 2000
+        assert result.cache_read_input_tokens == 0
 
         mock_client.messages.create.assert_called_once_with(
             model="claude-haiku-4-5-20251001",
             max_tokens=1024,
-            system="You are helpful.",
+            system=[
+                {
+                    "type": "text",
+                    "text": "You are helpful.",
+                    "cache_control": {"type": "ephemeral"},
+                }
+            ],
             messages=[{"role": "user", "content": "Extract data."}],
         )
+
+    def test_complete_sends_cache_control_on_system_block(self):
+        """System prompt must be wrapped with cache_control: ephemeral for prompt caching."""
+        provider, mock_client, _ = self._make_provider()
+
+        mock_content = MagicMock()
+        mock_content.text = "[]"
+        mock_response = MagicMock()
+        mock_response.content = [mock_content]
+        mock_response.usage.input_tokens = 10
+        mock_response.usage.output_tokens = 5
+        mock_response.usage.cache_creation_input_tokens = None
+        mock_response.usage.cache_read_input_tokens = None
+        mock_client.messages.create.return_value = mock_response
+
+        provider.complete(system="sys prompt", user_message="msg", model="m", max_tokens=100)
+
+        system_arg = mock_client.messages.create.call_args.kwargs["system"]
+        assert isinstance(system_arg, list)
+        assert len(system_arg) == 1
+        assert system_arg[0]["type"] == "text"
+        assert system_arg[0]["text"] == "sys prompt"
+        assert system_arg[0]["cache_control"] == {"type": "ephemeral"}
 
     def test_auth_error_translated(self):
         import anthropic
