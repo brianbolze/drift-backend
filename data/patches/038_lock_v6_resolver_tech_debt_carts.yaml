@@ -1,0 +1,52 @@
+patch:
+  id: 038_lock_v6_resolver_tech_debt_carts
+  author: agent
+  date: '2026-04-23'
+  description: >
+    Lock 3 cartridges whose correct bullet_ids are re-broken by every
+    pipeline-store-commit and only survive because patch 027 re-asserts them on
+    the next curate-commit. Setting is_locked=true makes the store step skip
+    these rows, eliminating the silent oscillation. Reuses the patch 034
+    locking pattern. Tracked under the v6 resolver regression tech debt — the
+    deeper resolver fixes (variant-suffix disambiguation, within-brand caliber
+    marker scoring, ambiguity gate) remain open.
+
+operations:
+
+# ── Hornady 25-06 Rem 117gr InterLock BTSP AW (case 6 of v6 regression) ─────
+
+  # Composite_key tie within Hornady: InterLock BTSP vs RN variants of the
+  # same product line both score identically, resolver picks whichever comes
+  # first. Currently correctly linked to "25 Cal .257 117 gr InterLock® BTSP"
+  # (Hornady) via patch 027; lock protects that assignment.
+  - action: update_cartridge
+    manufacturer: "Hornady"
+    name: "25-06 Rem 117 gr InterLock® BTSP American Whitetail®"
+    set:
+      is_locked: true
+      data_source: manual
+
+# ── Hornady 30-30 Win 150gr RN InterLock AW (case 10 of v6 regression) ──────
+
+  # Same shape as case 6: RN vs SP InterLock variants tie. Currently correctly
+  # linked to "30 Cal .308 150 gr InterLock® RN" (Hornady) via patch 027.
+  - action: update_cartridge
+    manufacturer: "Hornady"
+    name: "30-30 Win 150 gr RN Interlock American Whitetail"
+    set:
+      is_locked: true
+      data_source: manual
+
+# ── Federal Gold Medal Barnes TSX 308 150gr (case 23 of v6 regression) ──────
+
+  # Within-Barnes variant ambiguity: the correct "30 CAL TSX BT 150 GR" and
+  # the "30-30 WIN TSX 150 GR FN FB" (also 0.308") tie on composite_key because
+  # the resolver doesn't penalize the conflicting caliber marker in the bullet
+  # name. Currently correctly linked to "0.308" 30 CAL TSX BT 150 GR" (Barnes)
+  # via patch 027.
+  - action: update_cartridge
+    manufacturer: "Federal"
+    name: "Barnes TSX, 308 Win, 150 Grain, Barnes Triple-Shock X Bullet (TSX), 2820 fps"
+    set:
+      is_locked: true
+      data_source: manual
