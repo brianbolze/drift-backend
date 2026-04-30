@@ -45,7 +45,13 @@ class AnthropicProvider(BaseLLMProvider):
             response = self._client.messages.create(
                 model=model,
                 max_tokens=max_tokens,
-                system=system,
+                system=[
+                    {
+                        "type": "text",
+                        "text": system,
+                        "cache_control": {"type": "ephemeral"},
+                    }
+                ],
                 messages=[{"role": "user", "content": user_message}],
             )
         except anthropic.AuthenticationError as e:

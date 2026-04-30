@@ -179,6 +179,37 @@ class TestExtractRetryLogic:
                 engine.extract("<html>test</html>", "bullet")
 
 
+# ── BatchExtractor.submit() ───────────────────────────────────────────────
+
+
+class TestBatchSubmit:
+    def test_submit_sends_cache_control_on_system_block(self):
+        """Every batch request must wrap system with cache_control: ephemeral."""
+        from drift.pipeline.extraction.batch import BatchExtractor, BatchItem
+
+        engine = ExtractionEngine(provider=_make_mock_provider())
+        client = MagicMock()
+        client.messages.batches.create.return_value = MagicMock(id="batch_abc", processing_status="in_progress")
+
+        extractor = BatchExtractor(engine=engine, client=client)
+        items = [
+            BatchItem(url_hash="h1", url="http://a", entity_type="bullet", reduced_html="<html>a</html>"),
+            BatchItem(url_hash="h2", url="http://b", entity_type="cartridge", reduced_html="<html>b</html>"),
+        ]
+        batch_id = extractor.submit(items)
+        assert batch_id == "batch_abc"
+
+        requests_arg = client.messages.batches.create.call_args.kwargs["requests"]
+        assert len(requests_arg) == 2
+        for req in requests_arg:
+            system = req["params"]["system"]
+            assert isinstance(system, list)
+            assert len(system) == 1
+            assert system[0]["type"] == "text"
+            assert system[0]["cache_control"] == {"type": "ephemeral"}
+            assert len(system[0]["text"]) > 0
+
+
 # ── BatchExtractor.collect() ──────────────────────────────────────────────
 
 
@@ -197,6 +228,8 @@ class TestBatchCollect:
         message.content = [content_block]
         message.usage.input_tokens = 100
         message.usage.output_tokens = 50
+        message.usage.cache_creation_input_tokens = 0
+        message.usage.cache_read_input_tokens = 0
         # Make hasattr(content_block, "text") work
         type(content_block).text = text
 

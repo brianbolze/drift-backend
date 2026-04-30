@@ -116,6 +116,30 @@ BC_SOURCE_TYPES = frozenset(
     }
 )
 
+# ── BC Reconciliation ────────────────────────────────────────────────────────
+# Priority ladder for scripts/bc_reconcile.py canonical-value selection.
+# Lower number = higher priority. Ties broken by source_date (newest wins).
+
+BC_SOURCE_PRIORITY: dict[str, int] = {
+    "doppler_radar": 1,
+    "applied_ballistics": 2,
+    "manufacturer": 3,
+    "cartridge_page": 4,
+    "independent_test": 5,
+    "estimated": 6,
+}
+
+# Per-bc_type spread threshold. If (max - min) / mean exceeds threshold for
+# a bullet's multi-source BC set, the bullet is skipped by reconcile and
+# emitted to data/patches/drafts/ for manual adjudication.
+# G7 tighter than G1 — G7 values are smaller-scale so the same absolute
+# delta represents a larger percentage error.
+
+BC_DISAGREEMENT_THRESHOLDS: dict[str, float] = {
+    "g1": 0.08,
+    "g7": 0.05,
+}
+
 # ── Batch Extraction ────────────────────────────────────────────────────────
 
 BATCH_DIR = DATA_DIR / "batches"  # Stores batch metadata (batch_id → item mapping)
@@ -179,4 +203,72 @@ DOMAIN_PARSER: dict[str, str] = {
     "www.hornady.com": "hornady",
     "sierrabullets.com": "sierra",
     "www.nosler.com": "nosler",
+}
+
+# ── Sitemap-Based Discovery ─────────────────────────────────────────────────
+# Per-manufacturer sitemap configuration for scripts/sitemap_watch.py.
+# Each entry: slug, sitemap_url, include/exclude regex filters, entity_type rules,
+# expected_manufacturer (matches EntityAlias/manufacturer.name).
+#
+# Keep this scoped to parser-era manufacturers first; expand after the URL
+# filters and entity-type rules are tuned against real output.
+
+DOMAIN_SITEMAP: dict[str, dict] = {
+    "www.hornady.com": {
+        "slug": "hornady",
+        "sitemap_url": "https://www.hornady.com/sitemap.xml",
+        "expected_manufacturer": "Hornady",
+        # Individual product pages use /(bullets|ammunition)/(rifle|handgun|shotgun)/<slug>.
+        # Drift is long-range focused — exclude /handgun/ entirely so handgun products
+        # never surface in discovery (rejected_calibers.json intent, enforced upstream).
+        "include_patterns": [
+            r"/bullets/rifle/.+",
+            r"/ammunition/rifle/.+",
+        ],
+        "exclude_patterns": [
+            r"/reloading/",
+            r"/support/",
+            r"/news/",
+            r"/team-hornady/",
+            r"\?",
+        ],
+        "entity_type_rules": [
+            (r"/bullets/", "bullet", "high"),
+            (r"/ammunition/", "cartridge", "high"),
+        ],
+    },
+    "sierrabullets.com": {
+        "slug": "sierra",
+        "sitemap_url": "https://www.sierrabullets.com/sitemap.xml",
+        "expected_manufacturer": "Sierra",
+        "include_patterns": [
+            r"/product/",
+        ],
+        "exclude_patterns": [
+            r"/product-category/",
+            r"/shop/",
+            r"\?",
+        ],
+        "entity_type_rules": [
+            (r"/product/", "bullet", "high"),
+        ],
+    },
+    "www.nosler.com": {
+        "slug": "nosler",
+        "sitemap_url": "https://www.nosler.com/sitemap.xml",
+        "expected_manufacturer": "Nosler",
+        "include_patterns": [
+            r"/bullets/",
+            r"/ammunition/",
+        ],
+        "exclude_patterns": [
+            r"/blog/",
+            r"/reloading-guide/",
+            r"\?",
+        ],
+        "entity_type_rules": [
+            (r"/bullets/", "bullet", "high"),
+            (r"/ammunition/", "cartridge", "high"),
+        ],
+    },
 }
